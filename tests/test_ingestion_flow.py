@@ -1,7 +1,9 @@
 import hashlib
 import io
 import json
+import runpy
 import sys
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -23,8 +25,18 @@ from datapilot.ingestion.profiling import propose_schema
 FIXTURES = Path(__file__).parent / "fixtures/ingestion"
 
 
-def test_committed_fixtures_are_synthetic_hashed_and_reproducible():
-    from scripts.generate_ingestion_fixtures import build_fixtures
+@pytest.mark.parametrize("zip_creator_system", [0, 3], ids=["windows", "unix"])
+def test_committed_fixtures_are_synthetic_hashed_and_reproducible(monkeypatch, zip_creator_system):
+    # scripts/ is a repository utility, not an installed application package.
+    script = Path(__file__).resolve().parents[1] / "scripts/generate_ingestion_fixtures.py"
+    build_fixtures = runpy.run_path(str(script))["build_fixtures"]
+    original_init = zipfile.ZipInfo.__init__
+
+    def platform_zip_info(self, *args, **kwargs):
+        original_init(self, *args, **kwargs)
+        self.create_system = zip_creator_system
+
+    monkeypatch.setattr(zipfile.ZipInfo, "__init__", platform_zip_info)
 
     manifest = json.loads((FIXTURES / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["synthetic"] is True

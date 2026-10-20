@@ -54,6 +54,8 @@ def build_fixtures() -> dict[str, bytes]:
     ):
         for name in sorted(source.namelist()):
             entry = zipfile.ZipInfo(name, date_time=(2025, 1, 1, 0, 0, 0))
+            # Keep the committed Windows ZIP metadata identical on every host.
+            entry.create_system = 0
             entry.compress_type = zipfile.ZIP_DEFLATED
             payload = source.read(name)
             if name == "docProps/core.xml":

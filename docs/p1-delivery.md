@@ -68,3 +68,24 @@ CSV 预览为 **1 表、3 行**；XLSX 为 **3 表，数据行分别 3/3/1**。�
 - deadline 是协作式检查，不是 OS 沙箱；资源保护与输出限额已测试，不声称可承受任意恶意宿主或无限大文件。
 
 本阶段至此停止。
+
+## 后续 CI 兼容性修复（2026-10-21）
+
+首次推送 `f436fb2` 的 [GitHub Actions](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/39470167014) 未通过：Python 3.13 为 139 passed、1 failed、1 skipped，3.11 被矩阵 fail-fast 取消。失败发生在样例再生成测试导入仓库 `scripts` 时；数据库初始化、迁移、Seed 与健康检查均已通过。
+
+本地最初使用 `python -m pytest`，该入口隐式加入仓库根目录，掩盖了 CI 的 `pytest` 入口无法导入未安装 `scripts` 目录的问题。现在测试按 `__file__` 定位受版本管理的生成器，并用 `runpy.run_path` 加载其函数，不改变全局导入路径或关闭样例校验。另外固定 XLSX ZIP 的 `create_system=0`，使 Unix 生成结果与既有 Windows 样例逐字节一致；原样例和 manifest 未修改。测试参数化覆盖两种 ZIP 主机默认元数据，修复前已复现 Unix 分支哈希不一致。
+
+修复后本地 Windows / Python 3.11.16 实际执行：
+
+```powershell
+$env:PYTHONUTF8 = '1'
+$env:UV_CACHE_DIR = Join-Path (Get-Location) '.cache/uv'
+$env:DATAPILOT_RUN_DB_TESTS = '1'
+$env:DATAPILOT_RUN_LIVE_TESTS = '0'
+uv run --locked --offline pytest --cov=datapilot --cov-report=term-missing -p no:cacheprovider --junitxml=artifacts/p1/ci-fix-pytest.xml
+.\.venv\Scripts\python.exe -m pytest -q tests/test_ingestion_flow.py::test_committed_fixtures_are_synthetic_hashed_and_reproducible -p no:cacheprovider
+.\.venv\Scripts\ruff.exe check . --output-format concise
+.\.venv\Scripts\ruff.exe format --check .
+```
+
+全量结果 **141 passed、1 skipped，17.04s**，含原有 10 个真实 PostgreSQL 集成测试；P1 本地用例因新增 Unix/Windows 参数分支从 81 增至 82。另一个模块入口的定点测试 **2 passed**；Ruff check/format 均通过（72 文件已格式化）。真实模型仍明确跳过。JUnit 位于被忽略的 `artifacts/p1/ci-fix-pytest.xml`。GitHub Linux / Python 3.11、3.13 的结果须查看修复提交对应的 Actions，不能以本机结果替代。
