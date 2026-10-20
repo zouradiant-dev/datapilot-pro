@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "datapilot-pro"
+version = "0.1.0"
+description = "Evidence-driven SaaS analysis agents, Day 1 SQL vertical slice"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "langgraph>=1.0,<2",
+  "langchain>=1.0,<2",
+  "langchain-openai>=1.0,<2",
+  "pydantic>=2.10,<3",
+  "pydantic-settings>=2.7,<3",
+  "sqlglot>=27,<31",
+  "sqlalchemy>=2.0.40,<2.1",
+  "psycopg[binary]>=3.2,<4",
+  "alembic>=1.15,<2",
+  "pgvector>=0.4,<0.5",
+  "mcp>=1.20,<2",
+  "editables==0.5",
+]
+
+[project.scripts]
+datapilot = "datapilot.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8.3,<10", "pytest-cov>=6,<8", "ruff>=0.12,<1", "pytest-asyncio>=1,<2"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/datapilot"]
+dev-mode-exact = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+  "live: opt-in external model integration, consumes API credits",
+  "integration: requires real PostgreSQL 17 with pgvector; never substitutes SQLite or mocks",
+  "protocol: real MCP subprocess without a database or model",
+]
+asyncio_mode = "auto"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
