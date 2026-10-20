@@ -2,10 +2,11 @@
 
 import sqlalchemy as sa
 
-from datapilot.tools.sql import verify_reader
+from datapilot.db.management import migration_head
+from datapilot.tools.sql import SQLPolicy, verify_reader
 
 
-def database_health(reader_url: str) -> dict:
+def database_health(reader_url: str, *, upload_reader_url: str | None = None) -> dict:
     engine = sa.create_engine(reader_url, hide_parameters=True, connect_args={"connect_timeout": 5})
     try:
         with engine.connect() as conn:
@@ -19,12 +20,12 @@ def database_health(reader_url: str) -> dict:
             revision = conn.exec_driver_sql(
                 "SELECT version_num FROM saas.alembic_version"
             ).scalar_one()
-            if revision != "0001":
+            if revision != migration_head():
                 raise ValueError("Database migration is not at the expected revision")
             count = conn.exec_driver_sql("SELECT COUNT(*) FROM saas.customers").scalar_one()
             if not count:
                 raise ValueError("Business data is not seeded")
-            return {
+            result = {
                 "status": "healthy",
                 "postgres_version_num": version,
                 "pgvector": extension,
@@ -32,5 +33,18 @@ def database_health(reader_url: str) -> dict:
                 "customers": count,
                 "seeded": count > 0,
             }
+        if upload_reader_url:
+            upload = sa.create_engine(
+                upload_reader_url, hide_parameters=True, connect_args={"connect_timeout": 5}
+            )
+            try:
+                with upload.connect() as conn:
+                    verify_reader(conn, SQLPolicy("uploads", frozenset()))
+                    for table in ("datasets", "versions", "tables", "columns"):
+                        conn.exec_driver_sql(f"SELECT 1 FROM catalog.{table} LIMIT 0")
+                    result["uploads"] = {"status": "healthy", "catalog_tables": 4}
+            finally:
+                upload.dispose()
+        return result
     finally:
         engine.dispose()

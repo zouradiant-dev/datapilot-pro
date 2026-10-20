@@ -6,7 +6,7 @@
 
 ## 1. 当前起点与优先级
 
-起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，当时只改文档，详见 [审计证据](planning-audit-v2.md)。当前 P1 已实现 W2–W3 的本地解析/画像/预览确认，见 [使用与限制](data-ingestion.md)、[真实验收](p1-delivery.md)。W4/P2 及以后尚未开始，Gate A 未通过。
+起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1 已实现 W2–W3 的本地解析/画像/预览确认，见 [P1 验收](p1-delivery.md)。当前 P2 实现 W4–W5 的受限导入、Dataset 版本与动态 MCP，见 [P2 使用](dataset-ingestion.md)、[真实验收](p2-delivery.md)。本轮停止在 Gate A，P3 及以后未开始。
 
 唯一首发业务是 SaaS。文件导入、语义/证据、Multi-Agent、产品化和独立评测服务这一主线。首版本地单用户/可信演示，不承诺生产多租户。干洗店 Phase F 与 LangGraph Fork 都是独立可选扩展。
 
@@ -37,7 +37,7 @@ RAG 组件测试可以先于完整 DAG；Gate C 的跨来源验收需要真实�
 
 ## 3. 已完成审计与未来五个工作包
 
-以下保留 P0 拆分的五个工作包 W2–W6，不绑定日历。W1 为已完成 P0，W2–W3 当前 P1 已实现；W4–W5 属于尚未开始的 P2，W6 是 P3 起点。后续包须另行授权，不因列在本节就自动执行。
+以下保留 P0 拆分的五个工作包 W2–W6，不绑定日历。W1 为已完成 P0，W2–W3 为已完成 P1；W4–W5 为本轮 P2，W6 是尚未开始的 P3 起点。后续包须另行授权，不因列在本节就自动执行。
 
 ### W1：冻结基线与规划审计（历史 P0，已完成）
 
@@ -62,7 +62,7 @@ RAG 组件测试可以先于完整 DAG；Gate C 的跨来源验收需要真实�
 - 至少 12 个有独立意义的测试覆盖合法 CSV、多 Sheet XLSX、资源上限与失真反例；fixture 为可公开合成数据。
 - **P1 结束条件**：生成可复现的预览与确认 JSON；无隐式丢行、无公式执行、无 PG DDL；原单元/MCP/真实 PG 回归保持通过。完成 P1 后停在该边界。
 
-### W4：受限入库与 Registry（P2 的第一部分）
+### W4：受限入库与 Registry（P2 的第一部分，已实现）
 
 - 显式权限初始化创建 catalog/uploads 命名空间及角色，新 Alembic 迁移定义 catalog 固定结构，历史 0001 不修改；明确 ingest/upload_reader profile，不假设当前 Owner 有数据库 CREATE 权限。
 - 按确认快照生成标识符和受限类型，事务中建表、插入、元数据和 SELECT 授权；只在完成后发布 ready。
@@ -70,7 +70,7 @@ RAG 组件测试可以先于完整 DAG；Gate C 的跨来源验收需要真实�
 - 兼容健康检查/CLI 的迁移版本：查询 Alembic head/兼容策略，不能继续硬编码 0001 后绕过检查。
 - 通过条件：真实 PG 导入/并发重试/回滚/版本切换，Reader 仍无写入与建表，原 Seed/health 正常；无自动删库/卷。
 
-### W5：动态 Query MCP（P2 的第二部分）
+### W5：动态 Query MCP（P2 的第二部分，已实现）
 
 - 设计 list_datasets/get_dataset_schema/query_dataset；服务端解析授权、ready 状态和固定版本；模型不能提供任意物理表白名单。
 - AST 改为显式 Policy/QueryScope 参数；保留 saas 固定 profile，新增 uploads 精确表集合，不将所有上传表加入全局常量。
@@ -92,7 +92,7 @@ RAG 组件测试可以先于完整 DAG；Gate C 的跨来源验收需要真实�
 |---|---|---|
 | P0 | 已完成的文档审计 | 无业务实现；历史记录保留 |
 | P1 | 本轮已完成 W2–W3 Parser/Profile/Preview/Confirm | 见 p1-delivery；不建表、不提前做 UI，到此停止 |
-| P2 | W4–W5 安全导入/Registry/动态 MCP | P1 验收；到 Gate A 停止 |
+| P2 | 本轮完成 W4–W5 安全导入/版本/动态 MCP | 真实验收见 p2-delivery；到 Gate A 停止 |
 | P3 | 语义/指标/证据/六层 Verifier | Gate A；到 Gate B 停止 |
 | P4 | 动态 DAG、子任务与 Worker Loop | Gate B；无 Fork；RAG 替身仅证明编排 |
 | P5 | Context/Memory、持久预算/Checkpoint/Recovery | P4；先解决 Saver 迁移；真实 PG 重启恢复 |
@@ -111,6 +111,6 @@ SaaS ≥50 个独立业务任务，开发集/保留集分离，固定 seed/数�
 
 ## 6. 当前阻塞与下一步准备
 
-P1 已落实解析依赖锁定、合法合成 fixture、安全解析/画像/确认和 CLI，真实执行证据见 [P1 记录](p1-delivery.md)。本轮在 P1 停止；受限入库/Registry/动态 MCP 属于 P2，没有自动开始。当前完整产品仍只有既有 SQL 路径加本地文件预览，不能查询上传数据。
+P1 解析/确认已验收，P2 已落实新 0002 迁移、隔离 ingest/upload_reader、事务化导入、版本固定/切换、真实 MCP 动态查询及同 Dataset JOIN。真实证据见 [P2 记录](p2-delivery.md)。本轮在 P2 / Gate A 停止；P3 指标/语义/证据 Registry、Multi-Agent 与 UI 没有开始。原自然语言 ask 保留 SaaS 路径，上传数据已有显式 SQL 查询入口。
 
 真实模型评测需要后续本地配置 API；Embedding 模型、Langfuse 部署与 PG Saver 迁移需在对应 Gate 验证。POS 软件和报表未知只阻塞 Phase F，不阻塞 SaaS。任何阶段都不以部署问题为由退回 SQLite/FAISS。

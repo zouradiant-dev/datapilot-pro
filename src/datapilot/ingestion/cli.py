@@ -1,4 +1,4 @@
-"""Local preview/confirm commands only. No DB settings, keys, DDL or model calls."""
+"""Local preview/confirm plus an explicit operator-only import command. Never model tools."""
 
 import argparse
 import json
@@ -7,6 +7,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
+from datapilot.contracts import AgentFailure
 from datapilot.ingestion.common import read_file, render_json
 from datapilot.ingestion.confirmation import confirm_file
 from datapilot.ingestion.contracts import (
@@ -15,6 +16,7 @@ from datapilot.ingestion.contracts import (
     ParseFailure,
     ParseLimits,
     ParseOptions,
+    SchemaConfirmation,
     SchemaProposal,
 )
 from datapilot.ingestion.parser import parse_file
@@ -23,7 +25,7 @@ from datapilot.ingestion.profiling import propose_schema
 
 def add_commands(subparsers) -> None:
     ingest = subparsers.add_parser(
-        "ingest", help="Local file preview/confirmation; no database writes"
+        "ingest", help="File preview/confirmation and explicit restricted database import"
     )
     commands = ingest.add_subparsers(dest="ingest_command", required=True)
     preview = commands.add_parser("preview", help="Parse CSV/XLSX and propose a bounded schema")
@@ -46,11 +48,37 @@ def add_commands(subparsers) -> None:
         "--reviewed", action="store_true", help="Explicitly acknowledge preview and warnings"
     )
     confirm.add_argument("--output", type=Path)
+    publish = commands.add_parser(
+        "import", help="Ingest identity: revalidate and import a reviewed file"
+    )
+    publish.add_argument("file", type=Path)
+    publish.add_argument("--confirmation", type=Path, required=True)
+    publish.add_argument("--name", required=True)
+    publish.add_argument("--dataset-id")
+    publish.add_argument("--output", type=Path)
 
 
 def run(args: argparse.Namespace) -> int:
     try:
-        if args.ingest_command == "preview":
+        if args.ingest_command == "import":
+            from datapilot.datasets.contracts import ImportRequest
+            from datapilot.db.management import management_url
+            from datapilot.ingestion.service import IngestionService
+
+            confirmation = SchemaConfirmation.model_validate_json(
+                read_file(args.confirmation, 4 * 1024**2)
+            )
+            request = ImportRequest(name=args.name, dataset_id=args.dataset_id)
+            service = IngestionService(
+                management_url("ingest"),
+                storage_dir=Path(__file__).resolve().parents[3] / "artifacts/uploads/sources",
+            )
+            try:
+                result = service.import_file(args.file, confirmation, request)
+            finally:
+                service.close()
+            limits = ParseLimits()
+        elif args.ingest_command == "preview":
             limits = ParseLimits(
                 max_file_bytes=args.max_file_bytes,
                 max_total_rows=args.max_rows,
@@ -88,7 +116,9 @@ def run(args: argparse.Namespace) -> int:
         return 0
     except ParseFailure as exc:
         error = exc.error
-    except ValidationError:
+    except AgentFailure as exc:
+        error = ParseError(code=exc.error.code, message=exc.error.message)
+    except (ValidationError, ValueError):
         error = ParseError(
             code="CONFIG_INVALID", message="Options/proposal/overrides violate the input contract"
         )

@@ -1,4 +1,4 @@
-name: Day 1 checks
+name: DataPilot checks
 on: [push, pull_request]
 jobs:
   checks:
@@ -28,6 +28,10 @@ jobs:
       DATAPILOT_OWNER_PASSWORD: ci-owner-only
       DATAPILOT_SEED_PASSWORD: ci-seed-only
       DATAPILOT_READER_PASSWORD: ci-reader-only
+      DATAPILOT_INGEST_PASSWORD: ci-ingest-only
+      DATAPILOT_UPLOAD_READER_PASSWORD: ci-upload-reader-only
+      DATAPILOT_INGEST_DATABASE_URL: postgresql+psycopg://datapilot_ingest:ci-ingest-only@localhost:5432/datapilot
+      DATAPILOT_UPLOAD_READER_DATABASE_URL: postgresql+psycopg://datapilot_upload_reader:ci-upload-reader-only@localhost:5432/datapilot
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6

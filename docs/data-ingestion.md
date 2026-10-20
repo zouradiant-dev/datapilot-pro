@@ -2,6 +2,8 @@
 
 状态：D2–D3 / Roadmap W2–W3 实现；只在本地读取文件并输出 JSON，不建表、不调用模型/MCP，不实现导入 commit、UI 或多 Agent。完整真实验证见 [P1 交付记录](p1-delivery.md)。
 
+P2 已增加独立的 operator-only import 与 Dataset MCP 入口，见 [P2 说明](dataset-ingestion.md)。本页描述的 preview/confirm API 仍不加载数据库或模型凭据；解析与入库职责保持分离。
+
 ## 使用
 
 依赖以 uv.lock 为准，新增 openpyxl 3.1.5、defusedxml 0.7.1，传递依赖 et-xmlfile 2.0.0；原依赖版本保持。openpyxl 官方说明默认 XML 防护不足，建议安装 defusedxml，本项目另行先做 ZIP/XML 预检，不仅依赖库默认配置。[官方说明](https://openpyxl.readthedocs.io/en/stable/#security)、[固定版本](https://pypi.org/project/openpyxl/3.1.5/)、[defusedxml](https://pypi.org/project/defusedxml/0.7.1/)。

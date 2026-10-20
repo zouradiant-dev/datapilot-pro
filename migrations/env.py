@@ -1,6 +1,7 @@
 from alembic import context
 from sqlalchemy import create_engine, pool
 
+from datapilot.db.catalog import metadata as catalog_metadata
 from datapilot.db.management import management_url
 from datapilot.db.schema import metadata
 
@@ -10,8 +11,11 @@ try:
     with engine.connect() as connection:
         context.configure(
             connection=connection,
-            target_metadata=metadata,
+            target_metadata=[metadata, catalog_metadata],
             include_schemas=True,
+            include_name=lambda name, kind, parents: (
+                kind != "schema" or name in {"saas", "rag", "catalog"}
+            ),
             version_table_schema="saas",
         )
         with context.begin_transaction():

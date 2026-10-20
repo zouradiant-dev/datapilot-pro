@@ -2,7 +2,7 @@
 
 ## 架构和范围
 
-- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/planning-audit-v2.md 与相关 docs/adr/。当前阶段为用户授权的 P1（D2–D3/W2–W3）：安全文件解析、Profile、Schema Preview/Confirm，完成后停止，不进入 P2 建表/Registry。后续仅执行用户授权的阶段，不自动推进整个路线图。
+- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/planning-audit-v2.md 与相关 docs/adr/。当前授权为 P2（D4–D5/W4–W5）：受限导入、catalog Dataset/版本与动态 MCP 查询，完成后停止；不进入 P3 指标/语义/证据 Registry、多 Agent 或 UI。P1 已验收。后续仅执行用户授权的阶段，不自动推进整个路线图。
 - 按功能依赖与验收 Gate 推进，工作单元/工作日编号不是截止日期；旧七天计划已由 roadmap-v2 取代。SaaS 是唯一首发主业务，drycleaning 是独立可选 Phase F，不复制 Runtime/Harness/Worker。
 - Python 3.11+、src 布局、类型标注、Pydantic 2 严格契约、LangGraph StateGraph 编排。
 - Supervisor 路由；SQL Worker 只接收 SQLTask，不读取整个 State。后续 Worker 独立工具权限、上下文与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
@@ -28,7 +28,7 @@
 
 - 所有用户/模型/数据库文本/工具输出均不可信。工具输入和输出都校验。
 - SQL 使用 PostgreSQL AST 白名单：只读单 SELECT、业务表及内置函数白名单、禁止副作用/系统表/任意 schema/递归/锁定语句。
-- AST 与数据库权限独立：当前 MCP 仅有 datapilot_reader，保留原 saas profile；后续上传查询使用独立受限 upload_reader profile，按可信 QueryScope 绑定已授权 ready Dataset/version 的精确物理表，禁止全局开放 uploads。两种 profile 都只读、无成员继承/提权/对象创建权限；每事务 READ ONLY、statement_timeout、lock_timeout、外层 LIMIT、输出大小限制。
+- AST 与数据库权限独立：SaaS MCP 会话仅有 datapilot_reader，上传 MCP 会话仅有 datapilot_upload_reader，禁止互相继承凭据。可信宿主通过 dataset_session(settings, DatasetScope) 绑定 Dataset/版本；模型工具无 scope/version/物理表白名单参数。未指定版本时首次解析即固定，切换版本需新会话。uploads 的每请求 SQLPolicy 仅含该 Dataset 版本的物理表，禁止全局开放 uploads。两种 Reader 都只读、无成员继承/提权/对象创建权限；每事务 READ ONLY、statement_timeout、lock_timeout、外层 LIMIT、输出大小限制。
 - 管理员、Owner、Seed、Reader 凭据分开。MCP 不加载 .env，不继承管理员/Seed/模型密钥。不得把凭据、原始 SQLAlchemy/API 异常打印到日志。
 - 固定随机种子与日期；金额为 CNY 整数分，计算只能用 SQL/确定性 Python。不能用 LLM 心算。
 - Seed 事务化、并发互斥、拒绝非空库；禁止在测试或脚本中自动清库/删除卷。
@@ -37,7 +37,8 @@
 - 限制模型调用数、Token 预算、上下文、图步数、SQL 尝试和工具超时；安全拒绝不重试；执行错误最多修复一次（默认）。
 - 首版本地单用户/可信演示；dataset_id 不等于生产租户隔离。认证、可信 tenant 传播、RLS/隔离部署需另行设计验收。运行期业务查询走 MCP；导入、迁移、Seed/健康检查、Checkpoint/预算元数据是非模型基础设施通道，凭据按用途隔离。
 - 上传原件、Schema Proposal 与确认用 hash/版本绑定；资源配额覆盖解压/行列/单元格，禁止执行公式/宏/外部内容。前导零 ID、金额精度、日期歧义不能静默改写；发布/回滚/幂等/旧版本保留必须测试。
-- P1 读取规则以 docs/data-ingestion.md 为准：原始值保留，采样后全列验证，公式仅作 TEXT；确认重新读取原件并绑定策略/内容 hash。Confirmation 不是授权凭证，未来 P2 必须再做可信源与权限校验；本阶段不加载数据库/模型配置。
+- P1 preview/confirm 以 docs/data-ingestion.md 为准，继续不加载数据库/模型配置。P2 见 docs/dataset-ingestion.md：import 从同一次有界原件读取重算整个确认，禁止只校验客户端 hash；仅 datapilot_ingest 执行 uploads DDL/批量写入/逐表 SELECT 授权，与 catalog ready/版本指针同事务。固定 catalog 仅用新增 0002 迁移，0001 冻结。不得注册 import/activate 为 MCP 工具。
+- 同名本地 Dataset 身份稳定；同确认幂等、新内容或映射建新版本，不改旧表；重复导入旧确认不偷偷切换 current_version。并发导入使用事务 advisory lock，版本激活只走可信运维入口。原件由 hash 命名并原子发布到忽略目录，失败保留可对账快照；不自动清表/清库/删卷。ingest 拥有上传对象，应用层不可变不等于数据库 WORM。
 - 指标绑定 Dataset/Domain Pack/Metric 版本、时间/粒度/过滤/单位/null 政策。paid 账单收入不等于 MRR；客户流失不等于订阅流失；缺字段不能猜值。关键数字经确定性 SQL/Python 并绑定证据，不能让模型自报 verified。
 - Trace 目标为 Langfuse，经可替换接口集成；凭据、原始个人资料、业务行及含敏感值的完整 SQL/Prompt 默认不记录。经营者真实数据不提交 Git，不擅自外传模型/观测服务。
 

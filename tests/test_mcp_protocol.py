@@ -8,7 +8,17 @@ from datapilot.runtime.mcp_client import database_session
 async def test_real_stdio_handshake_tool_listing_and_missing_database(settings):
     async with database_session(settings) as tools:
         listing = await tools.session.list_tools()
-        assert {t.name for t in listing.tools} == {"health", "database_schema", "query_database"}
+        assert {t.name for t in listing.tools} == {
+            "health",
+            "database_schema",
+            "query_database",
+            "list_datasets",
+            "get_dataset_schema",
+            "query_dataset",
+        }
+        assert not any(
+            t.name in {"import_file", "create_table", "activate_version"} for t in listing.tools
+        )
         assert (await tools.call("health", {})) == {
             "protocol": "ready",
             "database_configured": False,

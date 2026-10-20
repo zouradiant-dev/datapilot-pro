@@ -1,8 +1,10 @@
 # ADR-002：动态上传表、导入服务与受控查询权限
 
-日期：2026-10-21。状态：规划基线；未创建 Schema/角色/工具。当前 Day 1 Reader 行为保留。
+日期：2026-10-21。状态：P2 已落实下述最小文件导入/版本/查询闭环，后续语义/证据与生产权限仍为规划。Day 1 Reader 行为保留。
 
 P1 实施补充：已实现本地 Parser/Profile/Preview/Confirm（见 [说明](../data-ingestion.md)），尚未执行本 ADR 的数据库导入/角色/动态查询设计。确认配置需在未来 P2 可信入口重验，不因本地 reviewed 字段而获得 DDL 权限。
+
+P2 实施补充：新增冻结迁移 `0002_dataset_catalog.py`，只创建 catalog.datasets/versions/tables/columns；Schema/角色由显式 `db-init` 创建。uploads 归 datapilot_ingest 所有，catalog 归 Owner；原 0001 未修改。确认被重新完整计算，导入/元数据/逐表 SELECT 授权/ready/指针同事务。客户端作用域不是工具参数，未指定版本时首次访问固定至会话结束。原件在忽略目录按 hash 原子发布，数据库失败后保留快照；用 catalog source_ref 对账，未实现自动清理或完整故障事件 Registry。具体接口、授权边界和验收见 [P2 说明](../dataset-ingestion.md) 与 [交付](../p2-delivery.md)。以下“拟/目标”保留设计背景，P2 未实现 metric_bindings/evidence/import_batches 等未来表。
 
 ## 背景与迁移所有权
 

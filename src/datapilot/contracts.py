@@ -38,7 +38,7 @@ class SQLProposal(Contract):
 
 class QueryResult(Contract):
     columns: list[str]
-    rows: list[list[str | int | float | None]]
+    rows: list[list[str | int | float | bool | None]]
     row_count: int = Field(ge=0)
     truncated: bool
     elapsed_ms: float = Field(ge=0)

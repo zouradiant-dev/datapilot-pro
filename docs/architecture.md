@@ -2,7 +2,7 @@
 
 ## 1. 目标、阶段边界与技术决策
 
-面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。Day 1 实现 Supervisor + SQL Worker 的真实查询闭环；随后 P0 完成规划审计，当前 P1 实现本地 CSV/XLSX 解析、画像与确认配置。不宣称完成五 Agent 系统或动态数据库导入。
+面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。Day 1 实现 Supervisor + SQL Worker；P0 完成规划审计，P1 完成文件解析/画像/确认，当前 P2 完成受限导入、Dataset 版本与动态 MCP 查询。不宣称完成五 Agent 系统、指标/证据 Registry 或生产多租户。
 
 第 2–9 节记录当前基线；第 10 节起是 v2 目标设计。完整现状/缺口见 [代码审计](planning-audit-v2.md)，实施依赖与验收见 [v2 路线图](roadmap-v2.md)。旧七天计划已废止；工作单元不绑定日期。SaaS 是唯一首发主业务，干洗店通过后续 Domain Pack 扩展。
 
@@ -236,3 +236,35 @@ openpyxl 3.1.5 + defusedxml 0.7.1 锁定使用；读取前验证 ZIP/XML 全包�
 预览/确认绑定文件、解析内容、选表/表头/限额和解析版本 hash；确认从原件重算，不信任预览样本或模型自报。字段类型/ID/金额不静默截断，预览裁剪明确标志；原始大结果不写进 State。当前 Confirmation 是配置，不是授权或数据库迁移。
 
 配额、错误码、原始行号、画像/候选键/关系、合成 fixture 与完整使用见 [文件解析说明](data-ingestion.md)。期限是协作式检查，不宣称 OS 沙箱或完整 Excel 兼容。P2 的受限 DDL、Dataset Registry 和动态 Query MCP 尚未实现，Gate A 尚未完成。
+
+## 16. P2 已实现：受限导入与版本化查询
+
+第 15 节末尾为 P1 停止时的历史边界；本节更新当前状态。P2 实现 Gate A 的文件→确认→真实 PostgreSQL→真实 MCP 查询，不推进 Gate B。
+
+```mermaid
+flowchart LR
+    F[CSV/XLSX 原件] --> P[P1 Parse/Profile/Confirm]
+    P --> I[可信 Ingestion Service / ingest 身份]
+    I --> H[按 hash 原子保存本地快照]
+    I --> T[单个 PG 事务]
+    T --> U[(uploads 动态表与批量数据)]
+    T --> C[(catalog 四表 / ready / current_version)]
+    T --> G[逐表 SELECT grant 给 upload_reader]
+    HOST[可信本地宿主选择 DatasetScope] --> MC[MCP Client / 独立 stdio]
+    MC --> MS[MCP Server / 仅 upload_reader]
+    MS --> R[catalog ready 版本解析与会话固定]
+    R --> V[每请求精确表 Policy / SQLGlot]
+    V --> U
+```
+
+- `db/catalog.py` 为固定元数据；新 `0002` 是独立冻结快照。catalog 属于 Owner，uploads 属于 ingest；初始化不借给模型 DB CREATE、DDL 或 ingest 身份。健康检查按 Alembic 当前 head 验证，并可检查 upload_reader/catalog 权限。
+- `ingestion/service.py` 从一次有界读取重新生成完整确认，验证原件/内容/策略/映射/类型/关系/hash；动态类型仅来自确定性白名单，标识符由服务端生成或经过 Name 校验并严格引用。中文/空/重复原名存为参数化元数据，原始文件保存在忽略目录。
+- `catalog.datasets` 保存稳定 ID/名称/current_version；`versions` 保存文件与确认 hash、source_ref、完整确认、ready 状态和总行数；`tables` 记录各 Sheet/物理表/行数/确认主键；`columns` 记录原名/source_column/规范名/类型。关系候选保存在确认 JSON 中，尚不创建 FK、Semantic Catalog 或 Evidence Registry。
+- 同名 Dataset 在本地单用户命名空间中稳定；事务 advisory lock 串行同 Dataset 并发，相同确认幂等返回原版本，新内容/映射创建新物理表。建表、参数化批量插入、catalog 和 SELECT grant 同事务，失败整体回滚；旧版本保留。可信 CLI 可激活历史 ready 版本。
+- `datasets/repository.py` 只解析宿主 DatasetScope 指定的 ready Dataset；首次访问固定实际版本并在并发下加锁。模型参数只有 dataset_id/sql，没有授权、version、物理表列表；即使会话选择两个 Dataset，每次 SQL 仍只允许一个 Dataset 版本内 JOIN。
+- `tools/sql.py` 增加不可变 SQLPolicy，每请求设置 uploads 精确表集合，SaaS 默认策略仍是原五表；SQLGlot、角色检查、真 SELECT grants、READ ONLY、pg_catalog search_path、statement/lock timeout、外层 LIMIT/体积限制同时生效。`database_session` 与 `dataset_session` 不互传 Reader 凭据，也不继承 Admin/Owner/Seed/Ingest/模型密钥。
+- 新工具 `list_datasets/get_dataset_schema/query_dataset` 与原三个工具共存，客户端能力分别受限；无导入、激活、文件/Shell 工具。查询结果包含实际 Dataset/version、源 hash、规范 SQL hash 和结果 hash；客户端检查形状/hash/作用域版本，尚不等于业务语义正确性证明。
+
+原件发布与数据库不是同一事务：快照通过同目录临时文件+原子独占硬链接发布，失败保留快照，可按 catalog.source_ref 对账。崩溃残留/累计空间/保留策略需显式运维处理；不自动清理用户数据。发布版本是应用层不可变；可信 ingest 仍拥有物理表，不能声称数据库 WORM。单用户 upload_reader 可读全部已发布上传表，逐 Dataset 边界由服务器 scope+AST 强制，尚无生产逐租户 RLS。
+
+操作与精确边界见 [P2 使用说明](dataset-ingestion.md)，真实命令/结果见 [P2 验收](p2-delivery.md)。原 `ask` 继续面向固定 SaaS 数据；上传数据目前通过显式 Dataset SQL 查询。

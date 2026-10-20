@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     base_url: str = "https://api.openai.com/v1"
     model: str = ""
     reader_database_url: SecretStr | None = None
+    upload_reader_database_url: SecretStr | None = None
     model_timeout_seconds: float = Field(default=30, gt=0, le=120)
     query_timeout_seconds: float = Field(default=2, gt=0, le=30)
     mcp_timeout_seconds: float = Field(default=10, gt=0, le=60)
@@ -32,6 +33,10 @@ class Settings(BaseSettings):
             url = make_url(self.reader_database_url.get_secret_value())
             if url.drivername != "postgresql+psycopg" or url.username != "datapilot_reader":
                 raise ValueError("MCP requires the PostgreSQL psycopg reader role")
+        if self.upload_reader_database_url:
+            url = make_url(self.upload_reader_database_url.get_secret_value())
+            if url.drivername != "postgresql+psycopg" or url.username != "datapilot_upload_reader":
+                raise ValueError("Dataset MCP requires the isolated upload reader role")
         if self.llm_mode == "live":
             if not self.api_key or not self.api_key.get_secret_value().strip() or not self.model:
                 raise ValueError("Live mode requires DATAPILOT_API_KEY and DATAPILOT_MODEL")

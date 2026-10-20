@@ -1,9 +1,12 @@
 """PostgreSQL-only SQL policy and controlled repository, used exclusively by MCP server."""
 
 import json
+import re
 import time
+from dataclasses import dataclass
 from datetime import date, datetime
 from decimal import Decimal
+from typing import Literal
 
 import sqlalchemy as sa
 import sqlglot
@@ -84,7 +87,24 @@ METRICS = (
 )
 
 
-def validate_sql(sql: str) -> str:
+@dataclass(frozen=True)
+class SQLPolicy:
+    schema: Literal["saas", "uploads"]
+    tables: frozenset[str]
+
+    def __post_init__(self):
+        if self.schema not in {"saas", "uploads"} or not isinstance(self.tables, frozenset):
+            raise ValueError("Invalid server SQL policy")
+        if any(not re.fullmatch(r"[a-z_][a-z0-9_]{0,62}", t) for t in self.tables):
+            raise ValueError("Invalid physical table identifier")
+        if self.schema == "saas" and not self.tables <= set(BUSINESS_TABLES):
+            raise ValueError("The fixed SaaS profile cannot be expanded")
+
+
+SAAS_POLICY = SQLPolicy("saas", frozenset(BUSINESS_TABLES))
+
+
+def validate_sql(sql: str, policy: SQLPolicy = SAAS_POLICY) -> str:
     if not sql.strip() or len(sql) > 12000:
         raise AgentFailure("SQL_UNSAFE", "SQL is empty or too long")
     try:
@@ -125,14 +145,16 @@ def validate_sql(sql: str) -> str:
             if isinstance(source, exp.Table):
                 if (
                     source.catalog
-                    or source.db not in ("", "saas")
+                    or source.db not in ("", policy.schema)
                     or not isinstance(source.this, exp.Identifier)
-                    or source.name not in BUSINESS_TABLES
+                    or source.name not in policy.tables
                 ):
                     raise AgentFailure(
-                        "SQL_UNSAFE", "Only approved saas business tables are allowed"
+                        "SQL_UNSAFE", "Only tables in the server-bound query scope are allowed"
                     )
-                source.set("db", exp.to_identifier("saas"))
+                source.set("db", exp.to_identifier(policy.schema))
+                if policy.schema == "uploads":
+                    source.set("this", exp.to_identifier(source.name, quoted=True))
     # Table functions may not appear as physical tables in the scope sources.
     for table in tree.find_all(exp.Table):
         if not isinstance(table.this, exp.Identifier):
@@ -140,30 +162,43 @@ def validate_sql(sql: str) -> str:
     return tree.sql(dialect="postgres")
 
 
-def verify_reader(conn) -> None:
+def verify_reader(conn, policy: SQLPolicy = SAAS_POLICY) -> None:
     row = conn.exec_driver_sql(
         "SELECT current_user, rolsuper, rolcreatedb, rolcreaterole, rolreplication, rolbypassrls, "
         "EXISTS(SELECT 1 FROM pg_auth_members WHERE member=r.oid) AS memberships "
         "FROM pg_roles r WHERE rolname=current_user"
     ).one()
-    if row[0] != "datapilot_reader" or any(row[1:]):
+    expected = "datapilot_reader" if policy.schema == "saas" else "datapilot_upload_reader"
+    if row[0] != expected or any(row[1:]):
         raise AgentFailure("ROLE_UNSAFE", "MCP requires an isolated nonprivileged reader role")
     if conn.exec_driver_sql("SHOW default_transaction_read_only").scalar_one() != "on":
         raise AgentFailure("ROLE_UNSAFE", "Reader role must default to read-only transactions")
     unsafe = conn.exec_driver_sql(
-        "SELECT has_schema_privilege(current_user,'saas','CREATE') OR "
-        "has_database_privilege(current_user,current_database(),'TEMP')"
+        "SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE left(nspname,3) <> 'pg_' "
+        "AND has_schema_privilege(current_user,oid,'CREATE')) OR "
+        "has_database_privilege(current_user,current_database(),'CREATE,TEMP')"
     ).scalar_one()
     if unsafe:
         raise AgentFailure("ROLE_UNSAFE", "Reader must not create objects")
-    for table in BUSINESS_TABLES:
-        if conn.execute(
+    for table in policy.tables:
+        privileges = conn.execute(
             sa.text(
-                "SELECT has_table_privilege(current_user,:table,'INSERT,UPDATE,DELETE,TRUNCATE')"
+                "SELECT has_table_privilege(current_user,:table,'SELECT'), "
+                "has_table_privilege(current_user,:table,'INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER')"
             ),
-            {"table": "saas." + table},
-        ).scalar_one():
-            raise AgentFailure("ROLE_UNSAFE", "Reader must not have write privileges")
+            {"table": policy.schema + "." + table},
+        ).one()
+        if not privileges[0] or privileges[1]:
+            raise AgentFailure("ROLE_UNSAFE", "Reader requires SELECT and no write privileges")
+    if (
+        policy.schema == "uploads"
+        and conn.exec_driver_sql(
+            "SELECT EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace "
+            "WHERE n.nspname IN ('uploads','catalog') AND c.relkind IN ('r','p','v','m','f') "
+            "AND has_table_privilege(current_user,c.oid,'INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER'))"
+        ).scalar_one()
+    ):
+        raise AgentFailure("ROLE_UNSAFE", "Upload reader must not write data or catalog")
 
 
 def _serialize_cell(value):
@@ -171,7 +206,7 @@ def _serialize_cell(value):
         return value.isoformat()
     if isinstance(value, Decimal):
         return str(value)  # Preserve exact PostgreSQL numeric precision; never float money.
-    if value is None or type(value) in (str, int, float):
+    if value is None or type(value) in (str, int, float, bool):
         if isinstance(value, str) and len(value) > 4096:
             raise AgentFailure("RESULT_TOO_LARGE", "A query cell exceeds the size limit")
         return value
@@ -179,11 +214,21 @@ def _serialize_cell(value):
 
 
 class SQLRepository:
-    def __init__(self, url: str, *, max_rows: int = 100, timeout_seconds: float = 2):
+    def __init__(
+        self,
+        url: str,
+        *,
+        max_rows: int = 100,
+        timeout_seconds: float = 2,
+        profile: Literal["saas", "uploads"] = "saas",
+    ):
         if not 1 <= max_rows <= 1000 or not 0 < timeout_seconds <= 30:
             raise ValueError("Invalid SQL tool limits")
         self.max_rows = max_rows
-        self.timeout_ms = int(timeout_seconds * 1000)
+        if profile not in {"saas", "uploads"}:
+            raise ValueError("Unknown reader profile")
+        self.profile = profile
+        self.timeout_ms = max(1, int(timeout_seconds * 1000))
         self.engine = sa.create_engine(
             url,
             hide_parameters=True,
@@ -194,17 +239,25 @@ class SQLRepository:
     def close(self):
         self.engine.dispose()
 
-    def _configure(self, conn):
+    def _configure(self, conn, policy: SQLPolicy | None = None):
+        policy = policy or (
+            SAAS_POLICY if self.profile == "saas" else SQLPolicy("uploads", frozenset())
+        )
+        if policy.schema != self.profile:
+            raise AgentFailure("ROLE_UNSAFE", "Query policy does not match the connection profile")
         conn.exec_driver_sql("SET TRANSACTION READ ONLY")
         conn.execute(
             sa.text("SELECT set_config('statement_timeout', :ms, true)"),
             {"ms": str(self.timeout_ms)},
         )
         conn.exec_driver_sql("SET LOCAL lock_timeout='1s'")
-        conn.exec_driver_sql("SET LOCAL search_path=pg_catalog,saas")
-        verify_reader(conn)
+        conn.exec_driver_sql("SET LOCAL search_path=pg_catalog")
+        conn.exec_driver_sql("SET LOCAL TIME ZONE 'UTC'")
+        verify_reader(conn, policy)
 
     def schema(self) -> str:
+        if self.profile != "saas":
+            raise AgentFailure("TOOL_FORBIDDEN", "Use server-scoped dataset metadata")
         try:
             with self.engine.connect() as conn, conn.begin():
                 self._configure(conn)
@@ -226,12 +279,18 @@ class SQLRepository:
                 "DATABASE_ERROR", "Cannot read the PostgreSQL business schema"
             ) from exc
 
-    def execute(self, sql: str) -> QueryResult:
-        checked = validate_sql(sql)
+    def execute(self, sql: str, policy: SQLPolicy | None = None) -> QueryResult:
+        if policy is None:
+            if self.profile != "saas":
+                raise AgentFailure("SCOPE_REQUIRED", "Upload queries require a server-bound policy")
+            policy = SAAS_POLICY
+        if policy.schema != self.profile:
+            raise AgentFailure("ROLE_UNSAFE", "Query policy does not match the connection profile")
+        checked = validate_sql(sql, policy)
         started = time.monotonic()
         try:
             with self.engine.connect() as conn, conn.begin():
-                self._configure(conn)
+                self._configure(conn, policy)
                 # LIMIT on the outer query prevents large transfers, even for LIMIT ALL or unions.
                 wrapped = f"SELECT * FROM ({checked}) AS datapilot_result LIMIT {self.max_rows + 1}"
                 cursor = conn.exec_driver_sql(wrapped)

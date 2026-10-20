@@ -1,0 +1,191 @@
+{
+  "phase": "P2 / D4-D5 / W4-W5 / Gate A",
+  "executed_at_local": "2026-10-21T02:37:20.837585+08:00",
+  "baseline_commit": "b599edee7fe22233f89dae141a71570c25bbac56",
+  "scope": "Restricted file import, catalog versions, server-bound MCP dataset queries; no P3+",
+  "tests": {
+    "original_unit_mock": {
+      "passed": 48,
+      "skipped": 0,
+      "failed": 0
+    },
+    "p2_real_pg_mcp": {
+      "passed": 15,
+      "skipped": 0,
+      "failed": 0
+    },
+    "p2_local_mock": {
+      "passed": 32,
+      "skipped": 0,
+      "failed": 0
+    },
+    "p1_local": {
+      "passed": 82,
+      "skipped": 0,
+      "failed": 0
+    },
+    "original_live_model": {
+      "passed": 0,
+      "skipped": 1,
+      "failed": 0
+    },
+    "original_real_protocol": {
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0
+    },
+    "original_real_pg": {
+      "passed": 10,
+      "skipped": 0,
+      "failed": 0
+    }
+  },
+  "passed": 188,
+  "skipped": 1,
+  "failed": 0,
+  "pytest_summary": "188 passed, 1 skipped in 49.30s",
+  "pytest_command": "uv run --locked --offline pytest -q -p no:cacheprovider --basetemp=artifacts/p2/pytest-tmp-verified --cov=datapilot --cov-report=term-missing --cov-report=json:artifacts/p2/coverage-verified.json --junitxml=artifacts/p2/pytest-verified.xml",
+  "test_environment": {
+    "DATAPILOT_RUN_DB_TESTS": "1",
+    "DATAPILOT_RUN_LIVE_TESTS": "0",
+    "PYTHONUTF8": "1",
+    "UV_CACHE_DIR": ".cache/uv"
+  },
+  "python": "3.11.16",
+  "platform": "Windows",
+  "ruff_check": "passed",
+  "ruff_format_check": "passed",
+  "git_diff_check": "passed",
+  "health": {
+    "status": "healthy",
+    "postgres_version_num": 170011,
+    "pgvector": "0.8.6",
+    "migration": "0002",
+    "customers": 240,
+    "seeded": true,
+    "uploads": {
+      "status": "healthy",
+      "catalog_tables": 4
+    }
+  },
+  "nonprivileged_role_flags": [
+    {
+      "rolname": "datapilot_ingest",
+      "rolsuper": false,
+      "rolcreatedb": false,
+      "rolcreaterole": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolinherit": false
+    },
+    {
+      "rolname": "datapilot_owner",
+      "rolsuper": false,
+      "rolcreatedb": false,
+      "rolcreaterole": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolinherit": false
+    },
+    {
+      "rolname": "datapilot_reader",
+      "rolsuper": false,
+      "rolcreatedb": false,
+      "rolcreaterole": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolinherit": false
+    },
+    {
+      "rolname": "datapilot_seed",
+      "rolsuper": false,
+      "rolcreatedb": false,
+      "rolcreaterole": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolinherit": false
+    },
+    {
+      "rolname": "datapilot_upload_reader",
+      "rolsuper": false,
+      "rolcreatedb": false,
+      "rolcreaterole": false,
+      "rolreplication": false,
+      "rolbypassrls": false,
+      "rolinherit": false
+    }
+  ],
+  "integrity": {
+    "old_migration_unchanged": true,
+    "protected_paths_changed": [
+      "migrations/env.py",
+      "tests/test_mcp_protocol.py"
+    ],
+    "pyproject_and_lock_unchanged": true
+  },
+  "coverage": {
+    "statements": 2335,
+    "covered": 2046,
+    "percent": 87.62312633832977,
+    "scope": "Main pytest process only; MCP subprocess coverage is not collected"
+  },
+  "demo": {
+    "dataset_id": "2a25ca5c-937e-5667-8a87-e8f0e3b8dbbf",
+    "version": 1,
+    "rows": [
+      [
+        3,
+        "1213.4400"
+      ]
+    ],
+    "saas_customers": 240
+  },
+  "changed_files": [
+    ".env.example",
+    ".github/workflows/test.yml",
+    "AGENTS.md",
+    "README.md",
+    "docs/adr/0002-ingestion-permissions.md",
+    "docs/architecture.md",
+    "docs/data-ingestion.md",
+    "docs/roadmap-v2.md",
+    "migrations/env.py",
+    "scripts/configure_local.py",
+    "src/datapilot/cli.py",
+    "src/datapilot/config.py",
+    "src/datapilot/contracts.py",
+    "src/datapilot/db/health.py",
+    "src/datapilot/db/management.py",
+    "src/datapilot/ingestion/cli.py",
+    "src/datapilot/runtime/mcp_client.py",
+    "src/datapilot/runtime/mcp_server.py",
+    "src/datapilot/tools/sql.py",
+    "tests/test_mcp_protocol.py"
+  ],
+  "new_files": [
+    "docs/dataset-ingestion.md",
+    "docs/p2-delivery.md",
+    "docs/research/p2-results.json",
+    "migrations/versions/0002_dataset_catalog.py",
+    "src/datapilot/datasets/__init__.py",
+    "src/datapilot/datasets/cli.py",
+    "src/datapilot/datasets/contracts.py",
+    "src/datapilot/datasets/repository.py",
+    "src/datapilot/db/catalog.py",
+    "src/datapilot/ingestion/service.py",
+    "tests/test_dataset_integration.py",
+    "tests/test_dataset_policy.py"
+  ],
+  "raw_artifacts": "artifacts/p2 (gitignored)",
+  "not_verified": [
+    "P2 GitHub Actions",
+    "P2 Python 3.13 execution",
+    "Real model inference",
+    "Production tenant isolation"
+  ],
+  "retention": "Synthetic integration datasets and source snapshots retained; no database, volume or historical dataset deletion",
+  "documentation_links": {
+    "checked": 70,
+    "errors": []
+  }
+}

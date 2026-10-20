@@ -28,6 +28,9 @@ def main() -> int:
     from datapilot.ingestion.cli import add_commands
 
     add_commands(sub)
+    from datapilot.datasets.cli import add_commands as add_dataset_commands
+
+    add_dataset_commands(sub)
     sub.add_parser("health", help="Reader: verify PostgreSQL 17, extension, permissions and seed")
     query = sub.add_parser("ask", help="Supervisor -> SQL -> MCP -> PostgreSQL -> Answer")
     query.add_argument("question")
@@ -41,17 +44,21 @@ def main() -> int:
             from datapilot.ingestion.cli import run
 
             return run(args)
+        elif args.command == "datasets":
+            from datapilot.datasets.cli import run
+
+            return run(args)
         elif args.command == "db-init":
             from datapilot.db.management import initialize
 
             initialize()
             result = {"status": "initialized"}
         elif args.command == "migrate":
-            from datapilot.db.management import grant_business_access, migrate
+            from datapilot.db.management import grant_business_access, migrate, migration_head
 
             migrate()
             grant_business_access()
-            result = {"status": "migrated", "revision": "0001"}
+            result = {"status": "migrated", "revision": migration_head()}
         elif args.command == "seed":
             from datapilot.data.generator import generate_dataset, seed_database
             from datapilot.db.management import management_url
@@ -65,7 +72,14 @@ def main() -> int:
             settings = Settings(llm_mode="fake")
             if not settings.reader_database_url:
                 raise ValueError("Configure reader URL")
-            result = database_health(settings.reader_database_url.get_secret_value())
+            result = database_health(
+                settings.reader_database_url.get_secret_value(),
+                upload_reader_url=(
+                    settings.upload_reader_database_url.get_secret_value()
+                    if settings.upload_reader_database_url
+                    else None
+                ),
+            )
         else:
             from datapilot.graph import run_question
 
