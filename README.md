@@ -1,10 +1,29 @@
 # DataPilot Pro
 
-面向 SaaS 企业的智能经营分析系统，当前仅实现 **Day 1：Supervisor + SQL Agent**。业务数据库从第一天使用 **PostgreSQL 17 + pgvector**，运行期访问全部经过真正的 MCP Server/Client。
+面向 SaaS 企业的智能经营分析系统，当前已实现 **Day 1：Supervisor + SQL Agent** 和 **P1：CSV/XLSX 本地解析、画像与 Schema 确认**。业务数据库使用 **PostgreSQL 17 + pgvector**，运行期业务查询全部经过真正的 MCP Server/Client。
 
 实现：固定种子合成数据、Alembic 迁移、隔离角色、PostgreSQL AST 校验、只读事务、超时/行数限制、LangGraph 条件路由、有界 SQL 修复、严格结果契约和 CLI。RAG/Analysis/Report、多任务并发、API/UI 与完整 Trace 尚未实现。
 
-详见 [架构与修订版七天计划](docs/architecture.md)、[开发约束](AGENTS.md)、[实际验收记录](docs/day1-delivery.md)。
+详见 [架构与目标设计](docs/architecture.md)、[v2 Gate 路线图](docs/roadmap-v2.md)、[本轮代码审计与回归](docs/planning-audit-v2.md)、[开发约束](AGENTS.md)、[Day 1 历史验收记录](docs/day1-delivery.md)。
+
+v2 目标闭环：**CSV/XLSX 上传 → Schema 预览确认 → 受限入库/数据集版本 → 动态 MCP 查询 → 语义指标与证据验证 → 多 Agent 报告**。P1 已完成本地文件到预览/确认 JSON，其余新增能力仍为设计。外层 LangGraph 管任务/依赖/恢复，内层 Worker Loop 管模型/工具反馈；指标定义、数据质量与证据可追溯性是主线。
+
+首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates，编号不构成日期承诺；本轮停止在 P1，不开始数据库导入。
+
+## 文件预览与确认（P1，无需数据库或 API Key）
+
+```powershell
+$env:PYTHONUTF8 = '1'
+uv sync --locked
+uv run --locked datapilot ingest preview tests/fixtures/ingestion/customers_utf8_bom.csv --header present
+New-Item -ItemType Directory -Force artifacts | Out-Null
+uv run --locked datapilot ingest preview tests/fixtures/ingestion/saas_multi_sheet.xlsx --header present --output artifacts/preview.json
+uv run --locked datapilot ingest confirm tests/fixtures/ingestion/saas_multi_sheet.xlsx --proposal artifacts/preview.json --reviewed --output artifacts/confirmation.json
+```
+
+保留前导零、Decimal 精度、空列/重复列/中文原名映射，报告缺值/重复/IQR 异常及待确认关系；类型建议经全列验证。公式保留文本，宏与外部关系拒绝，ZIP/XML/行列/解码内容/预览均有配额。确认时重新读源并验证覆盖配置，输出不是入库授权；文件已存在不会覆盖。详情及限制见 [P1 使用说明](docs/data-ingestion.md) 与 [真实验收](docs/p1-delivery.md)。
+
+框架研究：[LangGraph / Mini Claude Code 能力对照与融合方案](docs/framework-research.md)、[源码索引](docs/source-reference-index.md)、[后续 Fork 研究门槛](docs/langgraph-fork-research-plan.md)。当前保留原版 LangGraph；研究方案与已实现能力分开记录。
 
 ## 本地运行
 
@@ -74,6 +93,8 @@ CI 配置使用真实 PG17/pgvector 服务，覆盖 Python 3.11/3.13。仓库尚
 
 MCP 仅注册固定数据库工具，子进程只拿 Reader 凭据；模型看不到管理员/Seed 凭据。Reader 无业务写权限、Schema CREATE、TEMP 或角色继承；AST 同时限制表、函数及语句。数据库端显式只读事务、statement_timeout 与外层 LIMIT 独立生效。默认角色只读设置本身可以被修改，因此权限 grants 不可省略。
 
-`.env` 是本机开发配置，stdio 子进程仍受宿主 OS 信任，不是对恶意宿主进程的沙箱。pgvector 存储表已迁移，文档摄取、Embedding、索引和 RAG 逻辑在 Day 3 实现；当前不运行独立向量服务。
+`.env` 是本机开发配置，stdio 子进程仍受宿主 OS 信任，不是对恶意宿主进程的沙箱。pgvector 存储表已迁移，文档摄取、Embedding、索引和 RAG 逻辑属于后续 Gate C；当前不运行独立向量服务。
+
+v2 设计决策：[双层 Runtime/Harness](docs/adr/0001-runtime-harness.md)、[动态导入与权限](docs/adr/0002-ingestion-permissions.md)、[单用户边界](docs/adr/0003-local-single-user.md)、[指标/证据与领域包](docs/adr/0004-metrics-evidence-domain.md)。固定结构继续由 Alembic 管理，上传动态表仅由后续受限导入服务管理，模型不会取得 DDL 权限。可观测性计划采用 Langfuse，目前尚未安装或集成。
 
 `docker compose stop` 暂停数据库，`docker compose start` 恢复。**不要执行带 `-v` 的 down 或自动清库脚本**，持久数据保存在项目命名卷。

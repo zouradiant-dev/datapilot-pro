@@ -1,0 +1,3 @@
+# Preserve deterministic fixture bytes across Windows and Unix checkouts.
+tests/fixtures/ingestion/*.csv text eol=lf
+tests/fixtures/ingestion/*.xlsx binary

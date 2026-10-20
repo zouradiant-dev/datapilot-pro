@@ -1,0 +1,127 @@
+{
+  "research_date": "2026-10-21",
+  "timezone": "Asia/Shanghai",
+  "evidence_scope": "Static source inspection, seven normalized installed-file comparisons, five original offline API probes. No third-party Mini execution, upstream full tests, PG saver integration or model calls.",
+  "upstreams": [
+    {
+      "name": "LangGraph",
+      "repository": "https://github.com/langchain-ai/langgraph",
+      "ref": "1.2.16",
+      "commit": "41c9c22fdc83d68a2859d0c9a2b627c8615a792f",
+      "license": "MIT",
+      "copyright": "Copyright (c) 2024 LangChain, Inc.",
+      "reviewed_paths": [
+        "libs/langgraph/langgraph/graph/state.py",
+        "libs/langgraph/langgraph/types.py",
+        "libs/langgraph/langgraph/pregel/main.py",
+        "libs/langgraph/langgraph/pregel/_runner.py",
+        "libs/langgraph/langgraph/pregel/_loop.py",
+        "libs/langgraph/langgraph/pregel/_retry.py",
+        "libs/langgraph/langgraph/channels/binop.py",
+        "libs/checkpoint/langgraph/checkpoint/base/__init__.py",
+        "libs/checkpoint/langgraph/checkpoint/memory/__init__.py",
+        "libs/checkpoint/langgraph/store/base/__init__.py",
+        "libs/checkpoint-postgres/langgraph/checkpoint/postgres/aio.py",
+        "libs/checkpoint-postgres/langgraph/checkpoint/postgres/__init__.py",
+        "libs/checkpoint-postgres/pyproject.toml",
+        "libs/langgraph/tests/test_pregel_async.py",
+        "libs/langgraph/tests/test_interrupt_state.py",
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "Mini Claude Code",
+      "repository": "https://github.com/Windy3f3f3f3f/claude-code-from-scratch",
+      "ref": "main snapshot",
+      "commit": "0b452360866433fde0dc77cd37ada9d303546592",
+      "license": "MIT",
+      "copyright": "Copyright (c) 2025 Windy3f3f3f3f",
+      "reviewed_paths": [
+        "python/mini_claude/agent.py",
+        "python/mini_claude/tools.py",
+        "python/mini_claude/subagent.py",
+        "python/mini_claude/memory.py",
+        "python/mini_claude/mcp_client.py",
+        "python/mini_claude/session.py",
+        "python/mini_claude/autonomy.py",
+        "LICENSE"
+      ]
+    }
+  ],
+  "installed_versions": {
+    "langgraph": "1.2.16",
+    "langgraph-checkpoint": "4.3.0",
+    "langchain-core": "1.6.12",
+    "langchain-openai": "1.7.2",
+    "mcp": "1.30.0"
+  },
+  "normalization": "Replace CRLF and CR bytes with LF before SHA256; no other normalization.",
+  "installed_source_comparison": [
+    {
+      "path": "libs/langgraph/langgraph/graph/state.py",
+      "package": "langgraph",
+      "installed_version": "1.2.16",
+      "normalized_sha256": "d8c8021a93a8fc895d62335a9482e50d51353343bf885901e6487611dcd0d212",
+      "installed_matches_tag": true
+    },
+    {
+      "path": "libs/langgraph/langgraph/types.py",
+      "package": "langgraph",
+      "installed_version": "1.2.16",
+      "normalized_sha256": "062583a1c0af9833477935a9a78d336408cc9a33c425722a1191e000d032107a",
+      "installed_matches_tag": true
+    },
+    {
+      "path": "libs/langgraph/langgraph/pregel/main.py",
+      "package": "langgraph",
+      "installed_version": "1.2.16",
+      "normalized_sha256": "c96d4424e7a75388aef09afeaa8fcfe17c026e60dafca1331003775ca1bf0ffc",
+      "installed_matches_tag": true
+    },
+    {
+      "path": "libs/langgraph/langgraph/pregel/_runner.py",
+      "package": "langgraph",
+      "installed_version": "1.2.16",
+      "normalized_sha256": "dc835c835cbd2c783ff1df3ca46343ecab9b4a7f534ed0083be8d0664d21816e",
+      "installed_matches_tag": true
+    },
+    {
+      "path": "libs/langgraph/langgraph/pregel/_loop.py",
+      "package": "langgraph",
+      "installed_version": "1.2.16",
+      "normalized_sha256": "cc51e52a6624aa064ac1688e4a55326012d11b615d9810d4b5c1f19bf5f579e0",
+      "installed_matches_tag": true
+    },
+    {
+      "path": "libs/checkpoint/langgraph/checkpoint/base/__init__.py",
+      "package": "langgraph-checkpoint",
+      "installed_version": "4.3.0",
+      "normalized_sha256": "e1b412fb541b47cf9ab0657f5c160c955c71ce929d8ac786f0bcc94d356481e9",
+      "installed_matches_tag": true
+    },
+    {
+      "path": "libs/checkpoint/langgraph/store/base/__init__.py",
+      "package": "langgraph-checkpoint",
+      "installed_version": "4.3.0",
+      "normalized_sha256": "4120ffad1d8c5f7915dce2979a70acedb55ee9e6704986e487289604beed0542",
+      "installed_matches_tag": true
+    }
+  ],
+  "postgres_saver": {
+    "source_version": "3.2.0",
+    "installed": false,
+    "integration_tested": false,
+    "migration_ownership": "Unresolved: reconcile library setup with existing Alembic-only schema policy before implementation."
+  },
+  "direct_reuse": {
+    "user_authorized": true,
+    "scope": "Mini subagent, permission-mode and local-budget implementation may be reused with attribution; external MCP authorization and run-wide budget remain mandatory. No upstream implementation copied in this research round."
+  },
+  "planning_audit_followup": {
+    "date": "2026-10-21",
+    "document": "../planning-audit-v2.md",
+    "additional_review": "autonomy.py control flow, goal verdict parsing, bounded continuation, classifier transcript projection and fail-closed parsing. No code or prompts copied/executed.",
+    "direct_reuse_authorized": true,
+    "provenance_review_blocks_current_planning": false
+  }
+}

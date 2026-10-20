@@ -2,6 +2,8 @@
 
 验收日期：2026-10-20（Asia/Shanghai）。项目：`D:\桌面\llm-learning\datapilot-pro`。本记录基于实际命令执行，不包含真实模型推理通过的声明。
 
+历史记录说明：下文的 Docker/分支/CI 状态和当时下一步建议属于 Day 1 快照，不代表当前环境。2026-10-21 最新回归见 [v2 规划审计](planning-audit-v2.md)，现行阶段安排见 [Gate 路线图](roadmap-v2.md)。
+
 ## 完成范围
 
 已按修订要求迁移到 PostgreSQL 技术栈，删除 SQLite 草稿。完成从 Supervisor、独立 SQL Worker、真实 MCP stdio Client/Server 到真实 PostgreSQL，再返回确定性 Markdown Answer 的闭环。
@@ -155,4 +157,4 @@ Fake 只生成路由/SQL，没有把这些结果写入 Prompt 或 Fixture；数�
 6. 本机只验证 Python 3.11.16/Windows；CI 文件覆盖 3.11/3.13，但尚未发布到 GitHub 执行，不能称 CI 已通过。部分异常路径和真实模型分支仍未覆盖。
 7. 数据为合成样本，流失与反馈是人为关联，不能做真实企业因果推断；收入是现金账单口径，非 MRR。
 
-下一步按 Day 2 实现任务 DAG/依赖与 SQL/RAG/Analysis/Report 的职责契约及真实委派，保持 Day 1 的安全回归；Day 3 再实现 pgvector RAG。详见 architecture.md 的修订版七天计划。真实模型验证只需后续在本地配置 API 环境变量，无需训练模型。
+当时建议下一步按 Day 2 实现任务 DAG/依赖，再按 Day 3 实现 pgvector RAG；该七天安排现已由 [v2 Gate 路线图](roadmap-v2.md) 取代，当前下一阶段是 P1 安全文件解析与预览确认。真实模型验证需后续在本地配置 API 环境变量，无需训练模型。

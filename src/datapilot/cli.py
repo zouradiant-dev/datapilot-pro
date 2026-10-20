@@ -18,13 +18,16 @@ def json_default(value):
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="DataPilot Pro Day 1 / PostgreSQL")
+    parser = argparse.ArgumentParser(description="DataPilot Pro / PostgreSQL + CSV/XLSX preview")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("db-init", help="Admin: create roles, schemas and pgvector")
     sub.add_parser("migrate", help="Owner: Alembic upgrade head, then grant exact business tables")
     seed = sub.add_parser("seed", help="Seed role: insert fixed data into an EMPTY database")
     seed.add_argument("--seed", type=int, default=42)
     seed.add_argument("--customers", type=int, default=240)
+    from datapilot.ingestion.cli import add_commands
+
+    add_commands(sub)
     sub.add_parser("health", help="Reader: verify PostgreSQL 17, extension, permissions and seed")
     query = sub.add_parser("ask", help="Supervisor -> SQL -> MCP -> PostgreSQL -> Answer")
     query.add_argument("question")
@@ -34,7 +37,11 @@ def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     try:
-        if args.command == "db-init":
+        if args.command == "ingest":
+            from datapilot.ingestion.cli import run
+
+            return run(args)
+        elif args.command == "db-init":
             from datapilot.db.management import initialize
 
             initialize()

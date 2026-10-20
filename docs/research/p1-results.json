@@ -1,0 +1,152 @@
+{
+  "phase": "P1 / D2-D3 / W2-W3",
+  "executed_at_local": "2026-10-21T01:50:08.067639+08:00",
+  "scope": "Local CSV/XLSX parsing, profiling, schema proposal and reviewed confirmation. No P2 database imports, Registry, Multi-Agent or UI.",
+  "versions": {
+    "datapilot-pro": "0.1.0",
+    "openpyxl": "3.1.5",
+    "defusedxml": "0.7.1",
+    "et-xmlfile": "2.0.0",
+    "pydantic": "2.14.1",
+    "pytest": "9.1.1"
+  },
+  "python": "3.11.16",
+  "test_cases": 141,
+  "test_groups": {
+    "original_unit_mock": {
+      "passed": 48,
+      "skipped": 0,
+      "failed": 0
+    },
+    "p1_local": {
+      "passed": 81,
+      "skipped": 0,
+      "failed": 0
+    },
+    "original_live": {
+      "passed": 0,
+      "skipped": 1,
+      "failed": 0
+    },
+    "original_protocol": {
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0
+    },
+    "original_postgres": {
+      "passed": 10,
+      "skipped": 0,
+      "failed": 0
+    }
+  },
+  "total_passed": 140,
+  "total_skipped": 1,
+  "pytest_summary": "140 passed, 1 skipped in 16.37s",
+  "commands": [
+    "uv sync --locked --offline --python .venv/Scripts/python.exe",
+    "python -m pytest -q -p no:cacheprovider --cov=datapilot.ingestion --cov-report=term-missing --cov-report=json:artifacts/p1/coverage.json --junitxml=artifacts/p1/pytest.xml",
+    "ruff check . --output-format concise",
+    "ruff format --check ."
+  ],
+  "test_environment": {
+    "DATAPILOT_RUN_DB_TESTS": "1",
+    "DATAPILOT_RUN_LIVE_TESTS": "0",
+    "PYTHONUTF8": "1"
+  },
+  "coverage": {
+    "scope": "datapilot.ingestion only",
+    "statements": 993,
+    "covered": 916,
+    "missing": 77,
+    "percent": 92.24572004028198
+  },
+  "ruff": {
+    "check": "passed",
+    "format_check": "passed"
+  },
+  "integrity": {
+    "baseline_protected_files_changed": [
+      "pyproject.toml",
+      "src/datapilot/cli.py",
+      "uv.lock"
+    ],
+    "allowed_changes_only": true,
+    "original_sql_mcp_pg_tests_migrations_unchanged": true,
+    "new_locked_packages": [
+      [
+        "defusedxml",
+        "0.7.1"
+      ],
+      [
+        "et-xmlfile",
+        "2.0.0"
+      ],
+      [
+        "openpyxl",
+        "3.1.5"
+      ]
+    ],
+    "removed_or_upgraded_packages": [],
+    "cli_examples": {
+      "customers-preview": {
+        "tables": 1,
+        "digest": "93cfedbaafe1e70bfa3836dd0dc42c9b3a740221dfbf716fd8d2805f0dd154ff",
+        "rows": [
+          3
+        ]
+      },
+      "workbook-preview": {
+        "tables": 3,
+        "digest": "6d5231c3f6e743494560b2e762f091dfbaf0589e35f92770bab21a8ad88ec58b",
+        "rows": [
+          3,
+          3,
+          1
+        ]
+      },
+      "workbook-confirmation": {
+        "tables": 3,
+        "digest": "6d5231c3f6e743494560b2e762f091dfbaf0589e35f92770bab21a8ad88ec58b",
+        "rows": null
+      }
+    }
+  },
+  "health": {
+    "status": "healthy",
+    "postgres_version_num": 170011,
+    "pgvector": "0.8.6",
+    "migration": "0001",
+    "customers": 240,
+    "seeded": true
+  },
+  "fixtures": {
+    "synthetic": true,
+    "period": "2025",
+    "files": {
+      "customers_utf8_bom.csv": {
+        "sha256": "5c582c35836b6c2e82ea596346ceb4ce4eedccd25cb0b8e135a7ee61691ad4b8",
+        "bytes": 117
+      },
+      "invoices_semicolon.csv": {
+        "sha256": "3aa5a793498502b0793100f81659cfd66f6fd4e3dd9e58f169143acf12d80b34",
+        "bytes": 136
+      },
+      "saas_multi_sheet.xlsx": {
+        "sha256": "0a1146238621c38c34b4e7e0e323f6e17b43a174ed2e551ade69f061efcccbca",
+        "bytes": 6100
+      }
+    }
+  },
+  "documentation_validation": {
+    "local_links_checked": 58,
+    "errors": []
+  },
+  "raw_artifacts": "artifacts/p1 (gitignored)",
+  "not_verified": [
+    "Real model inference",
+    "Python 3.13 execution",
+    "GitHub CI",
+    "OS process sandbox",
+    "P2 or later capabilities"
+  ]
+}

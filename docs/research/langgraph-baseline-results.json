@@ -1,0 +1,77 @@
+{
+  "research_date": "2026-10-21",
+  "executed_at_utc": "2026-10-20T16:54:12.010078+00:00",
+  "python": "3.11.16",
+  "versions": {
+    "langgraph": "1.2.16",
+    "langgraph-checkpoint": "4.3.0"
+  },
+  "upstream_commit": "41c9c22fdc83d68a2859d0c9a2b627c8615a792f",
+  "scope": "Offline synthetic API probes; InMemorySaver in one process. No model, MCP, database, process-crash durability or performance benchmark.",
+  "passed": 5,
+  "results": [
+    {
+      "name": "send_and_command",
+      "status": "passed",
+      "observed": {
+        "results": {
+          "a": "4",
+          "b": "6"
+        },
+        "worker_input_keys": [
+          [
+            "task_id",
+            "value"
+          ],
+          [
+            "task_id",
+            "value"
+          ]
+        ],
+        "command_completed": true
+      }
+    },
+    {
+      "name": "interrupt_resume",
+      "status": "passed",
+      "observed": {
+        "node_entries": 2,
+        "resumed": true,
+        "pre_interrupt_logic_replayed": true
+      }
+    },
+    {
+      "name": "partial_failure_resume",
+      "status": "passed",
+      "observed": {
+        "calls": {
+          "left": 1,
+          "right": 2
+        },
+        "successful_sibling_reused": true
+      }
+    },
+    {
+      "name": "subgraph_resume",
+      "status": "passed",
+      "observed": {
+        "calls": {
+          "prepare": 1,
+          "tool": 2
+        },
+        "completed_inner_node_reused": true
+      }
+    },
+    {
+      "name": "command_with_static_edge",
+      "status": "passed",
+      "observed": {
+        "both_routes_executed": true,
+        "results": {
+          "dynamic": "ran",
+          "static": "ran"
+        }
+      }
+    }
+  ]
+}

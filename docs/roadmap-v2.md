@@ -1,0 +1,116 @@
+# DataPilot Pro v2：按验收 Gate 推进的路线图
+
+版本：v2.1 规划基线，2026-10-21。本文件取代现行架构中的旧七天开发计划。输入为用户提供的《DataPilot Pro v2.1 Roadmap and Codex Prompts》及本轮实际代码审计。
+
+**不按日期排期。** 沿用约 20 个工作日的工作量参考，将其转为可独立验收的工作单元；编号不是截止时间或交付承诺。先通过 Gate 再推进，不能为对齐编号省略测试。前 17 个单元覆盖产品主线，18–20 是可选 Runtime 研究；不需要 Fork 时用于回归、失败案例和发布完善，不阻塞核心交付。
+
+## 1. 当前起点与优先级
+
+起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，当时只改文档，详见 [审计证据](planning-audit-v2.md)。当前 P1 已实现 W2–W3 的本地解析/画像/预览确认，见 [使用与限制](data-ingestion.md)、[真实验收](p1-delivery.md)。W4/P2 及以后尚未开始，Gate A 未通过。
+
+唯一首发业务是 SaaS。文件导入、语义/证据、Multi-Agent、产品化和独立评测服务这一主线。首版本地单用户/可信演示，不承诺生产多租户。干洗店 Phase F 与 LangGraph Fork 都是独立可选扩展。
+
+```mermaid
+flowchart LR
+    P0[P0 本轮规划审计] --> A[Gate A 动态数据闭环]
+    A --> B[Gate B 业务指标与证据]
+    B --> C[Gate C 多 Agent 与持久恢复]
+    C --> D[Gate D 产品与独立评测]
+    D -. 有 Runtime 不足证据 .-> E[Gate E 可选 Fork 对照]
+    D -. 获授权报表可用 .-> F[Gate F 可选干洗店试点]
+```
+
+RAG 组件测试可以先于完整 DAG；Gate C 的跨来源验收需要真实检索。P4 里 SQL/RAG 并发可先用明确标记的组件替身验证调度，不得据此声称 RAG 业务已完成。P6 必须补真实检索与报告闭环。E/F 互不依赖，不把等待 POS 样例或 Fork 当产品阻塞。
+
+## 2. Gates、用例与风险
+
+| Gate / 参考单元 | 交付边界 | 必须通过的验收 | 主要风险与前置条件 |
+|---|---|---|---|
+| A / 1–5 | 审计、CSV/XLSX Parser、Profile/确认、受限导入、Registry、动态 MCP | 文件→预览确认→ready Dataset/version→真实 PG→真实 MCP；多表 JOIN、回滚、跨 scope 拒绝、原 saas 回归 | 解包资源、类型失真、名称注入；新增迁移/ingest/upload_reader；健康检查不能写死 0001 |
+| B / 6–8 | SaaS 语义/指标版本、受控计算、Evidence、六层 Verifier | paid 收入/订阅与客户/使用量独立核对；JOIN 双计、单位/日期、缺字段/伪证据拒绝 | 指标不明确先确认；不把形状正确当业务正确 |
+| C / 9–13 | Worker Loop、任务 DAG/Send、最小上下文/Memory、预算、PG Checkpoint/恢复、真实跨来源 | 合法依赖/有界并发；SQL/RAG 证据汇合；缺证据定点补查；重启恢复/取消/预算一致 | 同步客户端、重试叠加、reducer 冲突、Saver 迁移所有权、Embedding 选择与真实凭据 |
+| D / 14–17 | FastAPI/Streamlit、Langfuse、完整 Demo、≥50 独立任务、消融/产品对比 | 新用户按 README 完成两表上传到引用报告；真实状态/错误可见；可复现 E2E、Bad Case 与限制 | API Key/供应商效果、日志隐私；对照环境和人工介入差异必须披露 |
+| E / 18–20，可选 | 原版问题复现、最小 Fork、回归与同条件 A/B，或发布完善 | 指定文件/函数、公开机制为何不足、正确性不变量、客观收益或明确负结果 | 当前无必须 Fork 的证据；先用公开扩展；保留原版开关/许可证/回退 |
+| F / 后续可选 | Domain Pack、合法文件 Connector、干洗店映射/指标/试用 | 不复制 Runtime/Harness/Worker；授权报表与人工记录核对；saas 不回归 | POS 品牌/API/字段未知，真实数据授权/脱敏；缺文件只做 synthetic fixture |
+
+每个 Gate 交付源码/文档、真实测试命令/产物、未通过项和风险。Mock、协议、真实 PG+Fake、真实模型 E2E 四类证据分别标注。单元用例数不等于业务任务数。
+
+## 3. 已完成审计与未来五个工作包
+
+以下保留 P0 拆分的五个工作包 W2–W6，不绑定日历。W1 为已完成 P0，W2–W3 当前 P1 已实现；W4–W5 属于尚未开始的 P2，W6 是 P3 起点。后续包须另行授权，不因列在本节就自动执行。
+
+### W1：冻结基线与规划审计（历史 P0，已完成）
+
+- 全读 README/AGENTS/架构/Day 1/pyproject、27 个应用 Python 文件和 10 个测试文件；补查冻结迁移、Compose/CI、Mini 核心源码与 autonomy 控制逻辑。
+- 记录已实现/未实现、行号参考、依赖锁、环境与分类回归；保存业务源码/测试/迁移/配置哈希，防止文档工作带入业务变化。
+- 更新架构/AGENTS/README，交付本路线图、审计报告、4 项 ADR；仅设计 Domain Pack/Source Connector，不建未来空壳。
+- 通过条件：59 项既有测试通过、1 项 live 明确 skip，Ruff 通过，业务与依赖文件未改；实际证据见审计，不把缺凭据写成产品通过。
+
+### W2：安全 Parser 与结构化预览（P1 的第一部分）
+
+- 先审查本轮 ADR。选择最小 CSV/XLSX 解析依赖，验证 Python 3.11–3.13 兼容性后锁定；不提前添加 FastAPI/Langfuse/PG Saver 等无关依赖。
+- 定义严格 UploadFileInfo、ParsedTable、ColumnProfile、SchemaProposal、SchemaConfirmation、ParseError；中间原始表示保留行号/原名/原始标量，避免解析即失真。
+- CSV：BOM/编码/分隔符/表头与空行；XLSX：多 Sheet、空列/重复/中文表头、公式标记与安全策略。
+- 配额：压缩与解包字节、entry/Sheet/行/列/单元格上限、时限；恶意包、坏 XML、伪后缀和路径异常明确拒绝，不执行外部内容。
+- 输出：可复现 Table Preview 与质量提示；此包不连接管理数据库、不建表、不实现 API/UI。
+
+### W3：类型、关系候选和确认（P1 的第二部分）
+
+- 采样推断+全量验证；前导零、金额精度、日期/时区歧义、混合类型/缺值、重复列都保留诊断，必要时降级 TEXT。
+- Profile：空值率、唯一性、重复、异常范围、候选键和关系基数。统计候选不自动成为可信主键/FK/业务口径。
+- 确认配置绑定文件 hash、proposal hash、解析/映射版本与用户覆盖；覆盖类型也须全量验证，旧确认不可作用于新原件。
+- 至少 12 个有独立意义的测试覆盖合法 CSV、多 Sheet XLSX、资源上限与失真反例；fixture 为可公开合成数据。
+- **P1 结束条件**：生成可复现的预览与确认 JSON；无隐式丢行、无公式执行、无 PG DDL；原单元/MCP/真实 PG 回归保持通过。完成 P1 后停在该边界。
+
+### W4：受限入库与 Registry（P2 的第一部分）
+
+- 显式权限初始化创建 catalog/uploads 命名空间及角色，新 Alembic 迁移定义 catalog 固定结构，历史 0001 不修改；明确 ingest/upload_reader profile，不假设当前 Owner 有数据库 CREATE 权限。
+- 按确认快照生成标识符和受限类型，事务中建表、插入、元数据和 SELECT 授权；只在完成后发布 ready。
+- 文件保管与 DB 事务分开，记录中断/孤立文件；相同确认幂等，新映射/重导入生成新版本；失败回滚、不覆盖旧表。
+- 兼容健康检查/CLI 的迁移版本：查询 Alembic head/兼容策略，不能继续硬编码 0001 后绕过检查。
+- 通过条件：真实 PG 导入/并发重试/回滚/版本切换，Reader 仍无写入与建表，原 Seed/health 正常；无自动删库/卷。
+
+### W5：动态 Query MCP（P2 的第二部分）
+
+- 设计 list_datasets/get_dataset_schema/query_dataset；服务端解析授权、ready 状态和固定版本；模型不能提供任意物理表白名单。
+- AST 改为显式 Policy/QueryScope 参数；保留 saas 固定 profile，新增 uploads 精确表集合，不将所有上传表加入全局常量。
+- 保留函数/cast/语句拒绝、DB grants、READ ONLY、超时/锁超时、LIMIT、体积/截断和清理后的错误；返回版本与 Evidence/Artifact 引用。
+- 通过条件：CSV/XLSX→PG→真实 MCP 查询、同 Dataset JOIN；跨 Dataset/系统表/写入拒绝；原四个业务问题独立 SQL 对照通过。
+- **Gate A 通过后**才推进 P3 语义与证据，不因新文件能查询就声称完整 Multi-Agent 已完成。
+
+### W6：SaaS 指标定义与证据最小链（P3 起点）
+
+- 基于 ready Dataset/version 建立已确认实体/字段/关系绑定，定义版本化 MetricDefinition 与 Evidence/VerificationResult，不让模型提交任意可执行指标脚本。
+- 首先落实 paid_invoice_revenue：paid 过滤、invoice_date 右开窗口、整数分/精确金额、单位/空值政策、SQL/计算版本与结果 hash。
+- 对客户/订阅流失、MRR/ARR 列出必要字段与分母政策，缺口明确请求确认或不可计算；不把现有最终 status 当历史状态。
+- 加入漏过滤、JOIN 双计、日期边界、单位、过期版本和伪造引用负面测试，并用独立 SQL/确定性计算复核。
+- 通过条件：至少一个真实数据指标从确认定义到可定位证据完整贯通；尚不代表 Gate B 全部通过，使用量/其他口径与完整目标验证继续在 P3 内验收。
+
+## 4. 后续任务边界
+
+| 提示词/任务 | 范围 | 前置与停止点 |
+|---|---|---|
+| P0 | 已完成的文档审计 | 无业务实现；历史记录保留 |
+| P1 | 本轮已完成 W2–W3 Parser/Profile/Preview/Confirm | 见 p1-delivery；不建表、不提前做 UI，到此停止 |
+| P2 | W4–W5 安全导入/Registry/动态 MCP | P1 验收；到 Gate A 停止 |
+| P3 | 语义/指标/证据/六层 Verifier | Gate A；到 Gate B 停止 |
+| P4 | 动态 DAG、子任务与 Worker Loop | Gate B；无 Fork；RAG 替身仅证明编排 |
+| P5 | Context/Memory、持久预算/Checkpoint/Recovery | P4；先解决 Saver 迁移；真实 PG 重启恢复 |
+| P6 | 真实 RAG/计算/报告、UI、Langfuse | 与 P4/P5 集成完成 Gate C，再验收产品闭环 |
+| P7 | 独立 E2E、消融、Claude Code 产品对比 | Gate D 完整验收资料；不可污染保留集 |
+| P8 | 可选官方 Runtime 不足与 Fork A/B | 有最小复现和公开方案不足的证据 |
+| P9 | 可选干洗店领域包/真实试点 | Gate D、数据授权/导出能力明确；不依赖 Fork |
+
+## 5. 评测设计与完成判定
+
+SaaS ≥50 个独立业务任务，开发集/保留集分离，固定 seed/数据 manifest、Gold SQL/人工口径、预期指标/拒答条件、证据规则与模型设置。覆盖单表/JOIN、上传异常、日期/单位/指标、RAG、缺证据、权限、故障、恢复与多轮。Gold 不从 Agent 轨迹反推。
+
+分别报告：执行成功、数据/业务正确、证据覆盖、可恢复错误的恢复率及分母、p50/p95、Token/费用估算、样本数/置信区间、人工介入。目标阈值在实验前登记，未达到如实记录；原文 90%/95%/80% 等是候选目标，不是已测结果。
+
+消融按原版 SQL→Worker Loop→语义/Verifier/Recovery→Context/Memory→Multi-Agent 比较，同模型/数据/预算。Claude Code 是端到端产品对照，披露模型、允许工具、导入准备与人工操作差异，不能直接归因 Harness。Fork 对照固定同一 Harness，负收益默认回退官方版。干洗店试点单列 5–10 个经营者问题和人工复核，不与 SaaS 测试集合并。
+
+## 6. 当前阻塞与下一步准备
+
+P1 已落实解析依赖锁定、合法合成 fixture、安全解析/画像/确认和 CLI，真实执行证据见 [P1 记录](p1-delivery.md)。本轮在 P1 停止；受限入库/Registry/动态 MCP 属于 P2，没有自动开始。当前完整产品仍只有既有 SQL 路径加本地文件预览，不能查询上传数据。
+
+真实模型评测需要后续本地配置 API；Embedding 模型、Langfuse 部署与 PG Saver 迁移需在对应 Gate 验证。POS 软件和报表未知只阻塞 Phase F，不阻塞 SaaS。任何阶段都不以部署问题为由退回 SQLite/FAISS。

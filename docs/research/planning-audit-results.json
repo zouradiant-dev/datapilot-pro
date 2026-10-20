@@ -1,0 +1,97 @@
+{
+  "executed_at_local": "2026-10-21T01:15:53.028581+08:00",
+  "timezone": "Asia/Shanghai",
+  "scope": "P0 documentation-only planning audit; no new business capability implemented.",
+  "baseline_git_head": "3a47d27a5920721b3d776d62de6b240c0a313213",
+  "protected_file_count": 42,
+  "protected_files_unchanged": true,
+  "changed": [],
+  "added": [],
+  "removed": [],
+  "reviewed_application_python_files": 27,
+  "reviewed_test_python_files": 10,
+  "installed_versions": {
+    "langgraph": "1.2.16",
+    "langgraph-checkpoint": "4.3.0",
+    "langchain": "1.4.6",
+    "langchain-openai": "1.7.2",
+    "mcp": "1.30.0",
+    "sqlalchemy": "2.0.55",
+    "psycopg": "3.3.6",
+    "alembic": "1.20.0",
+    "sqlglot": "30.23.0",
+    "pydantic": "2.14.1",
+    "pytest": "9.1.1",
+    "langfuse": null,
+    "openpyxl": null,
+    "langgraph-checkpoint-postgres": null
+  },
+  "live_model_configuration_present": false,
+  "pytest": [
+    {
+      "category": "unit",
+      "tests": 48,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 2.28,
+      "passed": 48
+    },
+    {
+      "category": "protocol",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 3.341,
+      "passed": 1
+    },
+    {
+      "category": "postgres",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 12.524,
+      "passed": 10
+    },
+    {
+      "category": "live",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "seconds": 2.046,
+      "passed": 0
+    }
+  ],
+  "total_passed": 59,
+  "total_skipped": 1,
+  "health": {
+    "status": "healthy",
+    "postgres_version_num": 170011,
+    "pgvector": "0.8.6",
+    "migration": "0001",
+    "customers": 240,
+    "seeded": true
+  },
+  "documentation_validation": {
+    "markdown_files": 14,
+    "local_links_checked": 48,
+    "unique_source_line_anchors_checked": 55,
+    "installed_source_hashes_matched": 7,
+    "errors": []
+  },
+  "limitations": [
+    "No real model inference or GitHub CI executed.",
+    "No PostgreSQL Checkpointer integration/restart test.",
+    "No new CSV/XLSX, Registry, RAG, UI or Langfuse implementation.",
+    "Docker Engine named-pipe inspection was denied to the sandbox; real PostgreSQL TCP validation succeeded."
+  ],
+  "raw_evidence_directory": "artifacts/planning-audit-20261021 (gitignored)",
+  "ruff": {
+    "check": "passed",
+    "format_check": "passed",
+    "files_already_formatted": 55
+  }
+}

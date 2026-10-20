@@ -1,0 +1,18 @@
+{
+  "synthetic": true,
+  "period": "2025",
+  "files": {
+    "customers_utf8_bom.csv": {
+      "sha256": "5c582c35836b6c2e82ea596346ceb4ce4eedccd25cb0b8e135a7ee61691ad4b8",
+      "bytes": 117
+    },
+    "invoices_semicolon.csv": {
+      "sha256": "3aa5a793498502b0793100f81659cfd66f6fd4e3dd9e58f169143acf12d80b34",
+      "bytes": 136
+    },
+    "saas_multi_sheet.xlsx": {
+      "sha256": "0a1146238621c38c34b4e7e0e323f6e17b43a174ed2e551ade69f061efcccbca",
+      "bytes": 6100
+    }
+  }
+}

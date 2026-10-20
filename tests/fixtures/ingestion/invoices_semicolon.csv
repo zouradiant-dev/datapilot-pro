@@ -1,0 +1,4 @@
+invoice_id;customer_id;amount;invoice_date
+INV-1;0001;123.4500;2025-10-01
+INV-2;0001;89.9900;2025-10-15
+INV-3;0002;1000.0000;2025-10-20
