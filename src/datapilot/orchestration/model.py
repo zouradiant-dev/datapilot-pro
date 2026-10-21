@@ -3,6 +3,7 @@
 import asyncio
 import json
 import re
+import time
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -55,15 +56,28 @@ class Gateway:
         )
         self.trace = None
         self.contexts = {}
+        self.durability = None
 
     async def invoke(self, messages, tools, account):
         prepared = None
+        identity = None
+        if self.durability:
+            self.cancel.check()
+            # Bind replay to canonical checkpoint input, not a time-dependent compacted view.
+            identity = self.durability.model_identity(account, messages, tools)
+            cached = self.durability.cached_model(account, messages, tools)
+            if cached is not None:
+                return self.validate_response(cached)
         try:
             if account in self.contexts:
                 prepared = await self.contexts[account].prepare(messages, tools, self, account)
                 messages = prepared.messages
             return await self._invoke(
-                messages, tools, account, reservation=prepared.reservation if prepared else None
+                messages,
+                tools,
+                account,
+                reservation=prepared.reservation if prepared else None,
+                identity=identity,
             )
         finally:
             # _invoke settles every issued request, including unknown/cancelled usage.
@@ -73,6 +87,10 @@ class Gateway:
 
     async def summarize_context(self, messages, account, followup_input_tokens):
         self.cancel.check()
+        if self.durability:
+            cached = self.durability.cached_model(account, messages, [])
+            if cached is not None:
+                return self.validate_response(cached), None
         text, usage = measure_context(messages, [], self.settings.max_output_tokens)
         if (
             len(text) > self.settings.max_input_chars
@@ -99,7 +117,7 @@ class Gateway:
                     self.ledger.release_unissued(ticket)
             raise
 
-    async def _invoke(self, messages, tools, account, *, reservation=None):
+    async def _invoke(self, messages, tools, account, *, reservation=None, identity=None):
         self.cancel.check()
         text, context = measure_context(messages, tools, self.settings.max_output_tokens)
         exceeded = (
@@ -119,27 +137,64 @@ class Gateway:
             )
         if exceeded:
             raise AgentFailure("CONTEXT_LIMIT", "Isolated worker context exceeds its limit")
-        ticket = reservation or self.ledger.reserve(account, text, self.settings.max_output_tokens)
-        self.ledger.check_ticket(
-            ticket, account, context.estimated_input_tokens + self.settings.max_output_tokens
-        )
-        try:
-            response = await self.cancel.wait_for(
-                self.transport.respond(messages, tools),
-                self.settings.model_timeout_seconds,
-                timeout_code="MODEL_TIMEOUT",
+        cached, call_key = None, None
+        if self.durability:
+            call_key, ticket, cached = self.durability.begin_model(
+                account,
+                messages,
+                tools,
+                text,
+                self.settings.max_output_tokens,
+                reservation,
+                identity=identity,
             )
-        except BaseException as exc:
-            self.ledger.settle(ticket, None)
-            if isinstance(exc, (asyncio.CancelledError, AgentFailure)):
-                raise
-            raise AgentFailure("MODEL_ERROR", "Async model provider failed") from exc
-        usage = (
-            (response.usage_metadata or {}).get("total_tokens")
-            if isinstance(response, AIMessage)
-            else None
-        )
-        self.ledger.settle(ticket, usage)
+        else:
+            ticket = reservation or self.ledger.reserve(
+                account, text, self.settings.max_output_tokens
+            )
+            self.ledger.check_ticket(
+                ticket, account, context.estimated_input_tokens + self.settings.max_output_tokens
+            )
+        if cached is not None:
+            response = cached
+        else:
+            started = time.monotonic()
+            try:
+                response = await self.cancel.wait_for(
+                    self.transport.respond(messages, tools),
+                    self.settings.model_timeout_seconds,
+                    timeout_code="MODEL_TIMEOUT",
+                )
+                if self.durability:
+                    self.durability.backend.hit("model_response")
+            except BaseException as exc:
+                if self.durability:
+                    self.durability.finish_model(
+                        call_key, ticket, None, None, (time.monotonic() - started) * 1000
+                    )
+                else:
+                    self.ledger.settle(ticket, None)
+                if isinstance(exc, (asyncio.CancelledError, AgentFailure)):
+                    raise
+                raise AgentFailure("MODEL_ERROR", "Async model provider failed") from exc
+            usage = (
+                (response.usage_metadata or {}).get("total_tokens")
+                if isinstance(response, AIMessage)
+                else None
+            )
+            if self.durability:
+                self.durability.finish_model(
+                    call_key,
+                    ticket,
+                    response if isinstance(response, AIMessage) else None,
+                    usage,
+                    (time.monotonic() - started) * 1000,
+                )
+            else:
+                self.ledger.settle(ticket, usage)
+        return self.validate_response(response)
+
+    def validate_response(self, response):
         if not isinstance(response, AIMessage) or response.invalid_tool_calls:
             raise AgentFailure("MODEL_OUTPUT_INVALID", "Invalid assistant/tool protocol response")
         if (

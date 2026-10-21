@@ -35,6 +35,16 @@ def main() -> int:
 
     add_semantic_commands(sub)
     sub.add_parser("health", help="Reader: verify PostgreSQL 17, extension, permissions and seed")
+    sub.add_parser("runtime-init", help="Explicit checkpoint owner: deploy official Saver tables")
+    durable = sub.add_parser("durable", help="Trusted local persistent execution controls")
+    durable.add_argument("action", choices=("start", "resume", "cancel"))
+    durable.add_argument("run_id")
+    durable.add_argument("--question")
+    durable.add_argument("--owner", default="local-user")
+    durable.add_argument("--mode", choices=("live", "fake"))
+    durable.add_argument("--review", action="store_true")
+    durable.add_argument("--approve", action="store_true", default=None)
+    durable.add_argument("--pause-after", choices=("planner", "scheduler", "worker", "verifier"))
     query = sub.add_parser("ask", help="Supervisor -> SQL -> MCP -> PostgreSQL -> Answer")
     query.add_argument("question")
     query.add_argument("--mode", choices=("live", "fake"))
@@ -43,7 +53,39 @@ def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     try:
-        if args.command == "ingest":
+        if args.command == "runtime-init":
+            from datapilot.persistence.management import runtime_init
+
+            runtime_init()
+            result = {"status": "runtime_initialized"}
+        elif args.command == "durable":
+            from datapilot.persistence.backend import Backend
+            from datapilot.persistence.session import run_async, run_durable
+
+            settings = Settings(**({"llm_mode": args.mode} if args.mode else {}))
+            if args.action == "cancel":
+                backend = Backend(
+                    settings.runtime_database_url.get_secret_value(), args.run_id, args.owner
+                )
+                try:
+                    backend.cancel()
+                finally:
+                    backend.close()
+                result = {"status": "cancelled", "run_id": args.run_id}
+            else:
+                result = run_async(
+                    run_durable(
+                        settings,
+                        args.run_id,
+                        args.question,
+                        owner=args.owner,
+                        resume=args.action == "resume",
+                        approve=args.approve,
+                        require_review=args.review,
+                        interrupt_after=[args.pause_after] if args.pause_after else None,
+                    )
+                )
+        elif args.command == "ingest":
             from datapilot.ingestion.cli import run
 
             return run(args)
@@ -102,6 +144,18 @@ def main() -> int:
             "Configuration/database error: check .env, role permissions, migration and health.",
             file=sys.stderr,
         )
+        return 2
+    except Exception as exc:
+        from datapilot.contracts import AgentFailure
+
+        if isinstance(exc, AgentFailure):
+            print(
+                json.dumps(
+                    {"status": "blocked", "error": exc.error.model_dump()}, ensure_ascii=False
+                )
+            )
+            return 2
+        print("Execution failed safely; inspect redacted local diagnostics.", file=sys.stderr)
         return 2
 
 

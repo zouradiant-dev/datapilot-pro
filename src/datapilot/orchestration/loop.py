@@ -53,6 +53,8 @@ def build_worker_loop():
         try:
             if state["turns"] >= ctx.settings.max_worker_turns:
                 raise AgentFailure("WORKER_LIMIT", "Worker model/tool turn limit reached")
+            if ctx.tools.durability:
+                ctx.tools.durability.align_tools(ctx.tools, messages)
             message = await ctx.gateway.invoke(messages, ctx.tools.schemas(), ctx.account)
             old_ids = {c["id"] for m in messages if m.type == "ai" for c in m.tool_calls}
             if any(c["id"] in old_ids for c in message.tool_calls):

@@ -6,9 +6,9 @@
 
 ## 1. 当前起点与优先级
 
-起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1/P2/P3 保留，当前 P4 完成 D9–D10 动态 DAG 与双层执行，见 [编排说明](orchestration.md)、[交付](p4-delivery.md)。本轮到此停止；P5 持久恢复、P6 真实检索/产品闭环未开始，Gate C 尚未整体通过。
+起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1/P2/P3 保留，P4 完成 D9–D10 动态 DAG 与双层执行，见 [编排说明](orchestration.md)、[交付](p4-delivery.md)。后续已完成 P4.1、P5A 和本轮 P5B；P6 真实检索/产品闭环未开始，Gate C 尚未整体通过。
 
-v2.2 增量：在 P4 基线之上执行 **P4.1**，只补工具生命周期、宿主完成判定、L0 工件/模型视图分离及故障反例，见 [交付与实际验证](p4-hardening.md)、[ADR-007](adr/0007-p4-hardening.md)。上述 P4 交付是历史记录；当前停止点为 P4.1，P5 拆为未来独立授权的 P5A（Context/Memory）与 P5B（PG 持久恢复），不自动推进。Gate C 未完成。
+v2.2 的 **P4.1** 补工具生命周期、宿主完成判定、L0 工件/模型视图分离及故障反例，见 [交付与实际验证](p4-hardening.md)、[ADR-007](adr/0007-p4-hardening.md)。P5 拆为单独授权的 P5A（Context/Memory）与 P5B（PG 持久恢复），均已落实；当前停止在 P5B，不能从路线图自动授权 P6/P7。Gate C 未完成。
 
 唯一首发业务是 SaaS。文件导入、语义/证据、Multi-Agent、产品化和独立评测服务这一主线。首版本地单用户/可信演示，不承诺生产多租户。干洗店 Phase F 与 LangGraph Fork 都是独立可选扩展。
 
@@ -26,7 +26,7 @@ RAG 组件测试可以先于完整 DAG；Gate C 的跨来源验收需要真实�
 
 ## 2. Gates、用例与风险
 
-P5A 当前增量：复用现有 Gateway 实现 L0–L4 的可校验模型视图、权威状态边界和 Memory 契约/内存实现，见 [上下文工程交付](context-engineering.md)、[ADR-008](adr/0008-context-authority-memory.md)。前文 P4/P4.1 停止点保留历史属性；当前停止在 P5A，P5B 持久恢复仍未执行，Gate C 未整体通过。下一阶段必须另行获得用户确认。
+P5A 复用现有 Gateway 实现 L0–L4 的可校验模型视图、权威状态边界和 Memory 契约/内存实现，见 [上下文工程交付](context-engineering.md)、[ADR-008](adr/0008-context-authority-memory.md)。P5B 不调整压缩策略，只补官方 PG 父/子图 Saver、事务持久账本、完整工件、调用状态与跨进程恢复，见 [恢复与部署](recovery.md)、[ADR-009](adr/0009-durable-execution.md)、[交付](p5b-delivery.md)。真实 PG 故障测试和两次 DeepSeek 调用后的新进程恢复均验证；长期 Memory 后端未实现。下一阶段必须另行获得用户授权。
 
 P5A 后单独授权的 DeepSeek Flash 兼容增量仅调整共享模型构造 profile，显式使用非思考 Chat Completions；不推进新 Gate，不改变 SQL/MCP 或上下文/预算架构。HTTP Mock + 真实 PG 回归通过；本地 Key 配置后补充一项真实 DeepSeek→MCP→PG 客户数 smoke，240/已完成，不替代完整业务评测，见 [接入记录](deepseek-transport.md)。
 
@@ -43,7 +43,7 @@ P5A 后单独授权的 DeepSeek Flash 兼容增量仅调整共享模型构造 pr
 
 ## 3. 已完成审计与未来五个工作包
 
-以下保留 P0 拆分的五个工作包 W2–W6，不绑定日历；W1–W8 为历史 P0–P3 基线，本轮只落实 D9–D10 / P4。P5 及以后须另行授权，不因列在本节就自动执行。
+以下保留 P0 拆分的五个工作包 W2–W6，不绑定日历；W1–W8 为历史 P0–P3 基线，D9–D10 / P4 与 P5A/P5B 已完成。后续仍须另行授权，不因列在本节就自动执行。
 
 ### W1：冻结基线与规划审计（历史 P0，已完成）
 
@@ -101,8 +101,9 @@ P5A 后单独授权的 DeepSeek Flash 兼容增量仅调整共享模型构造 pr
 | P1 | 本轮已完成 W2–W3 Parser/Profile/Preview/Confirm | 见 p1-delivery；不建表、不提前做 UI，到此停止 |
 | P2 | 本轮完成 W4–W5 安全导入/版本/动态 MCP | 真实验收见 p2-delivery；到 Gate A 停止 |
 | P3 | 已实现语义/指标/证据/六层 Verifier | Gate A；本轮到 Gate B 停止，见 p3-delivery |
-| P4 | D9–D10 已实现动态 DAG、子任务与 Worker Loop | 当前停止点；无 Fork；RAG 替身仅证明编排，见 p4-delivery |
-| P5 | Context/Memory、持久预算/Checkpoint/Recovery | P4；先解决 Saver 迁移；真实 PG 重启恢复 |
+| P4 / P4.1 | 动态 DAG、Worker Loop、工具生命周期与完成判定已实现 | 无 Fork；RAG 替身仅证明编排，见 p4-delivery / p4-hardening |
+| P5A | L0–L4、上下文不变量、Memory 契约/内存实现已交付 | 保留算法与历史费用结论，见 context-engineering |
+| P5B | 官方 PG Checkpoint、持久预算/Artifact、恢复与故障验证已交付 | 当前停止点，见 p5b-delivery；不自动进入 P6/P7 |
 | P6 | 真实 RAG/计算/报告、UI、Langfuse | 与 P4/P5 集成完成 Gate C，再验收产品闭环 |
 | P7 | 独立 E2E、消融、Claude Code 产品对比 | Gate D 完整验收资料；不可污染保留集 |
 | P8 | 可选官方 Runtime 不足与 Fork A/B | 有最小复现和公开方案不足的证据 |
@@ -118,13 +119,13 @@ SaaS ≥50 个独立业务任务，开发集/保留集分离，固定 seed/数�
 
 ## 6. 当前阻塞与下一步准备
 
-P1/P2/P3 保留，P3 指标入口仍独立执行。P4 的 ask 现在使用固定拓扑/动态 DAG、TaskEnvelope、能力隔离与模型工具循环；规划/子任务/Replan 有统一原子内存预算，取消和证据引用穿透。当前停在 D9–D10，不扩展为 P5。内存 ArtifactStore、Ledger、Trace bundle 不是 PG Checkpoint 或 P3 持久 Evidence；RAG 替身不是正式业务检索。UI/持久恢复未开始，下一步要先确定 PG Saver 迁移所有权和持久预算/工件生命周期。
+P1/P2/P3 保留，P3 指标入口仍独立执行。ask 保留内存执行路径；显式 durable 使用同一外图/Worker 和官方 PG Saver，预算/工件/取消独立持久化。P5B 实现完成，源版本/权限/hash/未知调用失败关闭，不声称供应商 exactly-once 或生产多租户。RAG 替身仍非正式检索；UI、P3→P4 可信报告桥接和长期 Memory 后端未实现。Gate C 尚缺真实跨来源业务验收，P6/P7 仅在新授权后执行。
 
-### D9–D10 本轮完成 / 后续边界
+### 已完成的 D9–D13 / 后续边界
 
 - 完成严格 Plan/DAG、就绪/能力调度、Send/Command、独立 Worker 子图、确定性 Analysis/引用汇总、有界 Replan、父子预算与取消、真实异步工具协议和脱敏 Trace。
 - 简单 SQL 走低成本 fast plan；复杂双 SQL 可以在真实 MCP/PG 执行。SQL/RAG 并发用显式检索组件替身验证，真实 RAG 留在 P6。
 - 未变源任务可显式验证后复用；权限/预算/输入错误不重规划绕过。旧 SQL 安全链与三项历史迁移保持原状。
-- D11–D13 / P5：Memory、原子持久预算、PG Checkpoint/恢复与工件存储；先做迁移 ADR 与故障测试，不从本轮自动推进。
+- D11–D13 / P5A/P5B：受限 Memory 契约、上下文压缩、官方父/子图 Checkpoint、原子持久预算与完整工件、跨进程恢复已实现；未实现永久 Memory 存储。停止，不推进 P6/P7。
 
-真实模型评测需要后续本地配置 API；Embedding 模型、Langfuse 部署与 PG Saver 迁移需在对应 Gate 验证。POS 软件和报表未知只阻塞 Phase F，不阻塞 SaaS。任何阶段都不以部署问题为由退回 SQLite/FAISS。
+DeepSeek 非思考 profile 已有真实 SQL smoke、P5A 压缩 A/B 和 P5B 恢复实测，不代表完整业务评测或产品领先。Embedding、Langfuse 和后续指标/报告集成需在对应 Gate 验证。PG Saver 迁移已由 ADR-009 明确并显式部署。POS 软件和报表未知只阻塞 Phase F，不阻塞 SaaS；不退回 SQLite/FAISS。

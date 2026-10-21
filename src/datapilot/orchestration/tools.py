@@ -94,6 +94,7 @@ class ToolRegistry:
         timeout=10,
         max_sql_attempts=2,
         max_view_chars=4096,
+        durability=None,
     ):
         self.envelope, self.store = envelope, store
         self.database = database if envelope.task.worker == "sql" else None
@@ -108,6 +109,9 @@ class ToolRegistry:
         self.cancel = cancellation or Cancellation()
         self.trace, self.timeout = trace, timeout
         self.max_sql_attempts, self.max_view_chars = max_sql_attempts, max_view_chars
+        self.durability = durability
+        if durability:
+            durability.hydrate_tools(self)
 
     def schemas(self):
         return [DEFINITIONS[name].schema() for name in sorted(self.allowed)]
@@ -121,6 +125,7 @@ class ToolRegistry:
         """
         started, error = time.monotonic(), None
         before = len(self.refs)
+        call_key, replayed = None, False
         try:
             if name not in DEFINITIONS:
                 raise AgentFailure("TOOL_FORBIDDEN", "Tool is outside delegated capability")
@@ -137,12 +142,29 @@ class ToolRegistry:
             ):
                 raise AgentFailure("TOOL_FORBIDDEN", "No host-bound tool session was delegated")
             self.cancel.check()
+            if self.durability:
+                call_key, cached = self.durability.begin_tool(
+                    self.envelope, name, arguments, call_id
+                )
+                if cached is not None:
+                    replayed = True
+                    self.durability.adopt_payload(self, cached)
+                    if cached.get("error"):
+                        item = cached["error"]
+                        raise AgentFailure(
+                            item["code"], item["message"], retryable=item["retryable"]
+                        )
+                    return cached
             if name == "query_database" and self.sql_attempts >= self.max_sql_attempts:
                 raise AgentFailure("SQL_ATTEMPTS_EXHAUSTED", "SQL attempt limit reached")
             if name == "query_database":
                 # No await before reservation: simultaneous calls cannot both take the last slot.
                 self.sql_attempts += 1
-            return await self.cancel.wait_for(self._dispatch(name, args), self.timeout)
+            payload = await self.cancel.wait_for(self._dispatch(name, args), self.timeout)
+            if self.durability:
+                self.durability.backend.hit("tool_artifact")
+                self.durability.finish_tool(call_key, payload, (time.monotonic() - started) * 1000)
+            return payload
         except asyncio.CancelledError:
             error = AgentFailure("CANCELLED", "Tool coroutine was cancelled")
             raise
@@ -153,6 +175,14 @@ class ToolRegistry:
             error = AgentFailure("TOOL_OUTPUT_INVALID", "Tool failed its validated output contract")
             raise error from exc
         finally:
+            if self.durability and call_key and error and not replayed:
+                self.durability.finish_tool(
+                    call_key,
+                    {"error": error.error.model_dump()},
+                    (time.monotonic() - started) * 1000,
+                    uncertain=error.error.code
+                    in {"CANCELLED", "TOOL_TIMEOUT", "TOOL_ERROR", "TOOL_OUTPUT_INVALID"},
+                )
             if self.trace:
                 self.trace.emit(
                     "tool",

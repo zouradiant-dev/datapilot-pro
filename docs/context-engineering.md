@@ -151,4 +151,10 @@ JUnit `artifacts/p5a/release.xml` 为 373 tests、0 failures、0 errors、1 skip
 - 摘要取消与未知 usage、不足两次调用的预算、父子并发争用、未发出预留释放、原重复结算测试；Memory 审阅/时间/版本/scope/worker/失效均有反例。
 - Native LangChain 异步 HTTP Mock 验证摘要→原工具协议及 usage，不能当真实 LLM 推理。真实 API/Token 费用、Prefix Cache 收益、生产模型任务质量均未实测。
 
-风险：保留权威字段不证明任意自然语言语义摘要正确；L4 因此限制为摘取式，可压缩收益有限。固定安全/目标/版本很多时仍可能 CONTEXT_LIMIT；归档会增加内存复制与共享配额开销。Memory 只保存受限提示且须宿主审阅，不是通用知识库。P3 指标报告桥接和真实 RAG 未实现，Gate C 仍未完成。当前停止在 P5A，P5B 需用户另行确认。
+风险：保留权威字段不证明任意自然语言语义摘要正确；L4 因此限制为摘取式，可压缩收益有限。固定安全/目标/版本很多时仍可能 CONTEXT_LIMIT；归档会增加内存复制与共享配额开销。Memory 只保存受限提示且须宿主审阅，不是通用知识库。P3 指标报告桥接和真实 RAG 未实现，Gate C 仍未完成。本段及上面的验收计数为 P5A 历史记录。
+
+## P5B 持久适配补充
+
+P5B 不修改 context.py、context_contracts.py、memory.py 或 L0–L4 策略；原 canonical Worker 消息由官方子图 Saver 保留，完整 Artifact/归档换为同接口的有界 PostgreSQL 后端，原账本算法增加事务适配。长期 Memory 仍为受审阅契约与内存实现，没有借执行 Checkpoint 实现新的自动记忆权限。
+
+恢复先核对可信身份/源与定义版本、完整工件 hash、原始工具调用状态和父子账本。Gateway 对已提交响应按压缩前输入去重，跳过时间相关的冷却/重复摘要；新调用继续使用原分级策略。实际 L4 长循环归档跨进程测试通过，原证据和预算保持不变。恢复协议、实测与边界见 [P5B 恢复](recovery.md)、[交付记录](p5b-delivery.md)。不把持久化解释为 L4 Token/费用优化。

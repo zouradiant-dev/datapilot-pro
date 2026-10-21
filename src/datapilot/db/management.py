@@ -23,6 +23,8 @@ def management_url(role: str) -> str:
         "seed": "datapilot_seed",
         "ingest": "datapilot_ingest",
         "registry": "datapilot_registry",
+        "runtime": "datapilot_runtime",
+        "checkpoint_owner": "datapilot_checkpoint_owner",
     }.get(role)
     if url.drivername != "postgresql+psycopg" or (expected and url.username != expected):
         raise ValueError("Use the designated PostgreSQL role")
@@ -40,7 +42,16 @@ def initialize() -> None:
                 raise ValueError("PostgreSQL 17 is required")
             raw = conn.connection.driver_connection
             with raw.cursor() as cursor:
-                suffixes = ("owner", "seed", "reader", "ingest", "upload_reader", "registry")
+                suffixes = (
+                    "owner",
+                    "seed",
+                    "reader",
+                    "ingest",
+                    "upload_reader",
+                    "registry",
+                    "runtime",
+                    "checkpoint_owner",
+                )
                 passwords = [
                     os.environ.get(f"DATAPILOT_{s.upper()}_PASSWORD", "") for s in suffixes
                 ]
@@ -68,7 +79,8 @@ def initialize() -> None:
                     sql.SQL(
                         "GRANT CONNECT ON DATABASE {} "
                         "TO datapilot_owner,datapilot_seed,datapilot_reader,"
-                        "datapilot_ingest,datapilot_upload_reader,datapilot_registry"
+                        "datapilot_ingest,datapilot_upload_reader,datapilot_registry,"
+                        "datapilot_runtime,datapilot_checkpoint_owner"
                     ).format(sql.Identifier(db))
                 )
             conn.exec_driver_sql("REVOKE CREATE ON SCHEMA public FROM PUBLIC")
@@ -82,6 +94,22 @@ def initialize() -> None:
                 "CREATE SCHEMA IF NOT EXISTS uploads AUTHORIZATION datapilot_ingest"
             )
             conn.exec_driver_sql("REVOKE ALL ON SCHEMA catalog,uploads FROM PUBLIC")
+            conn.exec_driver_sql(
+                "CREATE SCHEMA IF NOT EXISTS execution AUTHORIZATION datapilot_owner"
+            )
+            conn.exec_driver_sql(
+                "CREATE SCHEMA IF NOT EXISTS checkpoints AUTHORIZATION datapilot_checkpoint_owner"
+            )
+            conn.exec_driver_sql("REVOKE ALL ON SCHEMA execution,checkpoints FROM PUBLIC")
+            conn.exec_driver_sql("GRANT USAGE ON SCHEMA execution,checkpoints TO datapilot_runtime")
+            conn.exec_driver_sql(
+                "ALTER ROLE datapilot_checkpoint_owner SET search_path=checkpoints,pg_catalog"
+            )
+            conn.exec_driver_sql(
+                "ALTER ROLE datapilot_runtime SET search_path=checkpoints,pg_catalog"
+            )
+            conn.exec_driver_sql("ALTER ROLE datapilot_runtime SET statement_timeout='10s'")
+            conn.exec_driver_sql("ALTER ROLE datapilot_runtime SET lock_timeout='3s'")
             conn.exec_driver_sql("GRANT USAGE ON SCHEMA catalog TO datapilot_registry")
             conn.exec_driver_sql("ALTER ROLE datapilot_registry SET search_path=pg_catalog")
             conn.exec_driver_sql("ALTER ROLE datapilot_registry SET statement_timeout='5s'")

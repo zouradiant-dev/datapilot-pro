@@ -49,3 +49,5 @@ class RunState(TypedDict, total=False):
     task: SQLTask | None
     result: SQLAgentResult | None
     completion: CompletionDecision
+    plan_history: dict[str, Plan]
+    reuse_origins: dict[str, str]

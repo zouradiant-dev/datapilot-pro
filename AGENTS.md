@@ -2,13 +2,13 @@
 
 ## 架构和范围
 
-- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/planning-audit-v2.md 与相关 docs/adr/。当前授权为 v2.2 P5A（docs/codex-prompts-v2.2.md）：ContextManager、分级压缩与 Memory 契约，完成后停止；不进入 P5B 持久预算/PG Saver，不开始 P6 真实 RAG/业务报告/UI 或 Fork。P0–P4.1 保留；Gate C 尚未整体完成。后续仅执行用户授权的阶段，不自动推进整个路线图，不自动提交/推送。
+- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/planning-audit-v2.md 与相关 docs/adr/。当前仅授权 v2.2 P5B：官方 PG Checkpoint、持久预算/Artifact 和跨进程恢复，完成后停止。完整复用 P5A L0–L4/Memory，不开始 P6/P7、真实 RAG/业务报告/UI 或 Fork。P0–P5A 保留；Gate C 尚未整体完成。后续仅执行用户授权的阶段，不自动推进整个路线图，不自动提交/推送。
 - 按功能依赖与验收 Gate 推进，工作单元/工作日编号不是截止日期；旧七天计划已由 roadmap-v2 取代。SaaS 是唯一首发主业务，drycleaning 是独立可选 Phase F，不复制 Runtime/Harness/Worker。
 - Python 3.11+、src 布局、类型标注、Pydantic 2 严格契约、LangGraph StateGraph 编排。
 - Planner/Coordinator 路由；P4 Worker 只接收宿主生成的 TaskEnvelope，不读取整个 RunState。旧 SQLTask/SQLAgentResult 保留兼容投影，P3 MetricRequest 路径独立。Worker 有独立工具句柄/能力、消息与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
 - 不训练模型。Fake 只生成决策/SQL，不返回伪造业务结果；API adapter 与 Fake 分开。
 - 唯一业务数据库 PostgreSQL 17，向量用同实例 pgvector；不引入 SQLite 或 FAISS 回退。
-- 运行期数据库访问统一由真实 MCP Server/Client 完成，Agent 禁止导入 SQLAlchemy/psycopg/数据库管理模块直接查询。初始化、迁移、Seed 属于显式运维命令，不是模型工具。
+- 运行期业务数据库访问统一由真实 MCP Server/Client 完成，Agent 禁止导入 SQLAlchemy/psycopg/数据库管理模块直接查询。执行元数据是独立的非模型基础设施通道，限 execution/checkpoints；不能借此直连业务表。初始化、迁移、Seed 属于显式运维命令，不是模型工具。
 - SQLAlchemy 2 + psycopg 3；固定 saas/rag/catalog 结构只经新 Alembic 迁移，历史迁移冻结，不随当前 metadata 变化。uploads 动态表是明确例外：只由独立受限 Ingestion Service 根据有效确认执行事务化 DDL/插入/发布，不是模型工具；禁止请求/Worker create_all。详见 ADR-002。
 - 不重造通用框架，后续持久化和并发优先复用 LangGraph checkpointer/Send。
 
@@ -23,13 +23,15 @@
 - LangGraph Fork 依 docs/langgraph-fork-research-plan.md：先官方基线、最小复现和公开扩展方案验证，再提出具体内核改动。研究源码按提交固定引用，直接复制实质内容须保留完整许可证/版权及修改来源，见 docs/third-party-references.md。
 - 模型 adapter 的并发必须实际验证；当前 generate/invoke 是同步调用，不得仅添加 async 节点就声称并发/取消有效。Loop、SDK、图的重试不能相乘。
 - P4 以 docs/orchestration.md、ADR-006 为准：原 generate/invoke 仅保留旧独立组件/P3；新 ask 使用 NativeTransport.ainvoke、Gateway 与原子内存 BudgetLedger，Planner/Worker/Replan 一律预留再调用。只使用异步 HTTP Mock 验证协议/并发，不能称为真实模型验证。
-- Live 模型共用 llm/provider.py 的小型 profile 工厂。DeepSeek 最小适配见 docs/deepseek-transport.md：显式 model_provider=deepseek、Chat Completions、thinking=disabled、原生 max_tokens；禁止仅开启思考却丢失 reasoning_content 或绕过 Gateway/预算。未获另行授权不扩展 P5B/P6；模型凭据缺失时只报告 Mock/真实 PG 的实际验证。
+- Live 模型共用 llm/provider.py 的小型 profile 工厂。DeepSeek 最小适配见 docs/deepseek-transport.md：显式 model_provider=deepseek、Chat Completions、thinking=disabled、原生 max_tokens；禁止仅开启思考却丢失 reasoning_content 或绕过 Gateway/预算。未获另行授权不扩展 P6/P7；模型凭据缺失时只报告 Mock/真实 PG 的实际验证。
 - 固定外图与共享 Worker 子图每个逻辑 Run 各编译一次；模型只提供 Plan 数据。严格拒绝无环/引用/数量/能力错误；Send 只派就绪任务，Command 不混合无条件业务出口。版本/task reducer 对相同结果幂等、冲突拒绝；Replan 只复用显式重新校验的未变源任务，派生任务重算。
 - 每条 assistant tool_call 都需唯一匹配反馈，包括权限拒绝、异常、预算终止和取消；禁止 JSON 解析失败默认为空参数。模型最终只返回已取得的工件 ID，RAG 空检索必须解释 unavailable。默认无真实 RAG；组件替身必须带 fixture 标记，不扩大 MCP 服务端能力。
 - P4 Artifact SHA 引用/内存 Ledger 不能冒称 P3 持久 Evidence 或 PG Checkpoint。显式本地 JSON bundle 可含原始工具结果；公开 Trace 默认只记 ID/状态/时延/usage，不含 SQL/行/文档原文/密钥。pytest 回溯/sections 脱敏；本地失败日志同样不能泄露连接参数。
 - P4.1 历史边界见 ADR-007、docs/p4-hardening.md。P5A 当前以 ADR-008、docs/context-engineering.md 为准：Registry 生命周期不变，只改副本视图，原 Worker AI/Tool 历史不改。L1/L2 仅压缩有真实引用的旧反馈，L3 按完整已闭合轮次折叠；安全/目标前缀、最新活跃配对和可信版本/证据不能丢。未闭合、错绑或重复 tool ID、额外 System 角色拒绝。压缩不能改变 SQL/MCP 授权。
 - L4 只做可验证的结构化摘取，任何目标/约束/版本/单位/P3 ref/归档 hash 不一致都拒绝；只能选择已有 turn ID，不接受自由文本事实/权限/verified。摘要和其最大合法后续视图必须在同一父子 Ledger 原子预留，只有确定未发出的 follow-up 可以 release_unissued；已发出但 usage 未知必须保守结算，禁止释放为零。
-- Memory 仅为经可信宿主审阅的枚举偏好/术语定义引用/决策引用，没有 LLM 写入工具或任意正文。每次读取重查 scope/worker/来源版本/时效/撤回；不复制 Registry、不赋予权限。当前仅内存 MemoryStore；context 工件/归档也仅同 Run 可读取，不能冒称 P5B Checkpoint/跨进程恢复。
+- Memory 仅为经可信宿主审阅的枚举偏好/术语定义引用/决策引用，没有 LLM 写入工具或任意正文。每次读取重查 scope/worker/来源版本/时效/撤回；不复制 Registry、不赋予权限。当前仅内存 MemoryStore。P5B 的持久上下文工件仍只在同 Run/授权任务读取；长期 Memory 不等于执行 Checkpoint。
+- P5B 以 ADR-009、docs/recovery.md 为准：官方 Saver 独占 checkpoints/迁移版本，显式 runtime-init，Alembic 0004 只管 execution，0001–0004 发布后冻结；运行请求不 setup。持久服务使用无 DDL/业务权限的 runtime，MCP 不继承相关 DSN。禁止 pickle fallback、任意 checkpoint_id/time travel 和自动清库。
+- 仅按可信宿主重建身份、能力、Dataset/Metric/Semantic/source pin；摘要/Checkpoint 不能自授予权限。恢复核对工件哈希、调用状态及所有父子账本。已提交调用按原始逻辑输入复用；未知执行一律保守计账并阻断自动重发，不能清零、重复扣减或盲猜外部操作未执行。
 - `status` 保留执行兼容语义；新增 `completion.status` 才是宿主任务契约三态判定。不能只凭 succeeded、模型 complete、Artifact SHA 或五层任务 passed 宣称业务指标完成。P4.1 没有 P3→P4 报告桥接，已识别的指标请求必须 blocked/P3_VERIFIED_EVIDENCE_REQUIRED，继续使用独立 P3 入口；completed 只覆盖必需任务契约，不证明任意自然语言目标等价/完整性。
 - Domain Pack 是版本化字段映射/指标/质量/Verifier/评测的可信配置，不是可执行上传脚本或不同 Prompt。Source Connector 首发文件快照；未知 POS/API 不编造适配器。
 

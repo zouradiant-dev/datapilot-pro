@@ -6,7 +6,7 @@ from datetime import UTC, datetime
 from decimal import ROUND_HALF_EVEN, Decimal, localcontext
 
 from langgraph.graph import END, START, StateGraph
-from langgraph.types import Command, Send
+from langgraph.types import Command, Send, interrupt
 
 from datapilot.agents.supervisor import Planner
 from datapilot.contracts import AgentError, AgentFailure, SQLAgentResult, SQLTask
@@ -80,6 +80,10 @@ class Coordinator:
         context_metadata=None,
         memory_store=None,
         memory_source_versions=None,
+        checkpointer=None,
+        durability=None,
+        interrupt_before=None,
+        interrupt_after=None,
     ):
         self.settings, self.run_id = settings, run_id
         self.question = None
@@ -97,8 +101,18 @@ class Coordinator:
             BudgetLimits(calls=settings.max_model_calls, tokens=settings.max_total_tokens)
         )
         self.gateway = Gateway(transport, settings, self.ledger, self.cancel)
+        self.durability = durability
+        self.checkpointer = checkpointer
+        self.interrupt_before, self.interrupt_after = interrupt_before, interrupt_after
+        if durability:
+            self.ledger = durability.ledger
+            self.store = durability.store
+            self.gateway.ledger = self.ledger
+            self.gateway.durability = durability
         self.planner = Planner(self.gateway, self.available)
         self.store = ArtifactStore(run_id)
+        if durability:
+            self.store = durability.store
         self.events = events if events is not None else []
         self.trace = Trace(run_id, self.events)
         self.gateway.trace = self.trace
@@ -165,6 +179,7 @@ class Coordinator:
             timeout=self.settings.mcp_timeout_seconds,
             max_sql_attempts=self.settings.max_sql_attempts,
             max_view_chars=self.settings.max_tool_view_chars,
+            durability=self.durability,
         )
         status, error, refs = "succeeded", None, []
         self.trace.emit("worker", "started", version=envelope.plan_version, task_id=task.task_id)
@@ -462,6 +477,8 @@ class Coordinator:
                         "status": "unsupported" if plan.unsupported else "running",
                         "results": {},
                         "verifications": {},
+                        "plan_history": {"1": plan},
+                        "reuse_origins": {},
                     },
                     goto="finish" if plan.unsupported else "scheduler",
                 )
@@ -624,6 +641,8 @@ class Coordinator:
                         "plan_version": version,
                         "replans": state.get("replans", 0) + 1,
                         "results": reused,
+                        "plan_history": {**state.get("plan_history", {}), str(version): plan},
+                        "reuse_origins": dict(self.reused),
                         "status": "unsupported" if plan.unsupported else "running",
                     },
                     goto="finish" if plan.unsupported else "verifier",
@@ -829,6 +848,16 @@ class Coordinator:
             }
 
         builder = StateGraph(RunState)
+        if self.durability and self.durability.require_review:
+
+            def review(state):
+                value = interrupt({"kind": "execution_confirmation", "run_id": self.run_id})
+                if value is not True:
+                    self.cancel.cancel()
+                    return Command(update={"status": "cancelled"}, goto="finish")
+                return Command(goto="planner")
+
+            builder.add_node("review", review)
         for name, fn in (
             ("planner", planner),
             ("scheduler", scheduler),
@@ -838,7 +867,13 @@ class Coordinator:
             ("finish", finish),
         ):
             builder.add_node(name, fn)
-        builder.add_edge(START, "planner")
+        builder.add_edge(
+            START, "review" if self.durability and self.durability.require_review else "planner"
+        )
         builder.add_edge("worker", "verifier")
         builder.add_edge("finish", END)
-        return builder.compile()
+        return builder.compile(
+            checkpointer=self.checkpointer,
+            interrupt_before=self.interrupt_before,
+            interrupt_after=self.interrupt_after,
+        )

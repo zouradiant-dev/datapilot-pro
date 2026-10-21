@@ -327,3 +327,31 @@ MemoryStore 是偏好/术语与决策引用的接口，不是执行 Checkpoint �
 `llm/provider.py` 统一构建异步 NativeTransport 与旧同步 JSONModelClient 的 ChatOpenAI 实例；新增显式 `model_provider=deepseek` profile，保留默认通用 profile。复用 LangChain/OpenAI SDK 的公开 `extra_body`，显式发送 `thinking.type=disabled` 与受配置限制的原生 `max_tokens`，不同时发送 SDK 重命名的 `max_completion_tokens`，并固定走 Chat Completions。无需新依赖、Runtime、迁移或私有 SDK hook。
 
 这是非思考模式的最小接入，不实现 reasoning_content 的保留/压缩/回传；默认思考行为不能直接开启。Gateway、ContextManager、Ledger、取消、ToolRegistry、SQL/MCP 权限全部复用原实现。供应商错误继续脱敏且保守结算，SDK retry=0。详情与真实验证边界见 [DeepSeek 接入](deepseek-transport.md)，不进入 P5B/P6。
+
+## 22. P5B 已实现：官方 Checkpoint 与持久领域状态
+
+前面各节的未实现边界保留历史属性。本节为当前状态，P5B 完成后停止，不进入 P6/P7；Gate C 仍需后续真实 RAG/报告闭环。
+
+```mermaid
+flowchart TD
+    HOST[可信 CLI / run UUID / owner / scope] --> AUTH[重新校验目标、能力、源/定义版本]
+    AUTH --> GRAPH[原 Planner/Scheduler/Worker/Verifier 图]
+    GRAPH <--> SAVER[官方 AsyncPostgresSaver / checkpoints]
+    GRAPH --> GATE[原 Gateway + P5A ContextManager]
+    GATE --> JOURNAL[已 issued/complete/uncertain 的调用边界]
+    JOURNAL --> LLM[原供应商 Transport]
+    GRAPH --> TOOLS[原能力受限 ToolRegistry]
+    TOOLS --> MCP[真实 MCP / 只读业务访问]
+    JOURNAL <--> META[execution / 原账本事务适配 / 完整 Artifact]
+    TOOLS --> META
+    SAVER --> PG[(PostgreSQL 17 + pgvector)]
+    META --> PG
+    MCP --> PG
+```
+
+- **Runtime**：官方父/子图 Saver 是唯一执行状态机，`thread_id=run_id`、sync durability、Send/Command/interrupt 继续使用公开 API。Plan 历史和 Reuse 来源写入原 RunState，Coordinator 的缓存从图状态重建；不序列化 Engine、客户端或凭据。
+- **Harness**：原模型预算算法通过事务行锁持久化；预留/issued 原子，响应/usage/settle 原子。原始 canonical 输入作为模型幂等键；完成响应恢复后不重发或再次压缩。工件全量存储与 P5A 模型视图分离；未确认执行保守计费并停止，不假设外部调用未执行。
+- **Data**：Alembic 0004 管 execution；官方 setup 在专属 checkpoints 中独立部署，不修改旧迁移。runtime 角色无 DDL/业务权限，checkpoint_owner 仅显式运维使用，MCP 无元数据 DSN。TTL 拒绝过期访问，但不自动删记录。
+- **Domain**：恢复重新验证 Dataset/Metric/Semantic/source hash 和原 P3 verified 引用，不能从 Memory/摘要授予权限；原指标计算与工具白名单不变，没有新增 P3→P4 报告桥接。
+
+同 Run advisory lock 排除同时恢复；已取消、源变化、hash 损坏、预算不一致、未知调用均失败关闭。数据库断连后只允许从持久日志判断，不能从内存预算继续执行。本地单用户身份与版本校验不等于生产 RLS 或所有业务行的长期快照。完整审计、部署、恢复协议和限制见 [恢复说明](recovery.md)、[ADR-009](adr/0009-durable-execution.md)、[交付记录](p5b-delivery.md)。

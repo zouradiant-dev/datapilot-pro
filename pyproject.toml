@@ -23,6 +23,7 @@ dependencies = [
   "editables==0.5",
   "openpyxl==3.1.5",
   "defusedxml==0.7.1",
+  "langgraph-checkpoint-postgres==3.2.0",
 ]
 
 [project.scripts]

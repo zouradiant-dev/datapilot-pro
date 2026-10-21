@@ -21,13 +21,20 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--add-upload-roles", action="store_true")
     parser.add_argument("--add-registry-role", action="store_true")
+    parser.add_argument("--add-runtime-roles", action="store_true")
     args = parser.parse_args()
     path = Path(__file__).resolve().parents[1] / ".env"
-    if args.add_upload_roles or args.add_registry_role:
+    if args.add_upload_roles or args.add_registry_role or args.add_runtime_roles:
         values = dotenv_values(path, interpolate=False)
         url = make_url(values.get("DATAPILOT_ADMIN_DATABASE_URL") or "")
         lines = []
-        roles = ("registry",) if args.add_registry_role else ("ingest", "upload_reader")
+        roles = (
+            ("runtime", "checkpoint_owner")
+            if args.add_runtime_roles
+            else ("registry",)
+            if args.add_registry_role
+            else ("ingest", "upload_reader")
+        )
         for role in roles:
             keys = [f"DATAPILOT_{role.upper()}_{suffix}" for suffix in ("DATABASE_URL", "PASSWORD")]
             if all(values.get(k) for k in keys):
@@ -57,7 +64,16 @@ def main() -> None:
         "DATAPILOT_LLM_MODE=fake",
         "DATAPILOT_ADMIN_DATABASE_URL=" + url.render_as_string(hide_password=False),
     ]
-    for role in ("owner", "seed", "reader", "ingest", "upload_reader", "registry"):
+    for role in (
+        "owner",
+        "seed",
+        "reader",
+        "ingest",
+        "upload_reader",
+        "registry",
+        "runtime",
+        "checkpoint_owner",
+    ):
         lines.extend(role_lines(role, url))
     with path.open("x", encoding="utf-8") as output:
         output.write("\n".join(lines) + "\n")

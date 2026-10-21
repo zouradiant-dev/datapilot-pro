@@ -1,5 +1,6 @@
 """Atomic, in-process parent/child reservations. No persistence/resume claim in D9-D10."""
 
+import json
 import threading
 from dataclasses import dataclass, field
 from uuid import uuid4
@@ -104,3 +105,66 @@ class BudgetLedger:
     def snapshot(self, account="root") -> Usage:
         with self._lock:
             return self.accounts[account].usage.model_copy(deep=True)
+
+    def dump_state(self) -> dict:
+        """Explicit durable representation; no locks, clients, credentials or executable types."""
+        with self._lock:
+            return {
+                "accounts": {
+                    key: {
+                        "limits": a.limits.model_dump(),
+                        "parent": a.parent,
+                        "usage": a.usage.model_dump(),
+                    }
+                    for key, a in self.accounts.items()
+                },
+                "pending": {
+                    k: [list(chain), amount] for k, (chain, amount) in self.pending.items()
+                },
+            }
+
+    def load_state(self, state: dict) -> None:
+        with self._lock:
+            accounts = {
+                key: _Account(
+                    BudgetLimits.model_validate_json(json.dumps(a["limits"])),
+                    a["parent"],
+                    Usage.model_validate_json(json.dumps(a["usage"])),
+                )
+                for key, a in state["accounts"].items()
+            }
+            if "root" not in accounts or accounts["root"].parent is not None:
+                raise AgentFailure("BUDGET_INVALID", "Missing durable root budget")
+            for key in accounts:
+                child = accounts[key]
+                if child.parent in accounts:
+                    parent = accounts[child.parent]
+                    if (
+                        child.limits.calls > parent.limits.calls
+                        or child.limits.tokens > parent.limits.tokens
+                    ):
+                        raise AgentFailure("BUDGET_INVALID", "Durable child exceeds parent limits")
+                seen, at = set(), key
+                while at is not None:
+                    if at not in accounts or at in seen:
+                        raise AgentFailure("BUDGET_INVALID", "Invalid durable budget ancestry")
+                    seen.add(at)
+                    at = accounts[at].parent
+            pending = {}
+            for ticket, (chain, amount) in state["pending"].items():
+                if type(amount) is not int or amount < 0 or not chain or chain[-1] != "root":
+                    raise AgentFailure("BUDGET_INVALID", "Invalid durable reservation")
+                expected, at = [], chain[0]
+                while at is not None:
+                    if at not in accounts:
+                        raise AgentFailure("BUDGET_INVALID", "Unknown reservation account")
+                    expected.append(at)
+                    at = accounts[at].parent
+                if expected != chain:
+                    raise AgentFailure("BUDGET_INVALID", "Reservation ancestry differs")
+                pending[ticket] = (chain, amount)
+            for key, a in accounts.items():
+                held = [v for v in pending.values() if key in v[0]]
+                if a.usage.calls < len(held) or a.usage.total_tokens < sum(v[1] for v in held):
+                    raise AgentFailure("BUDGET_INVALID", "Budget is smaller than live reservations")
+            self.accounts, self.pending = accounts, pending

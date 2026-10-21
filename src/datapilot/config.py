@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     model: str = ""
     reader_database_url: SecretStr | None = None
     upload_reader_database_url: SecretStr | None = None
+    runtime_database_url: SecretStr | None = None
     model_timeout_seconds: float = Field(default=30, gt=0, le=120)
     query_timeout_seconds: float = Field(default=2, gt=0, le=30)
     mcp_timeout_seconds: float = Field(default=10, gt=0, le=60)
@@ -41,6 +42,13 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def validate_configuration(self):
+        if self.runtime_database_url:
+            runtime = make_url(self.runtime_database_url.get_secret_value())
+            if (
+                runtime.drivername != "postgresql+psycopg"
+                or runtime.username != "datapilot_runtime"
+            ):
+                raise ValueError("Durable execution requires the isolated runtime role")
         if self.reader_database_url:
             url = make_url(self.reader_database_url.get_secret_value())
             if url.drivername != "postgresql+psycopg" or url.username != "datapilot_reader":

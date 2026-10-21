@@ -1,0 +1,340 @@
+{
+  "date": "2026-10-21",
+  "scope": "P5B only; no P6/P7; no auto commit/push",
+  "baseline": "42fb6b6873cc24e221260ef3e5c5066aef8cdac8",
+  "python": "3.11.16",
+  "dependencies": {
+    "langgraph": "1.2.16",
+    "langgraph-checkpoint": "4.3.0",
+    "langgraph-checkpoint-postgres": "3.2.0",
+    "psycopg": "3.3.6",
+    "psycopg-pool": "3.3.3"
+  },
+  "final_tests": {
+    "tests": 424,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "passed": 423,
+    "junit_seconds": 300.867,
+    "new_test_files": {
+      "test_recovery_postgres": 22,
+      "test_recovery_versions": 6,
+      "test_persistence_contracts": 7
+    },
+    "skip": "opt-in existing live pytest test; independent paid recovery experiment did execute"
+  },
+  "checks": {
+    "ruff": "passed",
+    "format": "passed",
+    "whitespace": "passed",
+    "secret_scan_hits": [],
+    "protected_source_sha256": {
+      "src/datapilot/orchestration/context.py": "35f0c2bce5b071f111a7435c7318e6dad5b12bc8e1f8a019749f23ce307449ef",
+      "src/datapilot/orchestration/context_contracts.py": "b918b2fc3901ce681b71133d5d34dbca4f095779fdb6fc1abc77dca5bccaf389",
+      "src/datapilot/orchestration/memory.py": "cd9cc76015156200e0be29ffc9cd9bdca3dd05ac015a68226904163a4eac9c7b",
+      "migrations/versions/0001_business_and_vectors.py": "a91900b4ce239deb48d749d20ddb7c02e0a2bff41d52d0ea9ba9b97b34453f49",
+      "migrations/versions/0002_dataset_catalog.py": "8dd70eacc3e221dd115e3fa11117a30d6c49350476eb97c307f6db72d571376c",
+      "migrations/versions/0003_semantics_and_evidence.py": "e6714de83bb6561c7e550bfb12cdcb7030c13f22b23ec9a60edd1fcd7b2af35b"
+    }
+  },
+  "health": {
+    "postgres_version_num": 170011,
+    "pgvector": "0.8.6",
+    "migration": "0004",
+    "customers": 240
+  },
+  "measurements": {
+    "baseline": "same PG/MCP customer-count task; model decisions Fake",
+    "provider_cost": {
+      "amount": null,
+      "status": "no_invoice_or_price_assumption"
+    },
+    "fake": [
+      {
+        "wall_ms_including_process_start": 4727.03,
+        "usage": {
+          "calls": 2,
+          "total_tokens": 0,
+          "reported_tokens": 0,
+          "usage_complete": true
+        },
+        "compression_count": 0,
+        "irreversible_source_loss": false
+      },
+      {
+        "wall_ms_including_process_start": 4718.59,
+        "usage": {
+          "calls": 2,
+          "total_tokens": 0,
+          "reported_tokens": 0,
+          "usage_complete": true
+        },
+        "compression_count": 0,
+        "irreversible_source_loss": false
+      },
+      {
+        "wall_ms_including_process_start": 4816.31,
+        "usage": {
+          "calls": 2,
+          "total_tokens": 0,
+          "reported_tokens": 0,
+          "usage_complete": true
+        },
+        "compression_count": 0,
+        "irreversible_source_loss": false
+      }
+    ],
+    "durable": [
+      {
+        "wall_ms_including_process_start": 5136.5,
+        "usage": {
+          "calls": 2,
+          "total_tokens": 0,
+          "reported_tokens": 0,
+          "usage_complete": true
+        },
+        "compression_count": 0,
+        "irreversible_source_loss": false,
+        "external_calls": [
+          {
+            "kind": "model",
+            "status": "complete",
+            "usage": {
+              "input_tokens": 0,
+              "total_tokens": 0,
+              "output_tokens": 0
+            },
+            "elapsed_ms": 16.00000000325963
+          },
+          {
+            "kind": "model",
+            "status": "complete",
+            "usage": {
+              "input_tokens": 0,
+              "total_tokens": 0,
+              "output_tokens": 0
+            },
+            "elapsed_ms": 16.00000000325963
+          },
+          {
+            "kind": "tool",
+            "status": "complete",
+            "usage": null,
+            "elapsed_ms": 47.0000000204891
+          },
+          {
+            "kind": "tool",
+            "status": "complete",
+            "usage": null,
+            "elapsed_ms": 47.0000000204891
+          }
+        ],
+        "artifact_logical_bytes": 2007,
+        "checkpoint_rows": 12
+      },
+      {
+        "wall_ms_including_process_start": 5275.12,
+        "usage": {
+          "calls": 2,
+          "total_tokens": 0,
+          "reported_tokens": 0,
+          "usage_complete": true
+        },
+        "compression_count": 0,
+        "irreversible_source_loss": false,
+        "external_calls": [
+          {
+            "kind": "model",
+            "status": "complete",
+            "usage": {
+              "input_tokens": 0,
+              "total_tokens": 0,
+              "output_tokens": 0
+            },
+            "elapsed_ms": 14.999999955762178
+          },
+          {
+            "kind": "model",
+            "status": "complete",
+            "usage": {
+              "input_tokens": 0,
+              "total_tokens": 0,
+              "output_tokens": 0
+            },
+            "elapsed_ms": 14.999999955762178
+          },
+          {
+            "kind": "tool",
+            "status": "complete",
+            "usage": null,
+            "elapsed_ms": 47.0000000204891
+          },
+          {
+            "kind": "tool",
+            "status": "complete",
+            "usage": null,
+            "elapsed_ms": 47.0000000204891
+          }
+        ],
+        "artifact_logical_bytes": 2021,
+        "checkpoint_rows": 12
+      },
+      {
+        "wall_ms_including_process_start": 5178.94,
+        "usage": {
+          "calls": 2,
+          "total_tokens": 0,
+          "reported_tokens": 0,
+          "usage_complete": true
+        },
+        "compression_count": 0,
+        "irreversible_source_loss": false,
+        "external_calls": [
+          {
+            "kind": "model",
+            "status": "complete",
+            "usage": {
+              "input_tokens": 0,
+              "total_tokens": 0,
+              "output_tokens": 0
+            },
+            "elapsed_ms": 16.00000000325963
+          },
+          {
+            "kind": "model",
+            "status": "complete",
+            "usage": {
+              "input_tokens": 0,
+              "total_tokens": 0,
+              "output_tokens": 0
+            },
+            "elapsed_ms": 16.00000000325963
+          },
+          {
+            "kind": "tool",
+            "status": "complete",
+            "usage": null,
+            "elapsed_ms": 46.999999962281436
+          },
+          {
+            "kind": "tool",
+            "status": "complete",
+            "usage": null,
+            "elapsed_ms": 46.999999962281436
+          }
+        ],
+        "artifact_logical_bytes": 2007,
+        "checkpoint_rows": 12
+      }
+    ],
+    "wall_median_ms": {
+      "fake": 4727.03,
+      "durable": 5178.94
+    },
+    "live": {
+      "model": "deepseek-flash",
+      "provider": "deepseek",
+      "thinking": "disabled_by_profile",
+      "pause": {
+        "wall_ms_including_process_start": 6813.46,
+        "usage": {
+          "calls": 2,
+          "total_tokens": 2306,
+          "reported_tokens": 2306,
+          "usage_complete": true
+        },
+        "compression_count": 0,
+        "irreversible_source_loss": false
+      },
+      "resume": {
+        "wall_ms_including_process_start": 4905.5,
+        "usage": {
+          "calls": 2,
+          "total_tokens": 2306,
+          "reported_tokens": 2306,
+          "usage_complete": true
+        },
+        "compression_count": 0,
+        "irreversible_source_loss": false
+      },
+      "repeat_resume": {
+        "wall_ms_including_process_start": 5156.6,
+        "usage": {
+          "calls": 2,
+          "total_tokens": 2306,
+          "reported_tokens": 2306,
+          "usage_complete": true
+        },
+        "compression_count": 0,
+        "irreversible_source_loss": false
+      },
+      "verified_customer_count": 240,
+      "external_calls": [
+        {
+          "kind": "model",
+          "status": "complete",
+          "usage": {
+            "input_tokens": 1204,
+            "total_tokens": 1256,
+            "output_tokens": 52,
+            "input_token_details": {
+              "cache_read": 1024
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 688.0000000237487
+        },
+        {
+          "kind": "model",
+          "status": "complete",
+          "usage": {
+            "input_tokens": 1002,
+            "total_tokens": 1050,
+            "output_tokens": 48,
+            "input_token_details": {
+              "cache_read": 768
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 811.9999999762513
+        },
+        {
+          "kind": "tool",
+          "status": "complete",
+          "usage": null,
+          "elapsed_ms": 46.999999962281436
+        },
+        {
+          "kind": "tool",
+          "status": "complete",
+          "usage": null,
+          "elapsed_ms": 47.0000000204891
+        }
+      ],
+      "artifact_logical_bytes": 2012,
+      "checkpoint_rows": 12
+    }
+  },
+  "summary_crash_and_control": {
+    "decision_mode": "fake; genuine PG/MCP",
+    "both_status": "succeeded",
+    "calls_each": 8,
+    "fake_reported_tokens_each": 120,
+    "real_model_calls": 0
+  },
+  "p3_verified_reference_probe": "fresh valid registry reference accepted; tampered SHA rejected",
+  "coverage": {
+    "parent_process_percent": 86,
+    "tests_passed": 422,
+    "skipped": 1,
+    "subprocess_coverage_merged": false
+  },
+  "limitations": [
+    "No supplier invoice or exactly-once claim",
+    "No durable long-term Memory backend",
+    "No automatic physical TTL cleanup or tenant RLS",
+    "No PG-wide restart or vendor fault injection",
+    "No Python 3.13 or remote CI execution"
+  ]
+}
