@@ -1,13 +1,17 @@
 """Reader-only MCP server. Management/seed/file/shell capabilities are never registered."""
 
+import json
 import os
 
 from mcp.server.fastmcp import FastMCP
+from pydantic import ValidationError
 
 from datapilot.config import Settings
 from datapilot.contracts import AgentFailure
 from datapilot.datasets.contracts import DatasetScope
 from datapilot.datasets.repository import DatasetRepository
+from datapilot.semantics.contracts import MetricRequest
+from datapilot.semantics.repository import MetricRepository
 from datapilot.tools.sql import SQLRepository
 
 
@@ -89,6 +93,39 @@ def create_server() -> FastMCP:
             }
         except AgentFailure as exc:
             return {"result": None, "error": exc.error.model_dump()}
+
+    def metric_request(raw):
+        try:
+            return MetricRequest.model_validate_json(json.dumps(raw, allow_nan=False))
+        except (ValidationError, ValueError, TypeError) as exc:
+            raise AgentFailure("INPUT_INVALID", "Invalid bounded metric request") from exc
+
+    @server.tool()
+    def get_metric_context(request: dict) -> dict:
+        """Read minimum confirmed metric mapping; source authorization is injected by host."""
+        try:
+            value = MetricRepository(dataset_repository()).context(metric_request(request))
+            return {"context": value.model_dump(mode="json"), "error": None}
+        except AgentFailure as exc:
+            return {"context": None, "error": exc.error.model_dump()}
+
+    @server.tool()
+    def recompute_metric(request: dict) -> dict:
+        """Independently recompute a closed metric from bounded raw projections; no custom code."""
+        try:
+            value = MetricRepository(dataset_repository()).proof(metric_request(request))
+            return {"proof": value.model_dump(mode="json"), "error": None}
+        except AgentFailure as exc:
+            return {"proof": None, "error": exc.error.model_dump()}
+
+    @server.tool()
+    def get_evidence(dataset_id: str, evidence_id: str) -> dict:
+        """Read an immutable evidence record only inside the host-bound dataset version."""
+        try:
+            value = MetricRepository(dataset_repository()).evidence(dataset_id, evidence_id)
+            return {"evidence": value.model_dump(mode="json"), "error": None}
+        except AgentFailure as exc:
+            return {"evidence": None, "error": exc.error.model_dump()}
 
     return server
 

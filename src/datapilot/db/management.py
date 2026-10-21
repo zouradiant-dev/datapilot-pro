@@ -22,6 +22,7 @@ def management_url(role: str) -> str:
         "owner": "datapilot_owner",
         "seed": "datapilot_seed",
         "ingest": "datapilot_ingest",
+        "registry": "datapilot_registry",
     }.get(role)
     if url.drivername != "postgresql+psycopg" or (expected and url.username != expected):
         raise ValueError("Use the designated PostgreSQL role")
@@ -39,7 +40,7 @@ def initialize() -> None:
                 raise ValueError("PostgreSQL 17 is required")
             raw = conn.connection.driver_connection
             with raw.cursor() as cursor:
-                suffixes = ("owner", "seed", "reader", "ingest", "upload_reader")
+                suffixes = ("owner", "seed", "reader", "ingest", "upload_reader", "registry")
                 passwords = [
                     os.environ.get(f"DATAPILOT_{s.upper()}_PASSWORD", "") for s in suffixes
                 ]
@@ -67,7 +68,7 @@ def initialize() -> None:
                     sql.SQL(
                         "GRANT CONNECT ON DATABASE {} "
                         "TO datapilot_owner,datapilot_seed,datapilot_reader,"
-                        "datapilot_ingest,datapilot_upload_reader"
+                        "datapilot_ingest,datapilot_upload_reader,datapilot_registry"
                     ).format(sql.Identifier(db))
                 )
             conn.exec_driver_sql("REVOKE CREATE ON SCHEMA public FROM PUBLIC")
@@ -81,6 +82,10 @@ def initialize() -> None:
                 "CREATE SCHEMA IF NOT EXISTS uploads AUTHORIZATION datapilot_ingest"
             )
             conn.exec_driver_sql("REVOKE ALL ON SCHEMA catalog,uploads FROM PUBLIC")
+            conn.exec_driver_sql("GRANT USAGE ON SCHEMA catalog TO datapilot_registry")
+            conn.exec_driver_sql("ALTER ROLE datapilot_registry SET search_path=pg_catalog")
+            conn.exec_driver_sql("ALTER ROLE datapilot_registry SET statement_timeout='5s'")
+            conn.exec_driver_sql("ALTER ROLE datapilot_registry SET lock_timeout='2s'")
             conn.exec_driver_sql("ALTER ROLE datapilot_reader SET default_transaction_read_only=on")
             conn.exec_driver_sql("ALTER ROLE datapilot_reader SET statement_timeout='2s'")
             conn.exec_driver_sql("ALTER ROLE datapilot_reader SET lock_timeout='1s'")
@@ -133,8 +138,14 @@ def grant_business_access() -> None:
             for table in ("datasets", "versions", "tables", "columns"):
                 conn.exec_driver_sql(f"GRANT SELECT ON catalog.{table} TO datapilot_upload_reader")
                 conn.exec_driver_sql(f"GRANT SELECT,INSERT ON catalog.{table} TO datapilot_ingest")
+                conn.exec_driver_sql(f"GRANT SELECT ON catalog.{table} TO datapilot_registry")
             conn.exec_driver_sql(
                 "GRANT UPDATE ON catalog.datasets,catalog.versions TO datapilot_ingest"
             )
+            for table in ("semantic_versions", "metric_versions", "evidence", "verification_runs"):
+                conn.exec_driver_sql(
+                    f"GRANT SELECT,INSERT ON catalog.{table} TO datapilot_registry"
+                )
+                conn.exec_driver_sql(f"GRANT SELECT ON catalog.{table} TO datapilot_upload_reader")
     finally:
         engine.dispose()

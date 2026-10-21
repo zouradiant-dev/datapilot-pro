@@ -6,7 +6,7 @@
 
 ## 1. 当前起点与优先级
 
-起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1 已实现 W2–W3 的本地解析/画像/预览确认，见 [P1 验收](p1-delivery.md)。当前 P2 实现 W4–W5 的受限导入、Dataset 版本与动态 MCP，见 [P2 使用](dataset-ingestion.md)、[真实验收](p2-delivery.md)。本轮停止在 Gate A，P3 及以后未开始。
+起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1 已实现 W2–W3，P2 已实现 W4–W5，当前 P3 完成 D6–D8 SaaS 语义/指标/证据和六层 Verifier，见 [P3 说明](semantic-metrics.md)、[真实验收](p3-delivery.md)。本轮停止在 Gate B；P4 及以后未开始。
 
 唯一首发业务是 SaaS。文件导入、语义/证据、Multi-Agent、产品化和独立评测服务这一主线。首版本地单用户/可信演示，不承诺生产多租户。干洗店 Phase F 与 LangGraph Fork 都是独立可选扩展。
 
@@ -37,7 +37,7 @@ RAG 组件测试可以先于完整 DAG；Gate C 的跨来源验收需要真实�
 
 ## 3. 已完成审计与未来五个工作包
 
-以下保留 P0 拆分的五个工作包 W2–W6，不绑定日历。W1 为已完成 P0，W2–W3 为已完成 P1；W4–W5 为本轮 P2，W6 是尚未开始的 P3 起点。后续包须另行授权，不因列在本节就自动执行。
+以下保留 P0 拆分的五个工作包 W2–W6，不绑定日历。W1/P1/P2 为已完成基线；W6 及后续 D7–D8 属于本轮 P3。P4 及以后须另行授权，不因列在本节就自动执行。
 
 ### W1：冻结基线与规划审计（历史 P0，已完成）
 
@@ -78,13 +78,14 @@ RAG 组件测试可以先于完整 DAG；Gate C 的跨来源验收需要真实�
 - 通过条件：CSV/XLSX→PG→真实 MCP 查询、同 Dataset JOIN；跨 Dataset/系统表/写入拒绝；原四个业务问题独立 SQL 对照通过。
 - **Gate A 通过后**才推进 P3 语义与证据，不因新文件能查询就声称完整 Multi-Agent 已完成。
 
-### W6：SaaS 指标定义与证据最小链（P3 起点）
+### W6–W8 / D6–D8：SaaS 指标定义与六层证据链（P3，已实现）
 
 - 基于 ready Dataset/version 建立已确认实体/字段/关系绑定，定义版本化 MetricDefinition 与 Evidence/VerificationResult，不让模型提交任意可执行指标脚本。
 - 首先落实 paid_invoice_revenue：paid 过滤、invoice_date 右开窗口、整数分/精确金额、单位/空值政策、SQL/计算版本与结果 hash。
 - 对客户/订阅流失、MRR/ARR 列出必要字段与分母政策，缺口明确请求确认或不可计算；不把现有最终 status 当历史状态。
 - 加入漏过滤、JOIN 双计、日期边界、单位、过期版本和伪造引用负面测试，并用独立 SQL/确定性计算复核。
-- 通过条件：至少一个真实数据指标从确认定义到可定位证据完整贯通；尚不代表 Gate B 全部通过，使用量/其他口径与完整目标验证继续在 P3 内验收。
+- 实际交付：确认映射/口径双重版本、五种可执行指标、明确不可计算的 MRR；只读 MCP 最小上下文与原始列 Python 独立复算；raw Evidence/Verification 分离持久化与引用报告。新 0003/Registry 角色，历史迁移和原 SQL 白名单不变。
+- 通过条件：CSV/XLSX→真实 PG→真实 MCP→五种指标独立 Gold 与证据，六层检查及漏过滤/JOIN 双计/右开边界/单位/因果/不可回答负面测试。实际命令与结果见 p3-delivery；真实模型验证不包含在本次确定性验收中。
 
 ## 4. 后续任务边界
 
@@ -93,7 +94,7 @@ RAG 组件测试可以先于完整 DAG；Gate C 的跨来源验收需要真实�
 | P0 | 已完成的文档审计 | 无业务实现；历史记录保留 |
 | P1 | 本轮已完成 W2–W3 Parser/Profile/Preview/Confirm | 见 p1-delivery；不建表、不提前做 UI，到此停止 |
 | P2 | 本轮完成 W4–W5 安全导入/版本/动态 MCP | 真实验收见 p2-delivery；到 Gate A 停止 |
-| P3 | 语义/指标/证据/六层 Verifier | Gate A；到 Gate B 停止 |
+| P3 | 已实现语义/指标/证据/六层 Verifier | Gate A；本轮到 Gate B 停止，见 p3-delivery |
 | P4 | 动态 DAG、子任务与 Worker Loop | Gate B；无 Fork；RAG 替身仅证明编排 |
 | P5 | Context/Memory、持久预算/Checkpoint/Recovery | P4；先解决 Saver 迁移；真实 PG 重启恢复 |
 | P6 | 真实 RAG/计算/报告、UI、Langfuse | 与 P4/P5 集成完成 Gate C，再验收产品闭环 |
@@ -111,6 +112,6 @@ SaaS ≥50 个独立业务任务，开发集/保留集分离，固定 seed/数�
 
 ## 6. 当前阻塞与下一步准备
 
-P1 解析/确认已验收，P2 已落实新 0002 迁移、隔离 ingest/upload_reader、事务化导入、版本固定/切换、真实 MCP 动态查询及同 Dataset JOIN。真实证据见 [P2 记录](p2-delivery.md)。本轮在 P2 / Gate A 停止；P3 指标/语义/证据 Registry、Multi-Agent 与 UI 没有开始。原自然语言 ask 保留 SaaS 路径，上传数据已有显式 SQL 查询入口。
+P1/P2 保留。P3 新增 0003、Registry 元数据隔离身份、版本化语义/指标/证据、受控独立计算与六层验证；当前在 P3 / Gate B 停止。原自然语言 ask 保留 SaaS 路径；上传数据有显式 SQL 入口和版本化指标 CLI。P4 Multi-Agent/DAG、UI、持久恢复没有开始。P4 的输入可复用 MetricRequest/MetricContext 与 Evidence/Verification 引用，不能把当前线性指标服务称为调度器。
 
 真实模型评测需要后续本地配置 API；Embedding 模型、Langfuse 部署与 PG Saver 迁移需在对应 Gate 验证。POS 软件和报表未知只阻塞 Phase F，不阻塞 SaaS。任何阶段都不以部署问题为由退回 SQLite/FAISS。

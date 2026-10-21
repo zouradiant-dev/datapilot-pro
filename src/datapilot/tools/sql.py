@@ -291,21 +291,7 @@ class SQLRepository:
         try:
             with self.engine.connect() as conn, conn.begin():
                 self._configure(conn, policy)
-                # LIMIT on the outer query prevents large transfers, even for LIMIT ALL or unions.
-                wrapped = f"SELECT * FROM ({checked}) AS datapilot_result LIMIT {self.max_rows + 1}"
-                cursor = conn.exec_driver_sql(wrapped)
-                columns = list(cursor.keys())
-                rows = cursor.fetchmany(self.max_rows + 1)
-                data = QueryResult(
-                    columns=columns,
-                    rows=[[_serialize_cell(c) for c in row] for row in rows[: self.max_rows]],
-                    row_count=min(len(rows), self.max_rows),
-                    truncated=len(rows) > self.max_rows,
-                    elapsed_ms=(time.monotonic() - started) * 1000,
-                )
-                if len(json.dumps(data.model_dump()).encode()) > 1_000_000:
-                    raise AgentFailure("RESULT_TOO_LARGE", "Query result exceeds the byte limit")
-                return data
+                return self.read_page(conn, checked, policy, started=started)
         except AgentFailure:
             raise
         except ValidationError as exc:
@@ -327,3 +313,24 @@ class SQLRepository:
             raise AgentFailure(
                 "DATABASE_ERROR", "PostgreSQL query failed; check health and permissions"
             ) from exc
+
+    def read_page(self, conn, sql: str, policy: SQLPolicy, *, started=None) -> QueryResult:
+        """Internal snapshot read; caller must configure this reader transaction first."""
+        checked = validate_sql(sql, policy)
+        if policy.schema != self.profile:
+            raise AgentFailure("ROLE_UNSAFE", "Snapshot policy does not match connection")
+        verify_reader(conn, policy)
+        started = started if started is not None else time.monotonic()
+        wrapped = f"SELECT * FROM ({checked}) AS datapilot_result LIMIT {self.max_rows + 1}"
+        cursor = conn.exec_driver_sql(wrapped)
+        rows = cursor.fetchmany(self.max_rows + 1)
+        data = QueryResult(
+            columns=list(cursor.keys()),
+            rows=[[_serialize_cell(c) for c in row] for row in rows[: self.max_rows]],
+            row_count=min(len(rows), self.max_rows),
+            truncated=len(rows) > self.max_rows,
+            elapsed_ms=(time.monotonic() - started) * 1000,
+        )
+        if len(json.dumps(data.model_dump()).encode()) > 1_000_000:
+            raise AgentFailure("RESULT_TOO_LARGE", "Query result exceeds the byte limit")
+        return data

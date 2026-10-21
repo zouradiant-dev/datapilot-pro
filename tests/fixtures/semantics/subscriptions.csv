@@ -1,0 +1,10 @@
+subscription_id,customer_id,start_date,end_date,termination_kind
+s1,c1,2025-01-01,2025-10-01,churned
+s2,c2,2025-01-01,2025-10-15,churned
+s3,c2,2025-10-20,,active
+s4,c3,2025-01-01,,active
+s5,c3,2025-09-01,2025-10-10,churned
+s6,c4,2025-10-01,,active
+s7,c5,2025-01-01,2025-11-01,churned
+s8,c6,2025-01-01,2025-10-31,churned
+s9,c7,2025-11-01,,active

@@ -31,6 +31,9 @@ def main() -> int:
     from datapilot.datasets.cli import add_commands as add_dataset_commands
 
     add_dataset_commands(sub)
+    from datapilot.semantics.cli import add_commands as add_semantic_commands
+
+    add_semantic_commands(sub)
     sub.add_parser("health", help="Reader: verify PostgreSQL 17, extension, permissions and seed")
     query = sub.add_parser("ask", help="Supervisor -> SQL -> MCP -> PostgreSQL -> Answer")
     query.add_argument("question")
@@ -46,6 +49,10 @@ def main() -> int:
             return run(args)
         elif args.command == "datasets":
             from datapilot.datasets.cli import run
+
+            return run(args)
+        elif args.command == "semantics":
+            from datapilot.semantics.cli import run
 
             return run(args)
         elif args.command == "db-init":

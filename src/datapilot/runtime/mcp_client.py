@@ -22,6 +22,7 @@ from datapilot.datasets.contracts import (
     DatasetScope,
 )
 from datapilot.ingestion.common import digest
+from datapilot.semantics.contracts import Evidence, MetricContext, MetricProof
 
 
 class DatabaseTools(Protocol):
@@ -138,6 +139,60 @@ class MCPDatasetTools(MCPDatabaseTools):
             raise AgentFailure("TOOL_OUTPUT_INVALID", "Invalid dataset query result") from exc
 
 
+class MCPMetricTools(MCPDatasetTools):
+    allowed = MCPDatasetTools.allowed | {"get_metric_context", "recompute_metric", "get_evidence"}
+
+    def _check_source(self, value):
+        expected = self.bindings.get(value.dataset_id)
+        if value.dataset_id not in self.bindings or expected != value.dataset_version:
+            raise ValueError("Metric sources must be explicitly version-pinned by the host")
+        identity = (value.dataset_version, value.source_sha256)
+        if self.pinned.setdefault(value.dataset_id, identity) != identity:
+            raise ValueError("Source identity changed")
+
+    async def context(self, request):
+        payload = await self.call(
+            "get_metric_context", {"request": request.model_dump(mode="json")}
+        )
+        try:
+            result = MetricContext.model_validate_json(json.dumps(payload.get("context")))
+            self._check_source(result)
+            if (
+                digest(result.model_dump(mode="json", exclude={"context_sha256"}))
+                != result.context_sha256
+            ):
+                raise ValueError("Invalid context hash")
+            from datapilot.semantics.recipes import request_missing
+
+            request_missing(result, request)
+            return result
+        except (ValidationError, ValueError) as exc:
+            raise AgentFailure("TOOL_OUTPUT_INVALID", "Invalid metric context") from exc
+
+    async def recompute(self, request):
+        payload = await self.call("recompute_metric", {"request": request.model_dump(mode="json")})
+        try:
+            result = MetricProof.model_validate_json(json.dumps(payload.get("proof")))
+            if result.request_sha256 != digest(request):
+                raise ValueError("Proof request mismatch")
+            return result
+        except (ValidationError, ValueError) as exc:
+            raise AgentFailure("TOOL_OUTPUT_INVALID", "Invalid independent proof") from exc
+
+    async def evidence(self, dataset_id, evidence_id):
+        payload = await self.call(
+            "get_evidence", {"dataset_id": dataset_id, "evidence_id": evidence_id}
+        )
+        try:
+            result = Evidence.model_validate_json(json.dumps(payload.get("evidence")))
+            self._check_source(result)
+            if result.evidence_id != evidence_id or result.dataset_id != dataset_id:
+                raise ValueError("Evidence reference mismatch")
+            return result
+        except (ValidationError, ValueError) as exc:
+            raise AgentFailure("TOOL_OUTPUT_INVALID", "Invalid evidence reference") from exc
+
+
 def server_environment(settings: Settings) -> dict[str, str]:
     # No provider API key, admin/owner/seed URL, or arbitrary parent environment inheritance.
     env = {
@@ -204,4 +259,19 @@ async def dataset_session(settings: Settings, scope: DatasetScope):
             settings.upload_reader_database_url.get_secret_value()
         )
     async with _connection(settings, env, partial(MCPDatasetTools, scope=scope)) as tools:
+        yield tools
+
+
+@asynccontextmanager
+async def metric_session(settings: Settings, scope: DatasetScope):
+    scope = DatasetScope.model_validate_json(scope.model_dump_json())
+    if any(b.version is None for b in scope.bindings):
+        raise ValueError("Metric sessions require explicit dataset versions")
+    env = server_environment(settings)
+    env["DATAPILOT_DATASET_SCOPE"] = scope.model_dump_json()
+    if settings.upload_reader_database_url:
+        env["DATAPILOT_UPLOAD_READER_DATABASE_URL"] = (
+            settings.upload_reader_database_url.get_secret_value()
+        )
+    async with _connection(settings, env, partial(MCPMetricTools, scope=scope)) as tools:
         yield tools

@@ -1,0 +1,7 @@
+invoice_id,customer_id,amount_cents,invoice_date,payment_status,currency
+i1,c1,10000,2025-10-01,paid,CNY
+i2,c2,20000,2025-10-31,paid,CNY
+i3,c3,99900,2025-11-01,paid,CNY
+i4,c4,40000,2025-09-30,paid,CNY
+i5,c5,50000,2025-10-15,unpaid,CNY
+i6,c6,0,2025-10-20,paid,CNY

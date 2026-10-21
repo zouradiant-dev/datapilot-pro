@@ -2,7 +2,7 @@
 
 ## 1. 目标、阶段边界与技术决策
 
-面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。Day 1 实现 Supervisor + SQL Worker；P0 完成规划审计，P1 完成文件解析/画像/确认，当前 P2 完成受限导入、Dataset 版本与动态 MCP 查询。不宣称完成五 Agent 系统、指标/证据 Registry 或生产多租户。
+面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。Day 1 实现 Supervisor + SQL Worker；P0 完成规划审计，P1 完成文件解析/画像/确认，P2 完成受限导入、Dataset 版本与动态 MCP 查询，当前 P3 完成 SaaS 语义/指标/证据与六层验证。不宣称完成五 Agent 系统或生产多租户。
 
 第 2–9 节记录当前基线；第 10 节起是 v2 目标设计。完整现状/缺口见 [代码审计](planning-audit-v2.md)，实施依赖与验收见 [v2 路线图](roadmap-v2.md)。旧七天计划已废止；工作单元不绑定日期。SaaS 是唯一首发主业务，干洗店通过后续 Domain Pack 扩展。
 
@@ -52,7 +52,7 @@ datapilot-pro/
   tests/ # data / policy / models / Worker+Graph / MCP / PostgreSQL / live model
 ```
 
-Ingestion 当前仅解析/画像/预览/确认。受限入库、RAG、Analysis、Report、Catalog/Domain、API、UI、Langfuse/evals 为后续实现，不预建空壳。
+上面目录为 Day 1/P1 基线；P2 新增 datasets/、db/catalog.py 与 ingestion/service.py；P3 新增 semantics/、db/semantic_schema.py、harness/metric_verification.py，固定迁移到 0003。受限入库与封闭 SaaS 指标已实现；RAG、Analysis/Report Agent、API/UI、Langfuse/evals 为后续实现，不预建空壳。
 
 ## 3. LangGraph State Schema
 
@@ -141,7 +141,7 @@ rag.document_chunks 从 Day 1 预留 source_uri/content/embedding_model/embeddin
 7. pytest 区分 Mock、protocol、integration、live；真实集成不能用替代数据库。无 API 时只承诺 Fake 模型+真实数据库路径，不承诺真实模型 E2E。
 8. 锁定环境、pytest、ruff、CLI 示例真实运行；如环境阻塞则明确保留未验收项，不伪造通过。
 
-## 10. v2 分层目标架构（未实现）
+## 10. v2 分层目标架构（部分实现；动态 Runtime 尚未实现）
 
 ```mermaid
 flowchart TB
@@ -225,7 +225,7 @@ Gate A 动态数据闭环→Gate B 语义/证据→Gate C 多 Agent/跨来源/�
 
 SaaS 核心评测至少 50 个独立 E2E 任务；与已有 60 个 pytest 用例严格区分。消融固定模型/数据/预算，Claude Code 产品比较披露工具/模型/人工差异，Fork 比较同 Harness；没有真实结果不宣称领先。Fork 先遵循 [研究门槛](langgraph-fork-research-plan.md)，复用保留 [许可证与归属](third-party-references.md)。
 
-P0 当时原测试分类合计 59 passed、1 live skipped，真实 PG 健康且为 240 客户；详细命令/结果见 [审计记录](planning-audit-v2.md)。P1 新增解析/画像/确认与回归结果见 [交付记录](p1-delivery.md)，其他目标能力尚未实现。
+P0 当时原测试分类合计 59 passed、1 live skipped，真实 PG 健康且为 240 客户；详细命令/结果见 [审计记录](planning-audit-v2.md)。P1/P2/P3 的真实回归分别见对应交付记录；历史计数不当作当前验证。当前在 Gate B 停止，动态 Runtime 等目标能力尚未实现。
 
 ## 15. P1 已实现的文件边界
 
@@ -268,3 +268,30 @@ flowchart LR
 原件发布与数据库不是同一事务：快照通过同目录临时文件+原子独占硬链接发布，失败保留快照，可按 catalog.source_ref 对账。崩溃残留/累计空间/保留策略需显式运维处理；不自动清理用户数据。发布版本是应用层不可变；可信 ingest 仍拥有物理表，不能声称数据库 WORM。单用户 upload_reader 可读全部已发布上传表，逐 Dataset 边界由服务器 scope+AST 强制，尚无生产逐租户 RLS。
 
 操作与精确边界见 [P2 使用说明](dataset-ingestion.md)，真实命令/结果见 [P2 验收](p2-delivery.md)。原 `ask` 继续面向固定 SaaS 数据；上传数据目前通过显式 Dataset SQL 查询。
+
+## 17. P3 已实现：SaaS Semantic/Metric/Evidence 与六层验证
+
+本节更新 D6–D8 当前状态，不扩大为新的多 Agent 系统。实现及配额/公式见 [P3 使用说明](semantic-metrics.md)，权衡见 [ADR-005](adr/0005-semantic-registry-verifier.md)，真实回归见 [P3 交付](p3-delivery.md)。
+
+```mermaid
+flowchart LR
+    U[可信操作者审阅映射与指标] --> R[RegistryStore 元数据 SELECT/INSERT]
+    R --> C[(catalog 版本/定义/原始 Evidence/Verification)]
+    H[宿主绑定 Dataset/version + MetricRequest] --> W[SQLAgent.run_metric]
+    W --> M[MCPMetricTools]
+    M --> X[MCP get_metric_context / query_dataset / recompute_metric]
+    X --> DB[(uploads PG17 只读精确范围)]
+    X --> P[原始列独立快照 / Python Decimal]
+    W --> V[六层确定性 Verifier]
+    V --> R
+    M --> E[MCP get_evidence 授权读回]
+    E --> V
+    V --> A[已验证结构化 claims / 引用 Markdown]
+```
+
+- **Data**：0003 仅追加 semantic_versions/metric_versions/evidence/verification_runs；P2 Dataset 版本作为外键根。新增 metadata-only Registry 角色，不读业务表、不修改历史、不建表；Owner/ingest/reader 权限保持隔离。Registry 写入是非模型基础设施通道，运行期业务读取仍由 MCP。
+- **Domain**：saas-1 EntityMapping、saas_metrics_v1 封闭政策；用户分别确认字段/粒度/金额单位/观测范围/合同历史及 paid/churn/feature。五类指标可计算；MRR 只有版本化登记与明确缺失说明，无执行配方。原 Seed 最终 status 不自动当合同历史。
+- **Harness**：安全、形状、语义、独立复算、引用、目标覆盖；Evidence raw 与验证终态分离。指标 worker 仅获得必要列；无原始行进入模型。每个已发布数值绑定 Evidence、Verification 与源/口径版本，因果请求拒绝无依据回答。
+- **Runtime**：原 LangGraph 图、原 SQLTask 路径保留；新增显式版本化 MetricRequest 入口，不改造成 DAG。deterministic CLI 不调用模型；可选注入已有预算化 ModelClient 的提议也必须通过保守配方 AST 校验，未作真实 LLM 验收。
+
+独立复算以 PostgreSQL REPEATABLE READ/READ ONLY 快照分页读取必要列，每页保留原 SQL 安全与结果限制；Python 使用独立队列/过滤算法。20,000 行/256 页/协作时限超限、重复记录/null/错误有效区间、零分母、未确认语义均不给验证数字。跨工具不是同一事务，主查询与复算不一致时拒绝。CNY/DATE、单 Dataset 的封闭配方是明确产品边界，不是通用语义证明或生产多租户。

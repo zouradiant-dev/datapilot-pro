@@ -1,9 +1,9 @@
 from alembic import context
 from sqlalchemy import create_engine, pool
 
-from datapilot.db.catalog import metadata as catalog_metadata
 from datapilot.db.management import management_url
 from datapilot.db.schema import metadata
+from datapilot.db.semantic_schema import metadata as catalog_metadata
 
 # Credentials live only in environment, never in alembic.ini or log configuration.
 engine = create_engine(management_url("owner"), poolclass=pool.NullPool, hide_parameters=True)

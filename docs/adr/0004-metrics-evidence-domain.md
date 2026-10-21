@@ -1,10 +1,10 @@
 # ADR-004：SaaS 语义、证据验证与业务域扩展
 
-日期：2026-10-21。状态：契约设计，未实现 Registry/Domain Pack。
+日期：2026-10-21。状态：P3 已落实 SaaS Registry/Verifier 子集，详见 ADR-005 与 semantic-metrics.md；通用 Domain Pack/非文件 Connector 仍为设计。
 
 ## 领域数据契约
 
-下列字段是逻辑接口，后续用 Pydantic 和新 Alembic 迁移落实，不要求每个名词对应独立微服务或表。
+下列为原逻辑目标接口；P3 的实际严格 DTO 和新 0003 持久化模型见 semantic-metrics.md。TaskEnvelope、通用 Domain Pack、文档证据与动态运行时未在本阶段实现；不要求每个名词对应独立微服务或表。
 
 | 对象 | 最小信息 | 不变量 |
 |---|---|---|

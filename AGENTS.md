@@ -2,7 +2,7 @@
 
 ## 架构和范围
 
-- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/planning-audit-v2.md 与相关 docs/adr/。当前授权为 P2（D4–D5/W4–W5）：受限导入、catalog Dataset/版本与动态 MCP 查询，完成后停止；不进入 P3 指标/语义/证据 Registry、多 Agent 或 UI。P1 已验收。后续仅执行用户授权的阶段，不自动推进整个路线图。
+- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/planning-audit-v2.md 与相关 docs/adr/。当前授权为 P3（D6–D8）：SaaS 语义/指标/证据 Registry 与六层 Verifier，完成后停止在 Gate B；不进入 P4 动态 DAG、多 Agent 或 UI。P1/P2 已验收。后续仅执行用户授权的阶段，不自动推进整个路线图。
 - 按功能依赖与验收 Gate 推进，工作单元/工作日编号不是截止日期；旧七天计划已由 roadmap-v2 取代。SaaS 是唯一首发主业务，drycleaning 是独立可选 Phase F，不复制 Runtime/Harness/Worker。
 - Python 3.11+、src 布局、类型标注、Pydantic 2 严格契约、LangGraph StateGraph 编排。
 - Supervisor 路由；SQL Worker 只接收 SQLTask，不读取整个 State。后续 Worker 独立工具权限、上下文与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
@@ -40,6 +40,9 @@
 - P1 preview/confirm 以 docs/data-ingestion.md 为准，继续不加载数据库/模型配置。P2 见 docs/dataset-ingestion.md：import 从同一次有界原件读取重算整个确认，禁止只校验客户端 hash；仅 datapilot_ingest 执行 uploads DDL/批量写入/逐表 SELECT 授权，与 catalog ready/版本指针同事务。固定 catalog 仅用新增 0002 迁移，0001 冻结。不得注册 import/activate 为 MCP 工具。
 - 同名本地 Dataset 身份稳定；同确认幂等、新内容或映射建新版本，不改旧表；重复导入旧确认不偷偷切换 current_version。并发导入使用事务 advisory lock，版本激活只走可信运维入口。原件由 hash 命名并原子发布到忽略目录，失败保留可对账快照；不自动清表/清库/删卷。ingest 拥有上传对象，应用层不可变不等于数据库 WORM。
 - 指标绑定 Dataset/Domain Pack/Metric 版本、时间/粒度/过滤/单位/null 政策。paid 账单收入不等于 MRR；客户流失不等于订阅流失；缺字段不能猜值。关键数字经确定性 SQL/Python 并绑定证据，不能让模型自报 verified。
+- P3 以 docs/semantic-metrics.md、ADR-005 为准：映射/指标分别显式用户确认，append-only 版本；Registry 仅 metadata SELECT/INSERT，禁止业务数据权限、UPDATE/DELETE/DDL；任何 Registry 写工具都不得注册 MCP，MCP 不继承 Registry DSN。历史迁移 0001/0002/0003 冻结，后续固定结构变更须新迁移。
+- SQLAgent.run_metric 只接收 MetricRequest 和最小 MetricContext；可信宿主固定 Dataset/version，模型参数不能授权。saas_metrics_v1 封闭配方不接受任意 SQL 模板/脚本；公式改动新增 policy/computation 版本，不能悄改旧证据口径。只有验证过的结构化 claim 进入 P3 报告；原 ask 保留 Day 1 路径，不能宣称它已获得 P3 全部验证。
+- 复算由受控 MCP 内部原始列投影 + 确定性 Python 完成，保留每页安全/输出限制、只读一致快照和总配额。六层按 safety/shape/semantics/recomputation/references/coverage 判定；Evidence raw 与 Verification 分离。MRR 未实现配方、缺字段/覆盖范围、未知合同历史、零分母、因果问题必须明确无法计算/验证；失败证据不能发布数值。
 - Trace 目标为 Langfuse，经可替换接口集成；凭据、原始个人资料、业务行及含敏感值的完整 SQL/Prompt 默认不记录。经营者真实数据不提交 Git，不擅自外传模型/观测服务。
 
 ## 测试与交付

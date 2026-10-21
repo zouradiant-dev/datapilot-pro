@@ -30,6 +30,8 @@ jobs:
       DATAPILOT_READER_PASSWORD: ci-reader-only
       DATAPILOT_INGEST_PASSWORD: ci-ingest-only
       DATAPILOT_UPLOAD_READER_PASSWORD: ci-upload-reader-only
+      DATAPILOT_REGISTRY_PASSWORD: ci-registry-only
+      DATAPILOT_REGISTRY_DATABASE_URL: postgresql+psycopg://datapilot_registry:ci-registry-only@localhost:5432/datapilot
       DATAPILOT_INGEST_DATABASE_URL: postgresql+psycopg://datapilot_ingest:ci-ingest-only@localhost:5432/datapilot
       DATAPILOT_UPLOAD_READER_DATABASE_URL: postgresql+psycopg://datapilot_upload_reader:ci-upload-reader-only@localhost:5432/datapilot
     steps:

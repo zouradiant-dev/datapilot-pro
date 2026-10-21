@@ -1,14 +1,14 @@
 # DataPilot Pro
 
-面向 SaaS 企业的智能经营分析系统，当前已实现 **Day 1：Supervisor + SQL Agent**、**P1：CSV/XLSX 解析与 Schema 确认**、**P2：受限入库、Dataset 版本与动态 MCP 查询**。业务数据库使用 **PostgreSQL 17 + pgvector**，运行期业务查询全部经过真正的 MCP Server/Client。
+面向 SaaS 企业的智能经营分析系统，当前已实现 **Day 1：Supervisor + SQL Agent**、**P1：CSV/XLSX 解析与 Schema 确认**、**P2：受限入库与动态 MCP**、**P3：SaaS 语义/指标/证据与六层验证**。业务数据库使用 **PostgreSQL 17 + pgvector**，运行期业务查询全部经过真正的 MCP Server/Client。
 
 实现：固定种子合成数据、Alembic 迁移、隔离角色、PostgreSQL AST 校验、只读事务、超时/行数限制、LangGraph 条件路由、有界 SQL 修复、严格结果契约和 CLI。RAG/Analysis/Report、多任务并发、API/UI 与完整 Trace 尚未实现。
 
 详见 [架构与目标设计](docs/architecture.md)、[v2 Gate 路线图](docs/roadmap-v2.md)、[本轮代码审计与回归](docs/planning-audit-v2.md)、[开发约束](AGENTS.md)、[Day 1 历史验收记录](docs/day1-delivery.md)。
 
-v2 目标闭环：**CSV/XLSX 上传 → Schema 预览确认 → 受限入库/数据集版本 → 动态 MCP 查询 → 语义指标与证据验证 → 多 Agent 报告**。当前已到文件入库及可查询数据集；语义/指标/证据 Registry 与多 Agent 报告尚未实现。外层 LangGraph 与内层 Worker Loop 仍按后续 Gate 演进。
+v2 目标闭环：**CSV/XLSX 上传 → Schema 预览确认 → 受限入库/数据集版本 → 动态 MCP 查询 → 语义指标与证据验证 → 多 Agent 报告**。当前已到版本化 SaaS 指标与确定性引用报告；多 Agent 报告尚未实现。外层 LangGraph 与内层 Worker Loop 仍按后续 Gate 演进。
 
-首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates，编号不构成日期承诺；当前停止在 P2 / Gate A。
+首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates，编号不构成日期承诺；当前停止在 P3 / Gate B。
 
 ## 文件预览与确认（P1，无需数据库或 API Key）
 
@@ -31,12 +31,13 @@ uv run --locked datapilot ingest confirm tests/fixtures/ingestion/saas_multi_she
 
 ```powershell
 uv run --locked python scripts/configure_local.py --add-upload-roles
+uv run --locked python scripts/configure_local.py --add-registry-role
 uv run --locked datapilot db-init
 uv run --locked datapilot migrate
 uv run --locked datapilot health
 ```
 
-新环境按下一节一次初始化即可。P2 使用 `catalog` 四张固定元数据表和独立 `uploads` Schema，迁移 head 为 `0002`；`0001` 未修改。
+新环境按下一节一次初始化即可。P2 使用 `catalog` 四张固定元数据表和独立 `uploads` Schema；P3 新 0003 增加语义/指标/证据/验证四表，当前 head 为 `0003`；历史 `0001`/`0002` 未修改。
 
 ```powershell
 $demoDir = 'artifacts/demo-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
@@ -55,6 +56,20 @@ uv run --locked datapilot datasets list --dataset $datasetId
 合成 CSV 示例结果为 3 张账单、精确金额字符串 `1213.4400`。XLSX 可用同样的 preview/confirm/import 流程，多 Sheet 表名从 schema 输出获取，可在同一 Dataset 内 JOIN。自然语言 `ask` 仍走原 SaaS 路径；P2 提供显式 SQL 查询入口，不声称完成上传数据的自主分析 Agent。
 
 导入仅用隔离的 `datapilot_ingest`，重新验证原件/确认后事务化建表、批量写入、登记和授权。模型侧仅有 `datapilot_upload_reader`；DatasetScope 由可信宿主注入，工具参数不能扩权。重复导入相同确认复用版本，新内容/映射保留旧表并产生新版本；`datasets schema/query --version N` 在宿主固定历史版本，`datasets activate ID --version N` 只修改当前指针。详情与边界见 [P2 使用说明](docs/dataset-ingestion.md)、[P2 实际验收](docs/p2-delivery.md)。
+
+## SaaS 指标与可复核证据（P3）
+
+映射和口径分别经用户确认并版本化；收入、客户净流失、订阅流失、活跃合同、使用量由受控 SQL 与原始列 Python 独立复算。MRR 不用账单收入替代，缺信息/历史/覆盖范围或零分母明确不能计算。通过六层校验的报告数字均绑定 Evidence/Verification ID。
+
+已有环境先执行上面的 Registry 角色升级、db-init 和 migrate。无需模型 Key 的合成 Demo：
+
+```powershell
+$demoDir = 'artifacts/semantic-demo-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
+uv run --locked python scripts/prepare_semantic_demo.py --reviewed-synthetic --output $demoDir
+uv run --locked datapilot semantics run "$demoDir/requests.json"
+```
+
+这是明确标记的 `deterministic` 执行；不冒充真实 LLM E2E。入口为显式版本化请求 JSON，原 `ask` 保留 Day 1 路径。完整确认/证据读取/公式/配额与限制见 [P3 使用说明](docs/semantic-metrics.md)、[P3 交付](docs/p3-delivery.md)、[ADR-005](docs/adr/0005-semantic-registry-verifier.md)。
 
 ## 本地运行
 
@@ -122,7 +137,7 @@ CI 配置使用真实 PG17/pgvector 服务，覆盖 Python 3.11/3.13。仓库尚
 
 ## 安全边界与局限
 
-MCP 仅注册只读数据库工具，SaaS/上传会话各拿自己的 Reader 凭据；模型看不到管理员、Owner、Seed 或 Ingest 凭据。Reader 无业务写权限、Schema CREATE、TEMP 或角色继承；AST 同时限制表、函数及语句。上传策略每请求绑定精确物理表，多个 Dataset 同时被选中也不允许单次请求跨 Dataset JOIN。数据库端显式只读事务、statement_timeout 与外层 LIMIT 独立生效。默认角色只读设置本身可以被修改，因此权限 grants 不可省略。
+MCP 仅注册只读数据库工具，SaaS/上传会话各拿自己的 Reader 凭据；模型看不到管理员、Owner、Seed、Ingest 或 Registry 凭据。Reader 无业务写权限、Schema CREATE、TEMP 或角色继承；AST 同时限制表、函数及语句。上传策略每请求绑定精确物理表，多个 Dataset 同时被选中也不允许单次请求跨 Dataset JOIN。数据库端显式只读事务、statement_timeout 与外层 LIMIT 独立生效。默认角色只读设置本身可以被修改，因此权限 grants 不可省略。
 
 `.env` 是本机开发配置，stdio 子进程仍受宿主 OS 信任，不是对恶意宿主进程的沙箱。pgvector 存储表已迁移，文档摄取、Embedding、索引和 RAG 逻辑属于后续 Gate C；当前不运行独立向量服务。
 
