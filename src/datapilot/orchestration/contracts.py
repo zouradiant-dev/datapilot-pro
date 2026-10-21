@@ -84,7 +84,7 @@ class Usage(Contract):
 
 class EvidenceRef(Contract):
     artifact_id: Digest
-    kind: Literal["query", "documents", "analysis", "report"]
+    kind: Literal["query", "documents", "analysis", "report", "schema"]
     sha256: Digest
 
 
@@ -170,7 +170,7 @@ class Artifact(Contract):
     run_id: str
     task_id: TaskId
     plan_version: int
-    kind: Literal["query", "documents", "analysis", "report"]
+    kind: Literal["query", "documents", "analysis", "report", "schema"]
     source: str = Field(max_length=256)
     sql: str | None = Field(default=None, max_length=12000)
     query: QueryResult | None = None
@@ -178,10 +178,53 @@ class Artifact(Contract):
     values: dict[str, str] = Field(default_factory=dict, max_length=4)
     parents: list[EvidenceRef] = Field(default_factory=list, max_length=48)
 
+    @model_validator(mode="after")
+    def payload_matches_kind(self):
+        if (self.kind == "query") != (self.query is not None) or (
+            (self.kind == "documents") != (self.documents is not None)
+        ):
+            raise ValueError("Artifact payload must match its declared kind")
+        if self.kind == "schema" and set(self.values) != {"schema"}:
+            raise ValueError("Schema artifacts require complete schema text")
+        return self
+
 
 class FinalDecision(Contract):
     artifact_ids: list[Digest] = Field(min_length=1, max_length=8)
     outcome: Literal["complete", "unavailable"] = "complete"
+
+
+class ContextUsage(Contract):
+    messages: int = Field(ge=0)
+    message_chars: int = Field(ge=0)
+    tool_schema_chars: int = Field(ge=0)
+    input_bytes: int = Field(ge=0)
+    estimated_input_tokens: int = Field(ge=0)
+    output_reserved_tokens: int = Field(ge=0)
+    tool_result_chars: int = Field(ge=0)
+    estimation: Literal["utf8_bytes_plus_128"] = "utf8_bytes_plus_128"
+
+
+class CompletionDecision(Contract):
+    status: Literal["completed", "incomplete", "blocked"]
+    # This prototype checks the required task DAG, not general NL goal equivalence.
+    scope: Literal["required_task_contracts"] = "required_task_contracts"
+    required_tasks: list[TaskId] = Field(default_factory=list, max_length=12)
+    verified_tasks: list[TaskId] = Field(default_factory=list, max_length=12)
+    reason_codes: list[str] = Field(default_factory=list, max_length=32)
+    business_metrics_required: bool = False
+
+    @model_validator(mode="after")
+    def derived_completion(self):
+        if (self.status == "completed") != (not self.reason_codes):
+            raise ValueError("Completion requires all checks without missing requirements")
+        if self.status == "completed" and (
+            not self.required_tasks
+            or set(self.required_tasks) != set(self.verified_tasks)
+            or self.business_metrics_required
+        ):
+            raise ValueError("Task checks alone cannot complete a business metric request")
+        return self
 
 
 class TraceEvent(Contract):
@@ -197,3 +240,4 @@ class TraceEvent(Contract):
     tool_call_id: str | None = None
     evidence_ids: list[str] = Field(default_factory=list)
     usage: Usage | None = None
+    context: ContextUsage | None = None

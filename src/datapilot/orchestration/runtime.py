@@ -2,6 +2,7 @@
 
 import asyncio
 import hashlib
+import re
 from collections.abc import Awaitable
 
 from datapilot.contracts import AgentFailure
@@ -23,7 +24,7 @@ def execution_error(error: AgentFailure) -> ExecutionError:
         else "model"
         if code.startswith("MODEL")
         else "verification"
-        if code.startswith(("VERIFICATION", "EVIDENCE"))
+        if code.startswith(("VERIFICATION", "EVIDENCE")) or code == "TOOL_OUTPUT_INVALID"
         else "input"
         if code in {"INPUT_INVALID", "CONTEXT_LIMIT"}
         else "tool"
@@ -55,7 +56,7 @@ class Cancellation:
         if self.event.is_set():
             raise AgentFailure("CANCELLED", "Parent run was cancelled")
 
-    async def wait_for(self, operation: Awaitable, timeout: float):
+    async def wait_for(self, operation: Awaitable, timeout: float, *, timeout_code="TOOL_TIMEOUT"):
         job = asyncio.ensure_future(operation)
         stopped = asyncio.create_task(self.event.wait())
         try:
@@ -66,7 +67,7 @@ class Cancellation:
             self.check()
             if job not in done:
                 raise AgentFailure(
-                    "TOOL_TIMEOUT", "Bounded async operation timed out", retryable=True
+                    timeout_code, "Bounded async operation timed out", retryable=True
                 )
             return await job
         finally:
@@ -123,6 +124,7 @@ class Trace:
         tool_call_id=None,
         refs=(),
         usage=None,
+        context=None,
     ):
         if len(self.events) >= 1024:
             raise AgentFailure("TRACE_LIMIT", "Run trace quota reached")
@@ -136,9 +138,15 @@ class Trace:
             elapsed_ms=round(elapsed_ms, 3),
             error_code=error_code,
             tool_name=tool_name,
-            tool_call_id=tool_call_id,
+            tool_call_id=(
+                tool_call_id
+                if tool_call_id is None
+                or re.fullmatch(r"[\w:-]{1,128}", tool_call_id, flags=re.ASCII)
+                else "opaque-" + text_hash(tool_call_id)[:16]
+            ),
             evidence_ids=[r.artifact_id for r in refs],
             usage=usage,
+            context=context,
         )
         self.events.append(event.model_dump())
 

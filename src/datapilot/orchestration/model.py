@@ -6,11 +6,12 @@ import re
 from dataclasses import dataclass
 from typing import Protocol
 
-from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, messages_to_dict
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
 
 from datapilot.agents.sql import SYSTEM as SQL_SYSTEM
 from datapilot.contracts import AgentFailure, SQLProposal
+from datapilot.orchestration.context import measure_context
 from datapilot.orchestration.contracts import Plan, TaskSpec
 
 
@@ -47,6 +48,7 @@ class ModelLimits:
     max_input_chars: int
     max_output_tokens: int
     model_timeout_seconds: float
+    max_context_tokens: int
 
 
 class Gateway:
@@ -54,23 +56,42 @@ class Gateway:
         self.transport, self.settings, self.ledger, self.cancel = (
             transport,
             ModelLimits(
-                settings.max_input_chars, settings.max_output_tokens, settings.model_timeout_seconds
+                settings.max_input_chars,
+                settings.max_output_tokens,
+                settings.model_timeout_seconds,
+                settings.max_context_tokens,
             ),
             ledger,
             cancellation,
         )
+        self.trace = None
 
     async def invoke(self, messages, tools, account):
         self.cancel.check()
-        text = json.dumps(
-            {"messages": messages_to_dict(messages), "tools": tools}, ensure_ascii=False
+        text, context = measure_context(messages, tools, self.settings.max_output_tokens)
+        exceeded = (
+            len(text) > self.settings.max_input_chars
+            or context.estimated_input_tokens + context.output_reserved_tokens
+            > self.settings.max_context_tokens
         )
-        if len(text) > self.settings.max_input_chars:
+        if self.trace:
+            version, _, task_id = account.partition(":")
+            self.trace.emit(
+                "model_context",
+                "rejected" if exceeded else "accepted",
+                version=int(version) if version.isdigit() else 1,
+                task_id=task_id or None,
+                context=context,
+                error_code="CONTEXT_LIMIT" if exceeded else None,
+            )
+        if exceeded:
             raise AgentFailure("CONTEXT_LIMIT", "Isolated worker context exceeds its limit")
         ticket = self.ledger.reserve(account, text, self.settings.max_output_tokens)
         try:
             response = await self.cancel.wait_for(
-                self.transport.respond(messages, tools), self.settings.model_timeout_seconds
+                self.transport.respond(messages, tools),
+                self.settings.model_timeout_seconds,
+                timeout_code="MODEL_TIMEOUT",
             )
         except BaseException as exc:
             self.ledger.settle(ticket, None)

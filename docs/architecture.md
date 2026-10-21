@@ -305,3 +305,11 @@ flowchart LR
 父子预算统一通过 P4 Gateway/BudgetLedger 原子预留和结算，取消共享，未知 usage 保留保守收费。预算/上下文/SQL 尝试/轮次/并发/Trace/工件均有界，权限拒绝不能触发重规划扩权。原 P3 指标入口独立保留；P4 的任务验证不替代 P3 六层业务指标验证。
 
 完整公式与状态边界见 [编排说明](orchestration.md) 和 [ADR-006](adr/0006-two-level-orchestration.md)，真实执行见 [交付记录](p4-delivery.md)。RAG 组件替身与真实 SQL/MCP 明确区分；没有新迁移/依赖/Fork。持久账本、PG Saver、Memory 和真实跨来源业务闭环仍属后续 P5/P6，不预建空壳。
+
+## 19. P4.1 增量加固
+
+沿用 P4 固定图、Worker 子图、ToolRegistry 和父子账本。工具校验/授权/取消/尝试上限/超时/输出验证/工件/Trace 收敛到现有 `ToolRegistry.invoke`，Loop 负责反馈配对与唯一重试责任；不提供外部 Hook 或授权覆盖入口。DatasetScope 仍由真实 MCP 宿主会话固定，工具参数不能注入 scope；没有把 P2 上传查询扩大成自主 Agent。
+
+Gateway 在预留模型预算前计算消息/工具 Schema 字符、UTF-8 字节、保守输入 Token、输出预留和工具反馈体积。完整合法输出先保存为内存工件，再生成有界 L0 模型视图。原始 Schema 和安全消息不裁剪，不能容纳则明确失败；L1–L4/Memory/跨进程存储不属于本阶段。
+
+Finish 生成独立 `CompletionDecision(completed/incomplete/blocked)`：重新验证全部必需任务、五层验证记录、真实工件 hash/依赖及截断状态。旧 `status` 是执行状态，不能替代 completion。业务指标没有 P3 verified Evidence 桥接时必须 blocked，原 P3 独立入口保留。本原型不证明任意自然语言目标被计划完整表达；保守关键词保护也不等同于业务语义分类器。详见 [ADR-007](adr/0007-p4-hardening.md)、[交付与风险](p4-hardening.md)。

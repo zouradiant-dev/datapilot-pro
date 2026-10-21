@@ -7,6 +7,7 @@ from datapilot.config import Settings
 from datapilot.contracts import AgentError, AgentFailure
 from datapilot.harness.budget import RunBudget
 from datapilot.llm.fake import FakeModelClient
+from datapilot.orchestration.contracts import CompletionDecision
 from datapilot.orchestration.coordinator import Coordinator
 from datapilot.orchestration.model import FakeTransport, live_transport
 from datapilot.runtime.mcp_client import database_session
@@ -52,6 +53,7 @@ async def run_question(
             "mode": settings.llm_mode,
             "trace": [],
             "usage": {},
+            "completion": CompletionDecision(status="blocked", reason_codes=["INPUT_INVALID"]),
         }
     if scripted_sql is not None and settings.llm_mode != "fake":
         raise ValueError("Scripted SQL is only available in explicitly fake mode")
@@ -113,5 +115,7 @@ async def run_question(
         "mode": settings.llm_mode,
         "trace": events,
         "usage": coordinator.ledger.snapshot().model_dump() if coordinator else {},
+        "completion": result.get("completion")
+        or CompletionDecision(status="blocked", reason_codes=["RUN_NOT_SUCCESSFUL"]),
         **({"artifacts": coordinator.store.export()} if coordinator and include_artifacts else {}),
     }

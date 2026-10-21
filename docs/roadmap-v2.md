@@ -8,6 +8,8 @@
 
 起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1/P2/P3 保留，当前 P4 完成 D9–D10 动态 DAG 与双层执行，见 [编排说明](orchestration.md)、[交付](p4-delivery.md)。本轮到此停止；P5 持久恢复、P6 真实检索/产品闭环未开始，Gate C 尚未整体通过。
 
+v2.2 增量：在 P4 基线之上执行 **P4.1**，只补工具生命周期、宿主完成判定、L0 工件/模型视图分离及故障反例，见 [交付与实际验证](p4-hardening.md)、[ADR-007](adr/0007-p4-hardening.md)。上述 P4 交付是历史记录；当前停止点为 P4.1，P5 拆为未来独立授权的 P5A（Context/Memory）与 P5B（PG 持久恢复），不自动推进。Gate C 未完成。
+
 唯一首发业务是 SaaS。文件导入、语义/证据、Multi-Agent、产品化和独立评测服务这一主线。首版本地单用户/可信演示，不承诺生产多租户。干洗店 Phase F 与 LangGraph Fork 都是独立可选扩展。
 
 ```mermaid

@@ -2,7 +2,7 @@
 
 ## 架构和范围
 
-- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/planning-audit-v2.md 与相关 docs/adr/。当前授权为 P4（D9–D10）：动态任务 DAG 与双层执行，完成后停止；不进入 P5 持久预算/Memory/PG Saver、不开始 P6 真实 RAG/业务报告/UI 或 Fork。P1/P2/P3 已验收；Gate C 尚未整体完成。后续仅执行用户授权的阶段，不自动推进整个路线图。
+- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/planning-audit-v2.md 与相关 docs/adr/。当前授权为 v2.2 P4.1 增量加固（docs/codex-prompts-v2.2.md），完成后停止；不进入 P5A 上下文压缩/Memory、P5B 持久预算/PG Saver，不开始 P6 真实 RAG/业务报告/UI 或 Fork。P0–P4 保留；Gate C 尚未整体完成。后续仅执行用户授权的阶段，不自动推进整个路线图，不自动提交/推送。
 - 按功能依赖与验收 Gate 推进，工作单元/工作日编号不是截止日期；旧七天计划已由 roadmap-v2 取代。SaaS 是唯一首发主业务，drycleaning 是独立可选 Phase F，不复制 Runtime/Harness/Worker。
 - Python 3.11+、src 布局、类型标注、Pydantic 2 严格契约、LangGraph StateGraph 编排。
 - Planner/Coordinator 路由；P4 Worker 只接收宿主生成的 TaskEnvelope，不读取整个 RunState。旧 SQLTask/SQLAgentResult 保留兼容投影，P3 MetricRequest 路径独立。Worker 有独立工具句柄/能力、消息与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
@@ -26,6 +26,8 @@
 - 固定外图与共享 Worker 子图每个逻辑 Run 各编译一次；模型只提供 Plan 数据。严格拒绝无环/引用/数量/能力错误；Send 只派就绪任务，Command 不混合无条件业务出口。版本/task reducer 对相同结果幂等、冲突拒绝；Replan 只复用显式重新校验的未变源任务，派生任务重算。
 - 每条 assistant tool_call 都需唯一匹配反馈，包括权限拒绝、异常、预算终止和取消；禁止 JSON 解析失败默认为空参数。模型最终只返回已取得的工件 ID，RAG 空检索必须解释 unavailable。默认无真实 RAG；组件替身必须带 fixture 标记，不扩大 MCP 服务端能力。
 - P4 Artifact SHA 引用/内存 Ledger 不能冒称 P3 持久 Evidence 或 PG Checkpoint。显式本地 JSON bundle 可含原始工具结果；公开 Trace 默认只记 ID/状态/时延/usage，不含 SQL/行/文档原文/密钥。pytest 回溯/sections 脱敏；本地失败日志同样不能泄露连接参数。
+- P4.1 见 ADR-007、docs/p4-hardening.md：原 ToolRegistry.invoke 是唯一受控执行生命周期，无用户 Hook/脚本入口；拒绝不能由后置处理覆盖。完整验证结果先存内存 Artifact，再生成有界 L0 模型视图；Schema/安全消息不裁剪，超限显式 CONTEXT_LIMIT。只记录上下文尺寸及保守估算，不能把它当供应商真实 Token。L1–L4、Memory/持久化仍未实现。
+- `status` 保留执行兼容语义；新增 `completion.status` 才是宿主任务契约三态判定。不能只凭 succeeded、模型 complete、Artifact SHA 或五层任务 passed 宣称业务指标完成。P4.1 没有 P3→P4 报告桥接，已识别的指标请求必须 blocked/P3_VERIFIED_EVIDENCE_REQUIRED，继续使用独立 P3 入口；completed 只覆盖必需任务契约，不证明任意自然语言目标等价/完整性。
 - Domain Pack 是版本化字段映射/指标/质量/Verifier/评测的可信配置，不是可执行上传脚本或不同 Prompt。Source Connector 首发文件快照；未知 POS/API 不编造适配器。
 
 ## 安全和数据

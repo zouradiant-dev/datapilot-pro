@@ -8,7 +8,9 @@
 
 v2 目标闭环：**CSV/XLSX 上传 → Schema 预览确认 → 受限入库/数据集版本 → 动态 MCP 查询 → 语义指标与证据验证 → 多 Agent 报告**。P4 已落实固定拓扑的外层调度与任务局部 Worker 子图；完整跨来源业务报告、PG Checkpoint 与 Memory 仍按后续 Gate 演进。P3 指标入口独立保留。
 
-首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates，编号不构成日期承诺；当前停止在 P4 / D9–D10，Gate C 尚未整体通过。
+首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates，编号不构成日期承诺；当前停止在 P4.1 增量加固，Gate C 尚未整体通过。
+
+P4.1 在现有组件上增加受控工具生命周期、宿主 `completion` 三态、完整工件先保存的 L0 模型视图与上下文计量。`status=succeeded` 仍表示工具执行成功；业务指标缺少 P3 六层已验证证据时 `completion=blocked`，不能当作已验证报告。简单客户数查询仍只需两次 Fake 决策。详见 [P4.1 交付](docs/p4-hardening.md)；未开始 P5A/P5B/P6。
 
 ## 双层执行与 Trace（P4，需要真实 PostgreSQL）
 

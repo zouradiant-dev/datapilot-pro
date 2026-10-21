@@ -10,6 +10,7 @@ from langgraph.types import Command, Send
 from datapilot.agents.supervisor import Planner
 from datapilot.contracts import AgentError, AgentFailure, SQLAgentResult, SQLTask
 from datapilot.orchestration.budget import BudgetLedger
+from datapilot.orchestration.completion import completion_gate
 from datapilot.orchestration.contracts import (
     Artifact,
     BudgetLimits,
@@ -90,6 +91,7 @@ class Coordinator:
         self.store = ArtifactStore(run_id)
         self.events = events if events is not None else []
         self.trace = Trace(run_id, self.events)
+        self.gateway.trace = self.trace
         self.loop = build_worker_loop()
         self.plans = {}
         # Host debug/test only; never public trace or sibling input.
@@ -142,7 +144,17 @@ class Coordinator:
         task = envelope.task
         account = self.ledger.fork(key(envelope.plan_version, task.task_id), envelope.budget)
         started = time.monotonic()
-        tools = ToolRegistry(envelope, self.store, database=self.database, retrieval=self.retrieval)
+        tools = ToolRegistry(
+            envelope,
+            self.store,
+            database=self.database,
+            retrieval=self.retrieval,
+            cancellation=self.cancel,
+            trace=self.trace,
+            timeout=self.settings.mcp_timeout_seconds,
+            max_sql_attempts=self.settings.max_sql_attempts,
+            max_view_chars=self.settings.max_tool_view_chars,
+        )
         status, error, refs = "succeeded", None, []
         self.trace.emit("worker", "started", version=envelope.plan_version, task_id=task.task_id)
         try:
@@ -156,12 +168,7 @@ class Coordinator:
                     boot_started = time.monotonic()
                     boot_error = None
                     try:
-                        schema = (
-                            await self.cancel.wait_for(
-                                tools.invoke("database_schema", {}),
-                                self.settings.mcp_timeout_seconds,
-                            )
-                        )["schema"]
+                        schema = (await tools.invoke("database_schema", {}))["schema"]
                     except AgentFailure as exc:
                         boot_error = exc.error.code
                         raise
@@ -359,6 +366,13 @@ class Coordinator:
                     r.artifact_id not in allowed for r in artifact.parents
                 ):
                     raise AgentFailure("VERIFICATION_ERROR", "Artifact cites an undelegated parent")
+                if task.worker in {"analysis", "report"} and (
+                    {r.model_dump_json() for r in artifact.parents}
+                    != {r.model_dump_json() for r in envelope.input_refs}
+                ):
+                    raise AgentFailure(
+                        "VERIFICATION_ERROR", "Derived artifact omitted dependency evidence"
+                    )
         except (ValueError, AgentFailure) as exc:
             error = execution_error(
                 exc
@@ -391,6 +405,7 @@ class Coordinator:
                     self.run_id = state["run_id"]
                     self.store = ArtifactStore(self.run_id)
                     self.trace = Trace(self.run_id, self.events)
+                    self.gateway.trace = self.trace
                 steps = step(state)
                 plan = self.fast_plan(state["question"]) or await self.planner.plan(
                     state["question"]
@@ -633,6 +648,22 @@ class Coordinator:
                     )
                 else:
                     status = "unavailable" if unavailable else "succeeded"
+            completion = completion_gate(
+                {
+                    **state,
+                    "status": status,
+                    "error": error,
+                    "results": {**state.get("results", {}), **terminal_missing},
+                },
+                self.store,
+                self.verify,
+                original_plan=self.plans.get(1),
+            )
+            if "FINAL_EVIDENCE_INVALID" in completion.reason_codes:
+                status = "failed"
+                error = AgentError(
+                    code="EVIDENCE_INVALID", message="Final evidence validation failed"
+                )
             legacy_task, legacy_result = None, None
             for task in state.get("plan", Plan(unsupported=True)).tasks:
                 if task.worker != "sql":
@@ -645,9 +676,17 @@ class Coordinator:
                 legacy_task = SQLTask(
                     task_id=self.run_id + ":" + task.task_id, question=task.instruction
                 )
-                artifact = next(
-                    (self.store.get(ref) for ref in result.evidence_refs if ref.kind == "query"),
-                    None,
+                artifact = (
+                    next(
+                        (
+                            self.store.get(ref)
+                            for ref in result.evidence_refs
+                            if ref.kind == "query"
+                        ),
+                        None,
+                    )
+                    if "FINAL_EVIDENCE_INVALID" not in completion.reason_codes
+                    else None
                 )
                 if result.status == "succeeded" and artifact:
                     legacy_result = SQLAgentResult(
@@ -673,6 +712,14 @@ class Coordinator:
                 answer = f"执行失败 [{cell(error.code)}]：{cell(error.message)}"
             else:
                 lines = ["SaaS 任务工具结果；来源与证据逐项列出。任务验证不替代 P3 指标口径验证。"]
+                if completion.status != "completed":
+                    lines.append(
+                        "完成判定："
+                        + completion.status
+                        + "；"
+                        + ", ".join(completion.reason_codes)
+                        + "。以下仅为受限工具结果，不能视为已验证业务指标或完整回答。"
+                    )
                 seen = set()
 
                 def render(ref):
@@ -725,6 +772,12 @@ class Coordinator:
                         lines.append(cell(result.error.message))
                 answer = "\n".join(lines)
             self.trace.emit(
+                "completion",
+                completion.status,
+                version=state.get("plan_version", 1),
+                error_code=completion.reason_codes[0] if completion.reason_codes else None,
+            )
+            self.trace.emit(
                 "finish",
                 status,
                 version=state.get("plan_version", 1),
@@ -737,6 +790,7 @@ class Coordinator:
                 "task": legacy_task,
                 "result": legacy_result,
                 "results": terminal_missing,
+                "completion": completion,
             }
 
         builder = StateGraph(RunState)

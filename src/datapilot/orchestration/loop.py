@@ -114,20 +114,11 @@ def build_worker_loop():
         fatal = None
         was_cancelled = False
         for call in messages[-1].tool_calls:
-            started = time.monotonic()
             error = None
             try:
                 if fatal:
                     raise AgentFailure("NOT_EXECUTED", "A previous call ended this worker batch")
-                ctx.cancel.check()
-                if (
-                    call["name"] == "query_database"
-                    and ctx.tools.sql_attempts >= ctx.settings.max_sql_attempts
-                ):
-                    raise AgentFailure("SQL_ATTEMPTS_EXHAUSTED", "SQL attempt limit reached")
-                payload = await ctx.cancel.wait_for(
-                    ctx.tools.invoke(call["name"], call["args"]), ctx.settings.mcp_timeout_seconds
-                )
+                payload = await ctx.tools.invoke(call["name"], call["args"], call_id=call["id"])
             except asyncio.CancelledError:
                 was_cancelled = True
                 ctx.cancel.cancel()
@@ -160,17 +151,15 @@ def build_worker_loop():
                     name=call["name"],
                 )
             )
-            ctx.trace.emit(
-                "tool",
-                "failed" if error else "succeeded",
-                version=ctx.envelope.plan_version,
-                task_id=ctx.envelope.task.task_id,
-                elapsed_ms=(time.monotonic() - started) * 1000,
-                error_code=error.error.code if error else None,
-                tool_name=call["name"],
-                tool_call_id=call["id"],
-                refs=ctx.tools.refs[-1:] if not error else (),
-            )
+            if error and error.error.code == "NOT_EXECUTED":
+                ctx.trace.emit(
+                    "tool",
+                    "not_executed",
+                    version=ctx.envelope.plan_version,
+                    task_id=ctx.envelope.task.task_id,
+                    error_code="NOT_EXECUTED",
+                    tool_call_id=call["id"],
+                )
         ctx.transcript[:] = messages
         if was_cancelled:
             raise asyncio.CancelledError

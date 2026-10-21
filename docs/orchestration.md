@@ -80,3 +80,17 @@ uv run --locked python scripts/trace_orchestration_demo.py --with-rag-fixture --
 输出文件要求是仓库 artifacts/ 内的新文件，避免覆盖历史 Trace。两个脚本示例都实际查询 PostgreSQL/MCP，决策为 Fake；第二个检索部分明确 fixture。普通 ask 不启用 RAG 替身。Live 模式沿用已有环境变量，现要求供应商兼容原生 tool calling；本阶段没有真实 API 验收，HTTP Mock 仅证明协议与异步实现。
 
 测试与实际结果见 [P4 交付](p4-delivery.md)。根目录开发约束、路线图和 ADR-006 一同限定停止点：只完成 D9–D10，不将 Gate C 的持久恢复/真实跨来源能力提前称为完成。
+
+## P4.1 增量：生命周期、完成判定与上下文保护
+
+以上 P4 是历史基线，当前增量以 [ADR-007](adr/0007-p4-hardening.md)、[P4.1 交付](p4-hardening.md) 为准。调度拓扑、工具注册表、Worker Loop 和原子 Ledger 沿用；没有第二份框架或新的 LangGraph Runtime。
+
+`ToolRegistry.invoke(name, arguments, call_id=...)` 统一执行契约、宿主能力/已绑定 MCP 句柄、取消、SQL 尝试预留、超时、合法输出、完整 Artifact、L0 视图及 Trace。Loop 继续维护每条 assistant/tool 反馈，并对本批剩余调用返回 NOT_EXECUTED；没有外部 Hook/脚本/授权重写。工具超时为 TOOL_TIMEOUT，模型等待超时为 MODEL_TIMEOUT，取消为 CANCELLED；坏工具输出为验证类错误，拒绝重规划。SDK 仍不自动重试。
+
+Gateway 在模型预算预留前测量消息数、消息/工具 Schema 字符、输入 UTF-8 字节、输入保守 Token（字节+128）、输出预留及工具反馈字符，记录为脱敏 `model_context.context`。新增 `DATAPILOT_MAX_CONTEXT_TOKENS=18000` 和 `DATAPILOT_MAX_TOOL_VIEW_CHARS=4096`；原字符上限继续生效。估算不是供应商 tokenizer 或真实收费 Token；Trace 的 usage 继续区分实际报告/未知用量。
+
+L0 先把完整合法查询/文档保存在同 Run 内存 ArtifactStore，随后返回计数/列摘要/引用；文档每篇最多 256 字符，明示省略量和源 hash。视图超限只留元数据/引用，完整原件不丢。Schema 单独完整保存和传递，无法容纳则 CONTEXT_LIMIT；不截断 System/Human/AI/Tool 消息，不删除 tool_call_id，不做 L1–L4 历史裁剪或摘要。schema 工件不属于最终 query 引用。
+
+`completion.status` 是宿主确定性的 completed/incomplete/blocked，`status` 继续表示兼容的执行结果。Finish 重新检查必需任务、五层记录、实际工件/依赖/hash、版本和截断；初始必需任务不能通过 Replan 删除。空检索、不能计算、拒绝或失效证据明确受限，不自动再开一轮计划。`completion.scope=required_task_contracts`，不等于任意自然语言目标覆盖证明。
+
+P4.1 没有接通 P3 指标证据与 DAG 报告。已识别收入/MRR/流失/活跃订阅/使用量等指标请求，即便 SQL 执行成功也返回 `completion=blocked`、`P3_VERIFIED_EVIDENCE_REQUIRED`，并在输出中明示尚未验证。仍需使用原 P3 确认映射/指标与六层验证入口。关键词检测是保守辅助，未来可信 MetricRequest 及报告桥接留在 P6B；不接受模型自报 verified，也不能声称本阶段实现了综合业务报告。

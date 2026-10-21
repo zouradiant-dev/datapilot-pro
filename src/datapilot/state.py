@@ -3,7 +3,12 @@
 from typing import Annotated, Literal, TypedDict
 
 from datapilot.contracts import AgentError, SQLAgentResult, SQLTask
-from datapilot.orchestration.contracts import Plan, TaskResult, VerificationResult
+from datapilot.orchestration.contracts import (
+    CompletionDecision,
+    Plan,
+    TaskResult,
+    VerificationResult,
+)
 
 
 class GraphState(TypedDict):
@@ -43,3 +48,4 @@ class RunState(TypedDict, total=False):
     # Compatibility projection for the original single SQL CLI/API; not shared with workers.
     task: SQLTask | None
     result: SQLAgentResult | None
+    completion: CompletionDecision

@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-21",
+  "scope": "P4.1 only",
+  "baseline": "1f0decd02ce9eed989c52486797bdba88ff11f46",
+  "pytest_full": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "1",
+    "tests": "326",
+    "time": "88.960",
+    "timestamp": "2026-10-21T14:20:26.914042+08:00"
+  },
+  "pytest_local": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "277",
+    "time": "6.104",
+    "timestamp": "2026-10-21T14:24:17.583980+08:00"
+  },
+  "restored_hardening": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "36",
+    "time": "2.265",
+    "timestamp": "2026-10-21T14:20:14.218088+08:00"
+  },
+  "new_local_tests": 36,
+  "new_real_pg_mcp_tests": 5,
+  "mutation": {
+    "mutation": "remove derived artifact dependency reference check in subprocess memory",
+    "exit_code": 1,
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "source_unchanged": true,
+    "source_sha256": "929585d183e325a56eb11145028a6b2769f8cb7492a98e6c0b5eebbf04a6dc1d"
+  },
+  "protected_unchanged": {
+    "migrations/versions/0001_business_and_vectors.py": true,
+    "migrations/versions/0002_dataset_catalog.py": true,
+    "migrations/versions/0003_semantics_and_evidence.py": true,
+    "src/datapilot/tools/sql.py": true,
+    "src/datapilot/runtime/mcp_client.py": true,
+    "src/datapilot/runtime/mcp_server.py": true,
+    "src/datapilot/orchestration/budget.py": true,
+    "src/datapilot/ingestion": true,
+    "src/datapilot/datasets": true,
+    "src/datapilot/semantics": true,
+    "src/datapilot/harness/metric_verification.py": true,
+    "pyproject.toml": true,
+    "uv.lock": true
+  },
+  "examples": {
+    "cli-count": {
+      "execution_status": "succeeded",
+      "completion": "completed",
+      "reason_codes": [],
+      "decisions": 2,
+      "reported_model_tokens": 0,
+      "contexts": [
+        {
+          "messages": 2,
+          "message_chars": 2281,
+          "tool_schema_chars": 560,
+          "input_bytes": 2878,
+          "estimated_input_tokens": 3006,
+          "output_reserved_tokens": 1200,
+          "tool_result_chars": 0,
+          "estimation": "utf8_bytes_plus_128"
+        },
+        {
+          "messages": 4,
+          "message_chars": 3214,
+          "tool_schema_chars": 560,
+          "input_bytes": 3811,
+          "estimated_input_tokens": 3939,
+          "output_reserved_tokens": 1200,
+          "tool_result_chars": 308,
+          "estimation": "utf8_bytes_plus_128"
+        }
+      ]
+    },
+    "cli-revenue": {
+      "execution_status": "succeeded",
+      "completion": "blocked",
+      "reason_codes": [
+        "P3_VERIFIED_EVIDENCE_REQUIRED"
+      ],
+      "decisions": 2,
+      "reported_model_tokens": 0,
+      "contexts": [
+        {
+          "messages": 2,
+          "message_chars": 2286,
+          "tool_schema_chars": 560,
+          "input_bytes": 2879,
+          "estimated_input_tokens": 3007,
+          "output_reserved_tokens": 1200,
+          "tool_result_chars": 0,
+          "estimation": "utf8_bytes_plus_128"
+        },
+        {
+          "messages": 4,
+          "message_chars": 3323,
+          "tool_schema_chars": 560,
+          "input_bytes": 3916,
+          "estimated_input_tokens": 4044,
+          "output_reserved_tokens": 1200,
+          "tool_result_chars": 307,
+          "estimation": "utf8_bytes_plus_128"
+        }
+      ]
+    }
+  },
+  "live_model": "not_run; opt-in test skipped",
+  "python_313_ci": "not_run this stage",
+  "next_stage_started": false
+}
