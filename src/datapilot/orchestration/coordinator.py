@@ -2,6 +2,7 @@
 
 import asyncio
 import time
+from datetime import UTC, datetime
 from decimal import ROUND_HALF_EVEN, Decimal, localcontext
 
 from langgraph.graph import END, START, StateGraph
@@ -11,6 +12,8 @@ from datapilot.agents.supervisor import Planner
 from datapilot.contracts import AgentError, AgentFailure, SQLAgentResult, SQLTask
 from datapilot.orchestration.budget import BudgetLedger
 from datapilot.orchestration.completion import completion_gate
+from datapilot.orchestration.context import ContextManager
+from datapilot.orchestration.context_contracts import AuthoritySnapshot
 from datapilot.orchestration.contracts import (
     Artifact,
     BudgetLimits,
@@ -74,8 +77,15 @@ class Coordinator:
         events=None,
         cancellation=None,
         run_id="run",
+        context_metadata=None,
+        memory_store=None,
+        memory_source_versions=None,
     ):
         self.settings, self.run_id = settings, run_id
+        self.question = None
+        self.context_metadata = context_metadata or {}
+        self.memory_store = memory_store
+        self.memory_source_versions = memory_source_versions or {}
         self.database, self.retrieval = database, retrieval
         self.available = {"analysis", "report"}
         if database is not None:
@@ -92,6 +102,7 @@ class Coordinator:
         self.events = events if events is not None else []
         self.trace = Trace(run_id, self.events)
         self.gateway.trace = self.trace
+        self.contexts = self.gateway.contexts
         self.loop = build_worker_loop()
         self.plans = {}
         # Host debug/test only; never public trace or sibling input.
@@ -184,6 +195,29 @@ class Coordinator:
                         )
                 transcript = []
                 self.transcripts[key(envelope.plan_version, task.task_id)] = transcript
+                seed = initial_messages(envelope, schema)
+                authority = AuthoritySnapshot.for_worker(
+                    envelope,
+                    self.question or task.instruction,
+                    seed[0].content,
+                    **self.context_metadata.get(task.task_id, {}),
+                )
+
+                def recall_memory():
+                    return (
+                        self.memory_store.recall(
+                            authority.scope,
+                            task.worker,
+                            now=datetime.now(UTC),
+                            source_versions=self.memory_source_versions,
+                        )
+                        if self.memory_store
+                        else ()
+                    )
+
+                self.contexts[account] = ContextManager(
+                    authority, seed, tools, self.settings, memory_loader=recall_memory
+                )
                 context = WorkerContext(
                     envelope,
                     tools,
@@ -199,7 +233,7 @@ class Coordinator:
                     transcript,
                 )
                 output = await self.loop.ainvoke(
-                    {"messages": initial_messages(envelope, schema), "turns": 0, "done": False},
+                    {"messages": seed, "turns": 0, "done": False},
                     context=context,
                     config={"recursion_limit": self.settings.max_worker_turns * 3 + 4},
                 )
@@ -407,6 +441,7 @@ class Coordinator:
                     self.trace = Trace(self.run_id, self.events)
                     self.gateway.trace = self.trace
                 steps = step(state)
+                self.question = state["question"]
                 plan = self.fast_plan(state["question"]) or await self.planner.plan(
                     state["question"]
                 )

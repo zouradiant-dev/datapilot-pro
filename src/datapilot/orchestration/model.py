@@ -65,8 +65,52 @@ class Gateway:
             cancellation,
         )
         self.trace = None
+        self.contexts = {}
 
     async def invoke(self, messages, tools, account):
+        prepared = None
+        try:
+            if account in self.contexts:
+                prepared = await self.contexts[account].prepare(messages, tools, self, account)
+                messages = prepared.messages
+            return await self._invoke(
+                messages, tools, account, reservation=prepared.reservation if prepared else None
+            )
+        finally:
+            # _invoke settles every issued request, including unknown/cancelled usage.
+            # A remaining ticket here is therefore a proven unissued follow-up only.
+            if prepared and prepared.reservation in self.ledger.pending:
+                self.ledger.release_unissued(prepared.reservation)
+
+    async def summarize_context(self, messages, account, followup_input_tokens):
+        self.cancel.check()
+        text, usage = measure_context(messages, [], self.settings.max_output_tokens)
+        if (
+            len(text) > self.settings.max_input_chars
+            or usage.estimated_input_tokens + usage.output_reserved_tokens
+            > self.settings.max_context_tokens
+        ):
+            raise AgentFailure("CONTEXT_LIMIT", "Summary request cannot fit the safe context limit")
+        tickets = self.ledger.reserve_batch(
+            account,
+            [
+                (usage.estimated_input_tokens, self.settings.max_output_tokens),
+                (
+                    followup_input_tokens,
+                    self.settings.max_output_tokens,
+                ),
+            ],
+        )
+        try:
+            response = await self._invoke(messages, [], account, reservation=tickets[0])
+            return response, tickets[1]
+        except BaseException:
+            for ticket in tickets:
+                if ticket in self.ledger.pending:
+                    self.ledger.release_unissued(ticket)
+            raise
+
+    async def _invoke(self, messages, tools, account, *, reservation=None):
         self.cancel.check()
         text, context = measure_context(messages, tools, self.settings.max_output_tokens)
         exceeded = (
@@ -86,7 +130,10 @@ class Gateway:
             )
         if exceeded:
             raise AgentFailure("CONTEXT_LIMIT", "Isolated worker context exceeds its limit")
-        ticket = self.ledger.reserve(account, text, self.settings.max_output_tokens)
+        ticket = reservation or self.ledger.reserve(account, text, self.settings.max_output_tokens)
+        self.ledger.check_ticket(
+            ticket, account, context.estimated_input_tokens + self.settings.max_output_tokens
+        )
         try:
             response = await self.cancel.wait_for(
                 self.transport.respond(messages, tools),

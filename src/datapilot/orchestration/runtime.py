@@ -125,6 +125,7 @@ class Trace:
         refs=(),
         usage=None,
         context=None,
+        compression=None,
     ):
         if len(self.events) >= 1024:
             raise AgentFailure("TRACE_LIMIT", "Run trace quota reached")
@@ -147,6 +148,7 @@ class Trace:
             evidence_ids=[r.artifact_id for r in refs],
             usage=usage,
             context=context,
+            compression=compression,
         )
         self.events.append(event.model_dump())
 

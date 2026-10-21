@@ -306,10 +306,18 @@ flowchart LR
 
 完整公式与状态边界见 [编排说明](orchestration.md) 和 [ADR-006](adr/0006-two-level-orchestration.md)，真实执行见 [交付记录](p4-delivery.md)。RAG 组件替身与真实 SQL/MCP 明确区分；没有新迁移/依赖/Fork。持久账本、PG Saver、Memory 和真实跨来源业务闭环仍属后续 P5/P6，不预建空壳。
 
-## 19. P4.1 增量加固
+## 19. P4.1 增量加固（历史边界；当前增量见第 20 节）
 
 沿用 P4 固定图、Worker 子图、ToolRegistry 和父子账本。工具校验/授权/取消/尝试上限/超时/输出验证/工件/Trace 收敛到现有 `ToolRegistry.invoke`，Loop 负责反馈配对与唯一重试责任；不提供外部 Hook 或授权覆盖入口。DatasetScope 仍由真实 MCP 宿主会话固定，工具参数不能注入 scope；没有把 P2 上传查询扩大成自主 Agent。
 
 Gateway 在预留模型预算前计算消息/工具 Schema 字符、UTF-8 字节、保守输入 Token、输出预留和工具反馈体积。完整合法输出先保存为内存工件，再生成有界 L0 模型视图。原始 Schema 和安全消息不裁剪，不能容纳则明确失败；L1–L4/Memory/跨进程存储不属于本阶段。
 
 Finish 生成独立 `CompletionDecision(completed/incomplete/blocked)`：重新验证全部必需任务、五层验证记录、真实工件 hash/依赖及截断状态。旧 `status` 是执行状态，不能替代 completion。业务指标没有 P3 verified Evidence 桥接时必须 blocked，原 P3 独立入口保留。本原型不证明任意自然语言目标被计划完整表达；保守关键词保护也不等同于业务语义分类器。详见 [ADR-007](adr/0007-p4-hardening.md)、[交付与风险](p4-hardening.md)。
+
+## 20. P5A：权威状态与可压缩视图
+
+RunState/TaskEnvelope、独立预算与取消服务、P3 Registry、完整 Worker transcript 和 SHA 工件继续承担权威职责；ContextManager 不修改这些对象。AuthoritySnapshot 只保存宿主任务/授权范围的副本、源版本和必要业务定义/引用，序列化后固定哈希；摘要与 Memory 不能重新授权或修改 verified 结论。
+
+Gateway 按账户选择独立 ContextManager。L0 完整源工件先存，L1/L2 减少旧观察/重复引用，L3 把完整已闭合轮次投影为可读归档引用，L4 才调用同一预算入口的受限摘取式摘要。完整消息留在 Worker 原状态，所有视图保持 provider 配对。原始安全/目标/Schema 前缀不可裁剪；有界只读 read_context 仅允许本任务归档/Schema/RAG 文档，不暴露 SQL 行、路径、其他 Worker 或数据库管理通道。
+
+MemoryStore 是偏好/术语与决策引用的接口，不是执行 Checkpoint 或证据库；当前只实现有容量限制的内存存储及审阅/失效/新鲜度校验。无新增迁移/依赖/Fork，未实施 PG Saver/持久账本/进程恢复。完整策略、来源、实测与风险见 [上下文工程](context-engineering.md)、[ADR-008](adr/0008-context-authority-memory.md)。

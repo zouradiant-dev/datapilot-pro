@@ -10,7 +10,7 @@ from pydantic import Field
 
 from datapilot.contracts import AgentFailure, Contract, QueryResult
 from datapilot.orchestration.context import tool_view
-from datapilot.orchestration.contracts import Artifact, SearchResult
+from datapilot.orchestration.contracts import Artifact, Digest, SearchResult
 from datapilot.orchestration.runtime import Cancellation, text_hash
 
 
@@ -25,6 +25,13 @@ class SQLArguments(Contract):
 class SearchArguments(Contract):
     query: str = Field(min_length=1, max_length=512)
     top_k: int = Field(default=3, ge=1, le=5)
+
+
+class ContextReadArguments(Contract):
+    artifact_id: Digest
+    start: int = Field(default=0, ge=0, le=16 * 1024**2)
+    max_chars: int = Field(default=512, ge=64, le=2048)
+    document_id: str | None = Field(default=None, min_length=1, max_length=128)
 
 
 class RetrievalTools(Protocol):
@@ -60,10 +67,15 @@ DEFINITIONS = {
         SearchArguments,
         "Retrieve permitted documents and immutable source/version citations",
     ),
+    "read_context": ToolDefinition(
+        "read_context",
+        ContextReadArguments,
+        "Read bounded task-owned context/schema/documents; no paths, SQL rows or siblings",
+    ),
 }
 CAPABILITIES = {
-    "sql": frozenset({"database_schema", "query_database"}),
-    "rag": frozenset({"search_documents"}),
+    "sql": frozenset({"database_schema", "query_database", "read_context"}),
+    "rag": frozenset({"search_documents", "read_context"}),
     "analysis": frozenset(),
     "report": frozenset(),
 }
@@ -91,6 +103,7 @@ class ToolRegistry:
             raise AgentFailure("TOOL_FORBIDDEN", "Child permissions exceed its worker capability")
         self.allowed = frozenset(envelope.allowed_tools)
         self.refs = []
+        self.context_refs = []
         self.sql_attempts = 0
         self.cancel = cancellation or Cancellation()
         self.trace, self.timeout = trace, timeout
@@ -159,7 +172,7 @@ class ToolRegistry:
             if not isinstance(value, str) or not 1 <= len(value) <= 12000:
                 raise AgentFailure("TOOL_OUTPUT_INVALID", "Invalid schema response")
             # Schema is authoritative input: store it whole, never silently crop it.
-            self.store.put(
+            ref = self.store.put(
                 Artifact(
                     run_id=self.envelope.run_id,
                     task_id=self.envelope.task.task_id,
@@ -169,7 +182,56 @@ class ToolRegistry:
                     values={"schema": value},
                 )
             )
-            return {"schema": value}
+            self.context_refs.append(ref)
+            return {"schema": value, "context_refs": [ref.model_dump()]}
+        if name == "read_context":
+            ref = next(
+                (r for r in [*self.context_refs, *self.refs] if r.artifact_id == args.artifact_id),
+                None,
+            )
+            if ref is None:
+                raise AgentFailure(
+                    "TOOL_FORBIDDEN", "Context reference was not delegated to this task"
+                )
+            item = self.store.get(ref)
+            if (item.run_id, item.task_id, item.plan_version) != (
+                self.envelope.run_id,
+                self.envelope.task.task_id,
+                self.envelope.plan_version,
+            ) or item.kind not in {"context", "schema", "documents"}:
+                raise AgentFailure("TOOL_FORBIDDEN", "Context reference belongs to another task")
+            if item.kind == "documents":
+                if self.envelope.task.worker != "rag":
+                    raise AgentFailure(
+                        "TOOL_FORBIDDEN", "Only its RAG worker can read document text"
+                    )
+                doc = next(
+                    (d for d in item.documents.documents if d.document_id == args.document_id), None
+                )
+                if doc is None:
+                    raise AgentFailure("INPUT_INVALID", "Choose an actual retrieved document ID")
+                text = doc.text
+            else:
+                if args.document_id is not None:
+                    raise AgentFailure(
+                        "INPUT_INVALID", "Document selection does not apply to this artifact"
+                    )
+                text = item.values["messages" if item.kind == "context" else "schema"]
+            if args.start > len(text):
+                raise AgentFailure("INPUT_INVALID", "Page offset is beyond the artifact")
+            size = min(args.max_chars, max(64, self.max_view_chars - 512))
+            payload = {
+                "context_refs": [ref.model_dump()],
+                "text": text[args.start : args.start + size],
+                "start": args.start,
+                "untrusted_data": True,
+            }
+            while True:
+                end = args.start + len(payload["text"])
+                payload["next_offset"] = end if end < len(text) else None
+                if len(json.dumps(payload, ensure_ascii=False)) <= self.max_view_chars:
+                    return payload
+                payload["text"] = payload["text"][: len(payload["text"]) // 2]
         if name == "query_database":
             value = await self.database.execute(args.sql)
             value = QueryResult.model_validate_json(value.model_dump_json())

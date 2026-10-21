@@ -32,24 +32,54 @@ class BudgetLedger:
             return name
 
     def reserve(self, account: str, text: str, output_tokens: int) -> str:
-        amount = len(text.encode("utf-8")) + 128 + output_tokens
+        return self.reserve_batch(account, [(len(text.encode("utf-8")) + 128, output_tokens)])[0]
+
+    def reserve_batch(self, account: str, requests: list[tuple[int, int]]) -> list[str]:
+        """Atomic summary + worst-case follow-up, on the original parent/child ledger."""
+        if not requests or any(
+            type(i) is not int or type(o) is not int or min(i, o) < 0 for i, o in requests
+        ):
+            raise AgentFailure("BUDGET_INVALID", "Invalid bounded reservation batch")
+        amounts = [i + o for i, o in requests]
+        amount = sum(amounts)
         with self._lock:
             chain, key = [], account
             while key is not None:
                 item = self.accounts[key]
                 if (
-                    item.usage.calls >= item.limits.calls
+                    item.usage.calls + len(requests) > item.limits.calls
                     or item.usage.total_tokens + amount > item.limits.tokens
                 ):
                     raise AgentFailure("BUDGET_EXCEEDED", "Parent or child model budget exhausted")
                 chain.append(key)
                 key = item.parent
-            ticket = str(uuid4())
-            self.pending[ticket] = (chain, amount)
+            tickets = []
+            for charge in amounts:
+                ticket = str(uuid4())
+                self.pending[ticket] = (chain, charge)
+                tickets.append(ticket)
             for key in chain:
-                self.accounts[key].usage.calls += 1
+                self.accounts[key].usage.calls += len(requests)
                 self.accounts[key].usage.total_tokens += amount
-            return ticket
+            return tickets
+
+    def check_ticket(self, ticket: str, account: str, amount: int) -> None:
+        with self._lock:
+            held = self.pending.get(ticket)
+            if held is None or held[0][0] != account or held[1] < amount:
+                raise AgentFailure(
+                    "BUDGET_INVALID", "Reservation does not cover this model request"
+                )
+
+    def release_unissued(self, ticket: str) -> None:
+        """Host only: release a proven unissued follow-up, NEVER an uncertain HTTP request."""
+        with self._lock:
+            if ticket not in self.pending:
+                raise AgentFailure("BUDGET_INVALID", "Unknown/already settled reservation")
+            chain, amount = self.pending.pop(ticket)
+            for key in chain:
+                self.accounts[key].usage.calls -= 1
+                self.accounts[key].usage.total_tokens -= amount
 
     def settle(self, ticket: str, actual: int | None):
         with self._lock:

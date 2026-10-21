@@ -26,6 +26,8 @@ RAG 组件测试可以先于完整 DAG；Gate C 的跨来源验收需要真实�
 
 ## 2. Gates、用例与风险
 
+P5A 当前增量：复用现有 Gateway 实现 L0–L4 的可校验模型视图、权威状态边界和 Memory 契约/内存实现，见 [上下文工程交付](context-engineering.md)、[ADR-008](adr/0008-context-authority-memory.md)。前文 P4/P4.1 停止点保留历史属性；当前停止在 P5A，P5B 持久恢复仍未执行，Gate C 未整体通过。下一阶段必须另行获得用户确认。
+
 | Gate / 参考单元 | 交付边界 | 必须通过的验收 | 主要风险与前置条件 |
 |---|---|---|---|
 | A / 1–5 | 审计、CSV/XLSX Parser、Profile/确认、受限导入、Registry、动态 MCP | 文件→预览确认→ready Dataset/version→真实 PG→真实 MCP；多表 JOIN、回滚、跨 scope 拒绝、原 saas 回归 | 解包资源、类型失真、名称注入；新增迁移/ingest/upload_reader；健康检查不能写死 0001 |

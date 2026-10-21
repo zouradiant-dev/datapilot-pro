@@ -94,3 +94,9 @@ L0 先把完整合法查询/文档保存在同 Run 内存 ArtifactStore，随后
 `completion.status` 是宿主确定性的 completed/incomplete/blocked，`status` 继续表示兼容的执行结果。Finish 重新检查必需任务、五层记录、实际工件/依赖/hash、版本和截断；初始必需任务不能通过 Replan 删除。空检索、不能计算、拒绝或失效证据明确受限，不自动再开一轮计划。`completion.scope=required_task_contracts`，不等于任意自然语言目标覆盖证明。
 
 P4.1 没有接通 P3 指标证据与 DAG 报告。已识别收入/MRR/流失/活跃订阅/使用量等指标请求，即便 SQL 执行成功也返回 `completion=blocked`、`P3_VERIFIED_EVIDENCE_REQUIRED`，并在输出中明示尚未验证。仍需使用原 P3 确认映射/指标与六层验证入口。关键词检测是保守辅助，未来可信 MetricRequest 及报告桥接留在 P6B；不接受模型自报 verified，也不能声称本阶段实现了综合业务报告。
+
+## P5A 增量：ContextManager 与 Memory 契约
+
+P4.1 的“未实现 L1–L4”是历史停止点；当前实现在原 Gateway 按账户使用独立 ContextManager。L0 原件先存，L1/L2 对旧观察/重复引用建立副本视图，L3 仅折叠完整闭合工具轮次，L4 只允许与宿主逐字段核对的结构化摘取。原 Loop/history/ID 检查不改，Archive/Schema/RAG 文档只能通过本任务实际引用和有界 read_context 读取，没有路径、SQL 行或其他 Worker 的读取权限。
+
+原父子 Ledger 为摘要及其最大合法 follow-up 原子预留；未发出的预留才可释放，未知 usage 不清零。源版本、业务定义、单位/时间窗口及 P3 refs 用 AuthoritySnapshot 固定；这些只是上下文投影，不完成 P6B 报告桥接，completion 规则不变。Memory 仅为经审阅的受限提示和引用，当前内存实现每次读取重查 scope/version/TTL/失效，不是 Checkpoint。完整接口、实验及边界见 [上下文工程交付](context-engineering.md)、[ADR-008](adr/0008-context-authority-memory.md)。P5B 未开始。

@@ -1,0 +1,149 @@
+{
+  "date": "2026-10-21",
+  "scope": "P5A only",
+  "baseline": "fb4c73461c4900f9128d011fd6dcf194f5926beb",
+  "pytest_full": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "1",
+    "tests": "373",
+    "time": "94.422",
+    "timestamp": "2026-10-21T15:10:45.133171+08:00"
+  },
+  "pytest_local": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "322",
+    "time": "6.630",
+    "timestamp": "2026-10-21T15:10:36.729683+08:00"
+  },
+  "new_tests": {
+    "local_component_http_mock": 45,
+    "true_postgres_mcp": 2
+  },
+  "protected_unchanged": {
+    "migrations/versions/0001_business_and_vectors.py": true,
+    "migrations/versions/0002_dataset_catalog.py": true,
+    "migrations/versions/0003_semantics_and_evidence.py": true,
+    "src/datapilot/tools/sql.py": true,
+    "src/datapilot/runtime/mcp_client.py": true,
+    "src/datapilot/runtime/mcp_server.py": true,
+    "src/datapilot/ingestion": true,
+    "src/datapilot/datasets": true,
+    "src/datapilot/semantics": true,
+    "src/datapilot/harness/metric_verification.py": true,
+    "src/datapilot/orchestration/loop.py": true,
+    "src/datapilot/state.py": true,
+    "pyproject.toml": true,
+    "uv.lock": true
+  },
+  "synthetic_experiment": {
+    "mode": "synthetic_component_only",
+    "paid_api_calls": 0,
+    "real_model_tokens": 0,
+    "measured_supplier_cost": null,
+    "cost_note": "Fixture usage is synthetic, not a supplier cost/quality benchmark.",
+    "cases": [
+      {
+        "scenario": "L1_L2",
+        "levels": [
+          "L1",
+          "L2"
+        ],
+        "before_estimated_tokens": 32990,
+        "after_estimated_tokens": 14887,
+        "compression_count": 1,
+        "summary_calls": 0,
+        "summary_reported_tokens": 0,
+        "summary_usage_complete": true,
+        "irreversible_source_loss": false,
+        "model_view_lossy": true,
+        "archive_id": "4e3a88d5b3cd233e715150ce551c4e82701dedec586445e8e1b9aaaf060e6afe",
+        "cache_support": "unverified",
+        "elapsed_ms": 5.863,
+        "logical_model_calls": 1,
+        "synthetic_reported_tokens": 30,
+        "canonical_history_unchanged": true
+      },
+      {
+        "scenario": "L3",
+        "levels": [
+          "L1",
+          "L2",
+          "L3"
+        ],
+        "before_estimated_tokens": 46190,
+        "after_estimated_tokens": 9472,
+        "compression_count": 1,
+        "summary_calls": 0,
+        "summary_reported_tokens": 0,
+        "summary_usage_complete": true,
+        "irreversible_source_loss": false,
+        "model_view_lossy": true,
+        "archive_id": "911527177d440e6ef78f89055bf81a633e17e2c5ad122f2474e8cf38b15428cb",
+        "cache_support": "unverified",
+        "elapsed_ms": 5.962,
+        "logical_model_calls": 1,
+        "synthetic_reported_tokens": 30,
+        "canonical_history_unchanged": true
+      },
+      {
+        "scenario": "L4",
+        "levels": [
+          "L1",
+          "L2",
+          "L3",
+          "L4"
+        ],
+        "before_estimated_tokens": 16538,
+        "after_estimated_tokens": 6801,
+        "compression_count": 1,
+        "summary_calls": 1,
+        "summary_reported_tokens": 30,
+        "summary_usage_complete": true,
+        "irreversible_source_loss": false,
+        "model_view_lossy": true,
+        "archive_id": "6a5475fcf242d17152d84cf87ec53d56ecc1d54116358023bcf6ac4c1d558ab8",
+        "cache_support": "unverified",
+        "elapsed_ms": 2.88,
+        "logical_model_calls": 2,
+        "synthetic_reported_tokens": 60,
+        "canonical_history_unchanged": true
+      }
+    ]
+  },
+  "examples": {
+    "cli-count": {
+      "execution_status": "succeeded",
+      "completion": "completed",
+      "reason_codes": [],
+      "decisions": 2,
+      "reported_model_tokens": 0,
+      "compression_events": 0
+    },
+    "cli-revenue": {
+      "execution_status": "succeeded",
+      "completion": "blocked",
+      "reason_codes": [
+        "P3_VERIFIED_EVIDENCE_REQUIRED"
+      ],
+      "decisions": 2,
+      "reported_model_tokens": 0,
+      "compression_events": 0
+    }
+  },
+  "mini_commit": "0b452360866433fde0dc77cd37ada9d303546592",
+  "mini_normalized_sha256": {
+    "docs/07-context.md": "a8f09552da0c8956e58d853c053a7fa613cade3075489a55c9b0597a1483ca39",
+    "python/mini_claude/agent.py": "0f8b5ad05595f7e63ef3bb69077b0c7ba693bcd364b5a788feb5fd1da3fd0bca",
+    "python/mini_claude/memory.py": "cb584e3a08fb6c5264a3c6dad09f5207516c34b5865f0fda1092fa7376f70498"
+  },
+  "how_reference": "Web main chapters read; commit SHA unavailable due GitHub API HTTP 403 rate limiting",
+  "live_model": "not_run; missing model/API credentials",
+  "prefix_cache": "unverified; no real supplier cache experiment",
+  "python_313_ci": "not_run this stage",
+  "next_stage_started": false
+}

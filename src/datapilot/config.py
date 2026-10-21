@@ -23,6 +23,11 @@ class Settings(BaseSettings):
     max_input_chars: int = Field(default=16000, ge=100, le=64000)
     max_context_tokens: int = Field(default=18000, ge=256, le=100000)
     max_tool_view_chars: int = Field(default=4096, ge=768, le=12000)
+    context_compression: bool = True
+    context_trigger_ratio: float = Field(default=0.8, ge=0.5, le=1)
+    context_keep_batches: int = Field(default=2, ge=1, le=4)
+    context_idle_seconds: float = Field(default=300, ge=0, le=3600)
+    context_allow_summary: bool = True
     max_output_tokens: int = Field(default=1200, ge=16, le=4096)
     max_total_tokens: int = Field(default=18000, ge=100, le=100000)
     max_sql_attempts: int = Field(default=2, ge=1, le=3)
@@ -30,7 +35,7 @@ class Settings(BaseSettings):
     max_rows: int = Field(default=100, ge=1, le=1000)
     max_tasks: int = Field(default=8, ge=1, le=12)
     max_parallel_workers: int = Field(default=2, ge=1, le=4)
-    max_worker_turns: int = Field(default=4, ge=2, le=8)
+    max_worker_turns: int = Field(default=4, ge=2, le=20)
     max_replans: int = Field(default=1, ge=0, le=3)
 
     @model_validator(mode="after")

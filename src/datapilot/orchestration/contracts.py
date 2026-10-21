@@ -84,7 +84,7 @@ class Usage(Contract):
 
 class EvidenceRef(Contract):
     artifact_id: Digest
-    kind: Literal["query", "documents", "analysis", "report", "schema"]
+    kind: Literal["query", "documents", "analysis", "report", "schema", "context"]
     sha256: Digest
 
 
@@ -170,7 +170,7 @@ class Artifact(Contract):
     run_id: str
     task_id: TaskId
     plan_version: int
-    kind: Literal["query", "documents", "analysis", "report", "schema"]
+    kind: Literal["query", "documents", "analysis", "report", "schema", "context"]
     source: str = Field(max_length=256)
     sql: str | None = Field(default=None, max_length=12000)
     query: QueryResult | None = None
@@ -186,6 +186,8 @@ class Artifact(Contract):
             raise ValueError("Artifact payload must match its declared kind")
         if self.kind == "schema" and set(self.values) != {"schema"}:
             raise ValueError("Schema artifacts require complete schema text")
+        if self.kind == "context" and set(self.values) != {"messages"}:
+            raise ValueError("Context artifacts require the complete original transcript")
         return self
 
 
@@ -241,3 +243,4 @@ class TraceEvent(Contract):
     evidence_ids: list[str] = Field(default_factory=list)
     usage: Usage | None = None
     context: ContextUsage | None = None
+    compression: dict | None = None
