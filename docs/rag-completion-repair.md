@@ -2,6 +2,29 @@
 
 日期：2026-10-21；代码基线 `1d9e96e`。仅修复 P6A，不进入 P6B/UI/评测平台，不自动提交或推送。原负结果保留于 [P6A 历史交付](p6a-delivery.md)。决策见 [ADR-011](adr/0011-rag-completion-gate.md)。
 
+下文原有本地测试、DeepSeek Smoke 和失败历史为**推送前交付快照**，指标保持原样。修复提交随后已按用户指令推送；当前远端 CI 状态以下述独立核验为准，不再以当时“尚未推送、CI 未运行”的记录表示当前状态。
+
+## Post-push CI Verification
+
+实际核验时间：**2026-10-22 00:03:55 +08:00（Asia/Shanghai）**。通过现有 GitHub Connector 只读调用 GitHub REST API，重新读取指定 workflow run、最新 attempt 的 jobs/steps 及远端 main；不是仅复述此前观察。
+
+| 核验项 | GitHub 实际结果 |
+|---|---|
+| 仓库 | `zouradiant-dev/datapilot-pro` |
+| 修复提交 SHA | `1cb329994b1caf52be0ec33edc2fdf3c23795ba5` |
+| 本地 / 远端 | 本地 main、HEAD 与远端 main 均指向该修复提交 |
+| 工作流 | DataPilot checks；`.github/workflows/test.yml`；push 触发 |
+| Run / attempt | [39628335549](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/39628335549) / 1 |
+| 整体 CI | completed / **success** |
+| Python 3.11 | [checks (3.11)](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/39628335549/job/119319489022)：completed / **success** |
+| Python 3.13 | [checks (3.13)](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/39628335549/job/119319489474)：completed / **success** |
+
+两个 job 的 pytest、ruff check、ruff format --check 步骤均为 success。依据为 [Run API](https://api.github.com/repos/zouradiant-dev/datapilot-pro/actions/runs/39628335549)、[Jobs API](https://api.github.com/repos/zouradiant-dev/datapilot-pro/actions/runs/39628335549/jobs) 与 [main API](https://api.github.com/repos/zouradiant-dev/datapilot-pro/branches/main)；对应结构化结果见 [post_push_ci](research/rag-completion-validation.json)。
+
+CI 使用 Fake/脚本化决策、HTTP Mock 及真实 PostgreSQL 17/pgvector 服务；工作流未启用 live API opt-in。这些结果不构成真实 DeepSeek API 测试，不能推导稳定成功率。原单次真实 DeepSeek Smoke 继续作为单独的历史实验，不改 Token、耗时或失败指标，也不把本地测试计数冒充本次远端统计。
+
+本次只同步两份交付记录，验证 JSON/Markdown 引用与 diff；不运行付费实验或完整本地回归，不改业务代码，不自动 commit/push，不进入 P6B。初始工作区另有 `docs/codex-prompts-v2.4.md` 的用户修改，保持原样。上述 CI 通过适用于指定提交/Run，不表示本次未提交的文档修改已运行 CI。
+
 ## 原因与最小改动
 
 此前真实 DeepSeek 已检索/读取，却用普通文本结束，触发 MODEL_OUTPUT_INVALID；另一次在两次检索后继续搜索，触发 RAG_ATTEMPTS_EXHAUSTED。原 Loop 无可纠正的完成出口；工具展示集合与 P5A 精确授权校验不允许简单删掉搜索 Schema。
@@ -81,7 +104,7 @@
 | 双 Python uv sync --locked --offline / compileall | 通过；依赖和锁文件未更改 |
 | health | PG 17.11 / pgvector 0.8.6 / migration 0005 / 原 240 客户保留 |
 
-最终新覆盖 45 项：34 项脚本化/真实 SDK HTTP Mock，11 项真实 PG/本地神经 Embedding/MCP。单独的模型 live pytest 未开 opt-in，因此跳过一项；下述获授权 smoke 单独记录。3.11 中间全量与最后小修的针对性验证如实区分，最终整套代码由 3.13 全量覆盖。远端 CI 未运行，本轮未提交/推送。
+最终新覆盖 45 项：34 项脚本化/真实 SDK HTTP Mock，11 项真实 PG/本地神经 Embedding/MCP。单独的模型 live pytest 未开 opt-in，因此跳过一项；下述获授权 smoke 单独记录。3.11 中间全量与最后小修的针对性验证如实区分，最终整套代码由 3.13 全量覆盖。**推送前快照：当时远端 CI 未运行，该轮修复尚未提交/推送；此句保留历史事实，当前状态见上方 Post-push CI Verification。**
 
 ```powershell
 $env:PYTHONUTF8 = '1'

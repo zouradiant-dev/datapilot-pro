@@ -3,7 +3,105 @@
   "phase": "P6A-completion-repair",
   "base_commit": "1d9e96ed93c768e48c9eb03b089b2a25c1909d70",
   "status": "completed_bounded_retrieval_smoke_passed",
-  "remote_ci": "not_run_not_pushed",
+  "remote_ci": "success",
+  "pre_push_snapshot": {
+    "scope": "historical_before_push_not_current",
+    "remote_ci": "not_run_not_pushed",
+    "note": "原交付记录写于推送前；保留当时尚未推送、CI 尚未运行的历史事实，当前 CI 状态以 post_push_ci 为准。"
+  },
+  "post_push_ci": {
+    "repository": "zouradiant-dev/datapilot-pro",
+    "commit_sha": "1cb329994b1caf52be0ec33edc2fdf3c23795ba5",
+    "branch": "main",
+    "run_id": 39628335549,
+    "run_attempt": 1,
+    "workflow_name": "DataPilot checks",
+    "workflow_path": ".github/workflows/test.yml",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "verified_at": "2026-10-22T00:03:55+08:00",
+    "verified_timezone": "Asia/Shanghai",
+    "verification_method": "GitHub connector / REST API (read-only)",
+    "actions_url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/39628335549",
+    "run_api_url": "https://api.github.com/repos/zouradiant-dev/datapilot-pro/actions/runs/39628335549",
+    "jobs_api_url": "https://api.github.com/repos/zouradiant-dev/datapilot-pro/actions/runs/39628335549/jobs",
+    "branch_api_url": "https://api.github.com/repos/zouradiant-dev/datapilot-pro/branches/main",
+    "run_started_at": "2026-10-21T15:43:53Z",
+    "run_updated_at": "2026-10-21T15:51:35Z",
+    "git_state": {
+      "local_branch": "main",
+      "local_head": "1cb329994b1caf52be0ec33edc2fdf3c23795ba5",
+      "remote_main": "1cb329994b1caf52be0ec33edc2fdf3c23795ba5",
+      "preexisting_modified_paths": [
+        "docs/codex-prompts-v2.4.md"
+      ]
+    },
+    "jobs": [
+      {
+        "python": "3.11",
+        "job_id": 119319489022,
+        "name": "checks (3.11)",
+        "status": "completed",
+        "conclusion": "success",
+        "actions_url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/39628335549/job/119319489022",
+        "verified_steps": [
+          {
+            "name": "Run uv run --locked pytest --cov=datapilot --cov-report=term-missing",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run uv run --locked ruff check .",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run uv run --locked ruff format --check .",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "python": "3.13",
+        "job_id": 119319489474,
+        "name": "checks (3.13)",
+        "status": "completed",
+        "conclusion": "success",
+        "actions_url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/39628335549/job/119319489474",
+        "verified_steps": [
+          {
+            "name": "Run uv run --locked pytest --cov=datapilot --cov-report=term-missing",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run uv run --locked ruff check .",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run uv run --locked ruff format --check .",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ],
+    "test_scope": {
+      "model_decisions": "fake/scripted/HTTP Mock; not real DeepSeek API",
+      "database": "real PostgreSQL 17 + pgvector CI service",
+      "real_deepseek_api_tested": false,
+      "paid_smoke_record": "paid_smoke (unchanged historical local experiment)",
+      "new_paid_calls_for_status_sync": 0,
+      "local_full_tests_rerun": false
+    },
+    "limitations": [
+      "CI success does not establish real DeepSeek API reliability or a stable success rate.",
+      "CI status applies to the specified commit/run, not to these uncommitted documentation changes."
+    ]
+  },
   "tests": [
     {
       "label": "intermediate_full_before_last_three_cases",
