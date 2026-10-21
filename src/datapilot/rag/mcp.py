@@ -1,5 +1,6 @@
 """An isolated read-only RAG profile in the existing MCP server/client transport."""
 
+import hashlib
 import json
 import threading
 from contextlib import asynccontextmanager
@@ -9,17 +10,21 @@ from mcp.server.fastmcp import FastMCP
 from datapilot.contracts import AgentFailure
 from datapilot.ingestion.common import digest
 from datapilot.orchestration.contracts import SearchResult
+from datapilot.orchestration.rag_completion import RELEVANCE_POLICY, RELEVANCE_THRESHOLD
 from datapilot.rag.contracts import IndexManifest, RagScope
 from datapilot.rag.models import LocalEmbedding, specification
 from datapilot.rag.storage import Repository, verify_result
 from datapilot.runtime.mcp_client import MCPDatabaseTools, _connection, server_environment
 
 
-def create_rag_server(settings, scope: RagScope):
+def create_rag_server(settings, scope: RagScope, *, goal=None):
+    if goal is not None and (not isinstance(goal, str) or not 1 <= len(goal) <= 8000):
+        raise ValueError("Use a bounded host retrieval goal")
     repository = Repository(
         settings.rag_reader_database_url.get_secret_value(),
         scope,
         timeout=settings.query_timeout_seconds,
+        goal=goal,
     )
     server = FastMCP("datapilot-rag-readonly")
     lock, loaded = threading.Lock(), []
@@ -45,11 +50,13 @@ def create_rag_server(settings, scope: RagScope):
     def search_documents(query: str, top_k: int = 3) -> dict:
         """Retrieve authorized immutable fragments. query/top_k cannot authorize any source."""
         try:
-            if scope.corpora:
-                with lock:
+            # One session shares the cached goal vector. Do not expose an in-flight
+            # initialization as missing relevance metadata to another worker.
+            with lock:
+                if scope.corpora:
                     if not loaded:
                         loaded.append(LocalEmbedding())
-            result = repository.search(query, top_k, loaded[0] if loaded else None)
+                result = repository.search(query, top_k, loaded[0] if loaded else None)
             return {"result": result.model_dump(mode="json"), "error": None}
         except AgentFailure as exc:
             return {"result": None, "error": exc.error.model_dump()}
@@ -58,13 +65,15 @@ def create_rag_server(settings, scope: RagScope):
 
 
 class MCPRetrievalTools(MCPDatabaseTools):
+    completion_protocol = "rag-submit-v1"
     max_search_attempts = 2
     allowed = frozenset({"health", "get_rag_manifest", "search_documents"})
 
-    def __init__(self, session, timeout, *, scope):
+    def __init__(self, session, timeout, *, scope, goal=None):
         super().__init__(session, timeout)
         self.scope = RagScope.model_validate_json(scope.model_dump_json())
         self.manifests = {}
+        self.goal_sha256 = hashlib.sha256(goal.encode()).hexdigest() if goal else None
 
     async def preflight(self):
         payload = await self.call("get_rag_manifest", {})
@@ -103,6 +112,24 @@ class MCPRetrievalTools(MCPDatabaseTools):
 
     def validate_result(self, result):
         verify_result(result, self.scope, self.manifests)
+        if any(d.citation.goal_sha256 != self.goal_sha256 for d in result.documents):
+            raise AgentFailure("DOCUMENT_CORRUPT", "Retrieval goal binding changed")
+
+    def qualifying_documents(self, documents, goal):
+        if (
+            goal["question_sha256"] != self.goal_sha256
+            or goal["relevance_policy"] != RELEVANCE_POLICY
+            or goal["minimum_goal_score"] != RELEVANCE_THRESHOLD
+        ):
+            return []
+        return [
+            d
+            for d in documents
+            if d.citation
+            and d.citation.goal_sha256 == self.goal_sha256
+            and d.citation.goal_score is not None
+            and d.citation.goal_score >= max(RELEVANCE_THRESHOLD, self.scope.min_score)
+        ]
 
     async def search(self, query, top_k):
         # Closed argument contract, even for host Python callers; model has no scope parameter.
@@ -123,7 +150,7 @@ class MCPRetrievalTools(MCPDatabaseTools):
 
 
 @asynccontextmanager
-async def rag_session(settings, scope: RagScope | None):
+async def rag_session(settings, scope: RagScope | None, *, goal=None):
     if scope is None:
         yield None
         return
@@ -149,9 +176,13 @@ async def rag_session(settings, scope: RagScope | None):
     env = server_environment(settings)
     env["DATAPILOT_RAG_READER_DATABASE_URL"] = settings.rag_reader_database_url.get_secret_value()
     env["DATAPILOT_RAG_SCOPE"] = scope.model_dump_json()
+    if goal:
+        env["DATAPILOT_RAG_GOAL"] = goal
     from functools import partial
 
-    async with _connection(settings, env, partial(MCPRetrievalTools, scope=scope)) as tools:
+    async with _connection(
+        settings, env, partial(MCPRetrievalTools, scope=scope, goal=goal)
+    ) as tools:
         await tools.preflight()
         tools.source_scope = ContextScope(
             owner=scope.owner, profile="dataset" if sources else "saas", sources=tuple(sources)

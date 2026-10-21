@@ -108,7 +108,7 @@ P5A 后单独授权的 DeepSeek Flash 兼容增量仅调整共享模型构造 pr
 | P4 / P4.1 | 动态 DAG、Worker Loop、工具生命周期与完成判定已实现 | 无 Fork；RAG 替身仅证明编排，见 p4-delivery / p4-hardening |
 | P5A | L0–L4、上下文不变量、Memory 契约/内存实现已交付 | 保留算法与历史费用结论，见 context-engineering |
 | P5B | 官方 PG Checkpoint、持久预算/Artifact、恢复与故障验证已交付 | 当前停止点，见 p5b-delivery；不自动进入 P6/P7 |
-| P6A | 授权 TXT/Markdown、固定 BGE CPU、真实 pgvector/MCP 与引用验证已实现 | 当前停止点；P5B 恢复与原 SaaS 不回归 |
+| P6A | 授权 TXT/Markdown、固定 BGE CPU、真实 pgvector/MCP 与引用验证已实现；定向补强完成控制和恢复 | 当前停止点；详见 rag-completion-repair；检索成功与最终业务验证分开 |
 | P6B / P6C | 可信跨来源报告 / API、UI、Langfuse | 分别另行授权；不从 P6A 自动推进 |
 | P7 | 独立 E2E、消融、Claude Code 产品对比 | Gate D 完整验收资料；不可污染保留集 |
 | P8 | 可选官方 Runtime 不足与 Fork A/B | 有最小复现和公开方案不足的证据 |

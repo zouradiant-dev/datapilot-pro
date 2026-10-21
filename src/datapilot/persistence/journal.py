@@ -228,11 +228,95 @@ class Journal:
             target = registry.context_refs if item.kind in {"schema", "context"} else registry.refs
             if ref not in target:
                 target.append(ref)
+        if payload.get("rag_completion") is not None:
+            from datapilot.orchestration.contracts import RagCompletionReceipt
+
+            self.validate_rag_receipt(
+                registry.envelope, RagCompletionReceipt.model_validate(payload["rag_completion"])
+            )
+            registry.adopt_completion(payload["rag_completion"])
+
+    def rag_correction(self, envelope, notice):
+        # Pure host bookkeeping: atomic complete, no external side effect or extra ledger.
+        self.backend.assert_lease()
+        account = f"{envelope.plan_version}:{envelope.task.task_id}"
+        key = "control:" + account + ":rag-correction"
+        fingerprint = digest(notice)
+        payload = {"ordered_json": json.dumps(notice, ensure_ascii=False)}
+        with self.backend.transaction() as conn:
+            self.require_known_execution(conn)
+            row = self._row(conn, key)
+            if row:
+                if row["fingerprint"] != fingerprint:
+                    raise AgentFailure(
+                        "RAG_COMPLETION_REPAIR_EXHAUSTED",
+                        "One completion correction was already used",
+                    )
+                return json.loads(row["payload"]["ordered_json"])
+            execute(
+                conn,
+                "INSERT INTO execution.calls "
+                "(run_id,call_key,fingerprint,kind,account,status,tool_name,payload,payload_hash) "
+                "VALUES (:run,:key,:fp,'tool',:account,'complete',"
+                "'rag_completion_correction',CAST(:payload AS jsonb),:hash)",
+                run=self.backend.run_id,
+                key=key,
+                fp=fingerprint,
+                account=account,
+                payload=json_value(payload),
+                hash=digest(payload),
+            )
+        self.backend.hit("rag_correction_committed")
+        return notice
+
+    def validate_rag_receipt(self, envelope, receipt):
+        with self.backend.transaction() as conn:
+            row = self._row(
+                conn, f"tool:{envelope.plan_version}:{envelope.task.task_id}:{receipt.call_id}"
+            )
+            if (
+                row is None
+                or row["status"] != "complete"
+                or row["tool_name"] != "submit_rag_result"
+            ):
+                raise AgentFailure("RECOVERY_CORRUPT", "Completion has no committed tool record")
+            payload = json.loads(row["payload"]["ordered_json"])
+            if payload.get("rag_completion") != receipt.model_dump(mode="json"):
+                raise AgentFailure("RECOVERY_CONFLICT", "Completion differs from committed receipt")
+            if row["fingerprint"] != digest(
+                {
+                    "name": "submit_rag_result",
+                    "arguments": receipt.submission.model_dump(mode="json"),
+                }
+            ):
+                raise AgentFailure("RECOVERY_CONFLICT", "Submission arguments differ from receipt")
+            model = execute(
+                conn,
+                "SELECT call_key FROM execution.calls WHERE run_id=:run "
+                "AND kind='model' AND account=:account AND status='complete' "
+                "AND payload_hash=:hash",
+                run=self.backend.run_id,
+                account=f"{envelope.plan_version}:{envelope.task.task_id}",
+                hash=receipt.model_response_sha256,
+            ).scalar_one_or_none()
+            response = self._row(conn, model) if model else None
+            calls = response["payload"]["data"]["tool_calls"] if response else []
+            if not any(
+                c["id"] == receipt.call_id
+                and c["name"] == "submit_rag_result"
+                and c["args"] == receipt.submission.model_dump(mode="json")
+                for c in calls
+            ):
+                raise AgentFailure(
+                    "RECOVERY_CORRUPT", "Submission has no matching committed model call"
+                )
 
     def align_tools(self, registry, messages):
         # Only observations present at THIS child checkpoint are active evidence.
         # A later committed call may exist ahead of the graph checkpoint after a crash.
         registry.refs = []
+        if registry.rag_control:
+            registry.accepted = None
         for message in messages:
             if message.type == "tool":
                 self.adopt_payload(registry, json.loads(message.content))

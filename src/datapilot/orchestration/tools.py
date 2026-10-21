@@ -9,8 +9,23 @@ from typing import Protocol
 from pydantic import Field
 
 from datapilot.contracts import AgentFailure, Contract, QueryResult
+from datapilot.ingestion.common import digest
 from datapilot.orchestration.context import tool_view
-from datapilot.orchestration.contracts import Artifact, Digest, SearchResult
+from datapilot.orchestration.contracts import (
+    Artifact,
+    Digest,
+    RagCompletionReceipt,
+    RagSubmission,
+    SearchResult,
+)
+from datapilot.orchestration.rag_completion import (
+    PROTOCOL,
+    SUBMIT,
+    enabled,
+    goal_hash,
+    relevant_ids,
+    validate_submission,
+)
 from datapilot.orchestration.runtime import Cancellation, text_hash
 
 
@@ -56,6 +71,14 @@ class ToolDefinition:
 
 
 DEFINITIONS = {
+    SUBMIT: ToolDefinition(
+        SUBMIT,
+        RagSubmission,
+        "Request host-verified RAG completion using actual artifact_refs IDs, "
+        "never document_id/chunk_id. Call alone; no sibling or invented references. "
+        "complete needs verified retrieval relevance/requirements; empty retrieval is "
+        "unavailable; nonempty inadequate passages are insufficient.",
+    ),
     "database_schema": ToolDefinition(
         "database_schema", Empty, "Read approved SaaS schema metadata"
     ),
@@ -81,6 +104,11 @@ CAPABILITIES = {
 }
 
 
+def delegated_tools(worker, retrieval=None):
+    names = CAPABILITIES[worker]
+    return names | {SUBMIT} if worker == "rag" and enabled(retrieval) else names
+
+
 class ToolRegistry:
     def __init__(
         self,
@@ -95,11 +123,12 @@ class ToolRegistry:
         max_sql_attempts=2,
         max_view_chars=4096,
         durability=None,
+        rag_goal=None,
     ):
         self.envelope, self.store = envelope, store
         self.database = database if envelope.task.worker == "sql" else None
         self.retrieval = retrieval if envelope.task.worker == "rag" else None
-        approved = CAPABILITIES[envelope.task.worker]
+        approved = delegated_tools(envelope.task.worker, retrieval)
         if not set(envelope.allowed_tools) <= approved:
             raise AgentFailure("TOOL_FORBIDDEN", "Child permissions exceed its worker capability")
         self.allowed = frozenset(envelope.allowed_tools)
@@ -111,11 +140,63 @@ class ToolRegistry:
         self.trace, self.timeout = trace, timeout
         self.max_sql_attempts, self.max_view_chars = max_sql_attempts, max_view_chars
         self.durability = durability
+        self.rag_control = envelope.task.worker == "rag" and enabled(retrieval)
+        self.rag_goal = json.loads(json.dumps(rag_goal)) if rag_goal is not None else None
+        self.accepted = None
+        self._correction = None
+        self._submission_calls = {}
+        self.model_response_sha256 = None
         if durability:
             durability.hydrate_tools(self)
 
-    def schemas(self):
-        return [DEFINITIONS[name].schema() for name in sorted(self.allowed)]
+    def active_tools(self):
+        names = self.allowed
+        if self.rag_control and self.accepted is not None:
+            return names & {SUBMIT}
+        if self.rag_control and self.search_attempts >= self.retrieval.max_search_attempts:
+            names = names - {"search_documents"}
+        return names
+
+    def schemas(self, *, initial=False):
+        names = self.allowed if initial else self.active_tools()
+        return [DEFINITIONS[name].schema() for name in sorted(names)]
+
+    def validate_phase(self, names, authority):
+        if set(authority) != set(self.allowed) or set(names) != set(self.active_tools()):
+            raise AgentFailure(
+                "TOOL_FORBIDDEN", "Model view differs from host-enforced phase tools"
+            )
+
+    def correct_completion(self, reason, trigger):
+        if not self.rag_control:
+            raise AgentFailure("TOOL_FORBIDDEN", "Completion correction is only for scoped RAG")
+        notice = {"protocol": PROTOCOL, "reason": reason, "trigger": trigger, "attempt": 1}
+        if self.durability:
+            notice = self.durability.rag_correction(self.envelope, notice)
+        elif self._correction is not None and self._correction != notice:
+            raise AgentFailure(
+                "RAG_COMPLETION_REPAIR_EXHAUSTED", "One completion correction was already used"
+            )
+        self._correction = notice
+        return notice
+
+    def adopt_completion(self, raw):
+        receipt = RagCompletionReceipt.model_validate(raw)
+        verdict = validate_submission(
+            self.envelope, self.store, self.refs, receipt.submission, self.retrieval, self.rag_goal
+        )
+        if verdict != receipt.verdict or receipt.goal_sha256 != goal_hash(self.rag_goal):
+            raise AgentFailure("RECOVERY_IDENTITY", "Completion goal/verdict differs from host")
+        if receipt.submission.outcome == "complete" and receipt.relevant_chunk_ids != relevant_ids(
+            self.store,
+            [r for r in self.refs if r.artifact_id in receipt.submission.artifact_ids],
+            self.retrieval,
+            self.rag_goal,
+        ):
+            raise AgentFailure("RECOVERY_CONFLICT", "Relevant passage set changed")
+        if self.accepted is not None and self.accepted != receipt:
+            raise AgentFailure("RECOVERY_CONFLICT", "Conflicting completion receipts")
+        self.accepted = receipt
 
     async def invoke(self, name, arguments, *, call_id=None):
         """Sealed host lifecycle; there are no user callbacks that can override denial.
@@ -138,6 +219,8 @@ class ToolRegistry:
                 raise AgentFailure("INPUT_INVALID", "Tool arguments failed their contract") from exc
             if name not in self.allowed:
                 raise AgentFailure("TOOL_FORBIDDEN", "Tool is outside delegated capability")
+            if name == SUBMIT and not call_id:
+                raise AgentFailure("INPUT_INVALID", "Submission needs an actual tool call ID")
             if (name in {"database_schema", "query_database"} and self.database is None) or (
                 name == "search_documents" and self.retrieval is None
             ):
@@ -156,6 +239,8 @@ class ToolRegistry:
                             item["code"], item["message"], retryable=item["retryable"]
                         )
                     return cached
+            if self.accepted is not None and name != SUBMIT:
+                raise AgentFailure("TOOL_FORBIDDEN", "No data tools after accepted completion")
             if name == "query_database" and self.sql_attempts >= self.max_sql_attempts:
                 raise AgentFailure("SQL_ATTEMPTS_EXHAUSTED", "SQL attempt limit reached")
             search_limit = getattr(self.retrieval, "max_search_attempts", None)
@@ -171,9 +256,41 @@ class ToolRegistry:
                 # No await before reservation: simultaneous calls cannot both take the last slot.
                 self.sql_attempts += 1
             payload = await self.cancel.wait_for(self._dispatch(name, args), self.timeout)
+            if name == SUBMIT:
+                # A receipt only becomes accepted after the existing Journal commits it.
+                prior = self._submission_calls.get(call_id)
+                if prior is not None and prior != digest(arguments):
+                    raise AgentFailure("RECOVERY_CONFLICT", "Submission call ID was rebound")
+                receipt = self.accepted or RagCompletionReceipt(
+                    call_id=call_id,
+                    submission=args,
+                    verdict=payload.pop("verdict"),
+                    goal_sha256=goal_hash(self.rag_goal),
+                    model_response_sha256=self.model_response_sha256,
+                    relevant_chunk_ids=(
+                        relevant_ids(
+                            self.store,
+                            [r for r in self.refs if r.artifact_id in args.artifact_ids],
+                            self.retrieval,
+                            self.rag_goal,
+                        )
+                        if args.outcome == "complete"
+                        else []
+                    ),
+                )
+                if receipt.submission != args:
+                    raise AgentFailure("RECOVERY_CONFLICT", "Accepted completion cannot change")
+                payload = {"rag_completion": receipt.model_dump(mode="json")}
+                if self.durability:
+                    self.durability.backend.hit("rag_submission_validated")
             if self.durability:
                 self.durability.backend.hit("tool_artifact")
                 self.durability.finish_tool(call_key, payload, (time.monotonic() - started) * 1000)
+            if name == SUBMIT:
+                self.adopt_completion(payload["rag_completion"])
+                self._submission_calls[call_id] = digest(arguments)
+                if self.durability:
+                    self.durability.backend.hit("rag_submission_committed")
             return payload
         except asyncio.CancelledError:
             error = AgentFailure("CANCELLED", "Tool coroutine was cancelled")
@@ -207,6 +324,14 @@ class ToolRegistry:
                 )
 
     async def _dispatch(self, name, args):
+        if name == SUBMIT:
+            if not self.rag_control:
+                raise AgentFailure("TOOL_FORBIDDEN", "No RAG completion capability")
+            return {
+                "verdict": validate_submission(
+                    self.envelope, self.store, self.refs, args, self.retrieval, self.rag_goal
+                )
+            }
         if name == "database_schema":
             value = await self.database.schema()
             if not isinstance(value, str) or not 1 <= len(value) <= 12000:

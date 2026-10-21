@@ -34,6 +34,7 @@
 - 仅按可信宿主重建身份、能力、Dataset/Metric/Semantic/source pin；摘要/Checkpoint 不能自授予权限。恢复核对工件哈希、调用状态及所有父子账本。已提交调用按原始逻辑输入复用；未知执行一律保守计账并阻断自动重发，不能清零、重复扣减或盲猜外部操作未执行。
 - P6A 按 ADR-010、docs/rag-pipeline.md：0005 管固定 RAG 四表；0001–0005 发布后冻结。rag_ingest 仅追加、rag_reader 仅读取，SQL/RAG MCP 进程凭据不混用；模型没有摄取、模型下载或 SQL 向量查询工具。源/index/模型/chunker/跨度/hash 与 scope 都须可验证，score 不是事实或 P3 verified。只有已批准本地 TXT/Markdown；不执行文档指令、宏、链接或脚本。
 - Embedding 固定 ONNX/tokenizer 文件 SHA、512 维与推理 recipe，不训练；缓存缺失明确失败，不能以随机/fixture 向量冒充真实模型。MCP 不自动下载模型。真实检索每任务最多两次；未知 MCP 超时沿用 P5B uncertain，只有已确认回滚的 PG 超时可有界重试。文档正文/向量不进公开 Trace；原件/工件属于私密存储。
+- P6A 完成修复见 ADR-011、docs/rag-completion-repair.md：真实 RAG 经宿主本地 submit_rag_result 与原 Verifier 接收收据；Stop Hook 共享一次纠正，不是 Evaluator LLM。阶段工具只按宿主规则收缩，不能用隐藏 Schema 代替授权。检索相关且满足要求可 complete，业务结论仍未验证；不能仅凭非空/hash/score 完成，也不能把全部因果验证前置给 RAG。收据与纠正在原 Journal 持久化，unknown-outcome 禁止自动重发。
 - `status` 保留执行兼容语义；新增 `completion.status` 才是宿主任务契约三态判定。不能只凭 succeeded、模型 complete、Artifact SHA 或五层任务 passed 宣称业务指标完成。P4.1 没有 P3→P4 报告桥接，已识别的指标请求必须 blocked/P3_VERIFIED_EVIDENCE_REQUIRED，继续使用独立 P3 入口；completed 只覆盖必需任务契约，不证明任意自然语言目标等价/完整性。
 - Domain Pack 是版本化字段映射/指标/质量/Verifier/评测的可信配置，不是可执行上传脚本或不同 Prompt。Source Connector 首发文件快照；未知 POS/API 不编造适配器。
 

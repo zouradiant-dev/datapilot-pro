@@ -461,14 +461,17 @@ def test_real_worker_retrieval_attempts_are_bounded_without_changing_fixture_loo
             result = await run_question(
                 pg_settings, "检索客户培训文档", retrieval=retrieval, transport=Repeater()
             )
-            assert result["results"]["1:rag"].error.code == "RAG_ATTEMPTS_EXHAUSTED"
+            # rag-submit-v1 permits one correction after a stale closed-phase request.
+            # Keep the original hard assertion: only TWO searches may actually execute.
+            assert result["results"]["1:rag"].error.code == "RAG_COMPLETION_REPAIR_EXHAUSTED"
             events = [
                 e
                 for e in result["trace"]
                 if e["node"] == "tool" and e.get("tool_name") == "search_documents"
             ]
             assert sum(e["status"] == "succeeded" for e in events) == 2
-            assert len(events) == 3
+            assert len(events) == 4
+            assert sum(e["error_code"] == "RAG_ATTEMPTS_EXHAUSTED" for e in events) == 2
 
     run_async(check())
 

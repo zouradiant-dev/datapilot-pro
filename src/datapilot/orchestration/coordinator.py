@@ -20,6 +20,7 @@ from datapilot.orchestration.contracts import (
     BudgetLimits,
     EvidenceRef,
     Plan,
+    RagCompletionReceipt,
     TaskEnvelope,
     TaskResult,
     TaskSpec,
@@ -32,6 +33,13 @@ from datapilot.orchestration.loop import (
     initial_messages,
 )
 from datapilot.orchestration.model import Gateway
+from datapilot.orchestration.rag_completion import (
+    enabled,
+    goal_hash,
+    relevant_ids,
+    retrieval_goal,
+    validate_submission,
+)
 from datapilot.orchestration.runtime import (
     ArtifactStore,
     Cancellation,
@@ -39,7 +47,7 @@ from datapilot.orchestration.runtime import (
     execution_error,
     text_hash,
 )
-from datapilot.orchestration.tools import CAPABILITIES, ToolRegistry
+from datapilot.orchestration.tools import ToolRegistry, delegated_tools
 from datapilot.semantics.recipes import scalar
 from datapilot.state import RunState
 
@@ -123,6 +131,7 @@ class Coordinator:
         # Host debug/test only; never public trace or sibling input.
         self.transcripts = {}
         self.reused = {}
+        self.rag_receipts = {}
         self.graph = self._compile()
 
     def validate_plan(self, plan: Plan) -> Plan:
@@ -156,7 +165,7 @@ class Coordinator:
             run_id=state["run_id"],
             plan_version=state["plan_version"],
             task=task,
-            allowed_tools=sorted(CAPABILITIES[task.worker]),
+            allowed_tools=sorted(delegated_tools(task.worker, self.retrieval)),
             input_refs=refs,
             budget=BudgetLimits(
                 calls=min(root.calls, self.settings.max_worker_turns), tokens=root.tokens
@@ -181,6 +190,7 @@ class Coordinator:
             max_sql_attempts=self.settings.max_sql_attempts,
             max_view_chars=self.settings.max_tool_view_chars,
             durability=self.durability,
+            rag_goal=retrieval_goal(self.question or ""),
         )
         status, error, refs = "succeeded", None, []
         self.trace.emit("worker", "started", version=envelope.plan_version, task_id=task.task_id)
@@ -213,7 +223,9 @@ class Coordinator:
                         )
                 transcript = []
                 self.transcripts[key(envelope.plan_version, task.task_id)] = transcript
-                seed = initial_messages(envelope, schema)
+                seed = initial_messages(
+                    envelope, schema, rag_control=tools.rag_control, rag_goal=tools.rag_goal
+                )
                 context_metadata = dict(self.context_metadata.get(task.task_id, {}))
                 if task.worker == "rag" and hasattr(self.retrieval, "context_scope"):
                     trusted_scope = self.retrieval.context_scope()
@@ -271,11 +283,16 @@ class Coordinator:
                 else:
                     final = output["final"]
                     refs = [r for r in tools.refs if r.artifact_id in final.artifact_ids]
-                    if final.outcome == "unavailable":
+                    if final.outcome in {"unavailable", "insufficient"}:
                         status = "unavailable"
                         error = execution_error(
                             AgentFailure(
-                                "NO_RELEVANT_DOCUMENTS", "No retrieved evidence supports this task"
+                                "EVIDENCE_INSUFFICIENT"
+                                if final.outcome == "insufficient"
+                                else "NO_RELEVANT_DOCUMENTS",
+                                "Retrieved passages cannot establish this goal"
+                                if final.outcome == "insufficient"
+                                else "No retrieved evidence supports this task",
                             )
                         )
         except AgentFailure as exc:
@@ -297,6 +314,11 @@ class Coordinator:
                 AgentFailure("WORKER_ERROR", "Worker failed without exposing internal details")
             )
             status = "failed"
+        receipt = (
+            tools.accepted if tools.rag_control and status in {"succeeded", "unavailable"} else None
+        )
+        if receipt:
+            self.rag_receipts[key(envelope.plan_version, task.task_id)] = receipt
         result = TaskResult(
             run_id=self.run_id,
             task_id=task.task_id,
@@ -307,6 +329,7 @@ class Coordinator:
             evidence_refs=refs,
             usage=self.ledger.snapshot(account),
             attempts=tools.sql_attempts,
+            rag_completion=receipt,
         )
         self.trace.emit(
             "worker",
@@ -390,6 +413,49 @@ class Coordinator:
                 ):
                     raise AgentFailure("VERIFICATION_ERROR", "Dependency did not pass verification")
             envelope = self.envelope(state, task)
+            if (
+                task.worker == "rag"
+                and enabled(self.retrieval)
+                and result.status in {"succeeded", "unavailable"}
+            ):
+                receipt = result.rag_completion
+                if receipt is None:
+                    raise AgentFailure("EVIDENCE_INVALID", "A committed RAG submission is required")
+                receipt = RagCompletionReceipt.model_validate_json(receipt.model_dump_json())
+                goal = retrieval_goal(self.question or "")
+                origin_version = state["plan_version"]
+                if result.reused_from:
+                    if self.reused.get(key(origin_version, task.task_id)) != result.reused_from:
+                        raise AgentFailure("EVIDENCE_INVALID", "Untrusted receipt reuse")
+                    origin_version = int(result.reused_from.split(":", 1)[0])
+                receipt_envelope = envelope.model_copy(update={"plan_version": origin_version})
+                verdict = validate_submission(
+                    receipt_envelope,
+                    self.store,
+                    result.evidence_refs,
+                    receipt.submission,
+                    self.retrieval,
+                    goal,
+                )
+                if (
+                    receipt.verdict != verdict
+                    or receipt.goal_sha256 != goal_hash(goal)
+                    or set(receipt.submission.artifact_ids)
+                    != {r.artifact_id for r in result.evidence_refs}
+                    or (result.status == "succeeded") != (receipt.submission.outcome == "complete")
+                    or (
+                        receipt.submission.outcome == "complete"
+                        and receipt.relevant_chunk_ids
+                        != relevant_ids(self.store, result.evidence_refs, self.retrieval, goal)
+                    )
+                ):
+                    raise AgentFailure(
+                        "EVIDENCE_INVALID", "Completion result differs from verified submission"
+                    )
+                if self.durability:
+                    self.durability.validate_rag_receipt(receipt_envelope, receipt)
+                elif self.rag_receipts.get(key(origin_version, task.task_id)) != receipt:
+                    raise AgentFailure("EVIDENCE_INVALID", "No host-accepted submission exists")
             allowed = {r.artifact_id for r in envelope.input_refs}
             expected_kind = {
                 "sql": "query",
@@ -816,11 +882,20 @@ class Coordinator:
                         lines.append(
                             "组件检索替身，非真实 RAG 验收。"
                             if artifact.documents.fixture
-                            else "检索文档："
+                            else "检索任务来源；最终业务结论未验证："
+                        )
+                        receipt = next(
+                            (
+                                r.rag_completion
+                                for r in current
+                                if r.rag_completion and ref in r.evidence_refs
+                            ),
+                            None,
                         )
                         lines.extend(
                             cell(d.source) + " @ " + cell(d.version) + "：" + cell(d.text)
                             for d in artifact.documents.documents
+                            if receipt is None or d.document_id in receipt.relevant_chunk_ids
                         )
                     elif artifact.kind == "analysis":
                         lines.append(

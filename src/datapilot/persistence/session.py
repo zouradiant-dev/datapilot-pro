@@ -220,13 +220,17 @@ async def run_durable(
                 raise AgentFailure("RECOVERY_FORBIDDEN", "RAG scope belongs to another owner")
             async with (
                 database_session(settings) as tools,
-                rag_session(settings, rag_scope) as retrieval,
+                rag_session(settings, rag_scope, goal=question) as retrieval,
             ):
                 schema = (
                     await tools.schema()
                 )  # Fresh trusted connection, role and schema validation.
                 manifest = fingerprint(settings, question, owner, schema, metadata, require_review)
                 if rag_scope is not None:
+                    manifest["rag_completion_protocol"] = "rag-submit-v1"
+                    from datapilot.orchestration.rag_completion import retrieval_goal
+
+                    manifest["rag_completion_goal"] = retrieval_goal(question)
                     manifest["rag_scope"] = rag_scope.model_dump(mode="json")
                     manifest["rag_sources"] = retrieval.context_scope().model_dump(mode="json")
                 limits = contracts.BudgetLimits(

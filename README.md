@@ -18,7 +18,9 @@ P5A 复用 Gateway/ArtifactStore/父子账本，实现 L1 旧工具视图裁剪�
 
 P6A 的有界 TXT/Markdown 文档链路、固定 512 维中文 BGE 模型、独立 RAG 只读角色和可追溯引用已接入相同 Durable/MCP 边界，见 [RAG 部署与 Demo](docs/rag-pipeline.md)、[P6A 交付](docs/p6a-delivery.md)。Embedding 在本地真实推理，无需 API Key；MCP 不自动下载模型、不接收 scope/DDL/文件工具参数。模型权重缺失/hash 错误明确失败，原 fixture 不冒充真实检索。
 
-真实 PG/本地神经 Embedding/MCP 与 Fake 决策下的恢复测试通过；两次真实 DeepSeek RAG smoke 分别因交付格式和检索次数上限失败，尚不能宣称真实模型自主 RAG 任务通过。保留错误与实际用量，不降低引用/权限校验以获取成功状态。
+最初两次真实 DeepSeek RAG smoke 因交付格式和检索次数上限失败，历史错误和用量保留。当前定向补强专用完成工具、一次 Stop Hook 纠正、阶段权限收缩及跨进程幂等恢复，见 [最新交付与实测](docs/rag-completion-repair.md)。相关证据可完成检索任务，业务结论仍需外层验证；不只凭非空/hash/分数宣称业务完成。
+
+补强后唯一获授权的 DeepSeek 合成语义检索 Smoke 通过：5 次模型调用、7,565 Token、两次检索/一次完成提交，约 10.07 秒；本例没有触发 Stop Hook，不声称已测得真实纠正成功率或完整业务结论。最终 Python 3.13 真实 PG 全量为 504 passed / 1 skipped，详细边界与历史负结果见上述交付记录。
 
 已有数据库先增量部署，保留旧数据：
 

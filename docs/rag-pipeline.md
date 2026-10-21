@@ -73,7 +73,7 @@ Alembic 0005 建立四张追加式表：
 
 source_id 绑定 corpus+文件名，document_id 绑定 source_id+原件 SHA，chunk_id 绑定 document/span/chunker/片段 SHA；index_version 为完整 manifest SHA。原件、清单和批量向量在同一 PostgreSQL 事务提交；中途失败整体回滚。相同输入幂等；新内容/文件集合/chunker/model 得到新索引，旧原件和索引保留。没有隐式 latest/current 选择或物理删除。Corpus 的 Dataset/version 不重绑定；数据集升级需新的 Corpus。
 
-rag_ingest 仅 SELECT/INSERT 新四表，rag_reader 仅 SELECT，两者均无 CREATE/UPDATE/DELETE/角色继承或 saas/uploads/Checkpoint 权限。MCP RAG profile 仅注册 health/get_rag_manifest/search_documents；模型只看到原 search_documents/read_context。SQL profile 不继承 RAG DSN，RAG profile 不接受 SQL/Upload Reader DSN，没有 SQL 查询工具。
+rag_ingest 仅 SELECT/INSERT 新四表，rag_reader 仅 SELECT，两者均无 CREATE/UPDATE/DELETE/角色继承或 saas/uploads/Checkpoint 权限。MCP RAG profile 仅注册 health/get_rag_manifest/search_documents；模型看到 search_documents/read_context 与宿主本地完成控制 submit_rag_result。控制工具不是 MCP 写入。SQL profile 不继承 RAG DSN，RAG profile 不接受 SQL/Upload Reader DSN，没有 SQL 查询工具。
 
 RagScope 是可信宿主 API：owner、CorpusPin、明确的 DatasetScope、SaaS 授权和 score 阈值；模型参数仅 query/top_k。CorpusPin 的 document_ids 必须完整匹配批准的索引快照，避免授权部分文件时泄露同快照其他元数据；需更小集合时用独立 Corpus 或重新批准的文件子集索引。拒绝缺失/额外/跨数据集/错误版本的授权清单。空 scope 明确 no_authorized_documents；合法范围无召回为 no_matches；越权报 DOCUMENT_NOT_AUTHORIZED。
 
@@ -111,7 +111,13 @@ uv run --locked python scripts/rag_recovery_probe.py resume $runId artifacts/rag
 
 Fake 只控制 LLM 决策，Embedding、源文件、PG/vector、MCP 是真实的；不声称 Fake 的问答质量是实际供应商效果。上传数据集用 `--dataset ID --dataset-version N` 替代 --saas，ID/version 来自已有 P2 ready Dataset。每次 --output 使用新的仓库 artifacts/ 文件，不覆盖旧授权。跨进程故障脚本为 `scripts/rag_recovery_probe.py`，仅供宿主测试。
 
-真实模型入口为 `datapilot durable start RUN_ID --question '问题' --rag-scope artifacts/rag-demo-scope.json --mode live`，会消费 API 额度。本轮两次 DeepSeek smoke 分别因最终交付格式、检索次数上限失败，不能当作已通过的真实模型示例；详见交付记录。已有 `FinalDecision` 校验与两次检索上限保持生效，仅在真实 RAG 的静态约束中明确工件 ID 交付格式，没有新建修复循环。
+真实模型入口为 `datapilot durable start RUN_ID --question '问题' --rag-scope artifacts/rag-demo-scope.json --mode live`，会消费 API 额度。最初两次 DeepSeek smoke 分别因最终交付格式、检索次数上限失败，历史负结果保留；后续定向修复采用 submit_rag_result 与一次 Stop Hook 纠正，真实搜索仍最多两次。最新测试和单次有界实测记录见 [完成协议交付](rag-completion-repair.md)。
+
+### 检索任务验收
+
+授权且相关、满足可支持数量/范围要求的片段可完成检索；不要求每个子任务独立证明最终经营结论。原文引用词定位与语义同义检索均支持，非空/hash 有效/模型搜索分数均不能单独 complete。语义相关性在隔离 MCP 内按宿主原始目标与固定 BGE 独立计算，goal SHA/score 返回并绑定原工件；不由模型参数赋权。当前 0.55 阈值是启发式，非充分语义或因果证明。
+
+空检索 unavailable，非空但不足 insufficient，检索 complete 的收据仍 `business_conclusions_verified=false`。只有相关 chunk 在确定性答案中展示，其余候选仍保留完整私密 Artifact。原 P3/外层 Gate 继续阻止未验证指标结论；不借本阶段新增综合业务报告。
 
 ## 已知边界
 

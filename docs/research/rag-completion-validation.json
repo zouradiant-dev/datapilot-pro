@@ -1,0 +1,294 @@
+{
+  "schema_version": 1,
+  "phase": "P6A-completion-repair",
+  "base_commit": "1d9e96ed93c768e48c9eb03b089b2a25c1909d70",
+  "status": "completed_bounded_retrieval_smoke_passed",
+  "remote_ci": "not_run_not_pushed",
+  "tests": [
+    {
+      "label": "intermediate_full_before_last_three_cases",
+      "python": "3.11.16",
+      "tests": 502,
+      "passed": 501,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "elapsed_seconds": 522.236,
+      "private_junit": "artifacts/rag-completion/final-311.xml",
+      "junit_sha256": "1319de13eb10f1832ea7e1177b99017996501a6fcfeffe743a304dc4907a612c"
+    },
+    {
+      "label": "final_control_unit_and_http_mock",
+      "python": "3.11.16",
+      "tests": 34,
+      "passed": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "elapsed_seconds": 2.755,
+      "private_junit": "artifacts/rag-completion/local-control-final-311.xml",
+      "junit_sha256": "98e6d792ce4035912ec70deba7a741258c5b0abbc2724dd47f4110b730d6070b"
+    },
+    {
+      "label": "final_non_integration",
+      "python": "3.13.15",
+      "tests": 396,
+      "passed": 396,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "elapsed_seconds": 9.036,
+      "private_junit": "artifacts/rag-completion/local-313.xml",
+      "junit_sha256": "ab0f2ef7fed3d0d50e511dd319e4631bfb88541e3ba61efde890ac3c82145c4f"
+    },
+    {
+      "label": "real_pg_control_10_before_concurrency_case",
+      "python": "3.11.16",
+      "tests": 10,
+      "passed": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "elapsed_seconds": 148.755,
+      "private_junit": "artifacts/rag-completion/pg-final.xml",
+      "junit_sha256": "9a64819490a5517f5fceee5a5321c4bf5d2249f77c813cc9809ece1e17cd8810"
+    },
+    {
+      "label": "final_full_regression",
+      "python": "3.13.15",
+      "tests": 505,
+      "passed": 504,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "elapsed_seconds": 542.765,
+      "private_junit": "artifacts/rag-completion/final-313.xml",
+      "junit_sha256": "b6a5ab87a5d8b0d1fc25f0dea36f5c6a1b2eff2d153e41587ad50d728540c52b"
+    }
+  ],
+  "automated_decisions": "scripted_or_http_mock_not_live",
+  "paid_smoke": {
+    "status": "passed",
+    "authorization": {
+      "max_runs": 1,
+      "max_model_calls": 8,
+      "max_tokens": 18000,
+      "retry_failed_run": false
+    },
+    "record": {
+      "run_id": "462ccd40-d6f1-400a-996e-9bd421c67483",
+      "protocol": "rag-submit-v1",
+      "question": "仅检索客户入门培训相关文档片段，保留实际来源引用",
+      "kind": "real_deepseek_real_pg_real_local_embedding_mcp",
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "budget": {
+        "max_runs": 1,
+        "calls": 8,
+        "tokens": 18000,
+        "automatic_retries": 0
+      },
+      "status": "succeeded",
+      "completion": {
+        "status": "completed",
+        "scope": "required_task_contracts",
+        "required_tasks": [
+          "retrieve_onboarding_docs"
+        ],
+        "verified_tasks": [
+          "retrieve_onboarding_docs"
+        ],
+        "reason_codes": [],
+        "business_metrics_required": false
+      },
+      "accepted": true,
+      "error_codes": [],
+      "elapsed_ms": 10073.625499964692,
+      "model_calls": [
+        {
+          "status": "complete",
+          "usage": {
+            "input_tokens": 1754,
+            "total_tokens": 1905,
+            "output_tokens": 151,
+            "input_token_details": {
+              "cache_read": 512
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 1077.999999979511
+        },
+        {
+          "status": "complete",
+          "usage": {
+            "input_tokens": 2222,
+            "total_tokens": 2320,
+            "output_tokens": 98,
+            "input_token_details": {
+              "cache_read": 1792
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 1093.9999999827705
+        },
+        {
+          "status": "complete",
+          "usage": {
+            "input_tokens": 1228,
+            "total_tokens": 1293,
+            "output_tokens": 65,
+            "input_token_details": {
+              "cache_read": 0
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 1155.9999999590218
+        },
+        {
+          "status": "complete",
+          "usage": {
+            "input_tokens": 1439,
+            "total_tokens": 1500,
+            "output_tokens": 61,
+            "input_token_details": {
+              "cache_read": 1280
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 1016.0000000032596
+        },
+        {
+          "status": "complete",
+          "usage": {
+            "input_tokens": 462,
+            "total_tokens": 547,
+            "output_tokens": 85,
+            "input_token_details": {
+              "cache_read": 256
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 1438.0000000237487
+        }
+      ],
+      "total_model_calls": 5,
+      "total_reported_tokens": 7565,
+      "search_attempts": 2,
+      "search_executions": 2,
+      "submission_attempts": 1,
+      "accepted_submissions": 1,
+      "stop_hook_corrections": 0,
+      "sources": [
+        {
+          "source": "onboarding.md",
+          "citation": {
+            "chunk_id": "5979899a8c1d9baf998bb51a3d4c015ca3b331452b5d3757411274d7fc6e310d",
+            "start": 0,
+            "end": 136,
+            "line_start": 1,
+            "line_end": 5,
+            "sha256": "14749049cc775982f73ca0d06530684647e8696285b070a0a6ac732a0a6b07ef",
+            "corpus_id": "57722fc4-d61c-4411-846a-5e0e3cccedb5",
+            "index_version": "f438eb27e5a7b80b95103d6a9481a52cb19015f9a0ff4ac23552100473290ae7",
+            "source_id": "5bced6d391c6663394602d5f64f63ed015dab93de5d4410fd9530b90b49eb8af",
+            "document_id": "2c26038ce3f7c50586b3250b6f6960e66bd13593d945c2cd8d857ab55601c1f6",
+            "version": "14749049cc775982f73ca0d06530684647e8696285b070a0a6ac732a0a6b07ef",
+            "source_sha256": "14749049cc775982f73ca0d06530684647e8696285b070a0a6ac732a0a6b07ef",
+            "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+            "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+            "retriever": "pg-cosine-exact-1",
+            "score": 0.5968419606748189,
+            "goal_sha256": "8f2316cbf903631c8957e6fa2b055694518564c322dead15d8c10d9138b5630e",
+            "goal_score": 0.6452515125274658,
+            "page": null
+          },
+          "artifact_id": "4046d84c32dc0bc8c671c1ced2913768cf9e75d933fbd7b2724a4efec5e0c66f"
+        }
+      ],
+      "embedding_usage_by_artifact": {
+        "59f1b6a96a85a06ddcce8699c6cac8d93e859349d999000ccf7f6eb0255cde6a": {
+          "mode": "local_onnx",
+          "tokens": 76,
+          "elapsed_ms": 15.584199980366975,
+          "calls": 2
+        },
+        "4046d84c32dc0bc8c671c1ced2913768cf9e75d933fbd7b2724a4efec5e0c66f": {
+          "mode": "local_onnx",
+          "tokens": 36,
+          "elapsed_ms": 5.1793999737128615,
+          "calls": 1
+        }
+      },
+      "receipts": [
+        {
+          "protocol": "rag-submit-v1",
+          "call_id": "call_00_WRxDy7RQp0dCgCX3kTnt4557",
+          "submission": {
+            "artifact_ids": [
+              "4046d84c32dc0bc8c671c1ced2913768cf9e75d933fbd7b2724a4efec5e0c66f"
+            ],
+            "outcome": "complete"
+          },
+          "verdict": "semantic_retrieval",
+          "goal_sha256": "c4dd4c1fa56bff34443045b35b36b6185ab31cfd5bc5e59cffd01979caf6ae07",
+          "model_response_sha256": "61729edc487735fa7d3ce7cdc73c96fe52bc864e6e9ce07ad54dd4d81c8db209",
+          "relevant_chunk_ids": [
+            "5979899a8c1d9baf998bb51a3d4c015ca3b331452b5d3757411274d7fc6e310d"
+          ],
+          "business_conclusions_verified": false
+        }
+      ],
+      "raw_prompts_document_bodies_vectors_exported": false,
+      "cost": {
+        "amount": null,
+        "reason": "no_invoice"
+      },
+      "context_reads": 1
+    },
+    "private_report": "artifacts/rag-completion/deepseek-once.json",
+    "report_sha256": "4f05b0a74d82996f5f9fcd7e5cd3f391f96b1e2f556c04598873ab3dca68991f",
+    "totals": {
+      "input_tokens": 7105,
+      "output_tokens": 460,
+      "total_tokens": 7565,
+      "cache_read_tokens": 3840,
+      "model_elapsed_ms": 5781.999999948312,
+      "embedding_calls": 3,
+      "embedding_tokenizer_tokens": 112
+    }
+  },
+  "new_coverage": {
+    "unit_and_sdk_http_mock": 34,
+    "real_pg_neural_embedding_mcp": 11
+  },
+  "retrieval_completion_is_business_verified": false,
+  "unknown_outcome_automatic_retry": false,
+  "health": {
+    "postgres_version_num": 170011,
+    "pgvector": "0.8.6",
+    "migration": "0005",
+    "customers": 240
+  },
+  "protected_files_unchanged": [
+    "migrations/versions/0001..0005",
+    "orchestration/context_contracts.py",
+    "orchestration/memory.py",
+    "uv.lock"
+  ],
+  "checks": {
+    "ruff_check": "passed",
+    "ruff_format": "180 files already formatted",
+    "git_diff_check": "passed",
+    "locked_sync_both_python": "offline passed",
+    "compileall": "passed",
+    "local_secret_matches": 0
+  },
+  "claims": {
+    "representative_synthetic_semantic_retrieval_smoke": "passed",
+    "real_stop_hook_correction": "not_triggered_not_claimed",
+    "business_analysis_conclusion": "not_verified",
+    "stable_success_rate": "not_measured",
+    "invoice_cost": "unavailable",
+    "p6b_or_ui": "not_implemented"
+  }
+}

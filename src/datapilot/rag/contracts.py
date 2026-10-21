@@ -147,6 +147,8 @@ class ChunkCitation(ChunkSpan):
     chunker_sha256: Digest
     retriever: Literal["pg-cosine-exact-1"] = RETRIEVER
     score: float = Field(ge=-1, le=1, allow_inf_nan=False)
+    goal_sha256: Digest | None = None
+    goal_score: float | None = Field(default=None, ge=-1, le=1, allow_inf_nan=False)
     page: None = None  # TXT/Markdown only; never fabricate PDF page numbers.
 
 

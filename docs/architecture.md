@@ -2,7 +2,7 @@
 
 ## 1. 目标、阶段边界与技术决策
 
-面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。P1/P2/P3 基线保留，当前 P4 / D9–D10 完成动态任务 DAG 与双层执行。SQL/RAG 独立任务、工具和输出；RAG 业务后端仍未落地，不宣称生产多租户或完整 Gate C 已完成。
+面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。当前 P0–P5B 与 P6A 有界真实检索已实现；各节保留历史阶段边界，最新补强见第 24 节。不宣称生产多租户或完整 Gate C 已完成。
 
 第 2–9 节记录 Day 1 历史基线；第 10 节起是 v2 目标设计，第 15–18 节更新各阶段实现。完整现状/缺口见 [代码审计](planning-audit-v2.md)，实施依赖与验收见 [v2 路线图](roadmap-v2.md)。旧七天计划已废止；工作单元不绑定日期。SaaS 是唯一首发主业务，干洗店通过后续 Domain Pack 扩展。
 
@@ -363,3 +363,11 @@ flowchart TD
 可信 RagScope/显式 DatasetScope 决定全部可检索原件与版本；MCP 只接 query/top_k，独立进程不继承 SQL/写入/模型密钥。受限精确 pgvector cosine 排序后复核原件、span、chunk、向量 hash；客户端和原 Verifier 重新检查出处，score 不能晋升为 P3 verified。完整结果先存原 Artifact，再产生 L0 预览/引用，L1–L4 不改。
 
 索引重建保留旧版，恢复身份新增显式授权的 RAG/index/source pin；普通 SaaS 恢复保持兼容。只支持纯文本 TXT/Markdown，不执行外部内容、不解析 PDF/HTML；未知 MCP 结果沿用 P5B 保守停止。详见 [RAG 协议与验收](rag-pipeline.md)、[ADR-010](adr/0010-scoped-rag.md)。本阶段不做指标报告桥接/UI/多租户；Gate C 仍缺 P6B。
+
+## 24. P6A 定向补强：完成控制与恢复
+
+真实 RAG 保留模型自主 Loop，以本地 submit_rag_result 申请结束，宿主复用原 Verifier 核对并持久化收据；普通文本/可修复协议错误共用一次 Stop Hook 纠正。检索满两次后宿主精确收缩工具权限，保留 read/submit；无有效收据不自动成功。SQL 与旧 fixture 不改交付协议。
+
+检索成功、非空不足、业务结论未验证分开：原文定位和绑定宿主原始目标的语义相关证据均可满足检索任务，但授权/版本/原件跨度/hash/数量要求仍须通过。收据永不自授 P3 verified；因果/指标结论留给外层及后续 P6B。不是只凭非空或向量分数完成。
+
+沿用官方 Saver/原 Journal/父子预算；修复直接进入 Tools 的跨进程重放授权重建，完成收据绑定已提交原生模型响应与工具参数。已提交幂等复用；未知结果继续阻断，旧真实 RAG 协议不兼容时安全拒绝。没有新增迁移/框架/Fork，L0–L4 压缩算法和 Memory 契约不变。详见 [交付与测试](rag-completion-repair.md)、[ADR-011](adr/0011-rag-completion-gate.md)。

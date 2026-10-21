@@ -61,13 +61,21 @@ class Gateway:
     async def invoke(self, messages, tools, account):
         prepared = None
         identity = None
+        registry = getattr(self.contexts.get(account), "registry", None)
+        rag = registry is not None and registry.rag_control
         if self.durability:
             self.cancel.check()
             # Bind replay to canonical checkpoint input, not a time-dependent compacted view.
             identity = self.durability.model_identity(account, messages, tools)
             cached = self.durability.cached_model(account, messages, tools)
+            if cached is None and rag and tools != registry.schemas(initial=True):
+                # Only a recorded response can use a historical wider schema. A new
+                # request must still pass ContextManager's exact current-phase check.
+                cached = self.durability.cached_model(
+                    account, messages, registry.schemas(initial=True)
+                )
             if cached is not None:
-                return self.validate_response(cached)
+                return self.validate_response(cached, allow_invalid_completion=rag)
         try:
             if account in self.contexts:
                 prepared = await self.contexts[account].prepare(messages, tools, self, account)
@@ -192,22 +200,30 @@ class Gateway:
                 )
             else:
                 self.ledger.settle(ticket, usage)
-        return self.validate_response(response)
+        registry = getattr(self.contexts.get(account), "registry", None)
+        return self.validate_response(
+            response, allow_invalid_completion=bool(registry and registry.rag_control)
+        )
 
-    def validate_response(self, response):
-        if not isinstance(response, AIMessage) or response.invalid_tool_calls:
+    def validate_response(self, response, *, allow_invalid_completion=False):
+        if not isinstance(response, AIMessage) or (
+            response.invalid_tool_calls
+            and (
+                not allow_invalid_completion
+                or any(c.get("name") != "submit_rag_result" for c in response.invalid_tool_calls)
+            )
+        ):
             raise AgentFailure("MODEL_OUTPUT_INVALID", "Invalid assistant/tool protocol response")
         if (
             not isinstance(response.content, str)
             or len(response.content) > self.settings.max_output_tokens * 16
-            or len(response.tool_calls) > 4
+            or len(response.tool_calls) + len(response.invalid_tool_calls) > 4
         ):
             raise AgentFailure("MODEL_OUTPUT_INVALID", "Model output exceeds protocol limits")
-        ids = [c.get("id") for c in response.tool_calls]
-        if len(
-            json.dumps(response.tool_calls, ensure_ascii=False)
-        ) > self.settings.max_output_tokens * 16 or any(
-            len(c.get("name", "")) > 64 for c in response.tool_calls
+        calls = [*response.tool_calls, *response.invalid_tool_calls]
+        ids = [c.get("id") for c in calls]
+        if len(json.dumps(calls, ensure_ascii=False)) > self.settings.max_output_tokens * 16 or any(
+            len(c.get("name", "")) > 64 for c in calls
         ):
             raise AgentFailure("MODEL_OUTPUT_INVALID", "Tool call data exceeds output limits")
         if any(not i or len(i) > 128 for i in ids) or len(ids) != len(set(ids)):
@@ -316,6 +332,25 @@ class FakeTransport:
         if last.type == "tool":
             payload = json.loads(last.content)
             if payload.get("artifact_refs"):
+                if any(t["function"]["name"] == "submit_rag_result" for t in tools):
+                    return AIMessage(
+                        content="",
+                        tool_calls=[
+                            {
+                                "id": "submit_" + str(len(messages)),
+                                "name": "submit_rag_result",
+                                "args": {
+                                    "artifact_ids": [
+                                        r["artifact_id"] for r in payload["artifact_refs"]
+                                    ],
+                                    "outcome": "unavailable"
+                                    if payload.get("document_count") == 0
+                                    else "insufficient",
+                                },
+                            }
+                        ],
+                        usage_metadata={"input_tokens": 0, "output_tokens": 0, "total_tokens": 0},
+                    )
                 return AIMessage(
                     content=json.dumps(
                         {

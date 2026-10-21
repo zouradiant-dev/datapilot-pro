@@ -105,3 +105,9 @@ cut 可选 model_issued/model_response/model_committed/tool_issued/tool_artifact
 P6A 新增显式 `rag_scope` / CLI `--rag-scope`，不改变普通 SaaS 的旧身份清单；新增 RAG DSN 不写入指纹或 Checkpoint。RAG scope、固定索引版本和经新 MCP 会话验证的 Dataset/source pin 进入持久身份；恢复仍需宿主重新提供匹配授权。原件/片段/hash 校验由 RAG MCP 和宿主 verifier 完成，再由原 Coordinator 在 Finish/Resume 复核。
 
 真实 RAG 的暂停/新进程恢复、工具结果提交后崩溃重放沿用原 Journal；工具次数从原调用日志重建，完成响应不重复查询。`RAG_QUERY_TIMEOUT` 表示服务端已确认只读事务取消回滚，可以有界重试；未知 MCP 超时/断连仍为 uncertain，不能借此重新发出请求。详见 [P6A 链路与边界](rag-pipeline.md)。
+
+### RAG 完成协议补强
+
+`rag-submit-v1` 将原始宿主目标/相关性策略与完成协议绑定 manifest；缺少该协议的旧真实 RAG Run 明确 RECOVERY_IDENTITY，不修改历史记录或静默迁移。普通 SaaS 旧身份不变。真实 RAG Tools 节点在直接恢复时也从该 checkpoint 已闭合 ToolMessage 重建证据 grants，避免只在 Decide 重建导致提交重放失败。
+
+收据必须对应同账户已提交模型响应 SHA、原生 submit_rag_result 的 call_id/参数，以及已提交工具日志。一次纠正在原 calls 中原子记账；相同触发重复返回原通知，第二次触发拒绝。提交已验证但未写入日志的故障窗口仍视为未知，禁止自动重发；已提交收据幂等恢复，不增加搜索、模型调用或扣减。仅接收检索完成，不将相关文本/哈希变成业务 verified。完整故障与语义边界见 [本轮交付](rag-completion-repair.md)。

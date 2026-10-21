@@ -128,6 +128,7 @@ class TaskResult(Contract):
     usage: Usage = Field(default_factory=Usage)
     attempts: int = Field(default=0, ge=0, le=4)
     reused_from: str | None = None
+    rag_completion: "RagCompletionReceipt | None" = None
 
     @model_validator(mode="after")
     def terminal(self):
@@ -200,6 +201,37 @@ class Artifact(Contract):
 class FinalDecision(Contract):
     artifact_ids: list[Digest] = Field(min_length=1, max_length=8)
     outcome: Literal["complete", "unavailable"] = "complete"
+
+
+class RagSubmission(Contract):
+    artifact_ids: list[Digest] = Field(
+        min_length=1,
+        max_length=8,
+        description=(
+            "Actual artifact_refs IDs obtained by this worker, not document/chunk IDs. "
+            "No duplicates or invented/sibling IDs."
+        ),
+    )
+    outcome: Literal["complete", "unavailable", "insufficient"] = Field(
+        description=(
+            "complete only for verified retrieval requirements; "
+            "unavailable for empty retrieval; insufficient for inadequate passages."
+        ),
+    )
+
+
+class RagCompletionReceipt(Contract):
+    protocol: Literal["rag-submit-v1"] = "rag-submit-v1"
+    call_id: str = Field(min_length=1, max_length=128)
+    submission: RagSubmission
+    verdict: Literal["literal_locator", "semantic_retrieval", "empty", "insufficient"]
+    goal_sha256: Digest | None = None
+    model_response_sha256: Digest
+    relevant_chunk_ids: list[str] = Field(default_factory=list, max_length=40)
+    business_conclusions_verified: Literal[False] = False
+
+
+TaskResult.model_rebuild()
 
 
 class ContextUsage(Contract):

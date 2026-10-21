@@ -15,6 +15,7 @@ from datapilot.rag.contracts import (
     Chunker,
     ChunkSpan,
     CorpusPin,
+    EmbeddingUsage,
     IndexManifest,
     Limits,
     RagScope,
@@ -217,9 +218,12 @@ class IngestionService(Connection):
 
 
 class Repository(Connection):
-    def __init__(self, url, scope: RagScope, *, timeout=2):
+    def __init__(self, url, scope: RagScope, *, timeout=2, goal=None):
         super().__init__(url, "datapilot_rag_reader", timeout=timeout)
         self.scope = RagScope.model_validate_json(scope.model_dump_json())
+        self.goal = goal
+        self.goal_vector = None
+        self.goal_loaded = False
 
     def manifests(self):
         values = {}
@@ -295,6 +299,21 @@ class Repository(Connection):
                 "EMBEDDING_VERSION", "Query embedding must match the immutable index"
             )
         vectors, usage = embedding.encode([query], query=True)
+        if self.goal and not self.goal_loaded:
+            self.goal_loaded = True
+            if len(self.goal) <= 512:
+                try:
+                    goal_vectors, goal_usage = embedding.encode([self.goal], query=True)
+                    self.goal_vector = validate_vectors(goal_vectors, 1)[0]
+                    usage = EmbeddingUsage(
+                        mode="local_onnx",
+                        tokens=usage.tokens + goal_usage.tokens,
+                        elapsed_ms=usage.elapsed_ms + goal_usage.elapsed_ms,
+                        calls=usage.calls + goal_usage.calls,
+                    )
+                except AgentFailure as exc:
+                    if exc.error.code != "EMBEDDING_LIMIT":
+                        raise
         vector = validate_vectors(vectors, 1)[0].tolist()
         documents = []
         with self.read() as conn:
@@ -354,6 +373,14 @@ class Repository(Connection):
                         model_revision=manifest.model.revision,
                         chunker_sha256=digest(manifest.chunker),
                         score=score,
+                        goal_sha256=hashlib.sha256(self.goal.encode()).hexdigest()
+                        if self.goal
+                        else None,
+                        goal_score=(
+                            max(-1.0, min(1.0, float(stored_vector @ self.goal_vector)))
+                            if self.goal_vector is not None
+                            else None
+                        ),
                     )
                     documents.append(
                         Document(

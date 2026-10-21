@@ -24,7 +24,9 @@ def create_server() -> FastMCP:
         if settings.reader_database_url or settings.upload_reader_database_url:
             raise ValueError("RAG and SQL credentials must use different MCP processes")
         return create_rag_server(
-            settings, RagScope.model_validate_json(os.environ.get("DATAPILOT_RAG_SCOPE", "{}"))
+            settings,
+            RagScope.model_validate_json(os.environ.get("DATAPILOT_RAG_SCOPE", "{}")),
+            goal=os.environ.get("DATAPILOT_RAG_GOAL"),
         )
     repository = None
     if settings.reader_database_url:

@@ -83,7 +83,7 @@ def closed_batches(messages: list[BaseMessage]) -> list[tuple[int, int]]:
         message = messages[index]
         if message.type == "tool":
             raise AgentFailure("CONTEXT_LIMIT", "Orphan tool result cannot be safely compressed")
-        calls = message.tool_calls if message.type == "ai" else []
+        calls = [*message.tool_calls, *message.invalid_tool_calls] if message.type == "ai" else []
         if not calls:
             index += 1
             continue
@@ -312,8 +312,9 @@ class ContextManager:
         if any(m.type == "system" for m in view[len(self.prefix) :]):
             raise AgentFailure("CONTEXT_LIMIT", "Unexpected system message in disposable history")
         batches = closed_batches(view)
-        if {t["function"]["name"] for t in tools} != set(self.authority.allowed_tools):
-            raise AgentFailure("TOOL_FORBIDDEN", "Model view cannot alter delegated tools")
+        self.registry.validate_phase(
+            {t["function"]["name"] for t in tools}, self.authority.allowed_tools
+        )
         before = measure_context(view, tools, self.limits.output_tokens)[1].estimated_input_tokens
         now = self.clock()
         cold = self.last_call is not None and now - self.last_call >= self.limits.idle_seconds
