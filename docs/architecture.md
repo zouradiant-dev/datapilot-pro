@@ -2,9 +2,9 @@
 
 ## 1. 目标、阶段边界与技术决策
 
-面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。Day 1 实现 Supervisor + SQL Worker；P0 完成规划审计，P1 完成文件解析/画像/确认，P2 完成受限导入、Dataset 版本与动态 MCP 查询，当前 P3 完成 SaaS 语义/指标/证据与六层验证。不宣称完成五 Agent 系统或生产多租户。
+面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。P1/P2/P3 基线保留，当前 P4 / D9–D10 完成动态任务 DAG 与双层执行。SQL/RAG 独立任务、工具和输出；RAG 业务后端仍未落地，不宣称生产多租户或完整 Gate C 已完成。
 
-第 2–9 节记录当前基线；第 10 节起是 v2 目标设计。完整现状/缺口见 [代码审计](planning-audit-v2.md)，实施依赖与验收见 [v2 路线图](roadmap-v2.md)。旧七天计划已废止；工作单元不绑定日期。SaaS 是唯一首发主业务，干洗店通过后续 Domain Pack 扩展。
+第 2–9 节记录 Day 1 历史基线；第 10 节起是 v2 目标设计，第 15–18 节更新各阶段实现。完整现状/缺口见 [代码审计](planning-audit-v2.md)，实施依赖与验收见 [v2 路线图](roadmap-v2.md)。旧七天计划已废止；工作单元不绑定日期。SaaS 是唯一首发主业务，干洗店通过后续 Domain Pack 扩展。
 
 2026-10-20 根据用户修订：从 Day 1 使用 **PostgreSQL 17 + pgvector**，Docker Compose 部署；SQLAlchemy 2 + psycopg 3 访问；Alembic 管理 Schema；真实 MCP SDK stdio 统一运行期数据库访问；RAG 后续使用同实例 pgvector，不引入 FAISS。此前 SQLite 草稿已删除，不作为备用实现。
 
@@ -141,7 +141,7 @@ rag.document_chunks 从 Day 1 预留 source_uri/content/embedding_model/embeddin
 7. pytest 区分 Mock、protocol、integration、live；真实集成不能用替代数据库。无 API 时只承诺 Fake 模型+真实数据库路径，不承诺真实模型 E2E。
 8. 锁定环境、pytest、ruff、CLI 示例真实运行；如环境阻塞则明确保留未验收项，不伪造通过。
 
-## 10. v2 分层目标架构（部分实现；动态 Runtime 尚未实现）
+## 10. v2 分层目标架构（部分实现；持久恢复尚未实现）
 
 ```mermaid
 flowchart TB
@@ -295,3 +295,13 @@ flowchart LR
 - **Runtime**：原 LangGraph 图、原 SQLTask 路径保留；新增显式版本化 MetricRequest 入口，不改造成 DAG。deterministic CLI 不调用模型；可选注入已有预算化 ModelClient 的提议也必须通过保守配方 AST 校验，未作真实 LLM 验收。
 
 独立复算以 PostgreSQL REPEATABLE READ/READ ONLY 快照分页读取必要列，每页保留原 SQL 安全与结果限制；Python 使用独立队列/过滤算法。20,000 行/256 页/协作时限超限、重复记录/null/错误有效区间、零分母、未确认语义均不给验证数字。跨工具不是同一事务，主查询与复算不一致时拒绝。CNY/DATE、单 Dataset 的封闭配方是明确产品边界，不是通用语义证明或生产多租户。
+
+## 18. P4 已实现：D9–D10 双层执行
+
+旧固定四节点图见前文历史基线；当前 `ask` 进入 `graph.py → Coordinator` 的固定 Planner/Scheduler/Worker/Verifier/Replan/Finish 拓扑。每次逻辑 Run 编译外图和共享子图各一次，计划变化不编译新图。Planner 位于 agents/supervisor.py；严格 TaskSpec/Plan/TaskEnvelope/TaskResult/VerificationResult 位于 orchestration/contracts.py；RunState 使用版本/task reducer。
+
+外层 Send 只派发就绪、已授权任务，并行结果按 superstep 合并；新计划最多有界重规划，复用已验证且定义未变的源任务。内层 SQL/RAG 使用独立消息/ToolRegistry，原生异步模型工具协议保持 assistant/tool ID 一一对应；拒绝/错误/取消也闭合反馈。Analysis 固定 Decimal 算法，Report 当前只做确定性证据汇总。
+
+父子预算统一通过 P4 Gateway/BudgetLedger 原子预留和结算，取消共享，未知 usage 保留保守收费。预算/上下文/SQL 尝试/轮次/并发/Trace/工件均有界，权限拒绝不能触发重规划扩权。原 P3 指标入口独立保留；P4 的任务验证不替代 P3 六层业务指标验证。
+
+完整公式与状态边界见 [编排说明](orchestration.md) 和 [ADR-006](adr/0006-two-level-orchestration.md)，真实执行见 [交付记录](p4-delivery.md)。RAG 组件替身与真实 SQL/MCP 明确区分；没有新迁移/依赖/Fork。持久账本、PG Saver、Memory 和真实跨来源业务闭环仍属后续 P5/P6，不预建空壳。

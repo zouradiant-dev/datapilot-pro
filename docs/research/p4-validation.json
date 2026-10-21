@@ -1,0 +1,80 @@
+{
+  "date": "2026-10-21",
+  "scope": "P4 D9-D10 only",
+  "baseline": "a57bab9a46faa637cfa4a3795c6c820b794bd2de",
+  "pytest": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "1",
+    "tests": "285",
+    "time": "81.190",
+    "timestamp": "2026-10-21T13:26:43.516171+08:00"
+  },
+  "live_llm_test": "skipped; no real inference",
+  "new_tests": {
+    "local_component": 28,
+    "real_pg_mcp_with_fixture_decisions": 2
+  },
+  "protected_files_unchanged": {
+    "migrations/versions/0001_business_and_vectors.py": true,
+    "migrations/versions/0002_dataset_catalog.py": true,
+    "migrations/versions/0003_semantics_and_evidence.py": true,
+    "src/datapilot/tools/sql.py": true,
+    "src/datapilot/runtime/mcp_client.py": true,
+    "src/datapilot/runtime/mcp_server.py": true,
+    "uv.lock": true,
+    "pyproject.toml": true
+  },
+  "langgraph_version": "1.2.16",
+  "installed_reference_files_unchanged": {
+    "libs/langgraph/langgraph/graph/state.py": true,
+    "libs/langgraph/langgraph/types.py": true,
+    "libs/langgraph/langgraph/pregel/main.py": true,
+    "libs/langgraph/langgraph/pregel/_runner.py": true,
+    "libs/langgraph/langgraph/pregel/_loop.py": true,
+    "libs/checkpoint/langgraph/checkpoint/base/__init__.py": true,
+    "libs/checkpoint/langgraph/store/base/__init__.py": true
+  },
+  "mini_reference_commit": "0b452360866433fde0dc77cd37ada9d303546592",
+  "mini_reviewed_normalized_sha256": {
+    "agent.py": "0f8b5ad05595f7e63ef3bb69077b0c7ba693bcd364b5a788feb5fd1da3fd0bca",
+    "subagent.py": "257c3d7d0855e802c28f2e127efc75572a2d05d7993050683e29e11058c0787f",
+    "tools.py": "40210165e620418caee7a2134cf58f4bdaa7ee249fae8e446053de0b39d87960"
+  },
+  "database_health": {
+    "status": "healthy",
+    "postgres_version_num": 170011,
+    "pgvector": "0.8.6",
+    "migration": "0003",
+    "customers": 240,
+    "seeded": true,
+    "uploads": {
+      "status": "healthy",
+      "catalog_tables": 4
+    }
+  },
+  "examples": {
+    "simple-final": {
+      "status": "succeeded",
+      "tasks": 1,
+      "model_decisions": 2,
+      "real_model_tokens": 0,
+      "trace_events": 10
+    },
+    "final-rag-trace": {
+      "status": "succeeded",
+      "tasks": 3,
+      "model_decisions": 5,
+      "real_model_tokens": 0,
+      "trace_events": 19
+    },
+    "final-sql-trace": {
+      "status": "succeeded",
+      "tasks": 3,
+      "model_decisions": 5,
+      "real_model_tokens": 0,
+      "trace_events": 20
+    }
+  }
+}

@@ -1,10 +1,10 @@
 # ADR-001：LangGraph Runtime 与领域 Harness 的双层执行
 
-日期：2026-10-21。状态：规划基线；未实现。适用范围：SaaS 主线，共用机制可供后续 Domain Pack 使用。
+日期：2026-10-21。状态：P4 已落实 D9–D10 子集，见 ADR-006；持久预算/PG Saver/Memory 仍待 P5。适用范围：SaaS 主线，共用机制可供后续 Domain Pack 使用。
 
 ## 背景
 
-当前 `graph.py` 编译固定四节点链，`SQLAgent.run` 内仅有 SQL 编译修复循环。没有动态 DAG、Send、持久检查点、共享持久预算或其他业务 Worker。`JSONModelClient.generate` 使用同步 `chat.invoke`，直接在 async 节点增加并发会阻塞事件循环。
+原 P0/P3 背景为固定四节点链与同步模型接口。P4 已改为固定拓扑/动态 DAG/Send、独立 Worker 子图与原生异步调用；旧 `SQLAgent.run`、`JSONModelClient.generate` 作为独立兼容/P3 路径保留。持久检查点和共享持久预算仍未实现，内存原子账本不能替代它们。
 
 ## 决策
 

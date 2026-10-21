@@ -67,12 +67,9 @@ async def test_actual_langgraph_routing_and_step_limit(settings):
     }
     result = await graph.ainvoke(state)
     assert result["status"] == "succeeded" and "| 5 |" in result["answer"]
-    assert [e["node"] for e in events] == [
-        "supervisor_plan",
-        "sql_worker",
-        "supervisor_review",
-        "answer",
-    ]
+    assert [
+        e["node"] for e in events if e["node"] in {"planner", "scheduler", "verifier", "finish"}
+    ] == ["planner", "scheduler", "verifier", "finish"]
     limited = settings.model_copy(update={"max_steps": 1})
     result = await build_graph(limited, fake, MockDatabaseTools(), []).ainvoke(state)
     assert result["status"] == "failed" and result["error"].code == "STEP_LIMIT"

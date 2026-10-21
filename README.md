@@ -1,14 +1,27 @@
 # DataPilot Pro
 
-面向 SaaS 企业的智能经营分析系统，当前已实现 **Day 1：Supervisor + SQL Agent**、**P1：CSV/XLSX 解析与 Schema 确认**、**P2：受限入库与动态 MCP**、**P3：SaaS 语义/指标/证据与六层验证**。业务数据库使用 **PostgreSQL 17 + pgvector**，运行期业务查询全部经过真正的 MCP Server/Client。
+面向 SaaS 企业的智能经营分析系统，当前已实现 **Day 1：SQL 基线**、**P1：CSV/XLSX 解析确认**、**P2：受限入库与动态 MCP**、**P3：SaaS 指标/证据验证**、**P4 / D9–D10：动态任务 DAG 与双层执行**。业务数据库使用 **PostgreSQL 17 + pgvector**，运行期业务查询全部经过真正的 MCP Server/Client。
 
-实现：固定种子合成数据、Alembic 迁移、隔离角色、PostgreSQL AST 校验、只读事务、超时/行数限制、LangGraph 条件路由、有界 SQL 修复、严格结果契约和 CLI。RAG/Analysis/Report、多任务并发、API/UI 与完整 Trace 尚未实现。
+实现：固定种子、Alembic、隔离角色、AST/只读/资源限制、指标证据、LangGraph 动态 DAG/Send、独立 SQL/RAG Loop、受限确定性 Analysis/引用汇总、父子原子内存预算/取消、脱敏 Trace 和 CLI。真实 RAG、持久恢复、完整业务 Report Agent、API/UI 与观测平台尚未实现；RAG 替身只证明编排。
 
 详见 [架构与目标设计](docs/architecture.md)、[v2 Gate 路线图](docs/roadmap-v2.md)、[本轮代码审计与回归](docs/planning-audit-v2.md)、[开发约束](AGENTS.md)、[Day 1 历史验收记录](docs/day1-delivery.md)。
 
-v2 目标闭环：**CSV/XLSX 上传 → Schema 预览确认 → 受限入库/数据集版本 → 动态 MCP 查询 → 语义指标与证据验证 → 多 Agent 报告**。当前已到版本化 SaaS 指标与确定性引用报告；多 Agent 报告尚未实现。外层 LangGraph 与内层 Worker Loop 仍按后续 Gate 演进。
+v2 目标闭环：**CSV/XLSX 上传 → Schema 预览确认 → 受限入库/数据集版本 → 动态 MCP 查询 → 语义指标与证据验证 → 多 Agent 报告**。P4 已落实固定拓扑的外层调度与任务局部 Worker 子图；完整跨来源业务报告、PG Checkpoint 与 Memory 仍按后续 Gate 演进。P3 指标入口独立保留。
 
-首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates，编号不构成日期承诺；当前停止在 P3 / Gate B。
+首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates，编号不构成日期承诺；当前停止在 P4 / D9–D10，Gate C 尚未整体通过。
+
+## 双层执行与 Trace（P4，需要真实 PostgreSQL）
+
+Planner → Scheduler → Send Worker → Verifier → Finish/Replan。简单已知 SQL 意图跳过规划模型，Worker 用两次决策完成查询和引用确认；复杂任务按能力和依赖分波次执行。所有数字计算由 SQL/Decimal 完成，模型只选工具与实际证据引用。
+
+```powershell
+uv run --locked datapilot ask '查询客户总数' --mode fake --json
+uv run --locked datapilot ask '查询客户总数，并计算2025-10收入' --mode fake --json
+uv run --locked python scripts/trace_orchestration_demo.py --output artifacts/my-two-sql.json
+uv run --locked python scripts/trace_orchestration_demo.py --with-rag-fixture --output artifacts/my-rag-fixture.json
+```
+
+Fake 只产生计划/工具决策，SQL 仍走真实 MCP/PG；RAG 示例显式标注 fixture，默认 ask 不启用替身。`--json` 可导出本地执行工件和 Trace，Trace 本身不含原始 SQL/业务行。Live 模式现在需要供应商支持原生 tool calling；本轮 HTTP Mock 证明异步协议/并发，未声称真实 LLM 通过。完整接口、源码借鉴和边界见 [编排说明](docs/orchestration.md)、[交付记录](docs/p4-delivery.md)、[ADR-006](docs/adr/0006-two-level-orchestration.md)。
 
 ## 文件预览与确认（P1，无需数据库或 API Key）
 

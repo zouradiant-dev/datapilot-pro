@@ -91,7 +91,7 @@ def main() -> int:
             from datapilot.graph import run_question
 
             settings = Settings(**({"llm_mode": args.mode} if args.mode else {}))
-            result = asyncio.run(run_question(settings, args.question))
+            result = asyncio.run(run_question(settings, args.question, include_artifacts=args.json))
             if not args.json:
                 print(f"mode={result['mode']} status={result['status']}\n" + result["answer"])
                 return 0 if result["status"] == "succeeded" else 2

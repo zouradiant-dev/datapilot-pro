@@ -6,7 +6,7 @@
 
 ## 1. 当前起点与优先级
 
-起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1 已实现 W2–W3，P2 已实现 W4–W5，当前 P3 完成 D6–D8 SaaS 语义/指标/证据和六层 Verifier，见 [P3 说明](semantic-metrics.md)、[真实验收](p3-delivery.md)。本轮停止在 Gate B；P4 及以后未开始。
+起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1/P2/P3 保留，当前 P4 完成 D9–D10 动态 DAG 与双层执行，见 [编排说明](orchestration.md)、[交付](p4-delivery.md)。本轮到此停止；P5 持久恢复、P6 真实检索/产品闭环未开始，Gate C 尚未整体通过。
 
 唯一首发业务是 SaaS。文件导入、语义/证据、Multi-Agent、产品化和独立评测服务这一主线。首版本地单用户/可信演示，不承诺生产多租户。干洗店 Phase F 与 LangGraph Fork 都是独立可选扩展。
 
@@ -37,7 +37,7 @@ RAG 组件测试可以先于完整 DAG；Gate C 的跨来源验收需要真实�
 
 ## 3. 已完成审计与未来五个工作包
 
-以下保留 P0 拆分的五个工作包 W2–W6，不绑定日历。W1/P1/P2 为已完成基线；W6 及后续 D7–D8 属于本轮 P3。P4 及以后须另行授权，不因列在本节就自动执行。
+以下保留 P0 拆分的五个工作包 W2–W6，不绑定日历；W1–W8 为历史 P0–P3 基线，本轮只落实 D9–D10 / P4。P5 及以后须另行授权，不因列在本节就自动执行。
 
 ### W1：冻结基线与规划审计（历史 P0，已完成）
 
@@ -95,7 +95,7 @@ RAG 组件测试可以先于完整 DAG；Gate C 的跨来源验收需要真实�
 | P1 | 本轮已完成 W2–W3 Parser/Profile/Preview/Confirm | 见 p1-delivery；不建表、不提前做 UI，到此停止 |
 | P2 | 本轮完成 W4–W5 安全导入/版本/动态 MCP | 真实验收见 p2-delivery；到 Gate A 停止 |
 | P3 | 已实现语义/指标/证据/六层 Verifier | Gate A；本轮到 Gate B 停止，见 p3-delivery |
-| P4 | 动态 DAG、子任务与 Worker Loop | Gate B；无 Fork；RAG 替身仅证明编排 |
+| P4 | D9–D10 已实现动态 DAG、子任务与 Worker Loop | 当前停止点；无 Fork；RAG 替身仅证明编排，见 p4-delivery |
 | P5 | Context/Memory、持久预算/Checkpoint/Recovery | P4；先解决 Saver 迁移；真实 PG 重启恢复 |
 | P6 | 真实 RAG/计算/报告、UI、Langfuse | 与 P4/P5 集成完成 Gate C，再验收产品闭环 |
 | P7 | 独立 E2E、消融、Claude Code 产品对比 | Gate D 完整验收资料；不可污染保留集 |
@@ -112,6 +112,13 @@ SaaS ≥50 个独立业务任务，开发集/保留集分离，固定 seed/数�
 
 ## 6. 当前阻塞与下一步准备
 
-P1/P2 保留。P3 新增 0003、Registry 元数据隔离身份、版本化语义/指标/证据、受控独立计算与六层验证；当前在 P3 / Gate B 停止。原自然语言 ask 保留 SaaS 路径；上传数据有显式 SQL 入口和版本化指标 CLI。P4 Multi-Agent/DAG、UI、持久恢复没有开始。P4 的输入可复用 MetricRequest/MetricContext 与 Evidence/Verification 引用，不能把当前线性指标服务称为调度器。
+P1/P2/P3 保留，P3 指标入口仍独立执行。P4 的 ask 现在使用固定拓扑/动态 DAG、TaskEnvelope、能力隔离与模型工具循环；规划/子任务/Replan 有统一原子内存预算，取消和证据引用穿透。当前停在 D9–D10，不扩展为 P5。内存 ArtifactStore、Ledger、Trace bundle 不是 PG Checkpoint 或 P3 持久 Evidence；RAG 替身不是正式业务检索。UI/持久恢复未开始，下一步要先确定 PG Saver 迁移所有权和持久预算/工件生命周期。
+
+### D9–D10 本轮完成 / 后续边界
+
+- 完成严格 Plan/DAG、就绪/能力调度、Send/Command、独立 Worker 子图、确定性 Analysis/引用汇总、有界 Replan、父子预算与取消、真实异步工具协议和脱敏 Trace。
+- 简单 SQL 走低成本 fast plan；复杂双 SQL 可以在真实 MCP/PG 执行。SQL/RAG 并发用显式检索组件替身验证，真实 RAG 留在 P6。
+- 未变源任务可显式验证后复用；权限/预算/输入错误不重规划绕过。旧 SQL 安全链与三项历史迁移保持原状。
+- D11–D13 / P5：Memory、原子持久预算、PG Checkpoint/恢复与工件存储；先做迁移 ADR 与故障测试，不从本轮自动推进。
 
 真实模型评测需要后续本地配置 API；Embedding 模型、Langfuse 部署与 PG Saver 迁移需在对应 Gate 验证。POS 软件和报表未知只阻塞 Phase F，不阻塞 SaaS。任何阶段都不以部署问题为由退回 SQLite/FAISS。

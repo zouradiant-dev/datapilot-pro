@@ -2,10 +2,10 @@
 
 ## 架构和范围
 
-- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/planning-audit-v2.md 与相关 docs/adr/。当前授权为 P3（D6–D8）：SaaS 语义/指标/证据 Registry 与六层 Verifier，完成后停止在 Gate B；不进入 P4 动态 DAG、多 Agent 或 UI。P1/P2 已验收。后续仅执行用户授权的阶段，不自动推进整个路线图。
+- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/planning-audit-v2.md 与相关 docs/adr/。当前授权为 P4（D9–D10）：动态任务 DAG 与双层执行，完成后停止；不进入 P5 持久预算/Memory/PG Saver、不开始 P6 真实 RAG/业务报告/UI 或 Fork。P1/P2/P3 已验收；Gate C 尚未整体完成。后续仅执行用户授权的阶段，不自动推进整个路线图。
 - 按功能依赖与验收 Gate 推进，工作单元/工作日编号不是截止日期；旧七天计划已由 roadmap-v2 取代。SaaS 是唯一首发主业务，drycleaning 是独立可选 Phase F，不复制 Runtime/Harness/Worker。
 - Python 3.11+、src 布局、类型标注、Pydantic 2 严格契约、LangGraph StateGraph 编排。
-- Supervisor 路由；SQL Worker 只接收 SQLTask，不读取整个 State。后续 Worker 独立工具权限、上下文与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
+- Planner/Coordinator 路由；P4 Worker 只接收宿主生成的 TaskEnvelope，不读取整个 RunState。旧 SQLTask/SQLAgentResult 保留兼容投影，P3 MetricRequest 路径独立。Worker 有独立工具句柄/能力、消息与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
 - 不训练模型。Fake 只生成决策/SQL，不返回伪造业务结果；API adapter 与 Fake 分开。
 - 唯一业务数据库 PostgreSQL 17，向量用同实例 pgvector；不引入 SQLite 或 FAISS 回退。
 - 运行期数据库访问统一由真实 MCP Server/Client 完成，Agent 禁止导入 SQLAlchemy/psycopg/数据库管理模块直接查询。初始化、迁移、Seed 属于显式运维命令，不是模型工具。
@@ -22,6 +22,10 @@
 - Checkpoint 只用独立元数据角色/连接，不向模型暴露；业务数据仍走 MCP。官方 PG Saver 的迁移与 Alembic 所有权必须先明确，不得在 Worker/请求内调用 setup 自动建表；未形成明确决策前保留现有 Alembic 规则。
 - LangGraph Fork 依 docs/langgraph-fork-research-plan.md：先官方基线、最小复现和公开扩展方案验证，再提出具体内核改动。研究源码按提交固定引用，直接复制实质内容须保留完整许可证/版权及修改来源，见 docs/third-party-references.md。
 - 模型 adapter 的并发必须实际验证；当前 generate/invoke 是同步调用，不得仅添加 async 节点就声称并发/取消有效。Loop、SDK、图的重试不能相乘。
+- P4 以 docs/orchestration.md、ADR-006 为准：原 generate/invoke 仅保留旧独立组件/P3；新 ask 使用 NativeTransport.ainvoke、Gateway 与原子内存 BudgetLedger，Planner/Worker/Replan 一律预留再调用。只使用异步 HTTP Mock 验证协议/并发，不能称为真实模型验证。
+- 固定外图与共享 Worker 子图每个逻辑 Run 各编译一次；模型只提供 Plan 数据。严格拒绝无环/引用/数量/能力错误；Send 只派就绪任务，Command 不混合无条件业务出口。版本/task reducer 对相同结果幂等、冲突拒绝；Replan 只复用显式重新校验的未变源任务，派生任务重算。
+- 每条 assistant tool_call 都需唯一匹配反馈，包括权限拒绝、异常、预算终止和取消；禁止 JSON 解析失败默认为空参数。模型最终只返回已取得的工件 ID，RAG 空检索必须解释 unavailable。默认无真实 RAG；组件替身必须带 fixture 标记，不扩大 MCP 服务端能力。
+- P4 Artifact SHA 引用/内存 Ledger 不能冒称 P3 持久 Evidence 或 PG Checkpoint。显式本地 JSON bundle 可含原始工具结果；公开 Trace 默认只记 ID/状态/时延/usage，不含 SQL/行/文档原文/密钥。pytest 回溯/sections 脱敏；本地失败日志同样不能泄露连接参数。
 - Domain Pack 是版本化字段映射/指标/质量/Verifier/评测的可信配置，不是可执行上传脚本或不同 Prompt。Source Connector 首发文件快照；未知 POS/API 不编造适配器。
 
 ## 安全和数据
