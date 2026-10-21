@@ -14,6 +14,8 @@ P4.1 在现有组件上增加受控工具生命周期、宿主 `completion` 三�
 
 P5A 复用 Gateway/ArtifactStore/父子账本，实现 L1 旧工具视图裁剪、L2 引用去重、L3 完整工具轮次折叠、受预算和校验约束的 L4 摘取式摘要；原消息与证据保持完整，默认小查询不触发压缩。Memory 仅有经审阅的受限契约及内存实现，来源/版本/有效期/撤回均须校验。详见 [上下文工程与实测](docs/context-engineering.md)。没有持久 Checkpointer、重启恢复或真实供应商缓存收益承诺，P5B/P6 未开始。
 
+补充 [DeepSeek 真实压缩 A/B](docs/p5a-live-context-ab.md)：20 次调用、75,304 tokens，受控长回放中 L3 总 Token 减少 75.12%；L4 计入摘要后减少 32.21%，但本样本估算费用和耗时增加。短查询未触发压缩。以上为小样本真实 API + 部分合成历史，不是完整 SaaS 任务基准或稳定省费承诺。
+
 ## 双层执行与 Trace（P4，需要真实 PostgreSQL）
 
 Planner → Scheduler → Send Worker → Verifier → Finish/Replan。简单已知 SQL 意图跳过规划模型，Worker 用两次决策完成查询和引用确认；复杂任务按能力和依赖分波次执行。所有数字计算由 SQL/Decimal 完成，模型只选工具与实际证据引用。
@@ -26,6 +28,20 @@ uv run --locked python scripts/trace_orchestration_demo.py --with-rag-fixture --
 ```
 
 Fake 只产生计划/工具决策，SQL 仍走真实 MCP/PG；RAG 示例显式标注 fixture，默认 ask 不启用替身。`--json` 可导出本地执行工件和 Trace，Trace 本身不含原始 SQL/业务行。Live 模式现在需要供应商支持原生 tool calling；本轮 HTTP Mock 证明异步协议/并发，未声称真实 LLM 通过。完整接口、源码借鉴和边界见 [编排说明](docs/orchestration.md)、[交付记录](docs/p4-delivery.md)、[ADR-006](docs/adr/0006-two-level-orchestration.md)。
+
+## DeepSeek Flash 最小接入
+
+在忽略的 `.env` 中配置以下内容；API Key 只写本地，不发送到聊天或提交 Git：
+
+```dotenv
+DATAPILOT_LLM_MODE=live
+DATAPILOT_MODEL_PROVIDER=deepseek
+DATAPILOT_BASE_URL=https://api.deepseek.com
+DATAPILOT_MODEL=deepseek-flash
+DATAPILOT_API_KEY=
+```
+
+填写自己的 Key 后执行 `uv run --locked datapilot ask '查询客户总数' --mode live --json`。该适配显式关闭思考模式，使用 Chat Completions/native tools，并发送 DeepSeek 的 `max_tokens`；通用供应商仍使用默认的 `openai_compatible` profile。预算、取消、工具权限与真实 MCP 不变，无 Key 时明确失败。HTTP Mock 与真实 PG/MCP 回归通过；2026-10-21 补充真实 DeepSeek 客户数 smoke：240 客户、completion=completed，2 次调用/2297 tokens。不代表复杂指标或完整业务报告已验收，详见 [接入与验证](docs/deepseek-transport.md)。
 
 ## 文件预览与确认（P1，无需数据库或 API Key）
 

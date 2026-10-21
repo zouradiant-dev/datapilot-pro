@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="DATAPILOT_", env_file=".env", extra="ignore")
 
     llm_mode: Literal["live", "fake"] = "live"
+    model_provider: Literal["openai_compatible", "deepseek"] = "openai_compatible"
     api_key: SecretStr | None = None
     base_url: str = "https://api.openai.com/v1"
     model: str = ""

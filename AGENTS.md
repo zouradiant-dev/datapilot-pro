@@ -23,6 +23,7 @@
 - LangGraph Fork 依 docs/langgraph-fork-research-plan.md：先官方基线、最小复现和公开扩展方案验证，再提出具体内核改动。研究源码按提交固定引用，直接复制实质内容须保留完整许可证/版权及修改来源，见 docs/third-party-references.md。
 - 模型 adapter 的并发必须实际验证；当前 generate/invoke 是同步调用，不得仅添加 async 节点就声称并发/取消有效。Loop、SDK、图的重试不能相乘。
 - P4 以 docs/orchestration.md、ADR-006 为准：原 generate/invoke 仅保留旧独立组件/P3；新 ask 使用 NativeTransport.ainvoke、Gateway 与原子内存 BudgetLedger，Planner/Worker/Replan 一律预留再调用。只使用异步 HTTP Mock 验证协议/并发，不能称为真实模型验证。
+- Live 模型共用 llm/provider.py 的小型 profile 工厂。DeepSeek 最小适配见 docs/deepseek-transport.md：显式 model_provider=deepseek、Chat Completions、thinking=disabled、原生 max_tokens；禁止仅开启思考却丢失 reasoning_content 或绕过 Gateway/预算。未获另行授权不扩展 P5B/P6；模型凭据缺失时只报告 Mock/真实 PG 的实际验证。
 - 固定外图与共享 Worker 子图每个逻辑 Run 各编译一次；模型只提供 Plan 数据。严格拒绝无环/引用/数量/能力错误；Send 只派就绪任务，Command 不混合无条件业务出口。版本/task reducer 对相同结果幂等、冲突拒绝；Replan 只复用显式重新校验的未变源任务，派生任务重算。
 - 每条 assistant tool_call 都需唯一匹配反馈，包括权限拒绝、异常、预算终止和取消；禁止 JSON 解析失败默认为空参数。模型最终只返回已取得的工件 ID，RAG 空检索必须解释 unavailable。默认无真实 RAG；组件替身必须带 fixture 标记，不扩大 MCP 服务端能力。
 - P4 Artifact SHA 引用/内存 Ledger 不能冒称 P3 持久 Evidence 或 PG Checkpoint。显式本地 JSON bundle 可含原始工具结果；公开 Trace 默认只记 ID/状态/时延/usage，不含 SQL/行/文档原文/密钥。pytest 回溯/sections 脱敏；本地失败日志同样不能泄露连接参数。

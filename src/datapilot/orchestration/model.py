@@ -7,10 +7,10 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
-from langchain_openai import ChatOpenAI
 
 from datapilot.agents.sql import SYSTEM as SQL_SYSTEM
 from datapilot.contracts import AgentFailure, SQLProposal
+from datapilot.llm.provider import create_chat_model
 from datapilot.orchestration.context import measure_context
 from datapilot.orchestration.contracts import Plan, TaskSpec
 
@@ -29,18 +29,7 @@ class NativeTransport:
 
 
 def live_transport(settings):
-    return NativeTransport(
-        ChatOpenAI(
-            model=settings.model,
-            api_key=settings.api_key.get_secret_value(),
-            base_url=settings.base_url,
-            temperature=0,
-            max_tokens=settings.max_output_tokens,
-            timeout=settings.model_timeout_seconds,
-            max_retries=0,
-            stream_usage=False,
-        )
-    )
+    return NativeTransport(create_chat_model(settings))
 
 
 @dataclass(frozen=True)

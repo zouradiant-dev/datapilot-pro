@@ -1,0 +1,1504 @@
+{
+  "record_type": "real_api_controlled_replay_small_sample",
+  "baseline_commit": "fa72728f2934dea79dc9ab6a2da27012b5716cc6",
+  "source_sha256": {
+    "scripts/benchmark_context_live.py": "41a32b02342561370f693628ede01fcbb690d2eb975dc66e9eb444e2ac9ccde8",
+    "src/datapilot/llm/provider.py": "b3b89b0ab08dd4c3b78df209ce6dd32c3e15a4b03a1f3b608c524b1911d1254c",
+    "src/datapilot/orchestration/model.py": "80fb26f2877401c91bdbb02aa4effb351c1aa187734b61c0b855821236b34510",
+    "src/datapilot/orchestration/context.py": "35f0c2bce5b071f111a7435c7318e6dad5b12bc8e1f8a019749f23ce307449ef",
+    "tests/test_context_benchmark.py": "b625da7d74a51b2cbfbe119dc3516f0c079ea6a4e43d1f8dd18383d107f404d8"
+  },
+  "input_report_sha256": {
+    "context-live-ab-01.json": "c67c9138604872017c33c276df3a223c18fc7bd83f9fe2053f1befded4b6d9d1",
+    "context-live-oversized-01.json": "8cddfa265892e233794b25fb26eeb6bc5480c53646322acf79554fc92ad3cc2e"
+  },
+  "paid_calls": 20,
+  "reported_tokens": 75304,
+  "successful_arms": 16,
+  "actual_invoice_cost": null,
+  "price_reference": {
+    "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "checked_at": "2026-10-21",
+    "currency": "USD",
+    "peak_per_million": {
+      "cache_hit": "0.006",
+      "cache_miss": "0.3",
+      "output": "1.2"
+    },
+    "off_peak_multiplier": "0.5",
+    "formula": "(cache_hit*hit_rate + cache_miss*miss_rate + output*output_rate)/1000000",
+    "caveat": "List-price calculation with observed shared cache, not invoice reconciliation or causal cache savings."
+  },
+  "estimated_usd_peak_total": "0.012338556",
+  "estimated_usd_off_peak_total": "0.006169278",
+  "summary": [
+    {
+      "scenario": "short",
+      "off": {
+        "samples": 1,
+        "mean_input_tokens": 2341.0,
+        "mean_output_tokens": 106.0,
+        "mean_total_tokens": 2447,
+        "mean_elapsed_ms": 1593.0,
+        "summary_calls": 0,
+        "summary_total_tokens": 0,
+        "cache_hit_tokens": 1536,
+        "cache_miss_tokens": 805,
+        "estimated_usd_peak_per_arm": "0.000377916",
+        "estimated_usd_off_peak_per_arm": "0.000188958"
+      },
+      "on": {
+        "samples": 1,
+        "mean_input_tokens": 2335.0,
+        "mean_output_tokens": 103.0,
+        "mean_total_tokens": 2438,
+        "mean_elapsed_ms": 1469.0,
+        "summary_calls": 0,
+        "summary_total_tokens": 0,
+        "cache_hit_tokens": 1920,
+        "cache_miss_tokens": 415,
+        "estimated_usd_peak_per_arm": "0.00025962",
+        "estimated_usd_off_peak_per_arm": "0.00012981"
+      },
+      "total_token_reduction_percent": 0.37,
+      "estimated_cost_change_percent": "-31.30"
+    },
+    {
+      "scenario": "L1_L2",
+      "off": {
+        "samples": 2,
+        "mean_input_tokens": 6776.0,
+        "mean_output_tokens": 54.0,
+        "mean_total_tokens": 6830,
+        "mean_elapsed_ms": 945.5,
+        "summary_calls": 0,
+        "summary_total_tokens": 0,
+        "cache_hit_tokens": 7552,
+        "cache_miss_tokens": 6000,
+        "estimated_usd_peak_per_arm": "0.000987456",
+        "estimated_usd_off_peak_per_arm": "0.000493728"
+      },
+      "on": {
+        "samples": 2,
+        "mean_input_tokens": 3741.0,
+        "mean_output_tokens": 54.0,
+        "mean_total_tokens": 3795,
+        "mean_elapsed_ms": 984.5,
+        "summary_calls": 0,
+        "summary_total_tokens": 0,
+        "cache_hit_tokens": 4608,
+        "cache_miss_tokens": 2874,
+        "estimated_usd_peak_per_arm": "0.000509724",
+        "estimated_usd_off_peak_per_arm": "0.000254862"
+      },
+      "total_token_reduction_percent": 44.44,
+      "estimated_cost_change_percent": "-48.38"
+    },
+    {
+      "scenario": "L3",
+      "off": {
+        "samples": 2,
+        "mean_input_tokens": 10482.0,
+        "mean_output_tokens": 47.0,
+        "mean_total_tokens": 10529,
+        "mean_elapsed_ms": 992.0,
+        "summary_calls": 0,
+        "summary_total_tokens": 0,
+        "cache_hit_tokens": 11264,
+        "cache_miss_tokens": 9700,
+        "estimated_usd_peak_per_arm": "0.001545192",
+        "estimated_usd_off_peak_per_arm": "0.000772596"
+      },
+      "on": {
+        "samples": 2,
+        "mean_input_tokens": 2573.0,
+        "mean_output_tokens": 47.0,
+        "mean_total_tokens": 2620,
+        "mean_elapsed_ms": 726.5,
+        "summary_calls": 0,
+        "summary_total_tokens": 0,
+        "cache_hit_tokens": 3456,
+        "cache_miss_tokens": 1690,
+        "estimated_usd_peak_per_arm": "0.000320268",
+        "estimated_usd_off_peak_per_arm": "0.000160134"
+      },
+      "total_token_reduction_percent": 75.12,
+      "estimated_cost_change_percent": "-79.27"
+    },
+    {
+      "scenario": "L4",
+      "off": {
+        "samples": 2,
+        "mean_input_tokens": 4302.0,
+        "mean_output_tokens": 45.0,
+        "mean_total_tokens": 4347,
+        "mean_elapsed_ms": 1062.0,
+        "summary_calls": 0,
+        "summary_total_tokens": 0,
+        "cache_hit_tokens": 5632,
+        "cache_miss_tokens": 2972,
+        "estimated_usd_peak_per_arm": "0.000516696",
+        "estimated_usd_off_peak_per_arm": "0.000258348"
+      },
+      "on": {
+        "samples": 2,
+        "mean_input_tokens": 2413.0,
+        "mean_output_tokens": 534.0,
+        "mean_total_tokens": 2947,
+        "mean_elapsed_ms": 3031.0,
+        "summary_calls": 2,
+        "summary_total_tokens": 2102,
+        "cache_hit_tokens": 2560,
+        "cache_miss_tokens": 2266,
+        "estimated_usd_peak_per_arm": "0.00098838",
+        "estimated_usd_off_peak_per_arm": "0.00049419"
+      },
+      "total_token_reduction_percent": 32.21,
+      "estimated_cost_change_percent": "91.29"
+    },
+    {
+      "scenario": "L2",
+      "off": {
+        "samples": 1,
+        "mean_input_tokens": 5844.0,
+        "mean_output_tokens": 46.0,
+        "mean_total_tokens": 5890,
+        "mean_elapsed_ms": 1219.0,
+        "summary_calls": 0,
+        "summary_total_tokens": 0,
+        "cache_hit_tokens": 1024,
+        "cache_miss_tokens": 4820,
+        "estimated_usd_peak_per_arm": "0.001507344",
+        "estimated_usd_off_peak_per_arm": "0.000753672"
+      },
+      "on": {
+        "samples": 1,
+        "mean_input_tokens": 2347.0,
+        "mean_output_tokens": 46.0,
+        "mean_total_tokens": 2393,
+        "mean_elapsed_ms": 765.0,
+        "summary_calls": 0,
+        "summary_total_tokens": 0,
+        "cache_hit_tokens": 1024,
+        "cache_miss_tokens": 1323,
+        "estimated_usd_peak_per_arm": "0.000458244",
+        "estimated_usd_off_peak_per_arm": "0.000229122"
+      },
+      "total_token_reduction_percent": 59.37,
+      "estimated_cost_change_percent": "-69.60"
+    }
+  ],
+  "runs": [
+    {
+      "mode": "real_deepseek_controlled_replay",
+      "thinking": "disabled",
+      "model": "deepseek-flash",
+      "started_at": "20261021T080437Z",
+      "budget": {
+        "calls": 20,
+        "tokens": 100000
+      },
+      "limitations": [
+        "Long histories are host-constructed replay, not autonomous previous model decisions.",
+        "Schema/query artifacts are actual read-only MCP/PostgreSQL results, not RAG fixtures.",
+        "Baseline admits 64000 chars; compressed arms use a smaller calibrated host limit.",
+        "Stage quotas use local summary calibration, never selection by live outcome.",
+        "Small sample, shared provider cache; latency and costs are not generalizable.",
+        "References are P4 artifacts, not P3 verified metric Evidence or business reports."
+      ],
+      "cases": [
+        {
+          "scenario": "short",
+          "replay_schema_rounds": 0,
+          "synthetic_note_chars_per_round": 0,
+          "calibrated_chars": 16000,
+          "calibrated_levels": [],
+          "replay_input_estimated_tokens": 4013,
+          "arms": [
+            {
+              "arm": "short_0_off",
+              "compression_enabled": false,
+              "admission_chars": 64000,
+              "input_sha256": "0f666519d7a9fe8c23694023cfef34aca4481e4ae730a2de9c5e57115409b2c1",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "beb01842b740e4b69a8c3d409dbb28569b8607126d75f96ffde01f7286ba178f"
+              ],
+              "compression_events": [],
+              "usage": {
+                "calls": 2,
+                "total_tokens": 2447,
+                "reported_tokens": 2447,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "0f666519d7a9fe8c23694023cfef34aca4481e4ae730a2de9c5e57115409b2c1",
+                  "estimated_input_tokens": 4013,
+                  "usage": {
+                    "input_tokens": 1067,
+                    "output_tokens": 57,
+                    "total_tokens": 1124,
+                    "input_token_details": {
+                      "cache_read": 512
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 57,
+                    "prompt_tokens": 1067,
+                    "total_tokens": 1124,
+                    "prompt_cache_hit_tokens": 512,
+                    "prompt_cache_miss_tokens": 555
+                  },
+                  "finish_reason": "tool_calls",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 828.0
+                },
+                {
+                  "stage": "worker",
+                  "input_sha256": "be164a401a65cd4bb1b888cfc2879167a3022858f1f70acc5cf91b2fac1ba310",
+                  "estimated_input_tokens": 5719,
+                  "usage": {
+                    "input_tokens": 1274,
+                    "output_tokens": 49,
+                    "total_tokens": 1323,
+                    "input_token_details": {
+                      "cache_read": 1024
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 49,
+                    "prompt_tokens": 1274,
+                    "total_tokens": 1323,
+                    "prompt_cache_hit_tokens": 1024,
+                    "prompt_cache_miss_tokens": 250
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 750.0
+                }
+              ],
+              "elapsed_ms": 1593.0
+            },
+            {
+              "arm": "short_0_on",
+              "compression_enabled": true,
+              "admission_chars": 16000,
+              "input_sha256": "0f666519d7a9fe8c23694023cfef34aca4481e4ae730a2de9c5e57115409b2c1",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "c2d8efc84bb48021eb67597dac76898d787ccc658698f5623568cd56d4bccb40"
+              ],
+              "compression_events": [],
+              "usage": {
+                "calls": 2,
+                "total_tokens": 2438,
+                "reported_tokens": 2438,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "0f666519d7a9fe8c23694023cfef34aca4481e4ae730a2de9c5e57115409b2c1",
+                  "estimated_input_tokens": 4013,
+                  "usage": {
+                    "input_tokens": 1067,
+                    "output_tokens": 57,
+                    "total_tokens": 1124,
+                    "input_token_details": {
+                      "cache_read": 896
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 57,
+                    "prompt_tokens": 1067,
+                    "total_tokens": 1124,
+                    "prompt_cache_hit_tokens": 896,
+                    "prompt_cache_miss_tokens": 171
+                  },
+                  "finish_reason": "tool_calls",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 687.0
+                },
+                {
+                  "stage": "worker",
+                  "input_sha256": "9aeed18d8841e48f04b3bfc49029435c0be5852a03c3358ab8ec31296d337969",
+                  "estimated_input_tokens": 5719,
+                  "usage": {
+                    "input_tokens": 1268,
+                    "output_tokens": 46,
+                    "total_tokens": 1314,
+                    "input_token_details": {
+                      "cache_read": 1024
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 46,
+                    "prompt_tokens": 1268,
+                    "total_tokens": 1314,
+                    "prompt_cache_hit_tokens": 1024,
+                    "prompt_cache_miss_tokens": 244
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 750.0
+                }
+              ],
+              "elapsed_ms": 1469.0
+            }
+          ]
+        },
+        {
+          "scenario": "L1_L2",
+          "replay_schema_rounds": 12,
+          "synthetic_note_chars_per_round": 0,
+          "calibrated_chars": 17000,
+          "calibrated_levels": [
+            "L1"
+          ],
+          "replay_input_estimated_tokens": 31460,
+          "arms": [
+            {
+              "arm": "l1_l2_0_off",
+              "compression_enabled": false,
+              "admission_chars": 64000,
+              "input_sha256": "abbc8022319a4bb92d7a1bb55da9876471c6db63417cf3bd8a75f116b184db70",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "24c1ed5ebbac3cd71b3ffb1964425e08d5ffc31f1aad42b4e7e433e6d80279b5"
+              ],
+              "compression_events": [],
+              "usage": {
+                "calls": 1,
+                "total_tokens": 6830,
+                "reported_tokens": 6830,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "abbc8022319a4bb92d7a1bb55da9876471c6db63417cf3bd8a75f116b184db70",
+                  "estimated_input_tokens": 31460,
+                  "usage": {
+                    "input_tokens": 6776,
+                    "output_tokens": 54,
+                    "total_tokens": 6830,
+                    "input_token_details": {
+                      "cache_read": 1024
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 54,
+                    "prompt_tokens": 6776,
+                    "total_tokens": 6830,
+                    "prompt_cache_hit_tokens": 1024,
+                    "prompt_cache_miss_tokens": 5752
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 859.0
+                }
+              ],
+              "elapsed_ms": 891.0
+            },
+            {
+              "arm": "l1_l2_0_on",
+              "compression_enabled": true,
+              "admission_chars": 17000,
+              "input_sha256": "abbc8022319a4bb92d7a1bb55da9876471c6db63417cf3bd8a75f116b184db70",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "24c1ed5ebbac3cd71b3ffb1964425e08d5ffc31f1aad42b4e7e433e6d80279b5"
+              ],
+              "compression_events": [
+                {
+                  "levels": [
+                    "L1"
+                  ],
+                  "before_estimated_tokens": 31460,
+                  "after_estimated_tokens": 17187,
+                  "compression_count": 1,
+                  "summary_calls": 0,
+                  "summary_reported_tokens": 0,
+                  "summary_usage_complete": true,
+                  "irreversible_source_loss": false,
+                  "model_view_lossy": true,
+                  "archive_id": "04925a2137310757c02ee05d72340f7c5db336a33c657d66892ecd1bb46597a3",
+                  "cache_support": "unverified"
+                }
+              ],
+              "usage": {
+                "calls": 1,
+                "total_tokens": 3795,
+                "reported_tokens": 3795,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "8feb7db5132a6b2a06f5ed060e67ebb592857f50adc85006dd6ef0c1edf8187b",
+                  "estimated_input_tokens": 17187,
+                  "usage": {
+                    "input_tokens": 3741,
+                    "output_tokens": 54,
+                    "total_tokens": 3795,
+                    "input_token_details": {
+                      "cache_read": 1024
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 54,
+                    "prompt_tokens": 3741,
+                    "total_tokens": 3795,
+                    "prompt_cache_hit_tokens": 1024,
+                    "prompt_cache_miss_tokens": 2717
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 938.0
+                }
+              ],
+              "elapsed_ms": 938.0
+            },
+            {
+              "arm": "l1_l2_1_on",
+              "compression_enabled": true,
+              "admission_chars": 17000,
+              "input_sha256": "abbc8022319a4bb92d7a1bb55da9876471c6db63417cf3bd8a75f116b184db70",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "24c1ed5ebbac3cd71b3ffb1964425e08d5ffc31f1aad42b4e7e433e6d80279b5"
+              ],
+              "compression_events": [
+                {
+                  "levels": [
+                    "L1"
+                  ],
+                  "before_estimated_tokens": 31460,
+                  "after_estimated_tokens": 17187,
+                  "compression_count": 1,
+                  "summary_calls": 0,
+                  "summary_reported_tokens": 0,
+                  "summary_usage_complete": true,
+                  "irreversible_source_loss": false,
+                  "model_view_lossy": true,
+                  "archive_id": "04925a2137310757c02ee05d72340f7c5db336a33c657d66892ecd1bb46597a3",
+                  "cache_support": "unverified"
+                }
+              ],
+              "usage": {
+                "calls": 1,
+                "total_tokens": 3795,
+                "reported_tokens": 3795,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "8feb7db5132a6b2a06f5ed060e67ebb592857f50adc85006dd6ef0c1edf8187b",
+                  "estimated_input_tokens": 17187,
+                  "usage": {
+                    "input_tokens": 3741,
+                    "output_tokens": 54,
+                    "total_tokens": 3795,
+                    "input_token_details": {
+                      "cache_read": 3584
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 54,
+                    "prompt_tokens": 3741,
+                    "total_tokens": 3795,
+                    "prompt_cache_hit_tokens": 3584,
+                    "prompt_cache_miss_tokens": 157
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 1015.0
+                }
+              ],
+              "elapsed_ms": 1031.0
+            },
+            {
+              "arm": "l1_l2_1_off",
+              "compression_enabled": false,
+              "admission_chars": 64000,
+              "input_sha256": "abbc8022319a4bb92d7a1bb55da9876471c6db63417cf3bd8a75f116b184db70",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "24c1ed5ebbac3cd71b3ffb1964425e08d5ffc31f1aad42b4e7e433e6d80279b5"
+              ],
+              "compression_events": [],
+              "usage": {
+                "calls": 1,
+                "total_tokens": 6830,
+                "reported_tokens": 6830,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "abbc8022319a4bb92d7a1bb55da9876471c6db63417cf3bd8a75f116b184db70",
+                  "estimated_input_tokens": 31460,
+                  "usage": {
+                    "input_tokens": 6776,
+                    "output_tokens": 54,
+                    "total_tokens": 6830,
+                    "input_token_details": {
+                      "cache_read": 6528
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 54,
+                    "prompt_tokens": 6776,
+                    "total_tokens": 6830,
+                    "prompt_cache_hit_tokens": 6528,
+                    "prompt_cache_miss_tokens": 248
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 984.0
+                }
+              ],
+              "elapsed_ms": 1000.0
+            }
+          ]
+        },
+        {
+          "scenario": "L3",
+          "replay_schema_rounds": 12,
+          "synthetic_note_chars_per_round": 1800,
+          "calibrated_chars": 11000,
+          "calibrated_levels": [
+            "L1",
+            "L3"
+          ],
+          "replay_input_estimated_tokens": 53060,
+          "arms": [
+            {
+              "arm": "l3_0_off",
+              "compression_enabled": false,
+              "admission_chars": 64000,
+              "input_sha256": "83b7eda52375cf3184539ff3760498f7a88fb5933927b4616451b4ce6c737f5c",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "238608a6e20f8a8ec38a7862ca707a26981dd756a9679ae00582236c83e85c01"
+              ],
+              "compression_events": [],
+              "usage": {
+                "calls": 1,
+                "total_tokens": 10529,
+                "reported_tokens": 10529,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "83b7eda52375cf3184539ff3760498f7a88fb5933927b4616451b4ce6c737f5c",
+                  "estimated_input_tokens": 53060,
+                  "usage": {
+                    "input_tokens": 10482,
+                    "output_tokens": 47,
+                    "total_tokens": 10529,
+                    "input_token_details": {
+                      "cache_read": 1024
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 47,
+                    "prompt_tokens": 10482,
+                    "total_tokens": 10529,
+                    "prompt_cache_hit_tokens": 1024,
+                    "prompt_cache_miss_tokens": 9458
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 937.0
+                }
+              ],
+              "elapsed_ms": 953.0
+            },
+            {
+              "arm": "l3_0_on",
+              "compression_enabled": true,
+              "admission_chars": 11000,
+              "input_sha256": "83b7eda52375cf3184539ff3760498f7a88fb5933927b4616451b4ce6c737f5c",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "238608a6e20f8a8ec38a7862ca707a26981dd756a9679ae00582236c83e85c01"
+              ],
+              "compression_events": [
+                {
+                  "levels": [
+                    "L1",
+                    "L3"
+                  ],
+                  "before_estimated_tokens": 53060,
+                  "after_estimated_tokens": 11099,
+                  "compression_count": 1,
+                  "summary_calls": 0,
+                  "summary_reported_tokens": 0,
+                  "summary_usage_complete": true,
+                  "irreversible_source_loss": false,
+                  "model_view_lossy": true,
+                  "archive_id": "9544673c8008724eaa8e900844d8444ca7e36b34f21868382060a1c01d8c66b6",
+                  "cache_support": "unverified"
+                }
+              ],
+              "usage": {
+                "calls": 1,
+                "total_tokens": 2620,
+                "reported_tokens": 2620,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "b64a3bf7c81844d710c9d0945d69f4f15e48d6f624ff1dbebc864809feae3620",
+                  "estimated_input_tokens": 11099,
+                  "usage": {
+                    "input_tokens": 2573,
+                    "output_tokens": 47,
+                    "total_tokens": 2620,
+                    "input_token_details": {
+                      "cache_read": 1024
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 47,
+                    "prompt_tokens": 2573,
+                    "total_tokens": 2620,
+                    "prompt_cache_hit_tokens": 1024,
+                    "prompt_cache_miss_tokens": 1549
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 594.0
+                }
+              ],
+              "elapsed_ms": 625.0
+            },
+            {
+              "arm": "l3_1_on",
+              "compression_enabled": true,
+              "admission_chars": 11000,
+              "input_sha256": "83b7eda52375cf3184539ff3760498f7a88fb5933927b4616451b4ce6c737f5c",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "238608a6e20f8a8ec38a7862ca707a26981dd756a9679ae00582236c83e85c01"
+              ],
+              "compression_events": [
+                {
+                  "levels": [
+                    "L1",
+                    "L3"
+                  ],
+                  "before_estimated_tokens": 53060,
+                  "after_estimated_tokens": 11099,
+                  "compression_count": 1,
+                  "summary_calls": 0,
+                  "summary_reported_tokens": 0,
+                  "summary_usage_complete": true,
+                  "irreversible_source_loss": false,
+                  "model_view_lossy": true,
+                  "archive_id": "9544673c8008724eaa8e900844d8444ca7e36b34f21868382060a1c01d8c66b6",
+                  "cache_support": "unverified"
+                }
+              ],
+              "usage": {
+                "calls": 1,
+                "total_tokens": 2620,
+                "reported_tokens": 2620,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "b64a3bf7c81844d710c9d0945d69f4f15e48d6f624ff1dbebc864809feae3620",
+                  "estimated_input_tokens": 11099,
+                  "usage": {
+                    "input_tokens": 2573,
+                    "output_tokens": 47,
+                    "total_tokens": 2620,
+                    "input_token_details": {
+                      "cache_read": 2432
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 47,
+                    "prompt_tokens": 2573,
+                    "total_tokens": 2620,
+                    "prompt_cache_hit_tokens": 2432,
+                    "prompt_cache_miss_tokens": 141
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 828.0
+                }
+              ],
+              "elapsed_ms": 828.0
+            },
+            {
+              "arm": "l3_1_off",
+              "compression_enabled": false,
+              "admission_chars": 64000,
+              "input_sha256": "83b7eda52375cf3184539ff3760498f7a88fb5933927b4616451b4ce6c737f5c",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "238608a6e20f8a8ec38a7862ca707a26981dd756a9679ae00582236c83e85c01"
+              ],
+              "compression_events": [],
+              "usage": {
+                "calls": 1,
+                "total_tokens": 10529,
+                "reported_tokens": 10529,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "83b7eda52375cf3184539ff3760498f7a88fb5933927b4616451b4ce6c737f5c",
+                  "estimated_input_tokens": 53060,
+                  "usage": {
+                    "input_tokens": 10482,
+                    "output_tokens": 47,
+                    "total_tokens": 10529,
+                    "input_token_details": {
+                      "cache_read": 10240
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 47,
+                    "prompt_tokens": 10482,
+                    "total_tokens": 10529,
+                    "prompt_cache_hit_tokens": 10240,
+                    "prompt_cache_miss_tokens": 242
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 1031.0
+                }
+              ],
+              "elapsed_ms": 1031.0
+            }
+          ]
+        },
+        {
+          "scenario": "L4",
+          "replay_schema_rounds": 4,
+          "synthetic_note_chars_per_round": 1800,
+          "calibrated_chars": 7000,
+          "calibrated_levels": [
+            "L1",
+            "L3",
+            "L4"
+          ],
+          "replay_input_estimated_tokens": 20992,
+          "arms": [
+            {
+              "arm": "l4_0_off",
+              "compression_enabled": false,
+              "admission_chars": 64000,
+              "input_sha256": "75d554382bd25e7669f599da75b88944cbc20225259db596ce7cd42942236c4d",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "3c813fa216403752a3dc219afa21b36e59fcbbefed5a69fd09ce2d9007955622"
+              ],
+              "compression_events": [],
+              "usage": {
+                "calls": 1,
+                "total_tokens": 4347,
+                "reported_tokens": 4347,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "75d554382bd25e7669f599da75b88944cbc20225259db596ce7cd42942236c4d",
+                  "estimated_input_tokens": 20992,
+                  "usage": {
+                    "input_tokens": 4302,
+                    "output_tokens": 45,
+                    "total_tokens": 4347,
+                    "input_token_details": {
+                      "cache_read": 1536
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 45,
+                    "prompt_tokens": 4302,
+                    "total_tokens": 4347,
+                    "prompt_cache_hit_tokens": 1536,
+                    "prompt_cache_miss_tokens": 2766
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 1390.0
+                }
+              ],
+              "elapsed_ms": 1390.0
+            },
+            {
+              "arm": "l4_0_on",
+              "compression_enabled": true,
+              "admission_chars": 7000,
+              "input_sha256": "75d554382bd25e7669f599da75b88944cbc20225259db596ce7cd42942236c4d",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "3c813fa216403752a3dc219afa21b36e59fcbbefed5a69fd09ce2d9007955622"
+              ],
+              "compression_events": [
+                {
+                  "levels": [
+                    "L1",
+                    "L3",
+                    "L4"
+                  ],
+                  "before_estimated_tokens": 20992,
+                  "after_estimated_tokens": 7103,
+                  "compression_count": 1,
+                  "summary_calls": 1,
+                  "summary_reported_tokens": 1063,
+                  "summary_usage_complete": true,
+                  "irreversible_source_loss": false,
+                  "model_view_lossy": true,
+                  "archive_id": "9d1b7b644143d8b5e02b7d3f15db04431abeba468a0fbc37f95058841cffb3f6",
+                  "cache_support": "unverified"
+                }
+              ],
+              "usage": {
+                "calls": 2,
+                "total_tokens": 2969,
+                "reported_tokens": 2969,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "summary",
+                  "input_sha256": "6e43e617f7803412b7d7409cf3611fa52e425e1d44f4edbd0ad30097644b535e",
+                  "estimated_input_tokens": 2293,
+                  "usage": {
+                    "input_tokens": 562,
+                    "output_tokens": 501,
+                    "total_tokens": 1063,
+                    "input_token_details": {
+                      "cache_read": 0
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 501,
+                    "prompt_tokens": 562,
+                    "total_tokens": 1063,
+                    "prompt_cache_hit_tokens": 0,
+                    "prompt_cache_miss_tokens": 562
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 2297.0
+                },
+                {
+                  "stage": "worker",
+                  "input_sha256": "1acca90686f0117603fc9fb4b947dc7f5b501b8163036f001f85b5f75d1867c4",
+                  "estimated_input_tokens": 7103,
+                  "usage": {
+                    "input_tokens": 1861,
+                    "output_tokens": 45,
+                    "total_tokens": 1906,
+                    "input_token_details": {
+                      "cache_read": 1024
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 45,
+                    "prompt_tokens": 1861,
+                    "total_tokens": 1906,
+                    "prompt_cache_hit_tokens": 1024,
+                    "prompt_cache_miss_tokens": 837
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 984.0
+                }
+              ],
+              "elapsed_ms": 3281.0
+            },
+            {
+              "arm": "l4_1_on",
+              "compression_enabled": true,
+              "admission_chars": 7000,
+              "input_sha256": "75d554382bd25e7669f599da75b88944cbc20225259db596ce7cd42942236c4d",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "3c813fa216403752a3dc219afa21b36e59fcbbefed5a69fd09ce2d9007955622"
+              ],
+              "compression_events": [
+                {
+                  "levels": [
+                    "L1",
+                    "L3",
+                    "L4"
+                  ],
+                  "before_estimated_tokens": 20992,
+                  "after_estimated_tokens": 7049,
+                  "compression_count": 1,
+                  "summary_calls": 1,
+                  "summary_reported_tokens": 1039,
+                  "summary_usage_complete": true,
+                  "irreversible_source_loss": false,
+                  "model_view_lossy": true,
+                  "archive_id": "9d1b7b644143d8b5e02b7d3f15db04431abeba468a0fbc37f95058841cffb3f6",
+                  "cache_support": "unverified"
+                }
+              ],
+              "usage": {
+                "calls": 2,
+                "total_tokens": 2925,
+                "reported_tokens": 2925,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "summary",
+                  "input_sha256": "6e43e617f7803412b7d7409cf3611fa52e425e1d44f4edbd0ad30097644b535e",
+                  "estimated_input_tokens": 2293,
+                  "usage": {
+                    "input_tokens": 562,
+                    "output_tokens": 477,
+                    "total_tokens": 1039,
+                    "input_token_details": {
+                      "cache_read": 384
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 477,
+                    "prompt_tokens": 562,
+                    "total_tokens": 1039,
+                    "prompt_cache_hit_tokens": 384,
+                    "prompt_cache_miss_tokens": 178
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 2000.0
+                },
+                {
+                  "stage": "worker",
+                  "input_sha256": "01c093a026f675630e83018b8396970eab94d8f15d8e3052fec41d82f119fa25",
+                  "estimated_input_tokens": 7049,
+                  "usage": {
+                    "input_tokens": 1841,
+                    "output_tokens": 45,
+                    "total_tokens": 1886,
+                    "input_token_details": {
+                      "cache_read": 1152
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 45,
+                    "prompt_tokens": 1841,
+                    "total_tokens": 1886,
+                    "prompt_cache_hit_tokens": 1152,
+                    "prompt_cache_miss_tokens": 689
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 765.0
+                }
+              ],
+              "elapsed_ms": 2781.0
+            },
+            {
+              "arm": "l4_1_off",
+              "compression_enabled": false,
+              "admission_chars": 64000,
+              "input_sha256": "75d554382bd25e7669f599da75b88944cbc20225259db596ce7cd42942236c4d",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "3c813fa216403752a3dc219afa21b36e59fcbbefed5a69fd09ce2d9007955622"
+              ],
+              "compression_events": [],
+              "usage": {
+                "calls": 1,
+                "total_tokens": 4347,
+                "reported_tokens": 4347,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "75d554382bd25e7669f599da75b88944cbc20225259db596ce7cd42942236c4d",
+                  "estimated_input_tokens": 20992,
+                  "usage": {
+                    "input_tokens": 4302,
+                    "output_tokens": 45,
+                    "total_tokens": 4347,
+                    "input_token_details": {
+                      "cache_read": 4096
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 45,
+                    "prompt_tokens": 4302,
+                    "total_tokens": 4347,
+                    "prompt_cache_hit_tokens": 4096,
+                    "prompt_cache_miss_tokens": 206
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 719.0
+                }
+              ],
+              "elapsed_ms": 734.0
+            }
+          ]
+        }
+      ],
+      "usage": {
+        "calls": 18,
+        "total_tokens": 67021,
+        "reported_tokens": 67021,
+        "usage_complete": true
+      },
+      "finished_at": "2026-10-21T08:04:59.001476+00:00"
+    },
+    {
+      "mode": "real_deepseek_controlled_replay",
+      "thinking": "disabled",
+      "model": "deepseek-flash",
+      "started_at": "20261021T080744Z",
+      "budget": {
+        "calls": 2,
+        "tokens": 32000
+      },
+      "limitations": [
+        "Long histories are host-constructed replay, not autonomous previous model decisions.",
+        "Schema/query artifacts are actual read-only MCP/PostgreSQL results, not RAG fixtures.",
+        "Baseline admits 64000 chars; compressed arms use a smaller calibrated host limit.",
+        "Stage quotas use local summary calibration, never selection by live outcome.",
+        "Small sample, shared provider cache; latency and costs are not generalizable.",
+        "References are P4 artifacts, not P3 verified metric Evidence or business reports.",
+        "Oversized supplement injects view padding past L0, not a normal production output."
+      ],
+      "cases": [
+        {
+          "scenario": "L2",
+          "replay_schema_rounds": 1,
+          "synthetic_note_chars_per_round": 0,
+          "calibrated_chars": 9500,
+          "calibrated_levels": [
+            "L1",
+            "L2"
+          ],
+          "replay_input_estimated_tokens": 26059,
+          "arms": [
+            {
+              "arm": "l2_0_off",
+              "compression_enabled": false,
+              "admission_chars": 64000,
+              "input_sha256": "2446c9eb1aee3b761bd5dd04cea0e586e1e0a2fd0835f6aed8e03ae817284229",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "f31d2ba965e6150ac375018ea09dc544199dca0ce7d722e0f93598e97383181e"
+              ],
+              "compression_events": [],
+              "usage": {
+                "calls": 1,
+                "total_tokens": 5890,
+                "reported_tokens": 5890,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "2446c9eb1aee3b761bd5dd04cea0e586e1e0a2fd0835f6aed8e03ae817284229",
+                  "estimated_input_tokens": 26059,
+                  "usage": {
+                    "input_tokens": 5844,
+                    "output_tokens": 46,
+                    "total_tokens": 5890,
+                    "input_token_details": {
+                      "cache_read": 1024
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 46,
+                    "prompt_tokens": 5844,
+                    "total_tokens": 5890,
+                    "prompt_cache_hit_tokens": 1024,
+                    "prompt_cache_miss_tokens": 4820
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 1203.0
+                }
+              ],
+              "elapsed_ms": 1219.0
+            },
+            {
+              "arm": "l2_0_on",
+              "compression_enabled": true,
+              "admission_chars": 9500,
+              "input_sha256": "2446c9eb1aee3b761bd5dd04cea0e586e1e0a2fd0835f6aed8e03ae817284229",
+              "status": "succeeded",
+              "error_code": null,
+              "verification": "passed",
+              "success": true,
+              "invariants": {
+                "canonical_input_unchanged": true,
+                "tool_pairs_valid": true,
+                "original_artifacts_unchanged": true,
+                "archives_complete": true,
+                "result_matches_independent_sql": true,
+                "exact_replay_evidence": true
+              },
+              "source_result": [
+                [
+                  240
+                ]
+              ],
+              "evidence_ids": [
+                "f31d2ba965e6150ac375018ea09dc544199dca0ce7d722e0f93598e97383181e"
+              ],
+              "compression_events": [
+                {
+                  "levels": [
+                    "L1",
+                    "L2"
+                  ],
+                  "before_estimated_tokens": 26059,
+                  "after_estimated_tokens": 9601,
+                  "compression_count": 1,
+                  "summary_calls": 0,
+                  "summary_reported_tokens": 0,
+                  "summary_usage_complete": true,
+                  "irreversible_source_loss": false,
+                  "model_view_lossy": true,
+                  "archive_id": "8c5f77fcc0c4fab6b7b849f336979ae6ec46a67cdf7548ff575bc12baec10978",
+                  "cache_support": "unverified"
+                }
+              ],
+              "usage": {
+                "calls": 1,
+                "total_tokens": 2393,
+                "reported_tokens": 2393,
+                "usage_complete": true
+              },
+              "calls": [
+                {
+                  "stage": "worker",
+                  "input_sha256": "82ae814e27bb8b93ef01d4f518f4b08cf38a92edccbe7546515daac461c85eb7",
+                  "estimated_input_tokens": 9601,
+                  "usage": {
+                    "input_tokens": 2347,
+                    "output_tokens": 46,
+                    "total_tokens": 2393,
+                    "input_token_details": {
+                      "cache_read": 1024
+                    },
+                    "output_token_details": {}
+                  },
+                  "supplier_usage": {
+                    "completion_tokens": 46,
+                    "prompt_tokens": 2347,
+                    "total_tokens": 2393,
+                    "prompt_cache_hit_tokens": 1024,
+                    "prompt_cache_miss_tokens": 1323
+                  },
+                  "finish_reason": "stop",
+                  "response_model": "deepseek-flash",
+                  "elapsed_ms": 765.0
+                }
+              ],
+              "elapsed_ms": 765.0
+            }
+          ]
+        }
+      ],
+      "usage": {
+        "calls": 2,
+        "total_tokens": 8283,
+        "reported_tokens": 8283,
+        "usage_complete": true
+      },
+      "finished_at": "2026-10-21T08:07:47.956244+00:00"
+    }
+  ],
+  "source_snapshot_note": "Post-experiment source snapshot. The optional stress selector was added between invocations; this is not a claim that both invocations used byte-identical script files. No live outcome-based policy tuning.",
+  "pytest_regression": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "1",
+    "tests": "389",
+    "time": "100.808",
+    "timestamp": "2026-10-21T16:08:10.091543+08:00"
+  },
+  "pytest_runner_local": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "5",
+    "time": "2.374",
+    "timestamp": "2026-10-21T16:07:25.058580+08:00"
+  }
+}

@@ -4,13 +4,13 @@ import json
 from typing import Protocol, TypeVar
 
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, ValidationError
 
 from datapilot.config import Settings
 from datapilot.contracts import AgentFailure
 from datapilot.harness.budget import RunBudget
 from datapilot.harness.context import check_context
+from datapilot.llm.provider import create_chat_model
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -54,14 +54,4 @@ class JSONModelClient:
 
 
 def create_live_client(settings: Settings, budget: RunBudget) -> JSONModelClient:
-    chat = ChatOpenAI(
-        model=settings.model,
-        api_key=settings.api_key.get_secret_value(),
-        base_url=settings.base_url,
-        temperature=0,
-        max_tokens=settings.max_output_tokens,
-        timeout=settings.model_timeout_seconds,
-        max_retries=0,
-        stream_usage=False,
-    )
-    return JSONModelClient(chat, settings, budget)
+    return JSONModelClient(create_chat_model(settings), settings, budget)

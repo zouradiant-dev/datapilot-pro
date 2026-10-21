@@ -321,3 +321,9 @@ RunState/TaskEnvelope、独立预算与取消服务、P3 Registry、完整 Worke
 Gateway 按账户选择独立 ContextManager。L0 完整源工件先存，L1/L2 减少旧观察/重复引用，L3 把完整已闭合轮次投影为可读归档引用，L4 才调用同一预算入口的受限摘取式摘要。完整消息留在 Worker 原状态，所有视图保持 provider 配对。原始安全/目标/Schema 前缀不可裁剪；有界只读 read_context 仅允许本任务归档/Schema/RAG 文档，不暴露 SQL 行、路径、其他 Worker 或数据库管理通道。
 
 MemoryStore 是偏好/术语与决策引用的接口，不是执行 Checkpoint 或证据库；当前只实现有容量限制的内存存储及审阅/失效/新鲜度校验。无新增迁移/依赖/Fork，未实施 PG Saver/持久账本/进程恢复。完整策略、来源、实测与风险见 [上下文工程](context-engineering.md)、[ADR-008](adr/0008-context-authority-memory.md)。
+
+## 21. DeepSeek Flash 兼容增量
+
+`llm/provider.py` 统一构建异步 NativeTransport 与旧同步 JSONModelClient 的 ChatOpenAI 实例；新增显式 `model_provider=deepseek` profile，保留默认通用 profile。复用 LangChain/OpenAI SDK 的公开 `extra_body`，显式发送 `thinking.type=disabled` 与受配置限制的原生 `max_tokens`，不同时发送 SDK 重命名的 `max_completion_tokens`，并固定走 Chat Completions。无需新依赖、Runtime、迁移或私有 SDK hook。
+
+这是非思考模式的最小接入，不实现 reasoning_content 的保留/压缩/回传；默认思考行为不能直接开启。Gateway、ContextManager、Ledger、取消、ToolRegistry、SQL/MCP 权限全部复用原实现。供应商错误继续脱敏且保守结算，SDK retry=0。详情与真实验证边界见 [DeepSeek 接入](deepseek-transport.md)，不进入 P5B/P6。

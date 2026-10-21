@@ -96,6 +96,8 @@ MemoryEntry 包含 created_at、expires_at、source_ref/source_version、owner/s
 
 ## 真实运行与实验
 
+以下表格保留 P5A 最初无 Key 的历史验证，不代表当前凭据状态。2026-10-21 随后完成 DeepSeek 非思考模式真实 A/B：20 次模型调用、75,304 tokens、16 组执行通过；L3 总 Token 减少 75.12%，L4 计入摘要后减少 32.21%，但 L4 的本样本估算费用与时延增加。完整范围、负面结果、缓存差异和同 Run 内存限制见 [真实压缩实测](p5a-live-context-ab.md)。合成输入估算与真实供应商 Token 分开保留。
+
 使用 Python 3.11.16、LangGraph 1.2.16、现有 uv.lock。uv 本机路径为 `D:\develop\Python310\Scripts\uv.exe`。命令均在仓库根目录执行：
 
 ```powershell
