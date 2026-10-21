@@ -20,3 +20,12 @@ Mini 是教学重实现；其名称、README 或公开行为参考不代表本�
 如确需复制或改编代码、迁移 SQL、Prompt 或其他实质内容，应在对应目录加入上游完整 LICENSE 和版权声明，记录来源提交、源文件、修改内容及适用范围；适当加入 SPDX 标识。仅放一个仓库链接不能替代 MIT 要求保留的许可及版权文本。
 
 依赖升级时重新检查实际分发包及其组件许可证，不能仅凭仓库根许可证推断所有第三方依赖相同。生成项目级 NOTICE/依赖清单时应从锁定分发物核查，本轮未声称已完成全面许可证审计。
+
+## P6A 模型与推理来源
+
+- [BAAI/bge-small-zh-v1.5 官方模型卡](https://huggingface.co/BAAI/bge-small-zh-v1.5)：中文 Embedding 的模型与推理说明，模型卡声明 MIT；本项目只做推理，不训练。
+- [Qdrant ONNX 转换固定提交](https://huggingface.co/Qdrant/bge-small-zh-v1.5/tree/46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59)：只下载 `model_optimized.onnx`、`tokenizer.json`，文件 SHA/大小见 [rag-pipeline.md](rag-pipeline.md)。权重位于忽略的 `.cache/`，不打包进 Git，也没有引入 Qdrant 数据库或 FastEmbed 服务。
+- [ONNX Runtime Python](https://onnxruntime.ai/docs/get-started/with-python.html) 与 [Hugging Face Tokenizers](https://github.com/huggingface/tokenizers)：分别通过锁定依赖 1.31.0、0.23.3 使用，未复制其实现；依赖分发物的许可声明应保留。
+- [pgvector 0.8.6 源码与文档](https://github.com/pgvector/pgvector/tree/v0.8.6)：同 PostgreSQL 17 实例的 vector 类型与 cosine 运算符，P6A 使用精确检索，没有复制扩展源码或新增向量数据库。
+
+本项目独立实现文档契约、授权、切块、模型适配、固定参数化查询与验证。上述来源不构成第三方对业务正确性、安全性或模型问答质量的背书；本轮未完成模型再分发的全面许可审计，也未再分发权重。

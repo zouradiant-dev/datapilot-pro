@@ -6,9 +6,13 @@
 
 ## 1. 当前起点与优先级
 
-起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1/P2/P3 保留，P4 完成 D9–D10 动态 DAG 与双层执行，见 [编排说明](orchestration.md)、[交付](p4-delivery.md)。后续已完成 P4.1、P5A 和本轮 P5B；P6 真实检索/产品闭环未开始，Gate C 尚未整体通过。
+**当前增量 P6A**：在 P5B 基线上完成授权文本摄取、固定本地神经 Embedding、真实 PG17/pgvector/独立 MCP 检索及版本引用验证，保留原 Runtime/预算/Artifact/恢复；见 [RAG 链路](rag-pipeline.md)、[交付](p6a-delivery.md)、[ADR-010](adr/0010-scoped-rag.md)。以下 P4/P5 历史停止点不再代表当前缺口。只停止在 P6A；Gate C 尚缺 P6B 可信多来源报告，P6C/P7/P10 均未实施。
 
-v2.2 的 **P4.1** 补工具生命周期、宿主完成判定、L0 工件/模型视图分离及故障反例，见 [交付与实际验证](p4-hardening.md)、[ADR-007](adr/0007-p4-hardening.md)。P5 拆为单独授权的 P5A（Context/Memory）与 P5B（PG 持久恢复），均已落实；当前停止在 P5B，不能从路线图自动授权 P6/P7。Gate C 未完成。
+验收分层：真实 PG/神经 Embedding/MCP 基础链路和 Fake 决策 Worker 恢复有自动化证据；两次真实 DeepSeek RAG smoke 均被现有安全/契约边界阻断，真实模型自主完成质量尚未通过。基础链路交付不等于全部真实模型/经营分析评测通过。
+
+起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1/P2/P3 保留，P4 完成 D9–D10 动态 DAG 与双层执行，见 [编排说明](orchestration.md)、[交付](p4-delivery.md)。P4.1、P5A/P5B 已完成；P6A 的基础检索链已实现，真实模型质量限制见上述验收分层。P6B/P6C 产品闭环未开始，Gate C 尚未整体通过。
+
+v2.2 的 **P4.1** 补工具生命周期、宿主完成判定、L0 工件/模型视图分离及故障反例，见 [交付与实际验证](p4-hardening.md)、[ADR-007](adr/0007-p4-hardening.md)。P5A（Context/Memory）与 P5B（PG 持久恢复）均已落实；v2.3 本轮仅补 P6A，不能从路线图自动授权 P6B/P6C/P7。Gate C 未完成。
 
 唯一首发业务是 SaaS。文件导入、语义/证据、Multi-Agent、产品化和独立评测服务这一主线。首版本地单用户/可信演示，不承诺生产多租户。干洗店 Phase F 与 LangGraph Fork 都是独立可选扩展。
 
@@ -104,7 +108,8 @@ P5A 后单独授权的 DeepSeek Flash 兼容增量仅调整共享模型构造 pr
 | P4 / P4.1 | 动态 DAG、Worker Loop、工具生命周期与完成判定已实现 | 无 Fork；RAG 替身仅证明编排，见 p4-delivery / p4-hardening |
 | P5A | L0–L4、上下文不变量、Memory 契约/内存实现已交付 | 保留算法与历史费用结论，见 context-engineering |
 | P5B | 官方 PG Checkpoint、持久预算/Artifact、恢复与故障验证已交付 | 当前停止点，见 p5b-delivery；不自动进入 P6/P7 |
-| P6 | 真实 RAG/计算/报告、UI、Langfuse | 与 P4/P5 集成完成 Gate C，再验收产品闭环 |
+| P6A | 授权 TXT/Markdown、固定 BGE CPU、真实 pgvector/MCP 与引用验证已实现 | 当前停止点；P5B 恢复与原 SaaS 不回归 |
+| P6B / P6C | 可信跨来源报告 / API、UI、Langfuse | 分别另行授权；不从 P6A 自动推进 |
 | P7 | 独立 E2E、消融、Claude Code 产品对比 | Gate D 完整验收资料；不可污染保留集 |
 | P8 | 可选官方 Runtime 不足与 Fork A/B | 有最小复现和公开方案不足的证据 |
 | P9 | 可选干洗店领域包/真实试点 | Gate D、数据授权/导出能力明确；不依赖 Fork |
@@ -119,7 +124,7 @@ SaaS ≥50 个独立业务任务，开发集/保留集分离，固定 seed/数�
 
 ## 6. 当前阻塞与下一步准备
 
-P1/P2/P3 保留，P3 指标入口仍独立执行。ask 保留内存执行路径；显式 durable 使用同一外图/Worker 和官方 PG Saver，预算/工件/取消独立持久化。P5B 实现完成，源版本/权限/hash/未知调用失败关闭，不声称供应商 exactly-once 或生产多租户。RAG 替身仍非正式检索；UI、P3→P4 可信报告桥接和长期 Memory 后端未实现。Gate C 尚缺真实跨来源业务验收，P6/P7 仅在新授权后执行。
+P1–P5B 保留，P3 指标入口独立；ask 保留内存执行，durable 沿用官方 Saver。P6A 的真实本地 Embedding/pgvector/RAG MCP 已接入受控工具与恢复，source/index/scope 变更失败关闭；旧 fixture 只用于回归。UI、P3→P4 可信报告桥接和长期 Memory 后端未实现。Gate C 尚缺 P6B，当前停止，下一阶段须新授权。
 
 ### 已完成的 D9–D13 / 后续边界
 

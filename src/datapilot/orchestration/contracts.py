@@ -5,6 +5,7 @@ from typing import Annotated, Literal
 from pydantic import Field, model_validator
 
 from datapilot.contracts import Contract, QueryResult
+from datapilot.rag.contracts import ChunkCitation, EmbeddingUsage
 
 TaskId = Annotated[str, Field(pattern=r"^[a-z][a-z0-9_]{0,47}$")]
 Digest = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
@@ -159,11 +160,16 @@ class Document(Contract):
     version: str = Field(min_length=1, max_length=64)
     text: str = Field(max_length=4096)
     sha256: Digest
+    citation: ChunkCitation | None = None
 
 
 class SearchResult(Contract):
     documents: list[Document] = Field(max_length=5)
     fixture: bool = False
+    requested_top_k: int | None = Field(default=None, ge=1, le=5)
+    retriever_version: str | None = Field(default=None, max_length=64)
+    unavailable_reason: Literal["no_matches", "no_authorized_documents"] | None = None
+    embedding_usage: EmbeddingUsage | None = None
 
 
 class Artifact(Contract):

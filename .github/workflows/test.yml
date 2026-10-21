@@ -33,6 +33,10 @@ jobs:
       DATAPILOT_REGISTRY_PASSWORD: ci-registry-only
       DATAPILOT_RUNTIME_PASSWORD: ci-runtime-only
       DATAPILOT_CHECKPOINT_OWNER_PASSWORD: ci-checkpoint-owner-only
+      DATAPILOT_RAG_INGEST_PASSWORD: ci-rag-ingest-only
+      DATAPILOT_RAG_READER_PASSWORD: ci-rag-reader-only
+      DATAPILOT_RAG_INGEST_DATABASE_URL: postgresql+psycopg://datapilot_rag_ingest:ci-rag-ingest-only@localhost:5432/datapilot
+      DATAPILOT_RAG_READER_DATABASE_URL: postgresql+psycopg://datapilot_rag_reader:ci-rag-reader-only@localhost:5432/datapilot
       DATAPILOT_RUNTIME_DATABASE_URL: postgresql+psycopg://datapilot_runtime:ci-runtime-only@localhost:5432/datapilot
       DATAPILOT_CHECKPOINT_OWNER_DATABASE_URL: postgresql+psycopg://datapilot_checkpoint_owner:ci-checkpoint-owner-only@localhost:5432/datapilot
       DATAPILOT_REGISTRY_DATABASE_URL: postgresql+psycopg://datapilot_registry:ci-registry-only@localhost:5432/datapilot
@@ -50,6 +54,7 @@ jobs:
       - run: uv run --locked datapilot runtime-init
       - run: uv run --locked datapilot seed
       - run: uv run --locked datapilot health
+      - run: uv run --locked datapilot rag model-fetch
       - run: uv run --locked pytest --cov=datapilot --cov-report=term-missing
       - run: uv run --locked ruff check .
       - run: uv run --locked ruff format --check .

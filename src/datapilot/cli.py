@@ -34,6 +34,9 @@ def main() -> int:
     from datapilot.semantics.cli import add_commands as add_semantic_commands
 
     add_semantic_commands(sub)
+    from datapilot.rag.cli import add_commands as add_rag_commands
+
+    add_rag_commands(sub)
     sub.add_parser("health", help="Reader: verify PostgreSQL 17, extension, permissions and seed")
     sub.add_parser("runtime-init", help="Explicit checkpoint owner: deploy official Saver tables")
     durable = sub.add_parser("durable", help="Trusted local persistent execution controls")
@@ -45,6 +48,7 @@ def main() -> int:
     durable.add_argument("--review", action="store_true")
     durable.add_argument("--approve", action="store_true", default=None)
     durable.add_argument("--pause-after", choices=("planner", "scheduler", "worker", "verifier"))
+    durable.add_argument("--rag-scope")
     query = sub.add_parser("ask", help="Supervisor -> SQL -> MCP -> PostgreSQL -> Answer")
     query.add_argument("question")
     query.add_argument("--mode", choices=("live", "fake"))
@@ -53,7 +57,12 @@ def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     try:
-        if args.command == "runtime-init":
+        if args.command == "rag":
+            from datapilot.persistence.session import run_async
+            from datapilot.rag.cli import run
+
+            result = run_async(run(args))
+        elif args.command == "runtime-init":
             from datapilot.persistence.management import runtime_init
 
             runtime_init()
@@ -73,6 +82,8 @@ def main() -> int:
                     backend.close()
                 result = {"status": "cancelled", "run_id": args.run_id}
             else:
+                from datapilot.rag.cli import read_scope
+
                 result = run_async(
                     run_durable(
                         settings,
@@ -83,6 +94,7 @@ def main() -> int:
                         approve=args.approve,
                         require_review=args.review,
                         interrupt_after=[args.pause_after] if args.pause_after else None,
+                        rag_scope=read_scope(args.rag_scope) if args.rag_scope else None,
                     )
                 )
         elif args.command == "ingest":

@@ -214,6 +214,7 @@ class Journal:
             ).all()
         # Attempts are durable call IDs, including known compiler failures.
         registry.sql_attempts = sum(name == "query_database" for (name,) in rows)
+        registry.search_attempts = sum(name == "search_documents" for (name,) in rows)
 
     def adopt_payload(self, registry, payload):
         for raw in payload.get("artifact_refs", []) + payload.get("context_refs", []):

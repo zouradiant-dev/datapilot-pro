@@ -106,6 +106,7 @@ class ToolRegistry:
         self.refs = []
         self.context_refs = []
         self.sql_attempts = 0
+        self.search_attempts = 0
         self.cancel = cancellation or Cancellation()
         self.trace, self.timeout = trace, timeout
         self.max_sql_attempts, self.max_view_chars = max_sql_attempts, max_view_chars
@@ -157,6 +158,15 @@ class ToolRegistry:
                     return cached
             if name == "query_database" and self.sql_attempts >= self.max_sql_attempts:
                 raise AgentFailure("SQL_ATTEMPTS_EXHAUSTED", "SQL attempt limit reached")
+            search_limit = getattr(self.retrieval, "max_search_attempts", None)
+            if (
+                name == "search_documents"
+                and search_limit is not None
+                and self.search_attempts >= search_limit
+            ):
+                raise AgentFailure("RAG_ATTEMPTS_EXHAUSTED", "At most two searches per worker task")
+            if name == "search_documents":
+                self.search_attempts += 1
             if name == "query_database":
                 # No await before reservation: simultaneous calls cannot both take the last slot.
                 self.sql_attempts += 1
@@ -256,6 +266,10 @@ class ToolRegistry:
                 "start": args.start,
                 "untrusted_data": True,
             }
+            if item.kind == "documents" and doc.citation is not None:
+                payload["citation_ref"] = doc.citation.model_dump(
+                    include={"chunk_id", "index_version"}, mode="json"
+                )
             while True:
                 end = args.start + len(payload["text"])
                 payload["next_offset"] = end if end < len(text) else None
@@ -277,6 +291,12 @@ class ToolRegistry:
         else:
             value = await self.retrieval.search(args.query, args.top_k)
             value = SearchResult.model_validate_json(value.model_dump_json())
+            if not value.fixture:
+                if not hasattr(self.retrieval, "validate_result"):
+                    raise AgentFailure(
+                        "TOOL_OUTPUT_INVALID", "Real retrieval requires a host source verifier"
+                    )
+                self.retrieval.validate_result(value)
             if len(value.documents) > args.top_k or any(
                 text_hash(d.text) != d.sha256 for d in value.documents
             ):

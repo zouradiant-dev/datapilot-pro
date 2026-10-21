@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "phase": "P6A",
+  "date": "2026-10-21",
+  "base_commit": "cdccf28879b11841b9ffed6605a78050a88d8f70",
+  "scope": "trusted local single user; synthetic approved documents only",
+  "remote_ci": "not_run_not_pushed",
+  "health": {
+    "status": "healthy",
+    "postgres_version_num": 170011,
+    "pgvector": "0.8.6",
+    "migration": "0005",
+    "customers": 240,
+    "seeded": true,
+    "uploads": {
+      "status": "healthy",
+      "catalog_tables": 4
+    }
+  },
+  "embedding": {
+    "model": "BAAI/bge-small-zh-v1.5/Qdrant-onnx",
+    "revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+    "dimensions": 512,
+    "recipe": "cls-l2-query-prefix-1/ort-1.31.0/tokenizers-0.23.3",
+    "files": {
+      "model_optimized.onnx": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38",
+      "tokenizer.json": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+    },
+    "fixture": false
+  },
+  "embedding_is_real": true,
+  "embedding_api_calls": 0,
+  "weights_distributed_in_git": false,
+  "tests": [
+    {
+      "python": "3.11.16",
+      "command": ".venv/Scripts/python.exe -m pytest -q --tb=short -p no:cacheprovider --basetemp=artifacts/p6a/final-311 --junitxml=artifacts/p6a/final-311.xml",
+      "tests": 460,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 459,
+      "elapsed_seconds": 406.478,
+      "timestamp": "2026-10-21T20:05:46.626526+08:00",
+      "private_junit": "artifacts/p6a/final-311.xml",
+      "junit_sha256": "ca2d83ce2ed075289ca0b42fd76da4a4e6365241af3fe5bb0cd35ac176be2fae"
+    },
+    {
+      "python": "3.13.15",
+      "command": ".venv-313/Scripts/python.exe -m pytest -q --tb=short -p no:cacheprovider --basetemp=artifacts/p6a/final-313 --junitxml=artifacts/p6a/final-313.xml",
+      "tests": 460,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 459,
+      "elapsed_seconds": 379.159,
+      "timestamp": "2026-10-21T20:12:47.286303+08:00",
+      "private_junit": "artifacts/p6a/final-313.xml",
+      "junit_sha256": "5bfbe6e7881e2bcd198757c7084accc09d7d913bf296e6b6d2e86bd4f7032734"
+    }
+  ],
+  "test_environment": {
+    "DATAPILOT_RUN_DB_TESTS": "1",
+    "PYTHONUTF8": "1"
+  },
+  "new_tests": {
+    "local_contract": 18,
+    "real_pg_neural_embedding_mcp": 18
+  },
+  "automated_worker_model_decisions": "explicit_fake_not_live",
+  "skipped": "one existing opt-in live API pytest per full run; separate API failures recorded below",
+  "checks": {
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "git_diff_check": "passed",
+    "uv_lock_install_311_313": "executed"
+  },
+  "protected_files": [
+    {
+      "path": "migrations/versions/0001_business_and_vectors.py",
+      "unchanged": true,
+      "sha256": "a91900b4ce239deb48d749d20ddb7c02e0a2bff41d52d0ea9ba9b97b34453f49"
+    },
+    {
+      "path": "migrations/versions/0002_dataset_catalog.py",
+      "unchanged": true,
+      "sha256": "8dd70eacc3e221dd115e3fa11117a30d6c49350476eb97c307f6db72d571376c"
+    },
+    {
+      "path": "migrations/versions/0003_semantics_and_evidence.py",
+      "unchanged": true,
+      "sha256": "e6714de83bb6561c7e550bfb12cdcb7030c13f22b23ec9a60edd1fcd7b2af35b"
+    },
+    {
+      "path": "migrations/versions/0004_durable_execution.py",
+      "unchanged": true,
+      "sha256": "38e71b3eac58dd51e55038914f69f3097a7cf4d5c3cef1dd48c5f4d5bcec07f1"
+    },
+    {
+      "path": "src/datapilot/orchestration/context.py",
+      "unchanged": true,
+      "sha256": "35f0c2bce5b071f111a7435c7318e6dad5b12bc8e1f8a019749f23ce307449ef"
+    },
+    {
+      "path": "src/datapilot/orchestration/context_contracts.py",
+      "unchanged": true,
+      "sha256": "b918b2fc3901ce681b71133d5d34dbca4f095779fdb6fc1abc77dca5bccaf389"
+    },
+    {
+      "path": "src/datapilot/orchestration/memory.py",
+      "unchanged": true,
+      "sha256": "cd9cc76015156200e0be29ffc9cd9bdca3dd05ac015a68226904163a4eac9c7b"
+    }
+  ],
+  "pre_delivery_secret_scan": {
+    "files": 45,
+    "hit_files": []
+  },
+  "retrieval_measurements": [
+    {
+      "gold_id": 1,
+      "top_source": "onboarding.md",
+      "score": 0.5788283865596404,
+      "source_sha256": "14749049cc775982f73ca0d06530684647e8696285b070a0a6ac732a0a6b07ef",
+      "chunk_id": "5979899a8c1d9baf998bb51a3d4c015ca3b331452b5d3757411274d7fc6e310d",
+      "index_version": "f438eb27e5a7b80b95103d6a9481a52cb19015f9a0ff4ac23552100473290ae7",
+      "span": [
+        0,
+        136
+      ],
+      "elapsed_ms": 243.923,
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 38,
+        "elapsed_ms": 6.867600022815168,
+        "calls": 1
+      }
+    },
+    {
+      "gold_id": 2,
+      "top_source": "onboarding.md",
+      "score": 0.6239413394893014,
+      "source_sha256": "14749049cc775982f73ca0d06530684647e8696285b070a0a6ac732a0a6b07ef",
+      "chunk_id": "5979899a8c1d9baf998bb51a3d4c015ca3b331452b5d3757411274d7fc6e310d",
+      "index_version": "f438eb27e5a7b80b95103d6a9481a52cb19015f9a0ff4ac23552100473290ae7",
+      "span": [
+        0,
+        136
+      ],
+      "elapsed_ms": 18.016,
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 38,
+        "elapsed_ms": 5.229500005953014,
+        "calls": 1
+      }
+    },
+    {
+      "gold_id": 3,
+      "top_source": "billing.md",
+      "score": 0.7235478327543848,
+      "source_sha256": "4b4c8f4c4e94fedd2de38081da62e934696b78efd23d29cbd3889606aac139d4",
+      "chunk_id": "a4302bb43c0819a473030b3023e3d9797495dc7cc78c79a367f626737625e993",
+      "index_version": "f438eb27e5a7b80b95103d6a9481a52cb19015f9a0ff4ac23552100473290ae7",
+      "span": [
+        0,
+        139
+      ],
+      "elapsed_ms": 17.598,
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 40,
+        "elapsed_ms": 5.473600002005696,
+        "calls": 1
+      }
+    },
+    {
+      "gold_id": 4,
+      "top_source": "release.md",
+      "score": 0.6060159983043673,
+      "source_sha256": "27187657b2bf1ec8d3e2bc4bd47fc30b0062a46f777a79fa9fd9ae54a36b13bd",
+      "chunk_id": "f3654b8257fdd4eade511c7b827c4eec6bac020eb91a2ed43c51cfa7c0ea9621",
+      "index_version": "f438eb27e5a7b80b95103d6a9481a52cb19015f9a0ff4ac23552100473290ae7",
+      "span": [
+        0,
+        108
+      ],
+      "elapsed_ms": 16.92,
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 35,
+        "elapsed_ms": 4.930499999318272,
+        "calls": 1
+      }
+    }
+  ],
+  "retrieval_gold": {
+    "cases": 4,
+    "expected_top_source_matches": 4,
+    "preregistered_synthetic_only": true
+  },
+  "live_experiments": [
+    {
+      "case": "initial_handoff_invalid",
+      "status": "failed",
+      "accepted": false,
+      "error_codes": [
+        "MODEL_OUTPUT_INVALID"
+      ],
+      "chat_calls": 4,
+      "input_tokens": 4688,
+      "output_tokens": 788,
+      "total_tokens": 5476,
+      "cache_read_tokens": 2432,
+      "model_elapsed_ms": [
+        1250.0,
+        781.0000000172295,
+        1250.0,
+        2438.0000000237487
+      ],
+      "end_to_end_ms": null,
+      "automatic_retries": 0
+    },
+    {
+      "case": "explicit_static_handoff_then_search_limit",
+      "status": "failed",
+      "accepted": false,
+      "error_codes": [
+        "RAG_ATTEMPTS_EXHAUSTED"
+      ],
+      "chat_calls": 3,
+      "input_tokens": 2467,
+      "output_tokens": 249,
+      "total_tokens": 2716,
+      "cache_read_tokens": 1152,
+      "model_elapsed_ms": [
+        906.0000000172295,
+        1063.0000000237487,
+        1500.0
+      ],
+      "end_to_end_ms": 7416.291,
+      "automatic_retries": 0
+    }
+  ],
+  "live_totals": {
+    "chat_calls": 7,
+    "reported_tokens": 8192
+  },
+  "cost": {
+    "amount": null,
+    "currency": null,
+    "reason": "no_invoice; cache usage does not prove savings"
+  },
+  "raw_prompts_document_bodies_vectors_exported": false,
+  "acceptance_boundaries": {
+    "real_pg_retrieval_pipeline_verified": true,
+    "fake_decision_worker_recovery_verified": true,
+    "live_autonomous_rag_passed": false,
+    "gate_c_passed": false,
+    "p6b_or_later_implemented": false
+  }
+}

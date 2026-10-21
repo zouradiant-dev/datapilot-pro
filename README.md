@@ -2,19 +2,23 @@
 
 面向 SaaS 企业的智能经营分析系统，当前已实现 **Day 1：SQL 基线**、**P1：CSV/XLSX 解析确认**、**P2：受限入库与动态 MCP**、**P3：SaaS 指标/证据验证**、**P4 / D9–D10：动态任务 DAG 与双层执行**。业务数据库使用 **PostgreSQL 17 + pgvector**，运行期业务查询全部经过真正的 MCP Server/Client。
 
-实现：固定种子、Alembic、隔离角色、AST/只读/资源限制、指标证据、LangGraph 动态 DAG/Send、独立 SQL/RAG Loop、受限确定性 Analysis/引用汇总、父子预算/取消、L0–L4 上下文、脱敏 Trace 和 CLI。P5B 新增显式启用的官方 PG Checkpoint、持久预算/工件和跨进程恢复。真实 RAG、完整业务 Report Agent、API/UI 与观测平台尚未实现；RAG 替身只证明编排。
+实现：固定种子、Alembic、隔离角色、AST/只读/资源限制、指标证据、LangGraph 动态 DAG/Send、独立 SQL/RAG Loop、父子预算/取消、L0–L4、脱敏 Trace 和 CLI。P5B 提供官方 PG Checkpoint、持久预算/工件和跨进程恢复；P6A 提供授权 TXT/Markdown 摄取、本地真实 BGE Embedding 与同实例 pgvector/MCP 检索。完整业务 Report Agent、API/UI 与观测平台尚未实现；旧 RAG fixture 仍只用于编排回归。
 
 详见 [架构与目标设计](docs/architecture.md)、[v2 Gate 路线图](docs/roadmap-v2.md)、[本轮代码审计与回归](docs/planning-audit-v2.md)、[开发约束](AGENTS.md)、[Day 1 历史验收记录](docs/day1-delivery.md)。
 
 v2 目标闭环：**CSV/XLSX 上传 → Schema 预览确认 → 受限入库/数据集版本 → 动态 MCP 查询 → 语义指标与证据验证 → 多 Agent 报告**。P4 已落实固定拓扑的外层调度与任务局部 Worker 子图；P5B 实现执行持久化。完整跨来源业务报告、长期 Memory 后端仍按后续 Gate 演进。P3 指标入口独立保留。
 
-首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates，编号不构成日期承诺；当前停止在 P5B，未进入 P6/P7，Gate C 尚缺真实跨来源业务闭环。
+首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates，编号不构成日期承诺；当前停止在 P6A，未进入 P6B/P6C/P7，Gate C 尚缺可信跨来源业务报告桥接。
 
 P4.1 在现有组件上增加受控工具生命周期、宿主 `completion` 三态、完整工件先保存的 L0 模型视图与上下文计量。`status=succeeded` 仍表示工具执行成功；业务指标缺少 P3 六层已验证证据时 `completion=blocked`，不能当作已验证报告。简单客户数查询仍只需两次 Fake 决策。历史记录见 [P4.1 交付](docs/p4-hardening.md)。
 
 P5A 复用 Gateway/ArtifactStore/父子账本，实现 L1 旧工具视图裁剪、L2 引用去重、L3 完整工具轮次折叠、受预算和校验约束的 L4 摘取式摘要；原消息与证据保持完整，默认小查询不触发压缩。Memory 仅有经审阅的受限契约及内存实现，来源/版本/有效期/撤回均须校验。详见 [上下文工程与实测](docs/context-engineering.md)。P5B 只增加持久适配，不重新优化 L4。
 
 ## 持久执行与恢复（P5B）
+
+P6A 的有界 TXT/Markdown 文档链路、固定 512 维中文 BGE 模型、独立 RAG 只读角色和可追溯引用已接入相同 Durable/MCP 边界，见 [RAG 部署与 Demo](docs/rag-pipeline.md)、[P6A 交付](docs/p6a-delivery.md)。Embedding 在本地真实推理，无需 API Key；MCP 不自动下载模型、不接收 scope/DDL/文件工具参数。模型权重缺失/hash 错误明确失败，原 fixture 不冒充真实检索。
+
+真实 PG/本地神经 Embedding/MCP 与 Fake 决策下的恢复测试通过；两次真实 DeepSeek RAG smoke 分别因交付格式和检索次数上限失败，尚不能宣称真实模型自主 RAG 任务通过。保留错误与实际用量，不降低引用/权限校验以获取成功状态。
 
 已有数据库先增量部署，保留旧数据：
 
@@ -86,7 +90,7 @@ uv run --locked datapilot migrate
 uv run --locked datapilot health
 ```
 
-新环境按下一节一次初始化即可。P2 使用 `catalog` 四张固定元数据表和独立 `uploads` Schema；P3 新 0003 增加语义/指标/证据/验证四表，P5B 新 0004 增加 execution 元数据，当前 head 为 `0004`；历史 `0001`–`0003` 未修改。
+新环境按下一节一次初始化即可。P2 使用 `catalog` 四表和独立 `uploads`；P3 的 0003 增加语义/指标/证据，P5B 的 0004 增加 execution，P6A 的 0005 增加版本化文档/向量，当前 head 为 `0005`；历史 `0001`–`0004` 未修改。
 
 ```powershell
 $demoDir = 'artifacts/demo-' + (Get-Date -Format 'yyyyMMdd-HHmmss')

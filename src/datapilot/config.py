@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     reader_database_url: SecretStr | None = None
     upload_reader_database_url: SecretStr | None = None
     runtime_database_url: SecretStr | None = None
+    rag_reader_database_url: SecretStr | None = None
     model_timeout_seconds: float = Field(default=30, gt=0, le=120)
     query_timeout_seconds: float = Field(default=2, gt=0, le=30)
     mcp_timeout_seconds: float = Field(default=10, gt=0, le=60)
@@ -42,6 +43,10 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def validate_configuration(self):
+        if self.rag_reader_database_url:
+            rag = make_url(self.rag_reader_database_url.get_secret_value())
+            if rag.drivername != "postgresql+psycopg" or rag.username != "datapilot_rag_reader":
+                raise ValueError("RAG MCP requires the isolated document reader")
         if self.runtime_database_url:
             runtime = make_url(self.runtime_database_url.get_secret_value())
             if (

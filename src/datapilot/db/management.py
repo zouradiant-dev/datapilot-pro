@@ -25,6 +25,8 @@ def management_url(role: str) -> str:
         "registry": "datapilot_registry",
         "runtime": "datapilot_runtime",
         "checkpoint_owner": "datapilot_checkpoint_owner",
+        "rag_ingest": "datapilot_rag_ingest",
+        "rag_reader": "datapilot_rag_reader",
     }.get(role)
     if url.drivername != "postgresql+psycopg" or (expected and url.username != expected):
         raise ValueError("Use the designated PostgreSQL role")
@@ -51,6 +53,8 @@ def initialize() -> None:
                     "registry",
                     "runtime",
                     "checkpoint_owner",
+                    "rag_ingest",
+                    "rag_reader",
                 )
                 passwords = [
                     os.environ.get(f"DATAPILOT_{s.upper()}_PASSWORD", "") for s in suffixes
@@ -80,13 +84,23 @@ def initialize() -> None:
                         "GRANT CONNECT ON DATABASE {} "
                         "TO datapilot_owner,datapilot_seed,datapilot_reader,"
                         "datapilot_ingest,datapilot_upload_reader,datapilot_registry,"
-                        "datapilot_runtime,datapilot_checkpoint_owner"
+                        "datapilot_runtime,datapilot_checkpoint_owner,"
+                        "datapilot_rag_ingest,datapilot_rag_reader"
                     ).format(sql.Identifier(db))
                 )
             conn.exec_driver_sql("REVOKE CREATE ON SCHEMA public FROM PUBLIC")
             conn.exec_driver_sql("CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public")
             conn.exec_driver_sql("CREATE SCHEMA IF NOT EXISTS saas AUTHORIZATION datapilot_owner")
             conn.exec_driver_sql("CREATE SCHEMA IF NOT EXISTS rag AUTHORIZATION datapilot_owner")
+            conn.exec_driver_sql("REVOKE ALL ON SCHEMA rag FROM PUBLIC")
+            conn.exec_driver_sql(
+                "ALTER ROLE datapilot_rag_reader SET default_transaction_read_only=on"
+            )
+            conn.exec_driver_sql("ALTER ROLE datapilot_rag_reader SET statement_timeout='2s'")
+            conn.exec_driver_sql("ALTER ROLE datapilot_rag_reader SET lock_timeout='500ms'")
+            conn.exec_driver_sql(
+                "ALTER ROLE datapilot_rag_reader SET search_path=pg_catalog,public"
+            )
             conn.exec_driver_sql(
                 "CREATE SCHEMA IF NOT EXISTS catalog AUTHORIZATION datapilot_owner"
             )

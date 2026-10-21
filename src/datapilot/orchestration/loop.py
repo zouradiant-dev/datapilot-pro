@@ -186,6 +186,13 @@ def initial_messages(envelope, schema=""):
         "Repair only PostgreSQL compiler errors, once. Empty retrieval may return unavailable. "
         "Do not fetch irrelevant data. No delegated tools outside your task."
     )
+    if envelope.task.worker == "rag" and schema:
+        system += (
+            " RAG final handoff: return ONLY the FinalDecision JSON object, with artifact_ids "
+            "from artifact_refs and outcome. No prose, Markdown, explanations or extra keys. "
+            "Document IDs and citation_ref are not artifact IDs. The host renders authorized "
+            "passages and citations; do not write the user-facing answer yourself."
+        )
     content = envelope.task.instruction + ("\nSCHEMA:\n" + schema if schema else "")
     if envelope.input_refs:
         content += "\nAUTHORIZED DEPENDENCY REFERENCES:\n" + json.dumps(

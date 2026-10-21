@@ -27,13 +27,14 @@ from datapilot.orchestration.runtime import Cancellation, Trace
 from datapilot.orchestration.tools import CAPABILITIES
 from datapilot.persistence.backend import Backend, DurableArtifacts, DurableLedger, execute
 from datapilot.persistence.journal import Journal
+from datapilot.rag import contracts as rag_contracts
 from datapilot.runtime.mcp_client import database_session, dataset_session, metric_session
 from datapilot.semantics import contracts as semantic_contracts
 
 
 def serializer():
     allowed = []
-    for module in (core_contracts, contracts, context_contracts, semantic_contracts):
+    for module in (core_contracts, contracts, context_contracts, semantic_contracts, rag_contracts):
         allowed.extend(
             value
             for value in vars(module).values()
@@ -152,6 +153,7 @@ def fingerprint(settings, question, owner, schema, metadata, review):
             "reader_database_url",
             "upload_reader_database_url",
             "runtime_database_url",
+            "rag_reader_database_url",
         }
     )
     reader = make_url(settings.reader_database_url.get_secret_value())
@@ -188,6 +190,7 @@ async def run_durable(
     interrupt_after=None,
     fault=None,
     ttl_seconds=86400,
+    rag_scope=None,
 ):
     if approve is not None and type(approve) is not bool:
         raise ValueError("Approval must be a trusted host boolean")
@@ -211,11 +214,21 @@ async def run_durable(
             elif not question or not question.strip() or len(question) > 8000:
                 raise ValueError("A bounded question is required")
             await check_versions(settings, metadata, owner)
-            async with database_session(settings) as tools:
+            from datapilot.rag.mcp import rag_session
+
+            if rag_scope is not None and rag_scope.owner != owner:
+                raise AgentFailure("RECOVERY_FORBIDDEN", "RAG scope belongs to another owner")
+            async with (
+                database_session(settings) as tools,
+                rag_session(settings, rag_scope) as retrieval,
+            ):
                 schema = (
                     await tools.schema()
                 )  # Fresh trusted connection, role and schema validation.
                 manifest = fingerprint(settings, question, owner, schema, metadata, require_review)
+                if rag_scope is not None:
+                    manifest["rag_scope"] = rag_scope.model_dump(mode="json")
+                    manifest["rag_sources"] = retrieval.context_scope().model_dump(mode="json")
                 limits = contracts.BudgetLimits(
                     calls=settings.max_model_calls, tokens=settings.max_total_tokens
                 )
@@ -255,6 +268,7 @@ async def run_durable(
                         settings,
                         transport,
                         database=tools,
+                        retrieval=retrieval,
                         run_id=run_id,
                         checkpointer=saver,
                         durability=journal,

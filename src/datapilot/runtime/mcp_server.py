@@ -17,6 +17,15 @@ from datapilot.tools.sql import SQLRepository
 
 def create_server() -> FastMCP:
     settings = Settings(llm_mode="fake", _env_file=None)
+    if settings.rag_reader_database_url:
+        from datapilot.rag.contracts import RagScope
+        from datapilot.rag.mcp import create_rag_server
+
+        if settings.reader_database_url or settings.upload_reader_database_url:
+            raise ValueError("RAG and SQL credentials must use different MCP processes")
+        return create_rag_server(
+            settings, RagScope.model_validate_json(os.environ.get("DATAPILOT_RAG_SCOPE", "{}"))
+        )
     repository = None
     if settings.reader_database_url:
         repository = SQLRepository(

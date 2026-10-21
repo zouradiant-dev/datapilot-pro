@@ -99,3 +99,9 @@ cut 可选 model_issued/model_response/model_committed/tool_issued/tool_artifact
 - 记录供应商原 usage/cache 元数据、调用与过程耗时；没有账单不声明实际费用。安全字节估算、供应商 Token 和费用分开报告；缓存命中不能推导长期节省比例。
 
 实现位置：`persistence/session.py`（官方图恢复与重授权）、`backend.py`（元数据/工件与原账本适配）、`journal.py`（外部调用边界）、`management.py`（显式部署）；`tests/test_recovery_postgres.py` / `test_recovery_versions.py` / `test_persistence_contracts.py` 为独立测试。
+
+## P6A 兼容补充
+
+P6A 新增显式 `rag_scope` / CLI `--rag-scope`，不改变普通 SaaS 的旧身份清单；新增 RAG DSN 不写入指纹或 Checkpoint。RAG scope、固定索引版本和经新 MCP 会话验证的 Dataset/source pin 进入持久身份；恢复仍需宿主重新提供匹配授权。原件/片段/hash 校验由 RAG MCP 和宿主 verifier 完成，再由原 Coordinator 在 Finish/Resume 复核。
+
+真实 RAG 的暂停/新进程恢复、工具结果提交后崩溃重放沿用原 Journal；工具次数从原调用日志重建，完成响应不重复查询。`RAG_QUERY_TIMEOUT` 表示服务端已确认只读事务取消回滚，可以有界重试；未知 MCP 超时/断连仍为 uncertain，不能借此重新发出请求。详见 [P6A 链路与边界](rag-pipeline.md)。

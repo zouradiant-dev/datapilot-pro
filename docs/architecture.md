@@ -355,3 +355,11 @@ flowchart TD
 - **Domain**：恢复重新验证 Dataset/Metric/Semantic/source hash 和原 P3 verified 引用，不能从 Memory/摘要授予权限；原指标计算与工具白名单不变，没有新增 P3→P4 报告桥接。
 
 同 Run advisory lock 排除同时恢复；已取消、源变化、hash 损坏、预算不一致、未知调用均失败关闭。数据库断连后只允许从持久日志判断，不能从内存预算继续执行。本地单用户身份与版本校验不等于生产 RLS 或所有业务行的长期快照。完整审计、部署、恢复协议和限制见 [恢复说明](recovery.md)、[ADR-009](adr/0009-durable-execution.md)、[交付记录](p5b-delivery.md)。
+
+## 23. P6A：真实文档检索
+
+在上述 Runtime/Harness 上增加受限 Data 基础设施，复用现有 RAG Worker/ToolRegistry/Loop，不创建第二套 Agent 或调度器。固定 BGE 中文 ONNX CPU 推理（512 维、模型/tokenizer 文件 SHA）、原件/精确 Unicode 与行号跨度、ModelSpec/chunker/index 版本共同形成不可变索引清单。新 Alembic 0005 管 rag 四表；rag_ingest 仅追加、rag_reader 仅读取，和 SQL/Upload/Runtime 角色隔离。
+
+可信 RagScope/显式 DatasetScope 决定全部可检索原件与版本；MCP 只接 query/top_k，独立进程不继承 SQL/写入/模型密钥。受限精确 pgvector cosine 排序后复核原件、span、chunk、向量 hash；客户端和原 Verifier 重新检查出处，score 不能晋升为 P3 verified。完整结果先存原 Artifact，再产生 L0 预览/引用，L1–L4 不改。
+
+索引重建保留旧版，恢复身份新增显式授权的 RAG/index/source pin；普通 SaaS 恢复保持兼容。只支持纯文本 TXT/Markdown，不执行外部内容、不解析 PDF/HTML；未知 MCP 结果沿用 P5B 保守停止。详见 [RAG 协议与验收](rag-pipeline.md)、[ADR-010](adr/0010-scoped-rag.md)。本阶段不做指标报告桥接/UI/多租户；Gate C 仍缺 P6B。

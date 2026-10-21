@@ -1,6 +1,7 @@
 """A compiled outer graph schedules a validated data DAG; workers receive only envelopes."""
 
 import asyncio
+import json
 import time
 from datetime import UTC, datetime
 from decimal import ROUND_HALF_EVEN, Decimal, localcontext
@@ -190,6 +191,8 @@ class Coordinator:
                 refs = [ref]
             else:
                 schema = ""
+                if task.worker == "rag" and hasattr(self.retrieval, "authority_context"):
+                    schema = json.dumps(self.retrieval.authority_context(), ensure_ascii=False)
                 if task.worker == "sql":
                     boot_started = time.monotonic()
                     boot_error = None
@@ -211,11 +214,19 @@ class Coordinator:
                 transcript = []
                 self.transcripts[key(envelope.plan_version, task.task_id)] = transcript
                 seed = initial_messages(envelope, schema)
+                context_metadata = dict(self.context_metadata.get(task.task_id, {}))
+                if task.worker == "rag" and hasattr(self.retrieval, "context_scope"):
+                    trusted_scope = self.retrieval.context_scope()
+                    if "scope" in context_metadata and context_metadata["scope"] != trusted_scope:
+                        raise AgentFailure(
+                            "TOOL_FORBIDDEN", "RAG authority cannot override source scope"
+                        )
+                    context_metadata["scope"] = trusted_scope
                 authority = AuthoritySnapshot.for_worker(
                     envelope,
                     self.question or task.instruction,
                     seed[0].content,
-                    **self.context_metadata.get(task.task_id, {}),
+                    **context_metadata,
                 )
 
                 def recall_memory():
@@ -411,6 +422,10 @@ class Coordinator:
                     text_hash(d.text) != d.sha256 for d in artifact.documents.documents
                 ):
                     raise AgentFailure("VERIFICATION_ERROR", "Document citation content changed")
+                if artifact.documents and not artifact.documents.fixture:
+                    if not hasattr(self.retrieval, "validate_result"):
+                        raise AgentFailure("VERIFICATION_ERROR", "Missing real RAG source verifier")
+                    self.retrieval.validate_result(artifact.documents)
                 if not result.reused_from and any(
                     r.artifact_id not in allowed for r in artifact.parents
                 ):

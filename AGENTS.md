@@ -2,7 +2,7 @@
 
 ## 架构和范围
 
-- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/planning-audit-v2.md 与相关 docs/adr/。当前仅授权 v2.2 P5B：官方 PG Checkpoint、持久预算/Artifact 和跨进程恢复，完成后停止。完整复用 P5A L0–L4/Memory，不开始 P6/P7、真实 RAG/业务报告/UI 或 Fork。P0–P5A 保留；Gate C 尚未整体完成。后续仅执行用户授权的阶段，不自动推进整个路线图，不自动提交/推送。
+- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/codex-prompts-v2.3.md、docs/recovery.md 与相关 ADR。当前仅授权 P6A：有界文档摄取、固定本地 Embedding、受限真实 pgvector/MCP 检索。完整复用 P0–P5B，结束即停止；不开始 P6B/P6C/P7、完整报告、UI、生产多租户或 Fork。Gate C 仍缺 P6B。后续仅执行用户授权的阶段，不自动提交/推送。
 - 按功能依赖与验收 Gate 推进，工作单元/工作日编号不是截止日期；旧七天计划已由 roadmap-v2 取代。SaaS 是唯一首发主业务，drycleaning 是独立可选 Phase F，不复制 Runtime/Harness/Worker。
 - Python 3.11+、src 布局、类型标注、Pydantic 2 严格契约、LangGraph StateGraph 编排。
 - Planner/Coordinator 路由；P4 Worker 只接收宿主生成的 TaskEnvelope，不读取整个 RunState。旧 SQLTask/SQLAgentResult 保留兼容投影，P3 MetricRequest 路径独立。Worker 有独立工具句柄/能力、消息与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
@@ -25,13 +25,15 @@
 - P4 以 docs/orchestration.md、ADR-006 为准：原 generate/invoke 仅保留旧独立组件/P3；新 ask 使用 NativeTransport.ainvoke、Gateway 与原子内存 BudgetLedger，Planner/Worker/Replan 一律预留再调用。只使用异步 HTTP Mock 验证协议/并发，不能称为真实模型验证。
 - Live 模型共用 llm/provider.py 的小型 profile 工厂。DeepSeek 最小适配见 docs/deepseek-transport.md：显式 model_provider=deepseek、Chat Completions、thinking=disabled、原生 max_tokens；禁止仅开启思考却丢失 reasoning_content 或绕过 Gateway/预算。未获另行授权不扩展 P6/P7；模型凭据缺失时只报告 Mock/真实 PG 的实际验证。
 - 固定外图与共享 Worker 子图每个逻辑 Run 各编译一次；模型只提供 Plan 数据。严格拒绝无环/引用/数量/能力错误；Send 只派就绪任务，Command 不混合无条件业务出口。版本/task reducer 对相同结果幂等、冲突拒绝；Replan 只复用显式重新校验的未变源任务，派生任务重算。
-- 每条 assistant tool_call 都需唯一匹配反馈，包括权限拒绝、异常、预算终止和取消；禁止 JSON 解析失败默认为空参数。模型最终只返回已取得的工件 ID，RAG 空检索必须解释 unavailable。默认无真实 RAG；组件替身必须带 fixture 标记，不扩大 MCP 服务端能力。
+- 每条 assistant tool_call 都需唯一匹配反馈，包括权限拒绝、异常、预算终止和取消；禁止 JSON 解析失败默认为空参数。模型最终只返回已取得的工件 ID，RAG 空检索必须解释 unavailable。真实 RAG 仅由宿主显式绑定 RagScope 的独立 MCP profile 提供；无 scope 不自动开放。组件替身必须带 fixture 标记，不扩大 MCP 服务端能力。
 - P4 Artifact SHA 引用/内存 Ledger 不能冒称 P3 持久 Evidence 或 PG Checkpoint。显式本地 JSON bundle 可含原始工具结果；公开 Trace 默认只记 ID/状态/时延/usage，不含 SQL/行/文档原文/密钥。pytest 回溯/sections 脱敏；本地失败日志同样不能泄露连接参数。
 - P4.1 历史边界见 ADR-007、docs/p4-hardening.md。P5A 当前以 ADR-008、docs/context-engineering.md 为准：Registry 生命周期不变，只改副本视图，原 Worker AI/Tool 历史不改。L1/L2 仅压缩有真实引用的旧反馈，L3 按完整已闭合轮次折叠；安全/目标前缀、最新活跃配对和可信版本/证据不能丢。未闭合、错绑或重复 tool ID、额外 System 角色拒绝。压缩不能改变 SQL/MCP 授权。
 - L4 只做可验证的结构化摘取，任何目标/约束/版本/单位/P3 ref/归档 hash 不一致都拒绝；只能选择已有 turn ID，不接受自由文本事实/权限/verified。摘要和其最大合法后续视图必须在同一父子 Ledger 原子预留，只有确定未发出的 follow-up 可以 release_unissued；已发出但 usage 未知必须保守结算，禁止释放为零。
 - Memory 仅为经可信宿主审阅的枚举偏好/术语定义引用/决策引用，没有 LLM 写入工具或任意正文。每次读取重查 scope/worker/来源版本/时效/撤回；不复制 Registry、不赋予权限。当前仅内存 MemoryStore。P5B 的持久上下文工件仍只在同 Run/授权任务读取；长期 Memory 不等于执行 Checkpoint。
 - P5B 以 ADR-009、docs/recovery.md 为准：官方 Saver 独占 checkpoints/迁移版本，显式 runtime-init，Alembic 0004 只管 execution，0001–0004 发布后冻结；运行请求不 setup。持久服务使用无 DDL/业务权限的 runtime，MCP 不继承相关 DSN。禁止 pickle fallback、任意 checkpoint_id/time travel 和自动清库。
 - 仅按可信宿主重建身份、能力、Dataset/Metric/Semantic/source pin；摘要/Checkpoint 不能自授予权限。恢复核对工件哈希、调用状态及所有父子账本。已提交调用按原始逻辑输入复用；未知执行一律保守计账并阻断自动重发，不能清零、重复扣减或盲猜外部操作未执行。
+- P6A 按 ADR-010、docs/rag-pipeline.md：0005 管固定 RAG 四表；0001–0005 发布后冻结。rag_ingest 仅追加、rag_reader 仅读取，SQL/RAG MCP 进程凭据不混用；模型没有摄取、模型下载或 SQL 向量查询工具。源/index/模型/chunker/跨度/hash 与 scope 都须可验证，score 不是事实或 P3 verified。只有已批准本地 TXT/Markdown；不执行文档指令、宏、链接或脚本。
+- Embedding 固定 ONNX/tokenizer 文件 SHA、512 维与推理 recipe，不训练；缓存缺失明确失败，不能以随机/fixture 向量冒充真实模型。MCP 不自动下载模型。真实检索每任务最多两次；未知 MCP 超时沿用 P5B uncertain，只有已确认回滚的 PG 超时可有界重试。文档正文/向量不进公开 Trace；原件/工件属于私密存储。
 - `status` 保留执行兼容语义；新增 `completion.status` 才是宿主任务契约三态判定。不能只凭 succeeded、模型 complete、Artifact SHA 或五层任务 passed 宣称业务指标完成。P4.1 没有 P3→P4 报告桥接，已识别的指标请求必须 blocked/P3_VERIFIED_EVIDENCE_REQUIRED，继续使用独立 P3 入口；completed 只覆盖必需任务契约，不证明任意自然语言目标等价/完整性。
 - Domain Pack 是版本化字段映射/指标/质量/Verifier/评测的可信配置，不是可执行上传脚本或不同 Prompt。Source Connector 首发文件快照；未知 POS/API 不编造适配器。
 
