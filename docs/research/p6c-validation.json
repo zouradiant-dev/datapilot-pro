@@ -1,0 +1,369 @@
+{
+  "schema_version": "p6c-validation-1",
+  "verified_at": "2026-10-22T17:56:02.898586+00:00",
+  "base_commit": "fe05ba23197bb1577ce2ba7693a36d25b641f63f",
+  "scope": "P6C only; uncommitted local delivery; no P7/P10/P11",
+  "models": {
+    "live_deepseek_experiment_performed": false,
+    "decision_source": "FakeTransport and explicit ReportDecisions test script",
+    "embedding": "real local ONNX Chinese BGE, pinned 512 dimensions; real PG17 pgvector/MCP",
+    "cost": null,
+    "cost_reason": "no trusted price or invoice; mock usage is not provider billing"
+  },
+  "database": {
+    "postgres_version_num": 170011,
+    "pgvector": "0.8.6",
+    "alembic": "0006",
+    "original_customers": 240,
+    "original_container_id": "6f559b06708f",
+    "existing_user_run_or_volume_deleted": false,
+    "retention_tests": "only new isolated datapilot_retention_test_<uuid> databases; retained for audit"
+  },
+  "tests": [
+    {
+      "artifact": "artifacts/p6c/pytest-full-311.xml",
+      "sha256": "f1feb2c7098c5da1674876747d78e8647f1883f550706fb3da9d8d72935b1a2a",
+      "python": "3.11.16",
+      "scope": "full earlier snapshot before final Web refinements",
+      "tests": 564,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 1,
+      "passed": 563,
+      "elapsed_seconds": 1158.749,
+      "started_at": "2026-10-22T13:21:14.875426+08:00"
+    },
+    {
+      "artifact": "artifacts/p6c/pytest-full-313.xml",
+      "sha256": "d81dfe927d92c8217deebb38586a79811607c1614f0badcb119074699c71d51b",
+      "python": "3.13.15",
+      "scope": "full earlier snapshot before final Web refinements",
+      "tests": 566,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 1,
+      "passed": 565,
+      "elapsed_seconds": 1206.552,
+      "started_at": "2026-10-22T13:29:18.281963+08:00"
+    },
+    {
+      "artifact": "artifacts/p6c/pytest-final-313.xml",
+      "sha256": "03d5419c4c456fabea6bea598bedba502ee7fb27f71cf37ae838a1f20dba577d",
+      "python": "3.13.15",
+      "scope": "full regression; final Web projection fixes separately validated below",
+      "tests": 567,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 1,
+      "passed": 566,
+      "elapsed_seconds": 1269.552,
+      "started_at": "2026-10-23T01:24:17.358445+08:00"
+    },
+    {
+      "artifact": "artifacts/p6c/pytest-p6c-final-311.xml",
+      "sha256": "80fb6ed48f2b66d22f74323b67fcbe6202432dcea429ff8b343f4eed3c0d9091",
+      "python": "3.11.16",
+      "scope": "25 P6C cases before final read fixes",
+      "tests": 25,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "passed": 25,
+      "elapsed_seconds": 404.414,
+      "started_at": "2026-10-23T01:24:27.734094+08:00"
+    },
+    {
+      "artifact": "artifacts/p6c/pytest-p6c-closeout-311.xml",
+      "sha256": "8605cd99e3328424485e810ecbc2db98b7034981ecad6ac7504b0f2f5a484f91",
+      "python": "3.11.16",
+      "scope": "26 P6C cases including interleaved worker commit",
+      "tests": 26,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "passed": 26,
+      "elapsed_seconds": 464.541,
+      "started_at": "2026-10-23T01:33:48.213248+08:00"
+    },
+    {
+      "artifact": "artifacts/p6c/pytest-final-read-311.xml",
+      "sha256": "fe5653426c3901c55d6e23a45e29968ea4d0b8b6d28a2da064492f3cf1e96bc6",
+      "python": "3.11.16",
+      "scope": "final pending trace and interleaved read cases",
+      "tests": 2,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "passed": 2,
+      "elapsed_seconds": 198.033,
+      "started_at": "2026-10-23T01:40:10.643893+08:00"
+    },
+    {
+      "artifact": "artifacts/p6c/pytest-predispatch-final-311.xml",
+      "sha256": "9a6b9066f4713737b3a28022d58b1b88cd32fdeec4236e27344712150ac23e9d",
+      "python": "3.11.16",
+      "scope": "final pre-runtime error and cancellation case",
+      "tests": 1,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "passed": 1,
+      "elapsed_seconds": 21.851,
+      "started_at": "2026-10-23T01:46:23.825140+08:00"
+    },
+    {
+      "artifact": "artifacts/p6c/pytest-p6c-closeout-313.xml",
+      "sha256": "5f727af9a06ed6cbc406e066bf44b8af7cd77aaab88c85587e50f689b67af645",
+      "python": "3.13.15",
+      "scope": "all 26 P6C cases on frozen final business source",
+      "tests": 26,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "passed": 26,
+      "elapsed_seconds": 456.895,
+      "started_at": "2026-10-23T01:46:12.991136+08:00"
+    },
+    {
+      "artifact": "artifacts/p6c/pytest-cancel-final.xml",
+      "sha256": "3fe09e18696024fdab5c4413dad33e5f2179bc257ca0a374bbe27aaee1e528cd",
+      "python": "3.11.16",
+      "scope": "cancel and revoked scope",
+      "tests": 2,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "passed": 2,
+      "elapsed_seconds": 35.505,
+      "started_at": "2026-10-23T01:23:00.635277+08:00"
+    },
+    {
+      "artifact": "artifacts/p6c/pytest-read-race.xml",
+      "sha256": "c4819425a0af56e2b94937a22f41bae87f6e33387a3a35bc815320768d0cde7a",
+      "python": "3.11.16",
+      "scope": "interleaved checkpoint/artifact commit",
+      "tests": 1,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "passed": 1,
+      "elapsed_seconds": 71.811,
+      "started_at": "2026-10-23T01:31:37.858041+08:00"
+    },
+    {
+      "artifact": "artifacts/p6c/pytest-negative.xml",
+      "sha256": "c6fe93a37e3eabb8d9a7802af2d5937597e11008a5c22d2e39e7799ff97bc4ae",
+      "python": "3.11.16",
+      "scope": "unknown provider and concurrent idempotency",
+      "tests": 2,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "passed": 2,
+      "elapsed_seconds": 47.133,
+      "started_at": "2026-10-22T13:24:35.368963+08:00"
+    },
+    {
+      "artifact": "artifacts/p6c/pytest-cancel-pg-stopped.xml",
+      "sha256": "93851ffd59daffa3747a4d592d2f6af2d0b916ccabbda76f5cf6821de3cc4a30",
+      "python": "3.11.16",
+      "scope": "preserved setup failure: PostgreSQL was stopped",
+      "tests": 1,
+      "errors": 1,
+      "failures": 0,
+      "skipped": 0,
+      "passed": 0,
+      "elapsed_seconds": 9.675,
+      "started_at": "2026-10-23T01:15:17.723617+08:00"
+    }
+  ],
+  "browser": {
+    "origin": "http://127.0.0.1:8501",
+    "deployment": "Docker Compose loopback ports, actual HTTP API, original P5B run_durable",
+    "fixture": "tests/fixtures/semantics/saas_metrics.xlsx; tests/fixtures/reporting/billing.md",
+    "flows": [
+      "XLSX preview -> explicit schema confirm -> PG import -> semantic/metric review",
+      "authorized Markdown -> real local ONNX -> pgvector",
+      "host review -> P3 verified 300 CNY report/chart -> safe trace",
+      "API/UI container replacement -> same Evidence/Verification and model call keys",
+      "real retrieval with conservative Fake -> execution unavailable, business partial; verified metric retained, missing docs explicit",
+      "pending/review cancellation -> cancelled; final read verified"
+    ],
+    "runs": [
+      {
+        "run_id": "b3356290-33c6-4ac4-b957-93b881fc841c",
+        "task_status": "completed",
+        "execution_status": "succeeded",
+        "business_completion": "completed",
+        "model_call_count": 1,
+        "usage_source": "mock",
+        "cost": {
+          "amount": null,
+          "status": "price_and_invoice_not_available"
+        },
+        "facts": [
+          {
+            "evidence_id": "5c0143bc-edb1-485b-8223-f0282c684e19",
+            "verification_id": "91e0dd31-5540-4827-86c2-35a96b9259e8",
+            "value": {
+              "value": "300.0000000000000000",
+              "unit": "CNY",
+              "numerator": null,
+              "denominator": null,
+              "window_days": 31
+            }
+          }
+        ]
+      },
+      {
+        "run_id": "dd1c08b7-bd57-47bd-a29f-5df68ea39d87",
+        "task_status": "unavailable",
+        "execution_status": "unavailable",
+        "business_completion": "partial",
+        "model_call_count": 3,
+        "usage_source": "mock",
+        "cost": {
+          "amount": null,
+          "status": "price_and_invoice_not_available"
+        },
+        "facts": [
+          {
+            "evidence_id": "1141b88c-793c-4ae8-88c5-b346071d9773",
+            "verification_id": "2b589a55-f41f-4e8c-86c5-9c12619ba46a",
+            "value": {
+              "value": "300.0000000000000000",
+              "unit": "CNY",
+              "numerator": null,
+              "denominator": null,
+              "window_days": 31
+            }
+          }
+        ]
+      },
+      {
+        "run_id": "e08bcd2d-2fed-4d16-92a2-dc1dc4c49588",
+        "task_status": "cancelled",
+        "execution_status": "pending",
+        "business_completion": null,
+        "model_call_count": 0,
+        "usage_source": "mock",
+        "cost": {
+          "amount": null,
+          "status": "price_and_invoice_not_available"
+        },
+        "facts": []
+      }
+    ],
+    "p3_refs_and_facts_unchanged_after_container_replacement": true,
+    "model_call_keys_unchanged_after_container_replacement": true
+  },
+  "deployment": {
+    "image": "datapilot-pro-demo:local",
+    "manifest_list_sha256": "8e5ec735a22b1501a06748b71080a39618f7a2053a18586248c2fac370bb116d",
+    "platform_manifest_sha256": "0dcb59d920793f1eeff482df317d379a82e2de6008f58bdda5a1865f44f72846",
+    "python_container": "3.11.14",
+    "uv": "0.12.5",
+    "source_hashes_match_running_container": true,
+    "published_hosts": [
+      "127.0.0.1:8000",
+      "127.0.0.1:8501"
+    ],
+    "ui_has_database_env_file": false
+  },
+  "checks": {
+    "ruff_check": "passed",
+    "ruff_format_scoped": "passed",
+    "format_excluded_unrelated_user_file": "docs/codex-prompts-v2.5.md",
+    "unscoped_format": "one existing user Markdown embedded Python formatting warning, file preserved",
+    "historical_migrations_0001_0005": "git diff --exit-code HEAD passed; unchanged",
+    "openapi_internal_refs": "valid; 20 paths, 56 schemas",
+    "paid_live_test_skip": "explicit opt-in remains skipped",
+    "diff_check": "passed"
+  },
+  "failure_history": [
+    {
+      "kind": "environment",
+      "detail": "Initial continuation cancel test failed in setup because Docker/PostgreSQL stopped; original container restarted; subsequent actual tests passed",
+      "junit": "artifacts/p6c/pytest-cancel-pg-stopped.xml"
+    },
+    {
+      "kind": "browser_read_race",
+      "detail": "Old artifact snapshot versus newer checkpoint temporarily rejected report; read order fixed with deterministic PG interleave test"
+    },
+    {
+      "kind": "pending_trace",
+      "detail": "Outbox before runtime registration previously rejected Trace; now authorized empty observation, no fabricated calls"
+    },
+    {
+      "kind": "build_network",
+      "detail": "Docker Hub auth network unavailable; official GHCR pinned uv Python base used; no global daemon/auth changes"
+    }
+  ],
+  "ci": {
+    "p6c": "not_run_not_committed_or_pushed",
+    "baseline_p6b": {
+      "run_id": 39717954797,
+      "workflow": "DataPilot checks",
+      "conclusion": "success",
+      "python": [
+        "3.11",
+        "3.13"
+      ],
+      "url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/39717954797"
+    }
+  },
+  "artifact_hashes": {
+    "artifacts/p6c/browser-api-proof.json": "41fa14c1422acaa4445adb77696f2c884c515f287d631d720e661a9f2051ab28",
+    "artifacts/p6c/browser-partial-api-proof.json": "321805624e046b158c7b22a66eec31b63375e512cfae4272850c847847e58964",
+    "artifacts/p6c/browser-final-proof.json": "c1378ef5d71839780329b35ddb8e664f4b8f5cb4ad26c67b81ab4a045e5b76f2",
+    "artifacts/p6c/browser-report-final.jpg": "e7c8cf856ba3ec4a25ad9c500903349bc6ea378162615374fbf60a4f5958c841",
+    "artifacts/p6c/browser-partial.jpg": "c7f629da874c1cce9c823fb03d7ce652266bb7e880939016a045deb3595aab32",
+    "artifacts/p6c/browser-cancelled.jpg": "87974de5c949a29e35f9190ada992993a96525078e0686ceef31c60c7b739503"
+  },
+  "source_hashes": {
+    ".dockerignore": "8f0d2e3aec4118813b98f60b7b08386f5a09321830a32ff9fbba3ad69f78a7f0",
+    ".env.example": "64513fa5d116cc1d1d9512c6c12141a9c354d350a70b8f283879c68358ee9916",
+    ".github/workflows/test.yml": "753b16a83de5dae0c944bd3694f47bb6adff0eeeb29532c33f10f5f78eabee35",
+    "Dockerfile": "2dc63e082afc05795f0f4f905ecd40350b922743a2568557a085aa0d74033e9d",
+    "compose.demo.yaml": "49b165403c01a07e101b5aa1a1c2bcdd17fbfec778ef79bb06e12ec8bd82b615",
+    "migrations/versions/0006_web_product.py": "3ddbe43d7f0c9ad6a3e9c77dda665adeaa08c8fc0c63ec8d163430ecf3d85828",
+    "pyproject.toml": "082ff8d9de6cd7d5f133078d46550560d6f6c5890545d3f46348741cda888d9c",
+    "scripts/configure_local.py": "ca57912dc2c3128eed8ded20aecb6e7d8314fd1da9bba3441a509cb3975add07",
+    "scripts/start_demo.ps1": "3c453ff5c5e34ced5bde225aa715ce801a13e3229450fad51f140b0c59c6a87a",
+    "scripts/web_recovery_probe.py": "65401966225f6a9e2d6b382fac793cd0de38602ceaf3e73f0507d4eba08326d6",
+    "src/datapilot/db/management.py": "8dffc51c65df6892be0090553a0cda4d6b4c0b03bd17040f759b96ff4a57a02f",
+    "src/datapilot/persistence/inspection.py": "95d3173f7e385b460f3b2dd3de83059ab5a7b5f6865cb211bd0dbcd56c42e6c0",
+    "src/datapilot/persistence/management.py": "491214cbd85e05fe96ce0dbe88e60af8dd58205fb7bc8edebc456dddcc2fffc1",
+    "src/datapilot/persistence/retention.py": "b5865691c779cbe6fb029f8eca6280853c8d3a291c9a7da423886f77d00b5efb",
+    "src/datapilot/web/__init__.py": "4a7b44ee89e78a1e9f4e54de45927776344f7cf77119c070f86c3f661b8c6610",
+    "src/datapilot/web/app.py": "fd564b6095e0d8237b91a260d7e24523e0f707cb729c910b212358bd679fb181",
+    "src/datapilot/web/body_limit.py": "84980187c7bd90cd30760e9474b0ddd69af2f46c3d0d899f2ebed725938acc9d",
+    "src/datapilot/web/cli.py": "825240fcda8bd3917e68ad3622974a0eeddc70edf5ecf95492b38a06dd85ce2e",
+    "src/datapilot/web/client.py": "555d903be084339dc7e5b480abb6e6f1f9dd5053c9d017101eeff9c52952a267",
+    "src/datapilot/web/config.py": "dcfabb069be6a001067c9be77f0458472e17d730e3c08c87de6bb08b43409d05",
+    "src/datapilot/web/contracts.py": "747e00f67109690be2ae393528c39169ce48d06f88b956ae75584b4ba87b71de",
+    "src/datapilot/web/service.py": "026c54e6ebb46855f576e04bc30b1c42d157083d45788f6d55da2faac2f2249f",
+    "src/datapilot/web/store.py": "3eec30143f7c057051273b300222eeb1eff7fe0a2e8cd5cc4e7b50744fa1005a",
+    "src/datapilot/web/telemetry.py": "738ea473a6ae772b33e86b421d964e212cf99288b59de32d507f3facf4b921b2",
+    "src/datapilot/web/ui.py": "3de3e84e1fa7f5fb79ef19ddc34bf71ea68f71b82c53d4dfe5f40eaeb26d6069",
+    "src/datapilot/web/worker.py": "22e53262e585e7b07f37060e5a976f05c77c7be17c4450c2fe6f527abd44ab15",
+    "tests/test_retention_postgres.py": "1ccc18cd4265f10c1058676996bd5bcd20e9751efb6402f888dbef63aa9fc5f6",
+    "tests/test_web_contracts.py": "0a878fd0e0f8cfa3a7d600623a51fbcb38ba04cb33a58c9b89b707db957320a7",
+    "tests/test_web_postgres.py": "fb8f2a5e72998b04ee8c5420f1b79ad0e863cb2235f2fbaaee2bbf03bd70434b",
+    "tests/test_web_recovery_postgres.py": "c600c0829ad85dbfc9c58bf62f551039d022bee6a386592756a6114199926d29",
+    "uv.lock": "bc2ad9b153bd9cec30cf83d6081cee546175afc3d906b84cdeba88aecdbc848c"
+  },
+  "unrelated_user_files_preserved": {
+    "docs/codex-prompts-v2.4.md": "e741a01457caf912968f02276b1894e5cd94803d5a0c12d79993c4fa1b42c74d",
+    "docs/codex-prompts-v2.5.md": "fe2289591503a58b98d39e83b9f63bbcb61951dc8dfc8e1f6e09faa048fa5189"
+  },
+  "boundaries": [
+    "trusted local single user only",
+    "no remote Langfuse/default remote telemetry",
+    "no paid P6C DeepSeek experiment or measured model success rate",
+    "no P7 benchmark/provider switching/semantic cache/SLA",
+    "no automatic purge; original DB/Volume preserved",
+    "no production RLS/KMS/TLS/HA/permanent Memory"
+  ],
+  "record_context": "2026-10-23 pre-push local validation snapshot; post-push CI must be verified separately"
+}

@@ -2,7 +2,7 @@
 
 ## 架构和范围
 
-- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/codex-prompts-v2.4.md、docs/recovery.md、docs/cross-source-report.md 与相关 ADR。当前仅授权 P6B：桥接原 P3 六层验证与 P4 编排、受限真实 RAG，输出可审计报告/图表并核验恢复引用。完整复用 P0–P6A，结束即停止；不开始 P6C/P7/P11、UI/Langfuse、生产多租户或 Fork。后续仅执行用户授权的阶段，不自动提交/推送。
+- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/codex-prompts-v2.4.md、docs/recovery.md、docs/cross-source-report.md、docs/product-demo.md 与相关 ADR。当前仅授权 P6C：可信本地单用户 FastAPI + HTTP-only Streamlit、默认原 P5B Durable、数据访问保护、可关闭的脱敏本地 OTel 与受控保留/清理。完整复用 P0–P6B，验收后停止；不开始 P7/P8/P9/P10/P11，不自动提交/推送。生产公网多租户/RLS、KMS/自动清理不在本轮。
 - 按功能依赖与验收 Gate 推进，工作单元/工作日编号不是截止日期；旧七天计划已由 roadmap-v2 取代。SaaS 是唯一首发主业务，drycleaning 是独立可选 Phase F，不复制 Runtime/Harness/Worker。
 - Python 3.11+、src 布局、类型标注、Pydantic 2 严格契约、LangGraph StateGraph 编排。
 - Planner/Coordinator 路由；P4 Worker 只接收宿主生成的 TaskEnvelope，不读取整个 RunState。旧 SQLTask/SQLAgentResult 保留兼容投影，P3 MetricRequest 路径独立。Worker 有独立工具句柄/能力、消息与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
@@ -40,6 +40,9 @@
 - MetricBridge 保留 source/context/semantic/metric/query/result hash、时间/单位/过滤、P3 原始 verdict 与引用；raw Evidence、普通 Query/Analysis/Chart 不得升级为 verified。Report 独立重建结构化 claim/图表并校验 RAG 原 scope/index/source/chunk/hash、目标要求及指标关联；insufficient/unavailable 收据不能被 Report 升级。文档背景只做引述，不证明数字或因果，文档指令不得执行。
 - P6B execution_status 与 business_completion（completed/partial/unavailable/blocked）分开，缺失/确认需求明确展示；只重试缺失且安全就绪的源任务，已通过/明确不可用源保留。P3 追加与 Journal 之间无法确认的窗口必须 uncertain 阻断重发；恢复重查全部持久引用与原 verdict，禁止覆盖旧证据。可复用事实元数据仅为 P11 契约，不实现降级/缓存/SLA。
 - Domain Pack 是版本化字段映射/指标/质量/Verifier/评测的可信配置，不是可执行上传脚本或不同 Prompt。Source Connector 首发文件快照；未知 POS/API 不编造适配器。
+- P6C 前后端严格分离：Streamlit 只能用 HTTP 客户端调用版本化 API，不能导入 Runtime/MCP/Repository/Registry/maintenance。owner 与 scope 来自宿主；session_state、run_id、客户端 owner 或 model 输入都不是授权。默认仅回环监听，Host/Origin/Session/CSRF 检查不可省略。
+- Web 只增加有界本地进程派发与 PG outbox，不增加 Agent Scheduler/Checkpoint。每个分析调用原 run_durable；幂等绑定宿主身份、操作、run_id、请求 hash 和授权。恢复/审核/取消不能清除 unknown-outcome、重复扣费或把终态退回 running；UI 仅显示真实状态投影。
+- 清理仅限独立 maintenance CLI/身份，默认 dry-run、显式确认、同一事务双重检查 TTL/终态/审批/保全/未知调用/原 Run 锁，整 Run 删除 execution + 官方 Saver thread 的父子图记录；不动业务表、Dataset/P3 Registry 或被其他运行引用的工件。开发执行测试只能在新建隔离数据库，不能删除现有用户运行/Volume。不能证明完整性时必须 fail-closed。
 
 ## 安全和数据
 

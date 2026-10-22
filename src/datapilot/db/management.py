@@ -27,6 +27,8 @@ def management_url(role: str) -> str:
         "checkpoint_owner": "datapilot_checkpoint_owner",
         "rag_ingest": "datapilot_rag_ingest",
         "rag_reader": "datapilot_rag_reader",
+        "web": "datapilot_web",
+        "maintenance": "datapilot_maintenance",
     }.get(role)
     if url.drivername != "postgresql+psycopg" or (expected and url.username != expected):
         raise ValueError("Use the designated PostgreSQL role")
@@ -55,6 +57,8 @@ def initialize() -> None:
                     "checkpoint_owner",
                     "rag_ingest",
                     "rag_reader",
+                    "web",
+                    "maintenance",
                 )
                 passwords = [
                     os.environ.get(f"DATAPILOT_{s.upper()}_PASSWORD", "") for s in suffixes
@@ -85,7 +89,8 @@ def initialize() -> None:
                         "TO datapilot_owner,datapilot_seed,datapilot_reader,"
                         "datapilot_ingest,datapilot_upload_reader,datapilot_registry,"
                         "datapilot_runtime,datapilot_checkpoint_owner,"
-                        "datapilot_rag_ingest,datapilot_rag_reader"
+                        "datapilot_rag_ingest,datapilot_rag_reader,"
+                        "datapilot_web,datapilot_maintenance"
                     ).format(sql.Identifier(db))
                 )
             conn.exec_driver_sql("REVOKE CREATE ON SCHEMA public FROM PUBLIC")
@@ -116,6 +121,14 @@ def initialize() -> None:
             )
             conn.exec_driver_sql("REVOKE ALL ON SCHEMA execution,checkpoints FROM PUBLIC")
             conn.exec_driver_sql("GRANT USAGE ON SCHEMA execution,checkpoints TO datapilot_runtime")
+            conn.exec_driver_sql("GRANT USAGE ON SCHEMA execution TO datapilot_web")
+            conn.exec_driver_sql(
+                "GRANT USAGE ON SCHEMA execution,checkpoints TO datapilot_maintenance"
+            )
+            for role in ("datapilot_web", "datapilot_maintenance"):
+                conn.exec_driver_sql(f"ALTER ROLE {role} SET search_path=pg_catalog")
+                conn.exec_driver_sql(f"ALTER ROLE {role} SET statement_timeout='10s'")
+                conn.exec_driver_sql(f"ALTER ROLE {role} SET lock_timeout='2s'")
             conn.exec_driver_sql(
                 "ALTER ROLE datapilot_checkpoint_owner SET search_path=checkpoints,pg_catalog"
             )

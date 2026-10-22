@@ -1,0 +1,5095 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "DataPilot Pro local API",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/v1/session": {
+      "post": {
+        "summary": "Session",
+        "operationId": "session_api_v1_session_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HostBootstrap": []
+          }
+        ]
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HostSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/uploads": {
+      "post": {
+        "summary": "Upload",
+        "operationId": "upload_api_v1_uploads_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_api_v1_uploads_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HostSession": [],
+            "CSRF": []
+          }
+        ]
+      }
+    },
+    "/api/v1/samples": {
+      "post": {
+        "summary": "Sample",
+        "operationId": "sample_api_v1_samples_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HostSession": [],
+            "CSRF": []
+          }
+        ]
+      }
+    },
+    "/api/v1/uploads/{id_}": {
+      "get": {
+        "summary": "Get Upload",
+        "operationId": "get_upload_api_v1_uploads__id___get",
+        "parameters": [
+          {
+            "name": "id_",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id "
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadView"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/uploads/{id_}/confirm": {
+      "post": {
+        "summary": "Confirm",
+        "operationId": "confirm_api_v1_uploads__id___confirm_post",
+        "parameters": [
+          {
+            "name": "id_",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id "
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SchemaReview"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadView"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": [],
+            "CSRF": []
+          }
+        ]
+      }
+    },
+    "/api/v1/uploads/{id_}/import": {
+      "post": {
+        "summary": "Import Upload",
+        "operationId": "import_upload_api_v1_uploads__id___import_post",
+        "parameters": [
+          {
+            "name": "id_",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id "
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportUpload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": [],
+            "CSRF": []
+          }
+        ]
+      }
+    },
+    "/api/v1/datasets": {
+      "get": {
+        "summary": "Datasets",
+        "operationId": "datasets_api_v1_datasets_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetViews"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HostSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/datasets/{id_}/versions/{version}": {
+      "get": {
+        "summary": "Dataset",
+        "operationId": "dataset_api_v1_datasets__id___versions__version__get",
+        "parameters": [
+          {
+            "name": "id_",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id "
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Version"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetView"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/datasets/{id_}/versions/{version}/sample-mapping": {
+      "get": {
+        "summary": "Sample Mapping",
+        "operationId": "sample_mapping_api_v1_datasets__id___versions__version__sample_mapping_get",
+        "parameters": [
+          {
+            "name": "id_",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id "
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Version"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SemanticDraft"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/semantics/confirm": {
+      "post": {
+        "summary": "Semantics",
+        "operationId": "semantics_api_v1_semantics_confirm_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemanticReview"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SemanticVersion"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HostSession": [],
+            "CSRF": []
+          }
+        ]
+      }
+    },
+    "/api/v1/metrics/confirm": {
+      "post": {
+        "summary": "Metric",
+        "operationId": "metric_api_v1_metrics_confirm_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetricReview"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricVersion"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HostSession": [],
+            "CSRF": []
+          }
+        ]
+      }
+    },
+    "/api/v1/datasets/{id_}/versions/{version}/documents": {
+      "post": {
+        "summary": "Documents",
+        "operationId": "documents_api_v1_datasets__id___versions__version__documents_post",
+        "parameters": [
+          {
+            "name": "id_",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id "
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Version"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_documents_api_v1_datasets__id___versions__version__documents_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentIngested"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": [],
+            "CSRF": []
+          }
+        ]
+      }
+    },
+    "/api/v1/corpora": {
+      "get": {
+        "summary": "Corpora",
+        "operationId": "corpora_api_v1_corpora_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorporaView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HostSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/tasks": {
+      "post": {
+        "summary": "Create",
+        "operationId": "create_api_v1_tasks_post",
+        "parameters": [
+          {
+            "name": "idempotency-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTask"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Acknowledgement"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": [],
+            "CSRF": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "Tasks",
+        "operationId": "tasks_api_v1_tasks_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskIDs"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/tasks/{id_}": {
+      "get": {
+        "summary": "Task",
+        "operationId": "task_api_v1_tasks__id___get",
+        "parameters": [
+          {
+            "name": "id_",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Id "
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskView"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/tasks/{id_}/{action}": {
+      "post": {
+        "summary": "Action",
+        "operationId": "action_api_v1_tasks__id____action__post",
+        "parameters": [
+          {
+            "name": "id_",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Id "
+            }
+          },
+          {
+            "name": "action",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Action"
+            }
+          },
+          {
+            "name": "idempotency-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Acknowledgement"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": [],
+            "CSRF": []
+          }
+        ]
+      }
+    },
+    "/api/v1/tasks/{id_}/report": {
+      "get": {
+        "summary": "Report",
+        "operationId": "report_api_v1_tasks__id___report_get",
+        "parameters": [
+          {
+            "name": "id_",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Id "
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportView"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/tasks/{id_}/evidence/{evidence_id}": {
+      "get": {
+        "summary": "Evidence",
+        "operationId": "evidence_api_v1_tasks__id___evidence__evidence_id__get",
+        "parameters": [
+          {
+            "name": "id_",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Id "
+            }
+          },
+          {
+            "name": "evidence_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Evidence Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricFact"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/tasks/{id_}/trace": {
+      "get": {
+        "summary": "Trace",
+        "operationId": "trace_api_v1_tasks__id___trace_get",
+        "parameters": [
+          {
+            "name": "id_",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Id "
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraceView"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "HostSession": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Acknowledgement": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "api-v1",
+            "title": "Schema Version",
+            "default": "api-v1"
+          },
+          "run_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Run Id"
+          },
+          "accepted": {
+            "type": "boolean",
+            "title": "Accepted",
+            "default": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id"
+        ],
+        "title": "Acknowledgement"
+      },
+      "Body_documents_api_v1_datasets__id___versions__version__documents_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "reviewed": {
+            "type": "boolean",
+            "title": "Reviewed",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_documents_api_v1_datasets__id___versions__version__documents_post"
+      },
+      "Body_upload_api_v1_uploads_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "options": {
+            "type": "string",
+            "title": "Options",
+            "default": "{}"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_api_v1_uploads_post"
+      },
+      "BusinessCompletion": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "business-completion-1",
+            "title": "Schema Version",
+            "default": "business-completion-1"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "completed",
+              "partial",
+              "unavailable",
+              "blocked"
+            ],
+            "title": "Status"
+          },
+          "required_goals": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Required Goals"
+          },
+          "verified_goals": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Verified Goals"
+          },
+          "missing_evidence": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "maxProperties": 8,
+            "title": "Missing Evidence"
+          },
+          "unconfirmed_claims": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Unconfirmed Claims"
+          },
+          "limited_results_visible": {
+            "type": "boolean",
+            "title": "Limited Results Visible",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "required_goals",
+          "verified_goals"
+        ],
+        "title": "BusinessCompletion"
+      },
+      "ChunkCitation": {
+        "properties": {
+          "chunk_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Chunk Id"
+          },
+          "start": {
+            "type": "integer",
+            "maximum": 1048576.0,
+            "minimum": 0.0,
+            "title": "Start"
+          },
+          "end": {
+            "type": "integer",
+            "maximum": 1048576.0,
+            "minimum": 0.0,
+            "title": "End"
+          },
+          "line_start": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Line Start"
+          },
+          "line_end": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Line End"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Sha256"
+          },
+          "corpus_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Corpus Id"
+          },
+          "index_version": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Index Version"
+          },
+          "source_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Source Id"
+          },
+          "document_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Document Id"
+          },
+          "version": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Version"
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Source Sha256"
+          },
+          "model_revision": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{40}$",
+            "title": "Model Revision"
+          },
+          "chunker_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Chunker Sha256"
+          },
+          "retriever": {
+            "type": "string",
+            "const": "pg-cosine-exact-1",
+            "title": "Retriever",
+            "default": "pg-cosine-exact-1"
+          },
+          "score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": -1.0,
+            "title": "Score"
+          },
+          "goal_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Sha256"
+          },
+          "goal_score": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": -1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Score"
+          },
+          "page": {
+            "type": "null",
+            "title": "Page"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "chunk_id",
+          "start",
+          "end",
+          "line_start",
+          "line_end",
+          "sha256",
+          "corpus_id",
+          "index_version",
+          "source_id",
+          "document_id",
+          "version",
+          "source_sha256",
+          "model_revision",
+          "chunker_sha256",
+          "score"
+        ],
+        "title": "ChunkCitation"
+      },
+      "CitationView": {
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Artifact Id"
+          },
+          "citation": {
+            "$ref": "#/components/schemas/ChunkCitation"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "artifact_id",
+          "citation"
+        ],
+        "title": "CitationView"
+      },
+      "ColumnOverride": {
+        "properties": {
+          "table_id": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Table Id"
+          },
+          "column": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Column"
+          },
+          "logical_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "TEXT",
+                  "INTEGER",
+                  "NUMERIC",
+                  "BOOLEAN",
+                  "DATE",
+                  "TIMESTAMP"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logical Type"
+          },
+          "normalized_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 63,
+                "minLength": 1,
+                "pattern": "^[a-z_][a-z0-9_]*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Normalized Name"
+          },
+          "date_format": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "YYYY-MM-DD",
+                  "DD/MM/YYYY",
+                  "MM/DD/YYYY"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date Format"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "table_id",
+          "column"
+        ],
+        "title": "ColumnOverride"
+      },
+      "ConfirmationOverrides": {
+        "properties": {
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/ColumnOverride"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Columns"
+          },
+          "primary_keys": {
+            "additionalProperties": {
+              "items": {
+                "type": "string",
+                "maxLength": 63,
+                "minLength": 1,
+                "pattern": "^[a-z_][a-z0-9_]*$"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "maxProperties": 32,
+            "title": "Primary Keys"
+          },
+          "relation_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 50,
+            "title": "Relation Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ConfirmationOverrides"
+      },
+      "ConfirmedColumn": {
+        "properties": {
+          "original_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 8192
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Name"
+          },
+          "source_column": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Source Column"
+          },
+          "normalized_name": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Normalized Name"
+          },
+          "logical_type": {
+            "type": "string",
+            "enum": [
+              "TEXT",
+              "INTEGER",
+              "NUMERIC",
+              "BOOLEAN",
+              "DATE",
+              "TIMESTAMP"
+            ],
+            "title": "Logical Type"
+          },
+          "date_format": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "YYYY-MM-DD",
+                  "DD/MM/YYYY",
+                  "MM/DD/YYYY"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date Format"
+          },
+          "precision": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 38.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Precision"
+          },
+          "scale": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 18.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scale"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "original_name",
+          "source_column",
+          "normalized_name",
+          "logical_type"
+        ],
+        "title": "ConfirmedColumn"
+      },
+      "ConfirmedTable": {
+        "properties": {
+          "table_id": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Table Id"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/ConfirmedColumn"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Columns"
+          },
+          "primary_key": {
+            "items": {
+              "type": "string",
+              "maxLength": 63,
+              "minLength": 1,
+              "pattern": "^[a-z_][a-z0-9_]*$"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Primary Key"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "table_id",
+          "columns"
+        ],
+        "title": "ConfirmedTable"
+      },
+      "CorporaView": {
+        "properties": {
+          "corpora": {
+            "items": {
+              "$ref": "#/components/schemas/CorpusView"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Corpora"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "corpora"
+        ],
+        "title": "CorporaView"
+      },
+      "CorpusView": {
+        "properties": {
+          "corpus_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Corpus Id"
+          },
+          "index_version": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Index Version"
+          },
+          "dataset_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Dataset Id"
+          },
+          "dataset_version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Dataset Version"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "corpus_id",
+          "index_version",
+          "dataset_id",
+          "dataset_version"
+        ],
+        "title": "CorpusView"
+      },
+      "CreateTask": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "maxLength": 8000,
+            "minLength": 1,
+            "title": "Question"
+          },
+          "metrics": {
+            "items": {
+              "$ref": "#/components/schemas/MetricRequest"
+            },
+            "type": "array",
+            "maxItems": 6,
+            "minItems": 1,
+            "title": "Metrics"
+          },
+          "documents": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentQuery"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "require_review": {
+            "type": "boolean",
+            "title": "Require Review",
+            "default": true
+          },
+          "causal_requested": {
+            "type": "boolean",
+            "title": "Causal Requested",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "question",
+          "metrics"
+        ],
+        "title": "CreateTask"
+      },
+      "DatasetColumn": {
+        "properties": {
+          "position": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Position"
+          },
+          "source_column": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Source Column"
+          },
+          "original_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 8192
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Name"
+          },
+          "normalized_name": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Normalized Name"
+          },
+          "logical_type": {
+            "type": "string",
+            "enum": [
+              "TEXT",
+              "INTEGER",
+              "NUMERIC",
+              "BOOLEAN",
+              "DATE",
+              "TIMESTAMP"
+            ],
+            "title": "Logical Type"
+          },
+          "sql_type": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Sql Type"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "position",
+          "source_column",
+          "original_name",
+          "normalized_name",
+          "logical_type",
+          "sql_type"
+        ],
+        "title": "DatasetColumn"
+      },
+      "DatasetView": {
+        "properties": {
+          "schema": {
+            "$ref": "#/components/schemas/PublicDatasetSchema"
+          },
+          "semantics": {
+            "items": {
+              "$ref": "#/components/schemas/SemanticVersion"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Semantics"
+          },
+          "metrics": {
+            "items": {
+              "$ref": "#/components/schemas/MetricVersion"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Metrics"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "schema",
+          "semantics",
+          "metrics"
+        ],
+        "title": "DatasetView"
+      },
+      "DatasetViews": {
+        "properties": {
+          "datasets": {
+            "items": {
+              "$ref": "#/components/schemas/DatasetView"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Datasets"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "datasets"
+        ],
+        "title": "DatasetViews"
+      },
+      "DocumentIngested": {
+        "properties": {
+          "corpus_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Corpus Id"
+          },
+          "index_version": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Index Version"
+          },
+          "reused": {
+            "type": "boolean",
+            "title": "Reused"
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Source Sha256"
+          },
+          "embedding_fixture": {
+            "type": "boolean",
+            "title": "Embedding Fixture"
+          },
+          "usage": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Usage"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "corpus_id",
+          "index_version",
+          "reused",
+          "source_sha256",
+          "embedding_fixture",
+          "usage"
+        ],
+        "title": "DocumentIngested"
+      },
+      "DocumentQuery": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Question"
+          },
+          "metric_goals": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 6,
+            "minItems": 1,
+            "title": "Metric Goals"
+          },
+          "corpus_ids": {
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Corpus Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "question",
+          "metric_goals",
+          "corpus_ids"
+        ],
+        "title": "DocumentQuery"
+      },
+      "EntityMapping": {
+        "properties": {
+          "entity": {
+            "type": "string",
+            "enum": [
+              "invoices",
+              "subscriptions",
+              "usage_events"
+            ],
+            "title": "Entity"
+          },
+          "table_id": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Table Id"
+          },
+          "fields": {
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 63,
+              "minLength": 1,
+              "pattern": "^[a-z_][a-z0-9_]*$"
+            },
+            "propertyNames": {
+              "enum": [
+                "record_id",
+                "customer_id",
+                "amount",
+                "invoice_date",
+                "payment_status",
+                "currency",
+                "start_date",
+                "end_date",
+                "termination_kind",
+                "event_date",
+                "event_count",
+                "feature"
+              ]
+            },
+            "type": "object",
+            "maxProperties": 16,
+            "title": "Fields"
+          },
+          "grain": {
+            "items": {
+              "type": "string",
+              "maxLength": 63,
+              "minLength": 1,
+              "pattern": "^[a-z_][a-z0-9_]*$"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Grain"
+          },
+          "coverage_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage Start"
+          },
+          "coverage_end_exclusive": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage End Exclusive"
+          },
+          "history_complete": {
+            "type": "boolean",
+            "title": "History Complete",
+            "default": false
+          },
+          "subscription_identity": {
+            "type": "string",
+            "enum": [
+              "contract",
+              "plan_period",
+              "unknown"
+            ],
+            "title": "Subscription Identity",
+            "default": "unknown"
+          },
+          "amount_storage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "minor",
+                  "major"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount Storage"
+          },
+          "currency_constant": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Z]{3}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currency Constant"
+          },
+          "timezone": {
+            "type": "string",
+            "const": "UTC",
+            "title": "Timezone",
+            "default": "UTC"
+          },
+          "null_policy": {
+            "type": "string",
+            "const": "reject_required",
+            "title": "Null Policy",
+            "default": "reject_required"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "entity",
+          "table_id",
+          "fields",
+          "grain"
+        ],
+        "title": "EntityMapping"
+      },
+      "ErrorInfo": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256,
+            "title": "Message"
+          },
+          "retryable": {
+            "type": "boolean",
+            "title": "Retryable",
+            "default": false
+          },
+          "manual_action_required": {
+            "type": "boolean",
+            "title": "Manual Action Required",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorInfo"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "api-v1",
+            "title": "Schema Version",
+            "default": "api-v1"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorInfo"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse"
+      },
+      "HealthView": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ready",
+            "title": "Status"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "live",
+              "fake"
+            ],
+            "title": "Mode"
+          },
+          "durable": {
+            "type": "boolean",
+            "const": true,
+            "title": "Durable"
+          },
+          "telemetry": {
+            "type": "string",
+            "title": "Telemetry"
+          },
+          "production_multi_tenant": {
+            "type": "boolean",
+            "const": false,
+            "title": "Production Multi Tenant"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "mode",
+          "durable",
+          "telemetry",
+          "production_multi_tenant"
+        ],
+        "title": "HealthView"
+      },
+      "ImportResult": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ready",
+            "title": "Status",
+            "default": "ready"
+          },
+          "dataset_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Dataset Id"
+          },
+          "version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Version"
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Source Sha256"
+          },
+          "confirmation_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Confirmation Sha256"
+          },
+          "reused": {
+            "type": "boolean",
+            "title": "Reused"
+          },
+          "row_count": {
+            "type": "integer",
+            "maximum": 100000.0,
+            "minimum": 0.0,
+            "title": "Row Count"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "version",
+          "source_sha256",
+          "confirmation_sha256",
+          "reused",
+          "row_count"
+        ],
+        "title": "ImportResult"
+      },
+      "ImportUpload": {
+        "properties": {
+          "confirmation_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Confirmation Sha256"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 110,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "dataset_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "confirmation_sha256",
+          "name"
+        ],
+        "title": "ImportUpload"
+      },
+      "Issue": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 256,
+            "title": "Message"
+          },
+          "column": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 63
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Column"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "Issue"
+      },
+      "MetricDraft": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Dataset Id"
+          },
+          "dataset_version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Dataset Version"
+          },
+          "semantic_version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Semantic Version"
+          },
+          "metric_id": {
+            "type": "string",
+            "enum": [
+              "paid_invoice_revenue",
+              "customer_churn",
+              "subscription_churn",
+              "active_subscriptions",
+              "usage",
+              "mrr"
+            ],
+            "title": "Metric Id"
+          },
+          "policy": {
+            "type": "string",
+            "const": "saas_metrics_v1",
+            "title": "Policy",
+            "default": "saas_metrics_v1"
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "title": "Currency",
+            "default": "CNY"
+          },
+          "paid_values": {
+            "items": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Paid Values"
+          },
+          "churn_values": {
+            "items": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Churn Values"
+          },
+          "non_churn_end_values": {
+            "items": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Non Churn End Values"
+          },
+          "feature": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feature"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "dataset_version",
+          "semantic_version",
+          "metric_id"
+        ],
+        "title": "MetricDraft"
+      },
+      "MetricFact": {
+        "properties": {
+          "goal_id": {
+            "type": "string",
+            "maxLength": 63,
+            "title": "Goal Id"
+          },
+          "request": {
+            "$ref": "#/components/schemas/MetricRequest"
+          },
+          "value": {
+            "$ref": "#/components/schemas/MetricValue"
+          },
+          "evidence_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Evidence Id"
+          },
+          "verification_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Verification Id"
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Source Sha256"
+          },
+          "semantic_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Semantic Sha256"
+          },
+          "metric_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Metric Sha256"
+          },
+          "evidence_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Evidence Sha256"
+          },
+          "verification_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Verification Sha256"
+          },
+          "query_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Query Sha256"
+          },
+          "result_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Result Sha256"
+          },
+          "verified_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Verified At"
+          },
+          "filters": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "maxProperties": 8,
+            "title": "Filters"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "goal_id",
+          "request",
+          "value",
+          "evidence_id",
+          "verification_id",
+          "source_sha256",
+          "semantic_sha256",
+          "metric_sha256",
+          "evidence_sha256",
+          "verification_sha256",
+          "query_sha256",
+          "result_sha256",
+          "verified_at",
+          "filters"
+        ],
+        "title": "MetricFact"
+      },
+      "MetricRequest": {
+        "properties": {
+          "goal_id": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Goal Id"
+          },
+          "dataset_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Dataset Id"
+          },
+          "dataset_version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Dataset Version"
+          },
+          "semantic_version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Semantic Version"
+          },
+          "metric_id": {
+            "type": "string",
+            "enum": [
+              "paid_invoice_revenue",
+              "customer_churn",
+              "subscription_churn",
+              "active_subscriptions",
+              "usage",
+              "mrr"
+            ],
+            "title": "Metric Id"
+          },
+          "metric_version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Metric Version"
+          },
+          "window": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MetricWindow"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "intent": {
+            "type": "string",
+            "enum": [
+              "measure",
+              "explain_cause"
+            ],
+            "title": "Intent",
+            "default": "measure"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "goal_id",
+          "dataset_id",
+          "dataset_version",
+          "semantic_version",
+          "metric_id",
+          "metric_version"
+        ],
+        "title": "MetricRequest"
+      },
+      "MetricReview": {
+        "properties": {
+          "draft": {
+            "$ref": "#/components/schemas/MetricDraft"
+          },
+          "reviewed": {
+            "type": "boolean",
+            "title": "Reviewed"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "draft",
+          "reviewed"
+        ],
+        "title": "MetricReview"
+      },
+      "MetricValue": {
+        "properties": {
+          "value": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 80,
+                "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "unit": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 1,
+            "title": "Unit"
+          },
+          "numerator": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Numerator"
+          },
+          "denominator": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Denominator"
+          },
+          "window_days": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 3660.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Window Days"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "value",
+          "unit"
+        ],
+        "title": "MetricValue"
+      },
+      "MetricVersion": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Dataset Id"
+          },
+          "dataset_version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Dataset Version"
+          },
+          "metric_id": {
+            "type": "string",
+            "enum": [
+              "paid_invoice_revenue",
+              "customer_churn",
+              "subscription_churn",
+              "active_subscriptions",
+              "usage",
+              "mrr"
+            ],
+            "title": "Metric Id"
+          },
+          "metric_version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Metric Version"
+          },
+          "semantic_version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Semantic Version"
+          },
+          "definition_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Definition Sha256"
+          },
+          "semantic_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Semantic Sha256"
+          },
+          "state": {
+            "type": "string",
+            "const": "confirmed",
+            "title": "State",
+            "default": "confirmed"
+          },
+          "definition": {
+            "$ref": "#/components/schemas/MetricDraft"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "dataset_version",
+          "metric_id",
+          "metric_version",
+          "semantic_version",
+          "definition_sha256",
+          "semantic_sha256",
+          "definition"
+        ],
+        "title": "MetricVersion"
+      },
+      "MetricWindow": {
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date",
+            "title": "Start"
+          },
+          "end_exclusive": {
+            "type": "string",
+            "format": "date",
+            "title": "End Exclusive"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "start",
+          "end_exclusive"
+        ],
+        "title": "MetricWindow"
+      },
+      "Observation": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Run Id"
+          },
+          "plan_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Version"
+          },
+          "task_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Task Id"
+          },
+          "tool_call_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tool Call Id"
+          },
+          "model_call": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Call"
+          },
+          "artifact_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Artifact Id"
+          },
+          "p3_evidence_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 36
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P3 Evidence Id"
+          },
+          "p3_verification_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 36
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P3 Verification Id"
+          },
+          "provider_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Id"
+          },
+          "model_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Id"
+          },
+          "endpoint_alias": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-z0-9_-]{1,32}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Endpoint Alias"
+          },
+          "call_attempt_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Call Attempt Id"
+          },
+          "error_category": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Category"
+          },
+          "requested_route": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requested Route"
+          },
+          "observed_route": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observed Route"
+          },
+          "latency_ms": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency Ms"
+          },
+          "input_tokens": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Tokens"
+          },
+          "output_tokens": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Tokens"
+          },
+          "cache_read_tokens": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cache Read Tokens"
+          },
+          "business_completion": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Business Completion"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id"
+        ],
+        "title": "Observation"
+      },
+      "ParseLimits": {
+        "properties": {
+          "max_file_bytes": {
+            "type": "integer",
+            "maximum": 33554432.0,
+            "minimum": 1.0,
+            "title": "Max File Bytes",
+            "default": 10485760
+          },
+          "max_sheets": {
+            "type": "integer",
+            "maximum": 32.0,
+            "minimum": 1.0,
+            "title": "Max Sheets",
+            "default": 10
+          },
+          "max_columns": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Max Columns",
+            "default": 100
+          },
+          "max_total_rows": {
+            "type": "integer",
+            "maximum": 100000.0,
+            "minimum": 1.0,
+            "title": "Max Total Rows",
+            "default": 100000
+          },
+          "max_cells": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Max Cells",
+            "default": 500000
+          },
+          "max_cell_chars": {
+            "type": "integer",
+            "maximum": 8192.0,
+            "minimum": 1.0,
+            "title": "Max Cell Chars",
+            "default": 8192
+          },
+          "max_parsed_bytes": {
+            "type": "integer",
+            "maximum": 67108864.0,
+            "minimum": 1.0,
+            "title": "Max Parsed Bytes",
+            "default": 33554432
+          },
+          "max_zip_entries": {
+            "type": "integer",
+            "maximum": 2048.0,
+            "minimum": 1.0,
+            "title": "Max Zip Entries",
+            "default": 512
+          },
+          "max_uncompressed_bytes": {
+            "type": "integer",
+            "maximum": 134217728.0,
+            "minimum": 1.0,
+            "title": "Max Uncompressed Bytes",
+            "default": 67108864
+          },
+          "max_entry_bytes": {
+            "type": "integer",
+            "maximum": 67108864.0,
+            "minimum": 1.0,
+            "title": "Max Entry Bytes",
+            "default": 33554432
+          },
+          "max_compression_ratio": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 1.0,
+            "title": "Max Compression Ratio",
+            "default": 200
+          },
+          "max_xml_elements": {
+            "type": "integer",
+            "maximum": 3000000.0,
+            "minimum": 1.0,
+            "title": "Max Xml Elements",
+            "default": 2000000
+          },
+          "max_seconds": {
+            "type": "number",
+            "maximum": 120.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Max Seconds",
+            "default": 30.0
+          },
+          "sample_size": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 1.0,
+            "title": "Sample Size",
+            "default": 100
+          },
+          "preview_rows": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 0.0,
+            "title": "Preview Rows",
+            "default": 10
+          },
+          "max_preview_bytes": {
+            "type": "integer",
+            "maximum": 4194304.0,
+            "minimum": 256.0,
+            "title": "Max Preview Bytes",
+            "default": 2097152
+          },
+          "max_issues": {
+            "type": "integer",
+            "maximum": 2000.0,
+            "minimum": 1.0,
+            "title": "Max Issues",
+            "default": 1000
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ParseLimits"
+      },
+      "ParseOptions": {
+        "properties": {
+          "encoding": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "utf-8",
+                  "utf-8-sig",
+                  "utf-16",
+                  "utf-16-le",
+                  "utf-16-be",
+                  "utf-32",
+                  "utf-32-le",
+                  "utf-32-be",
+                  "gb18030",
+                  "cp1252",
+                  "latin-1"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encoding"
+          },
+          "delimiter": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  ",",
+                  ";",
+                  "\t",
+                  "|"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delimiter"
+          },
+          "header": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "present",
+              "absent"
+            ],
+            "title": "Header",
+            "default": "auto"
+          },
+          "sheets": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "minLength": 1
+                },
+                "type": "array",
+                "maxItems": 32,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sheets"
+          },
+          "sheet_headers": {
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "auto",
+                "present",
+                "absent"
+              ]
+            },
+            "type": "object",
+            "maxProperties": 32,
+            "title": "Sheet Headers"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ParseOptions"
+      },
+      "ParsedColumn": {
+        "properties": {
+          "position": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Position"
+          },
+          "original_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 8192
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Name"
+          },
+          "normalized_name": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Normalized Name"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "position",
+          "normalized_name"
+        ],
+        "title": "ParsedColumn"
+      },
+      "PublicColumnProfile": {
+        "properties": {
+          "column": {
+            "$ref": "#/components/schemas/ParsedColumn"
+          },
+          "suggested_type": {
+            "type": "string",
+            "enum": [
+              "TEXT",
+              "INTEGER",
+              "NUMERIC",
+              "BOOLEAN",
+              "DATE",
+              "TIMESTAMP"
+            ],
+            "title": "Suggested Type"
+          },
+          "sample_type": {
+            "type": "string",
+            "enum": [
+              "TEXT",
+              "INTEGER",
+              "NUMERIC",
+              "BOOLEAN",
+              "DATE",
+              "TIMESTAMP"
+            ],
+            "title": "Sample Type"
+          },
+          "confidence": {
+            "type": "number",
+            "title": "Confidence"
+          },
+          "requires_confirmation": {
+            "type": "boolean",
+            "title": "Requires Confirmation"
+          },
+          "null_count": {
+            "type": "integer",
+            "title": "Null Count"
+          },
+          "distinct_count": {
+            "type": "integer",
+            "title": "Distinct Count"
+          },
+          "duplicate_count": {
+            "type": "integer",
+            "title": "Duplicate Count"
+          },
+          "examples_truncated": {
+            "type": "boolean",
+            "title": "Examples Truncated"
+          },
+          "precision": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Precision"
+          },
+          "scale": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scale"
+          },
+          "outlier_count": {
+            "type": "integer",
+            "title": "Outlier Count"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/Issue"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Issues"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "column",
+          "suggested_type",
+          "sample_type",
+          "confidence",
+          "requires_confirmation",
+          "null_count",
+          "distinct_count",
+          "duplicate_count",
+          "examples_truncated",
+          "precision",
+          "scale",
+          "outlier_count",
+          "issues"
+        ],
+        "title": "PublicColumnProfile"
+      },
+      "PublicDatasetSchema": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Dataset Id"
+          },
+          "version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Version"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Source Sha256"
+          },
+          "row_count": {
+            "type": "integer",
+            "title": "Row Count"
+          },
+          "tables": {
+            "items": {
+              "$ref": "#/components/schemas/PublicDatasetTable"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Tables"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "version",
+          "name",
+          "source_sha256",
+          "row_count",
+          "tables"
+        ],
+        "title": "PublicDatasetSchema"
+      },
+      "PublicDatasetTable": {
+        "properties": {
+          "table_id": {
+            "type": "string",
+            "title": "Table Id"
+          },
+          "source_name": {
+            "type": "string",
+            "title": "Source Name"
+          },
+          "row_count": {
+            "type": "integer",
+            "title": "Row Count"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/DatasetColumn"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Columns"
+          },
+          "primary_key": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Primary Key"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "table_id",
+          "source_name",
+          "row_count",
+          "columns",
+          "primary_key"
+        ],
+        "title": "PublicDatasetTable"
+      },
+      "PublicTablePreview": {
+        "properties": {
+          "table_id": {
+            "type": "string",
+            "title": "Table Id"
+          },
+          "source_name": {
+            "type": "string",
+            "title": "Source Name"
+          },
+          "row_count": {
+            "type": "integer",
+            "title": "Row Count"
+          },
+          "header_row": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Header Row"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/PublicColumnProfile"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Columns"
+          },
+          "preview_truncated": {
+            "type": "boolean",
+            "title": "Preview Truncated"
+          },
+          "duplicate_rows": {
+            "type": "integer",
+            "title": "Duplicate Rows"
+          },
+          "skipped_blank_rows": {
+            "type": "integer",
+            "title": "Skipped Blank Rows"
+          },
+          "candidate_primary_keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Candidate Primary Keys"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/Issue"
+            },
+            "type": "array",
+            "maxItems": 2000,
+            "title": "Issues"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "table_id",
+          "source_name",
+          "row_count",
+          "header_row",
+          "columns",
+          "preview_truncated",
+          "duplicate_rows",
+          "skipped_blank_rows",
+          "candidate_primary_keys",
+          "issues"
+        ],
+        "title": "PublicTablePreview"
+      },
+      "RelationCandidate": {
+        "properties": {
+          "relation_id": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Relation Id"
+          },
+          "child_table": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Child Table"
+          },
+          "child_column": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Child Column"
+          },
+          "parent_table": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Parent Table"
+          },
+          "parent_column": {
+            "type": "string",
+            "maxLength": 63,
+            "minLength": 1,
+            "pattern": "^[a-z_][a-z0-9_]*$",
+            "title": "Parent Column"
+          },
+          "matched_distinct_values": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Matched Distinct Values"
+          },
+          "basis": {
+            "type": "string",
+            "const": "matching_name_and_full_value_subset",
+            "title": "Basis",
+            "default": "matching_name_and_full_value_subset"
+          },
+          "requires_confirmation": {
+            "type": "boolean",
+            "const": true,
+            "title": "Requires Confirmation",
+            "default": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "relation_id",
+          "child_table",
+          "child_column",
+          "parent_table",
+          "parent_column",
+          "matched_distinct_values"
+        ],
+        "title": "RelationCandidate"
+      },
+      "ReportView": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "api-v1",
+            "title": "Schema Version",
+            "default": "api-v1"
+          },
+          "run_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Run Id"
+          },
+          "authorization_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Authorization Sha256"
+          },
+          "execution_status": {
+            "type": "string",
+            "title": "Execution Status"
+          },
+          "business_completion": {
+            "$ref": "#/components/schemas/BusinessCompletion"
+          },
+          "facts": {
+            "items": {
+              "$ref": "#/components/schemas/MetricFact"
+            },
+            "type": "array",
+            "maxItems": 6,
+            "title": "Facts"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/CitationView"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Citations"
+          },
+          "charts": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "maxItems": 6,
+            "title": "Charts"
+          },
+          "missing_requirements": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "maxItems": 64,
+            "title": "Missing Requirements"
+          },
+          "markdown": {
+            "type": "string",
+            "maxLength": 50000,
+            "title": "Markdown"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "authorization_sha256",
+          "execution_status",
+          "business_completion",
+          "facts",
+          "citations",
+          "charts",
+          "missing_requirements",
+          "markdown"
+        ],
+        "title": "ReportView"
+      },
+      "SchemaConfirmation": {
+        "properties": {
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Source Sha256"
+          },
+          "parsed_content_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Parsed Content Sha256"
+          },
+          "proposal_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Proposal Sha256"
+          },
+          "parser_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Parser Version",
+            "default": "1.0"
+          },
+          "options": {
+            "$ref": "#/components/schemas/ParseOptions"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/ParseLimits"
+          },
+          "reviewed": {
+            "type": "boolean",
+            "const": true,
+            "title": "Reviewed"
+          },
+          "tables": {
+            "items": {
+              "$ref": "#/components/schemas/ConfirmedTable"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "minItems": 1,
+            "title": "Tables"
+          },
+          "accepted_relations": {
+            "items": {
+              "$ref": "#/components/schemas/RelationCandidate"
+            },
+            "type": "array",
+            "maxItems": 50,
+            "title": "Accepted Relations"
+          },
+          "confirmation_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Confirmation Sha256"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source_sha256",
+          "parsed_content_sha256",
+          "proposal_sha256",
+          "options",
+          "limits",
+          "reviewed",
+          "tables",
+          "accepted_relations",
+          "confirmation_sha256"
+        ],
+        "title": "SchemaConfirmation"
+      },
+      "SchemaReview": {
+        "properties": {
+          "proposal_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Proposal Sha256"
+          },
+          "reviewed": {
+            "type": "boolean",
+            "title": "Reviewed"
+          },
+          "overrides": {
+            "$ref": "#/components/schemas/ConfirmationOverrides"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "proposal_sha256",
+          "reviewed"
+        ],
+        "title": "SchemaReview"
+      },
+      "SemanticDraft": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Dataset Id"
+          },
+          "dataset_version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Dataset Version"
+          },
+          "domain_version": {
+            "type": "string",
+            "const": "saas-1",
+            "title": "Domain Version",
+            "default": "saas-1"
+          },
+          "entities": {
+            "items": {
+              "$ref": "#/components/schemas/EntityMapping"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Entities"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "dataset_version",
+          "entities"
+        ],
+        "title": "SemanticDraft"
+      },
+      "SemanticReview": {
+        "properties": {
+          "draft": {
+            "$ref": "#/components/schemas/SemanticDraft"
+          },
+          "reviewed": {
+            "type": "boolean",
+            "title": "Reviewed"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "draft",
+          "reviewed"
+        ],
+        "title": "SemanticReview"
+      },
+      "SemanticVersion": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Dataset Id"
+          },
+          "dataset_version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Dataset Version"
+          },
+          "semantic_version": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Semantic Version"
+          },
+          "source_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Source Sha256"
+          },
+          "definition_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Definition Sha256"
+          },
+          "state": {
+            "type": "string",
+            "const": "confirmed",
+            "title": "State",
+            "default": "confirmed"
+          },
+          "definition": {
+            "$ref": "#/components/schemas/SemanticDraft"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "dataset_version",
+          "semantic_version",
+          "source_sha256",
+          "definition_sha256",
+          "definition"
+        ],
+        "title": "SemanticVersion"
+      },
+      "SessionView": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "api-v1",
+            "title": "Schema Version",
+            "default": "api-v1"
+          },
+          "csrf_token": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Csrf Token"
+          },
+          "deployment": {
+            "type": "string",
+            "const": "trusted-local-single-user",
+            "title": "Deployment"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "csrf_token",
+          "deployment"
+        ],
+        "title": "SessionView"
+      },
+      "TaskAction": {
+        "properties": {
+          "confirmed": {
+            "type": "boolean",
+            "title": "Confirmed",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "TaskAction"
+      },
+      "TaskIDs": {
+        "properties": {
+          "run_ids": {
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Run Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_ids"
+        ],
+        "title": "TaskIDs"
+      },
+      "TaskProgress": {
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Task Id"
+          },
+          "worker": {
+            "type": "string",
+            "enum": [
+              "sql",
+              "rag",
+              "analysis",
+              "report"
+            ],
+            "title": "Worker"
+          },
+          "status": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Status"
+          },
+          "plan_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Plan Version"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "task_id",
+          "worker",
+          "status",
+          "plan_version"
+        ],
+        "title": "TaskProgress"
+      },
+      "TaskView": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "api-v1",
+            "title": "Schema Version",
+            "default": "api-v1"
+          },
+          "run_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Run Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "running",
+              "paused",
+              "awaiting_review",
+              "partial",
+              "unavailable",
+              "blocked",
+              "failed",
+              "completed",
+              "cancelled"
+            ],
+            "title": "Status"
+          },
+          "execution_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Execution Status"
+          },
+          "business_completion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BusinessCompletion"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "plan_version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Version"
+          },
+          "steps": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Steps",
+            "default": 0
+          },
+          "tasks": {
+            "items": {
+              "$ref": "#/components/schemas/TaskProgress"
+            },
+            "type": "array",
+            "maxItems": 12,
+            "title": "Tasks"
+          },
+          "usage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Usage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ErrorInfo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          },
+          "report_available": {
+            "type": "boolean",
+            "title": "Report Available",
+            "default": false
+          },
+          "question": {
+            "type": "string",
+            "maxLength": 8000,
+            "title": "Question",
+            "default": ""
+          },
+          "requested_metrics": {
+            "items": {
+              "$ref": "#/components/schemas/MetricRequest"
+            },
+            "type": "array",
+            "maxItems": 6,
+            "title": "Requested Metrics"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "status",
+          "expires_at"
+        ],
+        "title": "TaskView"
+      },
+      "TraceView": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "api-v1",
+            "title": "Schema Version",
+            "default": "api-v1"
+          },
+          "run_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Run Id"
+          },
+          "usage_source": {
+            "type": "string",
+            "enum": [
+              "provider",
+              "mock"
+            ],
+            "title": "Usage Source"
+          },
+          "calls": {
+            "items": {
+              "$ref": "#/components/schemas/Observation"
+            },
+            "type": "array",
+            "maxItems": 352,
+            "title": "Calls"
+          },
+          "routes": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "maxItems": 2048,
+            "title": "Routes"
+          },
+          "journal_replay_is_provider_cache": {
+            "type": "boolean",
+            "const": false,
+            "title": "Journal Replay Is Provider Cache"
+          },
+          "cost": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Cost"
+          },
+          "remote_telemetry": {
+            "type": "boolean",
+            "const": false,
+            "title": "Remote Telemetry"
+          },
+          "local_export_succeeded": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Local Export Succeeded"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "usage_source",
+          "calls",
+          "routes",
+          "journal_replay_is_provider_cache",
+          "cost",
+          "remote_telemetry",
+          "local_export_succeeded"
+        ],
+        "title": "TraceView"
+      },
+      "UploadFileInfo": {
+        "properties": {
+          "filename": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Filename"
+          },
+          "file_format": {
+            "type": "string",
+            "enum": [
+              "csv",
+              "xlsx"
+            ],
+            "title": "File Format"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "maximum": 33554432.0,
+            "minimum": 1.0,
+            "title": "Size Bytes"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Sha256"
+          },
+          "encoding": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encoding"
+          },
+          "delimiter": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delimiter"
+          },
+          "sheets": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Sheets"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "filename",
+          "file_format",
+          "size_bytes",
+          "sha256"
+        ],
+        "title": "UploadFileInfo"
+      },
+      "UploadView": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "api-v1",
+            "title": "Schema Version",
+            "default": "api-v1"
+          },
+          "upload_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+            "title": "Upload Id"
+          },
+          "proposal_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Proposal Sha256"
+          },
+          "upload": {
+            "$ref": "#/components/schemas/UploadFileInfo"
+          },
+          "tables": {
+            "items": {
+              "$ref": "#/components/schemas/PublicTablePreview"
+            },
+            "type": "array",
+            "maxItems": 32,
+            "title": "Tables"
+          },
+          "candidate_relations": {
+            "items": {
+              "$ref": "#/components/schemas/RelationCandidate"
+            },
+            "type": "array",
+            "maxItems": 50,
+            "title": "Candidate Relations"
+          },
+          "confirmation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SchemaConfirmation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "row_values_redacted": {
+            "type": "boolean",
+            "const": true,
+            "title": "Row Values Redacted",
+            "default": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "upload_id",
+          "proposal_sha256",
+          "upload",
+          "tables",
+          "candidate_relations",
+          "confirmation"
+        ],
+        "title": "UploadView"
+      },
+      "Usage": {
+        "properties": {
+          "calls": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Calls",
+            "default": 0
+          },
+          "total_tokens": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total Tokens",
+            "default": 0
+          },
+          "reported_tokens": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Reported Tokens",
+            "default": 0
+          },
+          "usage_complete": {
+            "type": "boolean",
+            "title": "Usage Complete",
+            "default": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Usage"
+      }
+    },
+    "securitySchemes": {
+      "HostSession": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "datapilot_session"
+      },
+      "CSRF": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-CSRF-Token"
+      },
+      "HostBootstrap": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-DataPilot-Host-Key",
+        "description": "Host/UI server only. Never expose to browser/model."
+      }
+    }
+  }
+}

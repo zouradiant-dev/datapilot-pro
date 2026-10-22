@@ -2,17 +2,37 @@
 
 面向 SaaS 企业的智能经营分析系统，当前已实现 **Day 1：SQL 基线**、**P1：CSV/XLSX 解析确认**、**P2：受限入库与动态 MCP**、**P3：SaaS 指标/证据验证**、**P4 / D9–D10：动态任务 DAG 与双层执行**。业务数据库使用 **PostgreSQL 17 + pgvector**，运行期业务查询全部经过真正的 MCP Server/Client。
 
-实现：固定种子、Alembic、隔离角色、AST/只读/资源限制、指标证据、LangGraph 动态 DAG/Send、独立 SQL/RAG Loop、父子预算/取消、L0–L4、脱敏 Trace 和 CLI。P5B 提供官方 PG Checkpoint、持久预算/工件和跨进程恢复；P6A 提供授权 TXT/Markdown 摄取、本地真实 BGE Embedding 与同实例 pgvector/MCP 检索。P6B 将已确认的 P3 指标接入现有 DAG，输出有持久验证引用的结构化报告、Markdown 与图表规格；API/UI 与观测平台未实现，旧 RAG fixture 只用于回归。
+实现：固定种子、Alembic、隔离角色、AST/只读/资源限制、指标证据、LangGraph 动态 DAG/Send、独立 SQL/RAG Loop、父子预算/取消、L0–L4、脱敏 Trace 和 CLI。P5B 提供官方 PG Checkpoint、持久预算/工件和跨进程恢复；P6A 提供授权 TXT/Markdown 摄取、本地真实 BGE Embedding 与同实例 pgvector/MCP 检索。P6B 将已确认的 P3 指标接入现有 DAG，输出有持久验证引用的结构化报告、Markdown 与图表规格。P6C 增加 FastAPI、仅通过 HTTP 操作业务的 Streamlit、默认 Durable 的 Web 任务、可关闭的本地 OTel 投影及独立维护清理入口；未接远程 Langfuse。旧 RAG fixture 只用于回归。
 
 详见 [架构与目标设计](docs/architecture.md)、[v2 Gate 路线图](docs/roadmap-v2.md)、[本轮代码审计与回归](docs/planning-audit-v2.md)、[开发约束](AGENTS.md)、[Day 1 历史验收记录](docs/day1-delivery.md)。
 
 v2 目标闭环：**CSV/XLSX 上传 → Schema 预览确认 → 受限入库/数据集版本 → 动态 MCP 查询 → 语义指标与证据验证 → 多 Agent 报告**。P6B 通过可信宿主 ReportScope 显式选择已确认的 MetricRequest 和文档目标；模型只能安排这些任务，不确认字段或生成新指标配方。P3 独立入口、普通 ask 快速 SQL 路径保留，长期 Memory 后端仍未实现。
 
-首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates；当前停止在 P6B，未进入 P6C/P7/P11，不承诺生产 SLA 或真实模型稳定成功率。
+首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates；当前范围止于 P6C，未进入 P7/P11，不承诺生产 SLA 或真实模型稳定成功率。
 
 P4.1 在现有组件上增加受控工具生命周期、宿主 `completion` 三态、完整工件先保存的 L0 模型视图与上下文计量。`status=succeeded` 仍表示工具执行成功；业务指标缺少 P3 六层已验证证据时 `completion=blocked`，不能当作已验证报告。简单客户数查询仍只需两次 Fake 决策。历史记录见 [P4.1 交付](docs/p4-hardening.md)。
 
 P5A 复用 Gateway/ArtifactStore/父子账本，实现 L1 旧工具视图裁剪、L2 引用去重、L3 完整工具轮次折叠、受预算和校验约束的 L4 摘取式摘要；原消息与证据保持完整，默认小查询不触发压缩。Memory 仅有经审阅的受限契约及内存实现，来源/版本/有效期/撤回均须校验。详见 [上下文工程与实测](docs/context-engineering.md)。P5B 只增加持久适配，不重新优化 L4。
+
+## 本地产品 Demo（P6C）
+
+已有数据库在仓库根目录增量部署，不重新 Seed：
+
+```powershell
+uv sync --locked
+uv run --locked python scripts/configure_local.py --add-web-roles
+uv run --locked datapilot db-init
+uv run --locked datapilot migrate
+uv run --locked datapilot runtime-init
+uv run --locked datapilot health
+.\scripts\start_demo.ps1
+```
+
+打开 [Streamlit](http://127.0.0.1:8501/)，API 契约见 [OpenAPI 快照](docs/api-v1-openapi.json)；运行实例的 `/api/v1/docs` 需要宿主会话。加载合成 SaaS 样例 → 审阅 Schema → 受限入库 → 读取并人工确认样例业务映射 → 确认 paid_invoice_revenue → 创建任务 → 人工批准 → 刷新真实进度。合成样例 2025 年 10 月已支付账单收入为 **300 CNY**，报告保留 P3 Evidence/Verification 引用。不要将这个小样例值用于其他 Dataset。
+
+默认 Fake 只替代模型决策，PG、MCP、业务计算和验证均真实执行；本地 Embedding 仍需先按 RAG 文档准备已校验的权重。Fake 的 RAG 完成策略保守，可能返回 partial，不能视作真实模型语义分析质量测试。真实 DeepSeek 需显式 `-Mode live`，会消耗 API 额度，本阶段未新增付费实验。
+
+Windows/Docker 命令、浏览器与 API 验收、失败历史和实际测试统计见 [P6C 交付](docs/product-demo.md)、[版本化 API](docs/api-v1.md)、[保留与维护](docs/data-retention.md)。Web 请求不能迁移数据库、清理数据或自授 scope；任意旧 Dataset 需宿主显式授权，知道 UUID 不等于获得访问权。
 
 ## 持久执行与恢复（P5B）
 
@@ -200,6 +220,6 @@ MCP 仅注册只读数据库工具，SaaS/上传会话各拿自己的 Reader 凭
 
 `.env` 是本机开发配置，stdio 子进程仍受宿主 OS 信任，不是对恶意宿主进程的沙箱。pgvector 存储表已迁移，文档摄取、Embedding、索引和 RAG 逻辑属于后续 Gate C；当前不运行独立向量服务。
 
-v2 设计决策：[双层 Runtime/Harness](docs/adr/0001-runtime-harness.md)、[动态导入与权限](docs/adr/0002-ingestion-permissions.md)、[单用户边界](docs/adr/0003-local-single-user.md)、[指标/证据与领域包](docs/adr/0004-metrics-evidence-domain.md)。固定结构由 Alembic 管理，上传动态表仅由受限 Ingestion Service 管理，模型不会取得 DDL 权限。可观测性计划采用 Langfuse，目前尚未安装或集成。
+v2 设计决策：[双层 Runtime/Harness](docs/adr/0001-runtime-harness.md)、[动态导入与权限](docs/adr/0002-ingestion-permissions.md)、[单用户边界](docs/adr/0003-local-single-user.md)、[指标/证据与领域包](docs/adr/0004-metrics-evidence-domain.md)。固定结构由 Alembic 管理，上传动态表仅由受限 Ingestion Service 管理，模型不会取得 DDL 权限。P6C 提供默认关闭的本地 OTel 投影；远程 Langfuse 尚未安装或集成。
 
 `docker compose stop` 暂停数据库，`docker compose start` 恢复。**不要执行带 `-v` 的 down 或自动清库脚本**，持久数据保存在项目命名卷。

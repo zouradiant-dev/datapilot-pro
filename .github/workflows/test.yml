@@ -35,6 +35,10 @@ jobs:
       DATAPILOT_CHECKPOINT_OWNER_PASSWORD: ci-checkpoint-owner-only
       DATAPILOT_RAG_INGEST_PASSWORD: ci-rag-ingest-only
       DATAPILOT_RAG_READER_PASSWORD: ci-rag-reader-only
+      DATAPILOT_WEB_PASSWORD: ci-web-only
+      DATAPILOT_MAINTENANCE_PASSWORD: ci-maintenance-only
+      DATAPILOT_WEB_DATABASE_URL: postgresql+psycopg://datapilot_web:ci-web-only@localhost:5432/datapilot
+      DATAPILOT_MAINTENANCE_DATABASE_URL: postgresql+psycopg://datapilot_maintenance:ci-maintenance-only@localhost:5432/datapilot
       DATAPILOT_RAG_INGEST_DATABASE_URL: postgresql+psycopg://datapilot_rag_ingest:ci-rag-ingest-only@localhost:5432/datapilot
       DATAPILOT_RAG_READER_DATABASE_URL: postgresql+psycopg://datapilot_rag_reader:ci-rag-reader-only@localhost:5432/datapilot
       DATAPILOT_RUNTIME_DATABASE_URL: postgresql+psycopg://datapilot_runtime:ci-runtime-only@localhost:5432/datapilot

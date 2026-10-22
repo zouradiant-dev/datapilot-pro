@@ -23,6 +23,7 @@ def main() -> None:
     parser.add_argument("--add-registry-role", action="store_true")
     parser.add_argument("--add-runtime-roles", action="store_true")
     parser.add_argument("--add-rag-roles", action="store_true")
+    parser.add_argument("--add-web-roles", action="store_true")
     args = parser.parse_args()
     path = Path(__file__).resolve().parents[1] / ".env"
     if (
@@ -30,12 +31,15 @@ def main() -> None:
         or args.add_registry_role
         or args.add_runtime_roles
         or args.add_rag_roles
+        or args.add_web_roles
     ):
         values = dotenv_values(path, interpolate=False)
         url = make_url(values.get("DATAPILOT_ADMIN_DATABASE_URL") or "")
         lines = []
         roles = (
-            ("rag_ingest", "rag_reader")
+            ("web", "maintenance")
+            if args.add_web_roles
+            else ("rag_ingest", "rag_reader")
             if args.add_rag_roles
             else ("runtime", "checkpoint_owner")
             if args.add_runtime_roles
@@ -83,6 +87,8 @@ def main() -> None:
         "checkpoint_owner",
         "rag_ingest",
         "rag_reader",
+        "web",
+        "maintenance",
     ):
         lines.extend(role_lines(role, url))
     with path.open("x", encoding="utf-8") as output:

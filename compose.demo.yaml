@@ -1,0 +1,33 @@
+services:
+  web-init:
+    profiles: [demo-init]
+    build: .
+    image: datapilot-pro-demo:local
+    command: [uv, run, --locked, --no-dev, datapilot-web, --host-file, /private/host.json, bootstrap]
+    volumes: [web_private:/private]
+  api:
+    profiles: [demo]
+    build: .
+    image: datapilot-pro-demo:local
+    env_file: .env
+    environment:
+      DATAPILOT_WEB_HOST_FILE: /private/host.json
+    command: [uv, run, --locked, --no-dev, datapilot-web, --host-file, /private/host.json, serve, --container, --mode, fake]
+    ports: ["127.0.0.1:8000:8000"]
+    volumes: [web_private:/private, ./.cache/rag-models:/app/.cache/rag-models:ro]
+    depends_on:
+      postgres:
+        condition: service_healthy
+  ui:
+    profiles: [demo]
+    build: .
+    image: datapilot-pro-demo:local
+    environment:
+      DATAPILOT_WEB_HOST_FILE: /private/host.json
+      DATAPILOT_WEB_API_URL: http://api:8000
+    command: [uv, run, --locked, --no-dev, python, -m, streamlit, run, src/datapilot/web/ui.py, --server.address, 0.0.0.0, --server.port, "8501", --server.headless, "true", --browser.gatherUsageStats, "false"]
+    ports: ["127.0.0.1:8501:8501"]
+    volumes: [web_private:/private:ro]
+    depends_on: [api]
+volumes:
+  web_private:

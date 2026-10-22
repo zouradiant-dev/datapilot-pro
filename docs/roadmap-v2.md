@@ -6,13 +6,13 @@
 
 ## 1. 当前起点与优先级
 
-**当前增量 P6B**：在 P6A 已验收的真实检索与 P5B 持久恢复上，桥接原 P3 持久 Evidence/六层 Verification 和 P4 DAG/Artifact，输出有界跨来源报告、图表规格及明确业务完成状态；见 [实际链路/验证](cross-source-report.md)、[ADR-012](adr/0012-cross-source-report.md)。仅停止在 P6B；P6C/P7/P10/P11 均未实施，不自动提交或进入下一阶段。以下旧停止点保留为历史，不能作为当前实现缺口。
+**当前增量 P6C**：保留 P6B 的 P3 持久 Evidence/六层 Verification 与 P4 DAG/Artifact 桥接，增加可信单用户 FastAPI、HTTP-only Streamlit、默认原 P5B Durable、宿主会话/Scope/幂等、受控运行保留及可关闭本地 OTel 投影。实际链路见 [P6B](cross-source-report.md)、[P6C 交付](product-demo.md)、[API](api-v1.md)、[保留策略](data-retention.md)。范围止于 P6C；P7/P10/P11 未实施，不自动提交或进入下一阶段。以下旧停止点保留为历史，不能作为当前实现缺口。
 
 验收分层：P6A 最初两次真实 DeepSeek smoke 失败历史不变；定向补强后获授权的一次检索 smoke 成功，见 [历史与 Post-push 核验](rag-completion-repair.md)。P6B 的真实 PG/本地神经 Embedding/MCP/恢复测试使用明确的脚本模型决策，未新增付费模型实验。检索 smoke 与五个合成业务案例均不等于真实模型稳定成功率或完整经营分析基准。
 
-起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1–P5B 与 P6A 保留；P6B 接通可信报告桥接，Gate C 的该实现缺口已补齐，模型质量与 ≥50 任务基准留待 P7。P6C 产品化闭环未开始。
+起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1–P5B 与 P6A 保留；P6B 接通可信报告桥接，P6C 接通本地产品入口。模型质量与 ≥50 任务基准仍留待 P7，不能用 pytest 用例数替代；Gate D 的独立评测部分尚未完成。
 
-v2.2 的 **P4.1** 补工具生命周期、宿主完成判定、L0 工件/模型视图分离及故障反例，见 [交付与实际验证](p4-hardening.md)、[ADR-007](adr/0007-p4-hardening.md)。P5A（Context/Memory）与 P5B（PG 持久恢复）均已落实；v2.3 的 P6A 是当时的停止边界。本轮用户已单独授权 P6B，仍不能从路线图自动授权 P6C/P7/P11。
+v2.2 的 **P4.1** 补工具生命周期、宿主完成判定、L0 工件/模型视图分离及故障反例，见 [交付与实际验证](p4-hardening.md)、[ADR-007](adr/0007-p4-hardening.md)。P5A（Context/Memory）与 P5B（PG 持久恢复）均已落实；v2.3 的 P6A 是当时的停止边界。P6B、P6C 分别获得用户单独授权，仍不能从路线图自动授权 P7/P11。
 
 唯一首发业务是 SaaS。文件导入、语义/证据、Multi-Agent、产品化和独立评测服务这一主线。首版本地单用户/可信演示，不承诺生产多租户。干洗店 Phase F 与 LangGraph Fork 都是独立可选扩展。
 
@@ -39,7 +39,7 @@ P5A 后单独授权的 DeepSeek Flash 兼容增量仅调整共享模型构造 pr
 | A / 1–5 | 审计、CSV/XLSX Parser、Profile/确认、受限导入、Registry、动态 MCP | 文件→预览确认→ready Dataset/version→真实 PG→真实 MCP；多表 JOIN、回滚、跨 scope 拒绝、原 saas 回归 | 解包资源、类型失真、名称注入；新增迁移/ingest/upload_reader；健康检查不能写死 0001 |
 | B / 6–8 | SaaS 语义/指标版本、受控计算、Evidence、六层 Verifier | paid 收入/订阅与客户/使用量独立核对；JOIN 双计、单位/日期、缺字段/伪证据拒绝 | 指标不明确先确认；不把形状正确当业务正确 |
 | C / 9–13 | Worker Loop、任务 DAG/Send、最小上下文/Memory、预算、PG Checkpoint/恢复、真实跨来源 | 合法依赖/有界并发；SQL/RAG 证据汇合；缺证据定点补查；重启恢复/取消/预算一致 | 同步客户端、重试叠加、reducer 冲突、Saver 迁移所有权、Embedding 选择与真实凭据 |
-| D / 14–17 | FastAPI/Streamlit、Langfuse、完整 Demo、≥50 独立任务、消融/产品对比 | 新用户按 README 完成两表上传到引用报告；真实状态/错误可见；可复现 E2E、Bad Case 与限制 | API Key/供应商效果、日志隐私；对照环境和人工介入差异必须披露 |
+| D / 14–17 | P6C FastAPI/Streamlit、本地 OTel（远程 Langfuse 可选）；P7 ≥50 独立任务、消融/产品对比 | 新用户按 README 完成两表上传到引用报告；真实状态/错误可见；可复现 E2E、Bad Case 与限制；P6C 与 P7 分开验收 | API Key/供应商效果、日志隐私；对照环境和人工介入差异必须披露 |
 | E / 18–20，可选 | 原版问题复现、最小 Fork、回归与同条件 A/B，或发布完善 | 指定文件/函数、公开机制为何不足、正确性不变量、客观收益或明确负结果 | 当前无必须 Fork 的证据；先用公开扩展；保留原版开关/许可证/回退 |
 | F / 后续可选 | Domain Pack、合法文件 Connector、干洗店映射/指标/试用 | 不复制 Runtime/Harness/Worker；授权报表与人工记录核对；saas 不回归 | POS 品牌/API/字段未知，真实数据授权/脱敏；缺文件只做 synthetic fixture |
 
@@ -109,8 +109,8 @@ P5A 后单独授权的 DeepSeek Flash 兼容增量仅调整共享模型构造 pr
 | P5A | L0–L4、上下文不变量、Memory 契约/内存实现已交付 | 保留算法与历史费用结论，见 context-engineering |
 | P5B | 官方 PG Checkpoint、持久预算/Artifact、恢复与故障验证已交付 | 历史停止点；P6B 复用原 Journal/Saver，不重写恢复 |
 | P6A | 授权 TXT/Markdown、固定 BGE CPU、真实 pgvector/MCP 与引用验证已实现；定向补强完成控制和恢复 | 历史停止点；检索成功与最终业务验证分开 |
-| P6B | 可信 ReportScope、P3/P4 桥接、验证引用/claim/Markdown/图表、受限结果与恢复 | 当前停止点；真 PG 与脚本模型决策验收见 cross-source-report；无新增真实模型授权 |
-| P6C | API、UI、Langfuse | 未开始，须独立授权 |
+| P6B | 可信 ReportScope、P3/P4 桥接、验证引用/claim/Markdown/图表、受限结果与恢复 | 已交付；真 PG 与脚本模型决策见 cross-source-report；无新增真实模型授权 |
+| P6C | 版本化 API、HTTP-only UI、默认 Durable、隐私边界、独立维护、本地 OTel | 当前停止边界；命令、浏览器/恢复/隔离清理与回归见 product-demo；远程 Langfuse 未接 |
 | P7 | 独立 E2E、消融、Claude Code 产品对比 | Gate D 完整验收资料；不可污染保留集 |
 | P8 | 可选官方 Runtime 不足与 Fork A/B | 有最小复现和公开方案不足的证据 |
 | P9 | 可选干洗店领域包/真实试点 | Gate D、数据授权/导出能力明确；不依赖 Fork |
@@ -125,7 +125,7 @@ SaaS ≥50 个独立业务任务，开发集/保留集分离，固定 seed/数�
 
 ## 6. 当前阻塞与下一步准备
 
-P1–P6A 保留，P3 指标入口独立；ask 保留快速 SQL/内存执行，durable 沿用官方 Saver。P6B 已通过显式 ReportScope 接通 P3→P4 的报告链，真实 RAG 和 P3 引用恢复均保持原授权与 verdict；普通 ask 未配置 ReportScope 仍不把任意查询升级为业务 verified。停止在 P6B。UI/Langfuse、长期 Memory、P11 引擎未实现；真实模型复杂分析质量、独立保留集与产品对照尚待后续授权。
+P1–P6B 保留，P3 指标入口独立；ask 保留快速 SQL/内存执行，durable 沿用官方 Saver。P6C Web 分析默认调用同一 Durable，恢复重查 P3/RAG 引用与原 verdict；普通 ask 未配置 ReportScope 仍不把任意查询升级为业务 verified。停止在 P6C。远程 Langfuse、永久 Memory、P11 引擎未实现；生产认证/RLS/KMS/自动清理属于 P10；真实模型复杂分析质量、独立保留集与产品对照尚待后续授权。
 
 ### 已完成的 D9–D13 / 后续边界
 
@@ -134,4 +134,4 @@ P1–P6A 保留，P3 指标入口独立；ask 保留快速 SQL/内存执行，du
 - 未变源任务可显式验证后复用；权限/预算/输入错误不重规划绕过。旧 SQL 安全链与三项历史迁移保持原状。
 - D11–D13 / P5A/P5B：受限 Memory 契约、上下文压缩、官方父/子图 Checkpoint、原子持久预算与完整工件、跨进程恢复已实现；未实现永久 Memory 存储。停止，不推进 P6/P7。
 
-DeepSeek 非思考 profile 已有真实 SQL smoke、P5A 压缩 A/B 和 P5B 恢复实测，不代表完整业务评测或产品领先。Embedding、Langfuse 和后续指标/报告集成需在对应 Gate 验证。PG Saver 迁移已由 ADR-009 明确并显式部署。POS 软件和报表未知只阻塞 Phase F，不阻塞 SaaS；不退回 SQLite/FAISS。
+DeepSeek 非思考 profile 已有真实 SQL smoke、P5A 压缩 A/B 和 P5B 恢复实测，不代表完整业务评测或产品领先。历史准备项中的真实 Embedding/指标报告已分别经 P6A/P6B 验证；P6C 只增本地产品入口与 OTel，未新增付费产品实测或远程 Langfuse。PG Saver 迁移由 ADR-009 明确并显式部署。POS 软件和报表未知只阻塞 Phase F，不阻塞 SaaS；不退回 SQLite/FAISS。

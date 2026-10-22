@@ -2,7 +2,7 @@
 
 ## 1. 目标、阶段边界与技术决策
 
-面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。当前 P0–P6A 与 P6B 可信报告桥接已实现；各节保留历史阶段边界，最新实现见文末 P6B 节。不宣称生产多租户、因果验证或真实模型完整业务基准已完成。
+面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。当前 P0–P6B 与 P6C 本地产品边界已实现；各节保留历史阶段边界，最新实现见文末 P6C 节。不宣称生产多租户、因果验证或真实模型完整业务基准已完成。
 
 第 2–9 节记录 Day 1 历史基线；第 10 节起是 v2 目标设计，第 15–18 节更新各阶段实现。完整现状/缺口见 [代码审计](planning-audit-v2.md)，实施依赖与验收见 [v2 路线图](roadmap-v2.md)。旧七天计划已废止；工作单元不绑定日期。SaaS 是唯一首发主业务，干洗店通过后续 Domain Pack 扩展。
 
@@ -10,7 +10,7 @@
 
 ```mermaid
 flowchart LR
-    CLI[CLI / 后续 FastAPI+Streamlit] --> S[Supervisor / LangGraph]
+    CLI[CLI / FastAPI / HTTP-only Streamlit] --> S[Supervisor / LangGraph]
     S --> Q[SQL Worker 独立 SQLTask]
     Q --> C[MCP Client SDK]
     C -- stdio --> M[MCP Server 仅 reader 凭据]
@@ -381,3 +381,29 @@ flowchart TD
 报告依赖可在源任务终态后执行，以显式显示缺失/不可用；P4 依赖检查仍核对状态和授权，不能升级失败源。源任务安全局部重试复用已验证/明确不可用的原源结果，Report 重新投影，不做全量模型 Replan。已提交 P3 操作/报告工件沿用 Journal 幂等重放，P3 已持久化而 Journal 未提交的未知窗口阻断重发；恢复重新核对 P3 refs/verdict 和 RAG source/index/chunk。
 
 原 status/completion 保持兼容；仅报告模式增加版本化 execution_status、business_completion、结构化 claims/charts，明确 completed/partial/unavailable/blocked、缺证据与未确认结论。可复用事实契约记录授权、快照、P3/RAG 引用、业务定义、时间/单位/过滤和验证观察时间；不是缓存命中、降级或 SLA 实现。本阶段停止在 P6B，不进入 P6C/P7/P11。
+
+## 26. P6C：可信 HTTP 产品入口与维护边界
+
+本节取代前文历史停止点。Streamlit 只导入 HTTP Client 和界面库；Dataset、确认、任务、审核、取消、恢复、报告、Trace 全部调用 `/api/v1`。FastAPI 固定可信宿主 owner，执行 Host/Origin/Session/CSRF 检查；人工确认不是 LLM 工具。上传原件和完整 Proposal 留在私密宿主存储，浏览器只接收有界画像与映射。Dataset/version grant 和文档 corpus pin 经可信服务建立，客户端不能提交任意 scope。
+
+```mermaid
+flowchart LR
+    UI[Streamlit HTTP Client] --> API[FastAPI v1 / Session / CSRF]
+    API --> DATA[原 P1/P2/P3/P6A 服务]
+    API --> OUT[PG Web 幂等 outbox]
+    OUT --> PROC[有界本地进程监管]
+    PROC --> DUR[原 P5B run_durable]
+    DUR --> GRAPH[原 P4/P6B 图与原 MCP]
+    DUR --> SAVER[官方 PG Saver / Journal / Ledger / Artifact]
+    SAVER --> READ[只读状态与引用校验]
+    READ --> API
+    API --> SAFE[脱敏报告与本地 OTel 投影]
+    HOST[独立 maintenance CLI] --> PURGE[显式审阅 / TTL / 锁 / unknown / hold]
+    PURGE --> SAVER
+```
+
+Web outbox 管理请求幂等和待派发序号，不规划 Agent 依赖或存储第二份执行状态。每个正常分析进入原 `run_durable`，Worker 子图和恢复均沿用官方 Saver。读状态使用 NoModel Coordinator 的 `aget_state`，不执行图节点、不结算调用；恢复前重新检查身份、scope、版本、hash 和 P3 原 verdict。取消允许已撤回数据授权的本人停止执行，但不授权读取数据；终态 cancel 是幂等 no-op，不能退回 running。未知外部结果保留预算并要求人工核对。
+
+新增 Alembic `0006` 仅管理 Web 元数据/保留标记/审计，0001–0005 未修改。web、maintenance 与 runtime/业务 Reader 分离；runtime、MCP、模型无 DELETE/DDL。清理使用独立 CLI、精确计划 hash、同一事务整 Run/官方 thread 删除；默认 dry-run，仅在新隔离测试库验证实际删除，不触碰用户已有 Run、业务表、P3 Registry 或 Volume。
+
+默认回环单用户；Docker 仅内部监听 0.0.0.0，宿主端口仍发布到 127.0.0.1。可选本地 OTel 是安全白名单的事后观测投影，不导出 Prompt、SQL、业务行、文档原文或凭据；缓存与费用无可靠数据时为 null。不实现远程 Langfuse、生产认证/RLS/KMS、自动清理或 P11 引擎。详见 [P6C 交付](product-demo.md)、[API](api-v1.md)、[ADR-013](adr/0013-local-product-boundary.md)、[ADR-014](adr/0014-execution-retention.md)。

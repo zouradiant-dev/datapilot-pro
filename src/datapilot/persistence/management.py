@@ -30,10 +30,14 @@ def runtime_init():
                 conn.execute(
                     "GRANT SELECT ON checkpoints.checkpoint_migrations TO datapilot_runtime"
                 )
+                conn.execute(
+                    "GRANT SELECT ON checkpoints.checkpoint_migrations TO datapilot_maintenance"
+                )
             else:
                 conn.execute(
                     f"GRANT SELECT,INSERT,UPDATE ON checkpoints.{table} TO datapilot_runtime"
                 )
+                conn.execute(f"GRANT SELECT,DELETE ON checkpoints.{table} TO datapilot_maintenance")
     engine = sa.create_engine(management_url("runtime"), hide_parameters=True)
     try:
         with engine.connect() as conn:
