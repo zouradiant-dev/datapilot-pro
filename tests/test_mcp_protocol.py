@@ -18,6 +18,7 @@ async def test_real_stdio_handshake_tool_listing_and_missing_database(settings):
             "get_metric_context",
             "recompute_metric",
             "get_evidence",
+            "get_verification",
         }
         assert not any(
             t.name in {"import_file", "create_table", "activate_version"} for t in listing.tools

@@ -49,6 +49,9 @@ def main() -> int:
     durable.add_argument("--approve", action="store_true", default=None)
     durable.add_argument("--pause-after", choices=("planner", "scheduler", "worker", "verifier"))
     durable.add_argument("--rag-scope")
+    durable.add_argument(
+        "--report-scope", help="Host-reviewed P6B goal and confirmed metric bindings"
+    )
     query = sub.add_parser("ask", help="Supervisor -> SQL -> MCP -> PostgreSQL -> Answer")
     query.add_argument("question")
     query.add_argument("--mode", choices=("live", "fake"))
@@ -83,6 +86,17 @@ def main() -> int:
                 result = {"status": "cancelled", "run_id": args.run_id}
             else:
                 from datapilot.rag.cli import read_scope
+                from datapilot.reporting.contracts import ReportScope
+
+                report_scope = None
+                if args.report_scope:
+                    from pathlib import Path
+
+                    with Path(args.report_scope).open("rb") as scope_file:
+                        content = scope_file.read(256 * 1024 + 1)
+                    if len(content) > 256 * 1024:
+                        raise ValueError("Report scope exceeds 256 KiB")
+                    report_scope = ReportScope.model_validate_json(content)
 
                 result = run_async(
                     run_durable(
@@ -95,6 +109,7 @@ def main() -> int:
                         require_review=args.review,
                         interrupt_after=[args.pause_after] if args.pause_after else None,
                         rag_scope=read_scope(args.rag_scope) if args.rag_scope else None,
+                        report_scope=report_scope,
                     )
                 )
         elif args.command == "ingest":

@@ -6,13 +6,13 @@
 
 ## 1. 当前起点与优先级
 
-**当前增量 P6A**：在 P5B 基线上完成授权文本摄取、固定本地神经 Embedding、真实 PG17/pgvector/独立 MCP 检索及版本引用验证，保留原 Runtime/预算/Artifact/恢复；见 [RAG 链路](rag-pipeline.md)、[交付](p6a-delivery.md)、[ADR-010](adr/0010-scoped-rag.md)。以下 P4/P5 历史停止点不再代表当前缺口。只停止在 P6A；Gate C 尚缺 P6B 可信多来源报告，P6C/P7/P10 均未实施。
+**当前增量 P6B**：在 P6A 已验收的真实检索与 P5B 持久恢复上，桥接原 P3 持久 Evidence/六层 Verification 和 P4 DAG/Artifact，输出有界跨来源报告、图表规格及明确业务完成状态；见 [实际链路/验证](cross-source-report.md)、[ADR-012](adr/0012-cross-source-report.md)。仅停止在 P6B；P6C/P7/P10/P11 均未实施，不自动提交或进入下一阶段。以下旧停止点保留为历史，不能作为当前实现缺口。
 
-验收分层：真实 PG/神经 Embedding/MCP 基础链路和 Fake 决策 Worker 恢复有自动化证据；两次真实 DeepSeek RAG smoke 均被现有安全/契约边界阻断，真实模型自主完成质量尚未通过。基础链路交付不等于全部真实模型/经营分析评测通过。
+验收分层：P6A 最初两次真实 DeepSeek smoke 失败历史不变；定向补强后获授权的一次检索 smoke 成功，见 [历史与 Post-push 核验](rag-completion-repair.md)。P6B 的真实 PG/本地神经 Embedding/MCP/恢复测试使用明确的脚本模型决策，未新增付费模型实验。检索 smoke 与五个合成业务案例均不等于真实模型稳定成功率或完整经营分析基准。
 
-起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1/P2/P3 保留，P4 完成 D9–D10 动态 DAG 与双层执行，见 [编排说明](orchestration.md)、[交付](p4-delivery.md)。P4.1、P5A/P5B 已完成；P6A 的基础检索链已实现，真实模型质量限制见上述验收分层。P6B/P6C 产品闭环未开始，Gate C 尚未整体通过。
+起点为 Day 1：固定合成 SaaS 数据、PG17/pgvector、权限/Alembic、真实 MCP、Supervisor+SQL、有限编译修复、CLI。P0 审计基线为 `3a47d27a5920721b3d776d62de6b240c0a313213`，详见 [审计证据](planning-audit-v2.md)。P1–P5B 与 P6A 保留；P6B 接通可信报告桥接，Gate C 的该实现缺口已补齐，模型质量与 ≥50 任务基准留待 P7。P6C 产品化闭环未开始。
 
-v2.2 的 **P4.1** 补工具生命周期、宿主完成判定、L0 工件/模型视图分离及故障反例，见 [交付与实际验证](p4-hardening.md)、[ADR-007](adr/0007-p4-hardening.md)。P5A（Context/Memory）与 P5B（PG 持久恢复）均已落实；v2.3 本轮仅补 P6A，不能从路线图自动授权 P6B/P6C/P7。Gate C 未完成。
+v2.2 的 **P4.1** 补工具生命周期、宿主完成判定、L0 工件/模型视图分离及故障反例，见 [交付与实际验证](p4-hardening.md)、[ADR-007](adr/0007-p4-hardening.md)。P5A（Context/Memory）与 P5B（PG 持久恢复）均已落实；v2.3 的 P6A 是当时的停止边界。本轮用户已单独授权 P6B，仍不能从路线图自动授权 P6C/P7/P11。
 
 唯一首发业务是 SaaS。文件导入、语义/证据、Multi-Agent、产品化和独立评测服务这一主线。首版本地单用户/可信演示，不承诺生产多租户。干洗店 Phase F 与 LangGraph Fork 都是独立可选扩展。
 
@@ -107,9 +107,10 @@ P5A 后单独授权的 DeepSeek Flash 兼容增量仅调整共享模型构造 pr
 | P3 | 已实现语义/指标/证据/六层 Verifier | Gate A；本轮到 Gate B 停止，见 p3-delivery |
 | P4 / P4.1 | 动态 DAG、Worker Loop、工具生命周期与完成判定已实现 | 无 Fork；RAG 替身仅证明编排，见 p4-delivery / p4-hardening |
 | P5A | L0–L4、上下文不变量、Memory 契约/内存实现已交付 | 保留算法与历史费用结论，见 context-engineering |
-| P5B | 官方 PG Checkpoint、持久预算/Artifact、恢复与故障验证已交付 | 当前停止点，见 p5b-delivery；不自动进入 P6/P7 |
-| P6A | 授权 TXT/Markdown、固定 BGE CPU、真实 pgvector/MCP 与引用验证已实现；定向补强完成控制和恢复 | 当前停止点；详见 rag-completion-repair；检索成功与最终业务验证分开 |
-| P6B / P6C | 可信跨来源报告 / API、UI、Langfuse | 分别另行授权；不从 P6A 自动推进 |
+| P5B | 官方 PG Checkpoint、持久预算/Artifact、恢复与故障验证已交付 | 历史停止点；P6B 复用原 Journal/Saver，不重写恢复 |
+| P6A | 授权 TXT/Markdown、固定 BGE CPU、真实 pgvector/MCP 与引用验证已实现；定向补强完成控制和恢复 | 历史停止点；检索成功与最终业务验证分开 |
+| P6B | 可信 ReportScope、P3/P4 桥接、验证引用/claim/Markdown/图表、受限结果与恢复 | 当前停止点；真 PG 与脚本模型决策验收见 cross-source-report；无新增真实模型授权 |
+| P6C | API、UI、Langfuse | 未开始，须独立授权 |
 | P7 | 独立 E2E、消融、Claude Code 产品对比 | Gate D 完整验收资料；不可污染保留集 |
 | P8 | 可选官方 Runtime 不足与 Fork A/B | 有最小复现和公开方案不足的证据 |
 | P9 | 可选干洗店领域包/真实试点 | Gate D、数据授权/导出能力明确；不依赖 Fork |
@@ -124,7 +125,7 @@ SaaS ≥50 个独立业务任务，开发集/保留集分离，固定 seed/数�
 
 ## 6. 当前阻塞与下一步准备
 
-P1–P5B 保留，P3 指标入口独立；ask 保留内存执行，durable 沿用官方 Saver。P6A 的真实本地 Embedding/pgvector/RAG MCP 已接入受控工具与恢复，source/index/scope 变更失败关闭；旧 fixture 只用于回归。UI、P3→P4 可信报告桥接和长期 Memory 后端未实现。Gate C 尚缺 P6B，当前停止，下一阶段须新授权。
+P1–P6A 保留，P3 指标入口独立；ask 保留快速 SQL/内存执行，durable 沿用官方 Saver。P6B 已通过显式 ReportScope 接通 P3→P4 的报告链，真实 RAG 和 P3 引用恢复均保持原授权与 verdict；普通 ask 未配置 ReportScope 仍不把任意查询升级为业务 verified。停止在 P6B。UI/Langfuse、长期 Memory、P11 引擎未实现；真实模型复杂分析质量、独立保留集与产品对照尚待后续授权。
 
 ### 已完成的 D9–D13 / 后续边界
 

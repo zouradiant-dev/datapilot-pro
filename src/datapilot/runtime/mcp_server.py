@@ -138,6 +138,15 @@ def create_server() -> FastMCP:
         except AgentFailure as exc:
             return {"evidence": None, "error": exc.error.model_dump()}
 
+    @server.tool()
+    def get_verification(dataset_id: str, verification_id: str) -> dict:
+        """Read a persisted P3 verdict within the server-bound Dataset/version only."""
+        try:
+            value = MetricRepository(dataset_repository()).verification(dataset_id, verification_id)
+            return {"verification": value.model_dump(mode="json"), "error": None}
+        except AgentFailure as exc:
+            return {"verification": None, "error": exc.error.model_dump()}
+
     return server
 
 

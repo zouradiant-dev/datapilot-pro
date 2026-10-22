@@ -1,0 +1,694 @@
+{
+  "schema_version": 1,
+  "phase": "P6B",
+  "verified_at": "2026-10-22T03:33:20.926773+00:00",
+  "base_commit": "fb44a77f09a3dbd9a5c7e4fa8e859c06b87f1a05",
+  "status": "bounded_engineering_acceptance_passed",
+  "pre_push_ci_snapshot": {
+    "scope": "historical_at_local_validation_not_current_remote_status",
+    "ci": "not_run_uncommitted_not_pushed",
+    "note": "保留生成记录时的事实；后续 CI 状态以对应提交的 GitHub Actions 为准。"
+  },
+  "scope": "SaaS local single user; no UI/Langfuse/P11",
+  "execution_environment": {
+    "postgres_version_num": 170011,
+    "pgvector": "0.8.6",
+    "alembic": "0005",
+    "customers": 240,
+    "embedding": "pinned local ONNX BGE zh 512-dimensional, real CPU inference"
+  },
+  "model_validation": {
+    "mode": "scripted test decisions; business SQL/PG/MCP/embedding/retrieval are real",
+    "p6b_live_model_runs": 0,
+    "paid_api_calls": 0,
+    "provider_tokens": null,
+    "provider_cache_tokens": null,
+    "provider_cost": null,
+    "note": "Scripted usage is not a provider measurement. Prior P6A DeepSeek smoke is historical, not P6B evidence."
+  },
+  "tests": [
+    {
+      "python": "3.11.16",
+      "tier": "full_real_pg_scripted_models",
+      "junit_path": "artifacts/p6b/full-py311.xml",
+      "sha256": "a95fda8697e416a50a090dd58f3716d4d3cf2a50f5d60eff2eade0c0f9bf6cf7",
+      "tests": 542,
+      "passed": 541,
+      "skipped": 1,
+      "seconds": 801.05,
+      "started_at": "2026-10-22T11:13:06.836081+08:00"
+    },
+    {
+      "python": "3.11.16",
+      "tier": "final_p6b_real_pg_embedding_mcp",
+      "junit_path": "artifacts/p6b/final-p6b-pg.xml",
+      "sha256": "a776d1d2acc72f627ff983e1de3f8f7bcbadb7171421843cace97de9d96f7f29",
+      "tests": 18,
+      "passed": 18,
+      "skipped": 0,
+      "seconds": 240.488,
+      "started_at": "2026-10-22T11:28:19.563997+08:00"
+    },
+    {
+      "python": "3.13.15",
+      "tier": "final_local_mocks_and_protocol",
+      "junit_path": "artifacts/p6b/final-py313-local.xml",
+      "sha256": "1332cf44f93501e717777bffc2218acc96f3f7038df85159c5ae2eed7516ed90",
+      "tests": 415,
+      "passed": 415,
+      "skipped": 0,
+      "seconds": 9.84,
+      "started_at": "2026-10-22T11:28:31.134469+08:00"
+    },
+    {
+      "python": "3.11.16",
+      "tier": "report_orchestration_local",
+      "junit_path": "artifacts/p6b/final-report-local.xml",
+      "sha256": "03c2b806cb17670d22259d965c6f32bcac4f444ed0f05c0babacb783e23b6c0c",
+      "tests": 47,
+      "passed": 47,
+      "skipped": 0,
+      "seconds": 3.714,
+      "started_at": "2026-10-22T11:27:45.183132+08:00"
+    }
+  ],
+  "post_full_regression_followup": {
+    "changes": "Only P6B missing requirement details and final completion Trace projection; no legacy business changes.",
+    "final_validation": "18 real PG cases plus 415 Python 3.13 local cases rerun after these changes"
+  },
+  "checks": {
+    "ruff_check": "passed",
+    "ruff_format_check": "192 files passed",
+    "git_diff_check": "passed",
+    "historical_migrations_dependencies_context_memory_unchanged": true,
+    "user_existing_prompt_sha256": "e741a01457caf912968f02276b1894e5cd94803d5a0c12d79993c4fa1b42c74d"
+  },
+  "recovery": {
+    "committed_fault_points": [
+      "report_metric_committed",
+      "report_artifact_committed"
+    ],
+    "unknown_outcome": "report_p3_persisted blocks resend with RECOVERY_UNCERTAIN",
+    "invariants": [
+      "same P3 IDs/body hashes/counts/verdict before and after resume",
+      "same RAG EvidenceRefs across worker checkpoint",
+      "same model usage after repeated resume",
+      "changed scope/metric version denied"
+    ]
+  },
+  "development_failures_resolved": [
+    "Missing basetemp parent caused initial setup errors; fixed local directory, no false success recorded.",
+    "Docker was initially stopped; started existing installation without reset/reseed/volume deletion.",
+    "Nested scope hashing and lowercase MissingRequirement contract fixed.",
+    "Overbroad complete-history test goal and duplicate scripted tool IDs corrected; original RAG policy not relaxed.",
+    "Independent Gold SQL duplicate result aliases rejected by existing validator; test SQL fixed.",
+    "Wrong expected recovery denial code corrected to include RECOVERY_IDENTITY.",
+    "Report dependency projection now respects failed P4 verdict even when tool execution succeeded."
+  ],
+  "cases": [
+    {
+      "case": "active_subscriptions",
+      "run_id": "6f52a118-7526-4f94-9d1f-2f380ec477ad",
+      "artifact_sha256": "cb25317fa7fffd4903fb71c735fac3ae88cc61015ca67fd2d165ef155f7fef9b",
+      "request": {
+        "goal_id": "active_subscriptions",
+        "dataset_id": "d6c2c624-6b5e-52a3-a03c-04f6b93dd446",
+        "dataset_version": 1,
+        "semantic_version": 1,
+        "metric_id": "active_subscriptions",
+        "metric_version": 1,
+        "window": null,
+        "as_of": "2025-10-31",
+        "intent": "measure"
+      },
+      "value": {
+        "value": "4",
+        "unit": "subscriptions",
+        "numerator": null,
+        "denominator": null,
+        "window_days": null
+      },
+      "p3_gold": "4",
+      "independent_literal_sql_match": true,
+      "business_completion": "completed",
+      "source_sha256": "87df9a81a06c7301c69a13e9d13fd733545eae7180fa9304c62df8ad10dd1ed7",
+      "semantic_sha256": "7fa73693417210507711a33fb968456395c51c35ed5f3ba80b460dfa89088da3",
+      "metric_sha256": "0dfa6eebd7e97baa3b4fed76f39da1fecec444b234a7f56f7b4fdc03f1a32c49",
+      "evidence_id": "ee23fe56-e87f-4116-923a-5b7337f861d8",
+      "evidence_sha256": "8ebb457185b64204eeabf00f04dab910412115f31524efc404e8ca08081d8269",
+      "verification": {
+        "verification_id": "35c9b8d2-0bac-48cc-963d-b9853bcbbafc",
+        "evidence_id": "ee23fe56-e87f-4116-923a-5b7337f861d8",
+        "dataset_id": "d6c2c624-6b5e-52a3-a03c-04f6b93dd446",
+        "dataset_version": 1,
+        "request_sha256": "21c983d4ea4bd07868b6e5c565b8459f7e440b8d7058491d2c7503c45038b1b8",
+        "rule_version": "six-layers-1",
+        "checks": [
+          {
+            "layer": "safety",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "shape",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "semantics",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "recomputation",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "references",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "coverage",
+            "status": "passed",
+            "codes": []
+          }
+        ],
+        "verdict": "verified"
+      },
+      "verification_sha256": "3133ed3dfdbb9a7ee158931351395eaab534dea8fcd3ba6b56c6226afcbb33eb",
+      "query_sha256": "e82d593bf15cfb089a2a51b3f78203e0926d0a645164bffd2fe47e0fd7e27524",
+      "result_sha256": "e9b21bb464576c641658eef642873ca5a318b3106b212d98e9b280251c40aab4",
+      "verified_at": "2026-10-22T03:29:29.056128+00:00",
+      "authorization_sha256": "dcd55c2d1281d2eb7f98edd92965aa3054b754462c8517cf12b822ea9583c6ec",
+      "rag_citations": [
+        {
+          "chunk_id": "20510a27d7cf348fbf2819fd775a6465f8ca99403f7c570ed89f2cb8dbd29ece",
+          "start": 0,
+          "end": 112,
+          "line_start": 1,
+          "line_end": 3,
+          "sha256": "3bdac6b18382ab027974d85f4e7dd542e4a2da94ce07a7ca6e675c4c2c30fb64",
+          "corpus_id": "250efb02-279a-4b6d-a1a3-d0a847f70f06",
+          "index_version": "a6ba984e00550ba1cdcae20c413968e664f041e2c8b21c7b7be7ed9cb8b211ec",
+          "source_id": "875b4dac6c2de479e759f71778f1930c042b50681fae9d09841f4e7c7b66d4d9",
+          "document_id": "12ddcc25492f0d8156cefc8cd52b6c93700f40503a7a05b6543a7f37ce8a8c34",
+          "version": "3bdac6b18382ab027974d85f4e7dd542e4a2da94ce07a7ca6e675c4c2c30fb64",
+          "source_sha256": "3bdac6b18382ab027974d85f4e7dd542e4a2da94ce07a7ca6e675c4c2c30fb64",
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.555603878367063,
+          "goal_sha256": "c1872b5876f9638079940b481f239cd386d070bec0acaf6c39431fdafb10642b",
+          "goal_score": 0.5556038618087769,
+          "page": null
+        },
+        {
+          "chunk_id": "d1a787725dbf7c46b0765d255e5d3e3bd3e1faf3a31a459a1f06c01b5b5b5c0a",
+          "start": 0,
+          "end": 107,
+          "line_start": 1,
+          "line_end": 3,
+          "sha256": "9385098013b69d3b909d580cc70a9a1de7650f0d55cce0812c368b8294469d46",
+          "corpus_id": "250efb02-279a-4b6d-a1a3-d0a847f70f06",
+          "index_version": "a6ba984e00550ba1cdcae20c413968e664f041e2c8b21c7b7be7ed9cb8b211ec",
+          "source_id": "3302d3a9df04c8b8196000c0c780951879fcd8ab324f258e49c3385e40a66454",
+          "document_id": "6bb759e4ef85e4dfbe3b3c1f8597aaf2e804dfef48efb235b5fc7612c51a9365",
+          "version": "9385098013b69d3b909d580cc70a9a1de7650f0d55cce0812c368b8294469d46",
+          "source_sha256": "9385098013b69d3b909d580cc70a9a1de7650f0d55cce0812c368b8294469d46",
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.5510993764132078,
+          "goal_sha256": "c1872b5876f9638079940b481f239cd386d070bec0acaf6c39431fdafb10642b",
+          "goal_score": 0.5510993599891663,
+          "page": null
+        }
+      ],
+      "observed_elapsed_ms": 8422.0,
+      "scripted_usage_not_provider_tokens": {
+        "calls": 3,
+        "total_tokens": 45,
+        "reported_tokens": 45,
+        "usage_complete": true
+      },
+      "trace_sha256": "f704113e0766e74f065944af27001533b95710c64dd981f038108288ec5fca96",
+      "private_case_file": "artifacts/p6b/case-active_subscriptions.json"
+    },
+    {
+      "case": "customer_churn",
+      "run_id": "27752f46-3077-4d09-aa8d-571bf2058b67",
+      "artifact_sha256": "e6b32dbfae9a799082c04eb341396902b3bd971cb3f6137986409c791152a25f",
+      "request": {
+        "goal_id": "customer_churn",
+        "dataset_id": "d6c2c624-6b5e-52a3-a03c-04f6b93dd446",
+        "dataset_version": 1,
+        "semantic_version": 1,
+        "metric_id": "customer_churn",
+        "metric_version": 1,
+        "window": {
+          "start": "2025-10-01",
+          "end_exclusive": "2025-11-01"
+        },
+        "as_of": null,
+        "intent": "measure"
+      },
+      "value": {
+        "value": "0.400000000000",
+        "unit": "ratio",
+        "numerator": 2,
+        "denominator": 5,
+        "window_days": 31
+      },
+      "p3_gold": "0.4",
+      "independent_literal_sql_match": true,
+      "business_completion": "completed",
+      "source_sha256": "87df9a81a06c7301c69a13e9d13fd733545eae7180fa9304c62df8ad10dd1ed7",
+      "semantic_sha256": "7fa73693417210507711a33fb968456395c51c35ed5f3ba80b460dfa89088da3",
+      "metric_sha256": "2727a1111ee67fd9552d4ffa616cf4aa784034784720b04e2a3f12d6a626fe1c",
+      "evidence_id": "ea33a9f4-f3be-4c45-a958-623d74925e39",
+      "evidence_sha256": "6ff63aee45fb231cc6f91b681da6758915d6cc3671c611da3941eb417cb99b39",
+      "verification": {
+        "verification_id": "21ed6916-7e51-40ab-9089-735e96127df4",
+        "evidence_id": "ea33a9f4-f3be-4c45-a958-623d74925e39",
+        "dataset_id": "d6c2c624-6b5e-52a3-a03c-04f6b93dd446",
+        "dataset_version": 1,
+        "request_sha256": "460a722deea221359cf39165c6eca1cb92475df5ddfe1697e1b1aafd824fa09e",
+        "rule_version": "six-layers-1",
+        "checks": [
+          {
+            "layer": "safety",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "shape",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "semantics",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "recomputation",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "references",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "coverage",
+            "status": "passed",
+            "codes": []
+          }
+        ],
+        "verdict": "verified"
+      },
+      "verification_sha256": "58428661e8cbd9ec7c777e4939a97d00f22ee6c0e3bbe12155fc0748fd01947d",
+      "query_sha256": "8887bd32b10ffd8b08d608cef2e3b44cfc5852fb120415b5de478cc4a8a1ea8e",
+      "result_sha256": "e106f65b2d5ef9b1aad838b778d16bbc1ed681e82ae42a3dfa52fe24ac47a6ac",
+      "verified_at": "2026-10-22T03:28:45.575157+00:00",
+      "authorization_sha256": "cbdf2e270717229e9339b6072bcf165721844fb95ad516f2da911264440f2540",
+      "rag_citations": [
+        {
+          "chunk_id": "00e73071abc6575f6bcaab623e3f07f037eb81b39f056ffd0d0e2b39b63b8a3d",
+          "start": 0,
+          "end": 112,
+          "line_start": 1,
+          "line_end": 3,
+          "sha256": "3bdac6b18382ab027974d85f4e7dd542e4a2da94ce07a7ca6e675c4c2c30fb64",
+          "corpus_id": "f600a832-5a35-4fda-a4e2-580886cf79f0",
+          "index_version": "47ca6526bd295126c7445568bc0a511c1d20cb14bc64959abfc519c6188a56bc",
+          "source_id": "5aa2f449ab4a0d17a28501f055167c280817af3ea4c04662d6c0ca9c29bf724d",
+          "document_id": "453ceef69737eba2d015e8891aa7f38c12a03d7eb1d19b7602aff66d0a73fd00",
+          "version": "3bdac6b18382ab027974d85f4e7dd542e4a2da94ce07a7ca6e675c4c2c30fb64",
+          "source_sha256": "3bdac6b18382ab027974d85f4e7dd542e4a2da94ce07a7ca6e675c4c2c30fb64",
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.7908490424842227,
+          "goal_sha256": "957ce342ff4ee89457c2677823783d415cf263172eba9f58e321d5a4eace62c4",
+          "goal_score": 0.7908490896224976,
+          "page": null
+        }
+      ],
+      "observed_elapsed_ms": 8453.0,
+      "scripted_usage_not_provider_tokens": {
+        "calls": 3,
+        "total_tokens": 45,
+        "reported_tokens": 45,
+        "usage_complete": true
+      },
+      "trace_sha256": "1f2ff557dcc42ef81044fd7a59d137061225f458b515a7879b33bab8b5799386",
+      "private_case_file": "artifacts/p6b/case-customer_churn.json"
+    },
+    {
+      "case": "paid_invoice_revenue",
+      "run_id": "685b51b1-d0c8-4642-97d4-2d827eaa7ae8",
+      "artifact_sha256": "0b42d45ececfac9ea9d10a2e16a2d42ab26849e2ae892776c8ca5b55365b8c3e",
+      "request": {
+        "goal_id": "paid_invoice_revenue",
+        "dataset_id": "d6c2c624-6b5e-52a3-a03c-04f6b93dd446",
+        "dataset_version": 1,
+        "semantic_version": 1,
+        "metric_id": "paid_invoice_revenue",
+        "metric_version": 1,
+        "window": {
+          "start": "2025-10-01",
+          "end_exclusive": "2025-11-01"
+        },
+        "as_of": null,
+        "intent": "measure"
+      },
+      "value": {
+        "value": "300.0000000000000000",
+        "unit": "CNY",
+        "numerator": null,
+        "denominator": null,
+        "window_days": 31
+      },
+      "p3_gold": "300",
+      "independent_literal_sql_match": true,
+      "business_completion": "completed",
+      "source_sha256": "87df9a81a06c7301c69a13e9d13fd733545eae7180fa9304c62df8ad10dd1ed7",
+      "semantic_sha256": "7fa73693417210507711a33fb968456395c51c35ed5f3ba80b460dfa89088da3",
+      "metric_sha256": "620c6cb772d914839693dc169d08c9fd04dab20f060c02925fe627e821492da9",
+      "evidence_id": "c98fb4b5-afec-4f84-856e-a9a2903869c0",
+      "evidence_sha256": "9b3b8e7cfdc3db9514232c244df45c92d621eca60be2809a3cbcb18f58be9d1e",
+      "verification": {
+        "verification_id": "a8c226c2-90fc-4c16-9e18-e605a1710949",
+        "evidence_id": "c98fb4b5-afec-4f84-856e-a9a2903869c0",
+        "dataset_id": "d6c2c624-6b5e-52a3-a03c-04f6b93dd446",
+        "dataset_version": 1,
+        "request_sha256": "6089919948e97ee19c24650e255858058485821f8dea4c688e82d3a38dcbff07",
+        "rule_version": "six-layers-1",
+        "checks": [
+          {
+            "layer": "safety",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "shape",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "semantics",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "recomputation",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "references",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "coverage",
+            "status": "passed",
+            "codes": []
+          }
+        ],
+        "verdict": "verified"
+      },
+      "verification_sha256": "0582179220627189b79b7d4238b2ab6cbf0d19dec25679d9fb295a0c41796dd2",
+      "query_sha256": "3c8e6671438b13a40cf9fbb000b651e075c539ec2a9a41f9410aaa6fc95070c0",
+      "result_sha256": "bc1bffdda9c05ef1e2f0ccb650a0f60c0ecd2532ad4096eda15bb75df46745c9",
+      "verified_at": "2026-10-22T03:28:30.333022+00:00",
+      "authorization_sha256": "c47d9c98e0cf29ce9fc73f3d9379c2884c9e0058b8ab184a9377eb2d5666d257",
+      "rag_citations": [
+        {
+          "chunk_id": "77a7edb384f2cc68ae18f80d9f193a0e910cc3b1be61fd2d0c3da11f75411e35",
+          "start": 0,
+          "end": 103,
+          "line_start": 1,
+          "line_end": 3,
+          "sha256": "172ded94f285154b2b8fcfd78f1ac70a0c9e793ad5542434c457ff2b17f2eb43",
+          "corpus_id": "81d4b9d9-69e0-410e-afca-8216166f2a61",
+          "index_version": "f4ad3a530472b0d5726742d12ba12e97b4d530862f2eba4d1a5ef61205313525",
+          "source_id": "660b61883a4fb8bb6190888c22cad1ecb2d90b1858cff36990c0bfb768b705ea",
+          "document_id": "91739e4618b996b0f94a7c9798351394ef2b04424ac6d744c99d751ee3a05570",
+          "version": "172ded94f285154b2b8fcfd78f1ac70a0c9e793ad5542434c457ff2b17f2eb43",
+          "source_sha256": "172ded94f285154b2b8fcfd78f1ac70a0c9e793ad5542434c457ff2b17f2eb43",
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.7151349952736512,
+          "goal_sha256": "ecba6ad4a6adc2c8dccba1d268afd43403eb86c1f1ffe2634a52803ef2171815",
+          "goal_score": 0.7151350975036621,
+          "page": null
+        }
+      ],
+      "observed_elapsed_ms": 8531.0,
+      "scripted_usage_not_provider_tokens": {
+        "calls": 3,
+        "total_tokens": 45,
+        "reported_tokens": 45,
+        "usage_complete": true
+      },
+      "trace_sha256": "9469a69bb7b86c901b3b3f7305e96615981c422fe2399480b09584ba90850618",
+      "private_case_file": "artifacts/p6b/case-paid_invoice_revenue.json"
+    },
+    {
+      "case": "subscription_churn",
+      "run_id": "34559087-6ee9-49e1-9471-a621f22600cd",
+      "artifact_sha256": "ba3c6c2bc5509d3a51ee24abdc4cf1f3eb6d9cd915cdeae08947cee3fa477285",
+      "request": {
+        "goal_id": "subscription_churn",
+        "dataset_id": "d6c2c624-6b5e-52a3-a03c-04f6b93dd446",
+        "dataset_version": 1,
+        "semantic_version": 1,
+        "metric_id": "subscription_churn",
+        "metric_version": 1,
+        "window": {
+          "start": "2025-10-01",
+          "end_exclusive": "2025-11-01"
+        },
+        "as_of": null,
+        "intent": "measure"
+      },
+      "value": {
+        "value": "0.666666666667",
+        "unit": "ratio",
+        "numerator": 4,
+        "denominator": 6,
+        "window_days": 31
+      },
+      "p3_gold": "0.666666666667",
+      "independent_literal_sql_match": true,
+      "business_completion": "completed",
+      "source_sha256": "87df9a81a06c7301c69a13e9d13fd733545eae7180fa9304c62df8ad10dd1ed7",
+      "semantic_sha256": "7fa73693417210507711a33fb968456395c51c35ed5f3ba80b460dfa89088da3",
+      "metric_sha256": "f1c3a7098022ea358617e3ee0f49541db131c018e2d175a4ea6950ce1e313508",
+      "evidence_id": "680535b6-04bc-4ef7-b783-6165863bfa1c",
+      "evidence_sha256": "c16d5034bae9181da3eec60749f6ccbfcef407b5d822c12824d48247a8c8dc81",
+      "verification": {
+        "verification_id": "affd03bc-632d-4548-a3c8-6be5a8047394",
+        "evidence_id": "680535b6-04bc-4ef7-b783-6165863bfa1c",
+        "dataset_id": "d6c2c624-6b5e-52a3-a03c-04f6b93dd446",
+        "dataset_version": 1,
+        "request_sha256": "f685adc104659b6d2959f5abe9e5f9788f392c88d277f8017187f1e50074a995",
+        "rule_version": "six-layers-1",
+        "checks": [
+          {
+            "layer": "safety",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "shape",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "semantics",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "recomputation",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "references",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "coverage",
+            "status": "passed",
+            "codes": []
+          }
+        ],
+        "verdict": "verified"
+      },
+      "verification_sha256": "e422830520d30cbe9c9666d34ec9f0b6a3e5d924b52eed3b1a0b6eb8068d2d28",
+      "query_sha256": "7df49752bcda74dba27daa3252ba54e0299177104cfae9b4ad3812ead7c3094c",
+      "result_sha256": "e668a04edaae8c8640c8ff7d4ea07b194d9f394097ff1ffa2df4f38341761ca0",
+      "verified_at": "2026-10-22T03:28:59.948492+00:00",
+      "authorization_sha256": "cd773db7942df30ed87b7098e459b0b84187518e776e13290ad41c9def1e3e9c",
+      "rag_citations": [
+        {
+          "chunk_id": "f07cffc520a3265820415ba040579c74e363673206b42891f5c0fab0b06b0636",
+          "start": 0,
+          "end": 112,
+          "line_start": 1,
+          "line_end": 3,
+          "sha256": "3bdac6b18382ab027974d85f4e7dd542e4a2da94ce07a7ca6e675c4c2c30fb64",
+          "corpus_id": "f6c94f85-75c8-4227-add7-26e24031a35b",
+          "index_version": "72e511344ad451c25ec841c8be4be5546fa69ab48626175c791a144d8efae38e",
+          "source_id": "854a7e5f641e9d2c069be92a4e4e188a2a85d337c3bddd4de3272c690a6b3276",
+          "document_id": "9e0c123dcb7204bf39b85dad56f3cb9ea1fe91259229efad94ef940d5b11e424",
+          "version": "3bdac6b18382ab027974d85f4e7dd542e4a2da94ce07a7ca6e675c4c2c30fb64",
+          "source_sha256": "3bdac6b18382ab027974d85f4e7dd542e4a2da94ce07a7ca6e675c4c2c30fb64",
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.6983995617389953,
+          "goal_sha256": "3a4cbc78071520d8a2788f5af7b0e881a3093b4a8e0c30d8b81b646a80a95468",
+          "goal_score": 0.6983996033668518,
+          "page": null
+        }
+      ],
+      "observed_elapsed_ms": 8156.0,
+      "scripted_usage_not_provider_tokens": {
+        "calls": 3,
+        "total_tokens": 45,
+        "reported_tokens": 45,
+        "usage_complete": true
+      },
+      "trace_sha256": "464449638c362310607f90fbd6c4d219823c68f996789e96c6ddba3049ef1574",
+      "private_case_file": "artifacts/p6b/case-subscription_churn.json"
+    },
+    {
+      "case": "usage",
+      "run_id": "a295c316-b28c-4928-b7a6-f4e7413c7e51",
+      "artifact_sha256": "b5f4e2e660533ffe4b0db6009b247ce5ee470023d8b7cda177bc16a0cd5836a4",
+      "request": {
+        "goal_id": "usage",
+        "dataset_id": "d6c2c624-6b5e-52a3-a03c-04f6b93dd446",
+        "dataset_version": 1,
+        "semantic_version": 1,
+        "metric_id": "usage",
+        "metric_version": 1,
+        "window": {
+          "start": "2025-10-01",
+          "end_exclusive": "2025-11-01"
+        },
+        "as_of": null,
+        "intent": "measure"
+      },
+      "value": {
+        "value": "35",
+        "unit": "events",
+        "numerator": null,
+        "denominator": null,
+        "window_days": 31
+      },
+      "p3_gold": "35",
+      "independent_literal_sql_match": true,
+      "business_completion": "completed",
+      "source_sha256": "87df9a81a06c7301c69a13e9d13fd733545eae7180fa9304c62df8ad10dd1ed7",
+      "semantic_sha256": "7fa73693417210507711a33fb968456395c51c35ed5f3ba80b460dfa89088da3",
+      "metric_sha256": "99642d1cab7d19c4dd33fcf9b7fde4ac34d4b5bbaee3c88ddf84d280c1f2a2e4",
+      "evidence_id": "b31cf5a9-12ec-4d24-83cc-d1b4a55bb856",
+      "evidence_sha256": "f1ed0c003ca463aa8d0425054b7e262bec14728cf8040ce1145bb1fe037b6531",
+      "verification": {
+        "verification_id": "3ad4fcb9-2b62-4bfb-9733-a99b5451078a",
+        "evidence_id": "b31cf5a9-12ec-4d24-83cc-d1b4a55bb856",
+        "dataset_id": "d6c2c624-6b5e-52a3-a03c-04f6b93dd446",
+        "dataset_version": 1,
+        "request_sha256": "8956066d5cda4b6821bf7cea9499ea694fd006ba3d38031a72b641537660bbe3",
+        "rule_version": "six-layers-1",
+        "checks": [
+          {
+            "layer": "safety",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "shape",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "semantics",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "recomputation",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "references",
+            "status": "passed",
+            "codes": []
+          },
+          {
+            "layer": "coverage",
+            "status": "passed",
+            "codes": []
+          }
+        ],
+        "verdict": "verified"
+      },
+      "verification_sha256": "0703dba472bd7ccd33e5283d54f1c8fd1a9c58e36859b9dc4a876db844c64f87",
+      "query_sha256": "e6af1868675c99934d55db0876d8da159810b82df5c77a59c6a1d0c80900c590",
+      "result_sha256": "1b9efa9926b185af68f845db963602bf0a40800c0b681069914705970d30fdeb",
+      "verified_at": "2026-10-22T03:29:14.400681+00:00",
+      "authorization_sha256": "15be5e8fab217bdc16adea482d0dac40b1c0c711419620bf5c5da506fa1704cb",
+      "rag_citations": [
+        {
+          "chunk_id": "a05852de784b37311a9effe8323b5e8532a0b8d459277c96c84a5b5b3e2ccad4",
+          "start": 0,
+          "end": 107,
+          "line_start": 1,
+          "line_end": 3,
+          "sha256": "9385098013b69d3b909d580cc70a9a1de7650f0d55cce0812c368b8294469d46",
+          "corpus_id": "02f92fc4-f805-42b4-af18-c82715420246",
+          "index_version": "9c24068b3d2b73595c5789d117129f4702363de856ffaacd3bb048d031314e2c",
+          "source_id": "f5058631803b65d6d55416ad23cf27666b42cbf7b8d086416bd736fe14f3bf5e",
+          "document_id": "aaa066c080cc166d79acf73f647b07e69729659d3c1b227bcf14d2946971404b",
+          "version": "9385098013b69d3b909d580cc70a9a1de7650f0d55cce0812c368b8294469d46",
+          "source_sha256": "9385098013b69d3b909d580cc70a9a1de7650f0d55cce0812c368b8294469d46",
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.7091942602876282,
+          "goal_sha256": "d10a12ad119c9562b7b306a8b4de430eccf4a6b1cb304134cb173cbc667c3b4d",
+          "goal_score": 0.7091943025588989,
+          "page": null
+        }
+      ],
+      "observed_elapsed_ms": 8157.0,
+      "scripted_usage_not_provider_tokens": {
+        "calls": 3,
+        "total_tokens": 45,
+        "reported_tokens": 45,
+        "usage_complete": true
+      },
+      "trace_sha256": "f855d6a54fe6b6bb983221b4cf1bab322b4559830171381c52da26696581f01b",
+      "private_case_file": "artifacts/p6b/case-usage.json"
+    }
+  ],
+  "remaining": [
+    "No new real-model complex analysis experiment",
+    "No general NL entailment or causal proof",
+    "Host-reviewed mappings/definitions and scope required",
+    "No UI/Langfuse/production multi-tenancy/P11 engines"
+  ]
+}

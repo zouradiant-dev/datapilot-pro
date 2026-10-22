@@ -9,6 +9,7 @@ from datapilot.orchestration.contracts import (
     TaskResult,
     VerificationResult,
 )
+from datapilot.reporting.contracts import BusinessCompletion, CrossSourceReport
 
 
 class GraphState(TypedDict):
@@ -32,6 +33,9 @@ def merge_results(left: dict, right: dict) -> dict:
 
 
 class RunState(TypedDict, total=False):
+    execution_status: str
+    business_completion: BusinessCompletion
+    cross_source_report: CrossSourceReport | None
     run_id: str
     question: str
     status: Literal[

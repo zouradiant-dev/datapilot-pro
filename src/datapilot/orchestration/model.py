@@ -265,6 +265,22 @@ class FakeTransport:
         await asyncio.sleep(0)  # Real cooperative scheduling; no blocking provider call.
         system = messages[0].content
         question = next(m.content for m in messages if isinstance(m, HumanMessage))
+        if system.startswith("REPORT_PLAN_JSON"):
+            goals = json.loads(system.split("HOST_APPROVED_GOALS: ", 1)[1])
+            return AIMessage(
+                content=Plan(
+                    tasks=[
+                        *[TaskSpec(**g) for g in goals],
+                        TaskSpec(
+                            task_id="report",
+                            worker="report",
+                            instruction="汇总已验证证据",
+                            dependencies=[g["task_id"] for g in goals],
+                        ),
+                    ]
+                ).model_dump_json(),
+                usage_metadata={"input_tokens": 0, "output_tokens": 0, "total_tokens": 0},
+            )
         if system.startswith("PLAN_JSON"):
             if (
                 "rag" in system.split("capabilities: ", 1)[1].split(".", 1)[0]

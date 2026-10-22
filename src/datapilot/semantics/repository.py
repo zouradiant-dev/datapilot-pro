@@ -7,9 +7,15 @@ import sqlalchemy as sa
 
 from datapilot.contracts import AgentFailure
 from datapilot.datasets.repository import DatasetRepository
-from datapilot.db.semantic_schema import evidence
+from datapilot.db.semantic_schema import evidence, verification_runs
 from datapilot.ingestion.common import digest
-from datapilot.semantics.contracts import Evidence, MetricContext, MetricProof, MetricRequest
+from datapilot.semantics.contracts import (
+    Evidence,
+    MetricContext,
+    MetricProof,
+    MetricRequest,
+    VerificationRecord,
+)
 from datapilot.semantics.recipes import build_context, missing, quote, request_missing
 from datapilot.semantics.recompute import compute_rows
 from datapilot.semantics.registry import metric_record, semantic_record, stored_record
@@ -143,3 +149,24 @@ class MetricRepository:
                     "REFERENCE_NOT_FOUND", "Evidence is outside the bound source version"
                 )
             return stored_record(conn, evidence, "evidence_id", evidence_id, Evidence)
+
+    def verification(self, dataset_id: str, verification_id: str) -> VerificationRecord:
+        schema = self.datasets.schema(dataset_id)
+        with self.datasets.sql.engine.connect() as conn, conn.begin():
+            self.datasets.sql._configure(conn)
+            found = conn.execute(
+                sa.select(verification_runs.c.verification_id).where(
+                    verification_runs.c.verification_id == verification_id,
+                    verification_runs.c.dataset_id == dataset_id,
+                    verification_runs.c.dataset_version == schema.version,
+                )
+            ).scalar_one_or_none()
+            if found is None:
+                raise AgentFailure("DATASET_NOT_AUTHORIZED", "Verification is outside bound scope")
+            return stored_record(
+                conn,
+                verification_runs,
+                "verification_id",
+                verification_id,
+                VerificationRecord,
+            )

@@ -140,7 +140,12 @@ class MCPDatasetTools(MCPDatabaseTools):
 
 
 class MCPMetricTools(MCPDatasetTools):
-    allowed = MCPDatasetTools.allowed | {"get_metric_context", "recompute_metric", "get_evidence"}
+    allowed = MCPDatasetTools.allowed | {
+        "get_metric_context",
+        "recompute_metric",
+        "get_evidence",
+        "get_verification",
+    }
 
     def _check_source(self, value):
         expected = self.bindings.get(value.dataset_id)
@@ -191,6 +196,22 @@ class MCPMetricTools(MCPDatasetTools):
             return result
         except (ValidationError, ValueError) as exc:
             raise AgentFailure("TOOL_OUTPUT_INVALID", "Invalid evidence reference") from exc
+
+    async def verification(self, dataset_id, verification_id):
+        from datapilot.semantics.contracts import VerificationRecord
+
+        payload = await self.call(
+            "get_verification", {"dataset_id": dataset_id, "verification_id": verification_id}
+        )
+        try:
+            value = VerificationRecord.model_validate_json(json.dumps(payload.get("verification")))
+            if value.dataset_id != dataset_id or value.verification_id != verification_id:
+                raise ValueError("Verification reference mismatch")
+            if self.bindings.get(dataset_id) != value.dataset_version:
+                raise ValueError("Verification version outside scope")
+            return value
+        except (ValueError, TypeError) as exc:
+            raise AgentFailure("TOOL_OUTPUT_INVALID", "Invalid verification reference") from exc
 
 
 def server_environment(settings: Settings) -> dict[str, str]:

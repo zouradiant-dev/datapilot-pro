@@ -28,13 +28,22 @@ from datapilot.orchestration.tools import CAPABILITIES
 from datapilot.persistence.backend import Backend, DurableArtifacts, DurableLedger, execute
 from datapilot.persistence.journal import Journal
 from datapilot.rag import contracts as rag_contracts
+from datapilot.reporting import contracts as report_contracts
+from datapilot.reporting.service import report_session
 from datapilot.runtime.mcp_client import database_session, dataset_session, metric_session
 from datapilot.semantics import contracts as semantic_contracts
 
 
 def serializer():
     allowed = []
-    for module in (core_contracts, contracts, context_contracts, semantic_contracts, rag_contracts):
+    for module in (
+        core_contracts,
+        contracts,
+        context_contracts,
+        semantic_contracts,
+        rag_contracts,
+        report_contracts,
+    ):
         allowed.extend(
             value
             for value in vars(module).values()
@@ -191,6 +200,7 @@ async def run_durable(
     fault=None,
     ttl_seconds=86400,
     rag_scope=None,
+    report_scope=None,
 ):
     if approve is not None and type(approve) is not bool:
         raise ValueError("Approval must be a trusted host boolean")
@@ -219,18 +229,27 @@ async def run_durable(
             if rag_scope is not None and rag_scope.owner != owner:
                 raise AgentFailure("RECOVERY_FORBIDDEN", "RAG scope belongs to another owner")
             async with (
+                report_session(settings, report_scope, question, owner) as reporting,
                 database_session(settings) as tools,
-                rag_session(settings, rag_scope, goal=question) as retrieval,
+                rag_session(
+                    settings, rag_scope, goal=reporting.rag_question if reporting else question
+                ) as retrieval,
             ):
+                if reporting and reporting.scope.document_goal and retrieval is None:
+                    raise AgentFailure("REPORT_SCOPE_INVALID", "Document goal needs host RAG scope")
                 schema = (
                     await tools.schema()
                 )  # Fresh trusted connection, role and schema validation.
                 manifest = fingerprint(settings, question, owner, schema, metadata, require_review)
+                if reporting:
+                    manifest["cross_source_report"] = reporting.manifest()
                 if rag_scope is not None:
                     manifest["rag_completion_protocol"] = "rag-submit-v1"
                     from datapilot.orchestration.rag_completion import retrieval_goal
 
-                    manifest["rag_completion_goal"] = retrieval_goal(question)
+                    manifest["rag_completion_goal"] = retrieval_goal(
+                        reporting.rag_question if reporting else question
+                    )
                     manifest["rag_scope"] = rag_scope.model_dump(mode="json")
                     manifest["rag_sources"] = retrieval.context_scope().model_dump(mode="json")
                 limits = contracts.BudgetLimits(
@@ -280,7 +299,10 @@ async def run_durable(
                         context_metadata=metadata,
                         interrupt_before=interrupt_before,
                         interrupt_after=interrupt_after,
+                        reporting=reporting,
                     )
+                    if reporting:
+                        await reporting.refresh(store.export().values())
                     with backend.transaction() as conn:
                         events = [
                             r[0]

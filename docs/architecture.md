@@ -2,7 +2,7 @@
 
 ## 1. 目标、阶段边界与技术决策
 
-面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。当前 P0–P5B 与 P6A 有界真实检索已实现；各节保留历史阶段边界，最新补强见第 24 节。不宣称生产多租户或完整 Gate C 已完成。
+面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。当前 P0–P6A 与 P6B 可信报告桥接已实现；各节保留历史阶段边界，最新实现见文末 P6B 节。不宣称生产多租户、因果验证或真实模型完整业务基准已完成。
 
 第 2–9 节记录 Day 1 历史基线；第 10 节起是 v2 目标设计，第 15–18 节更新各阶段实现。完整现状/缺口见 [代码审计](planning-audit-v2.md)，实施依赖与验收见 [v2 路线图](roadmap-v2.md)。旧七天计划已废止；工作单元不绑定日期。SaaS 是唯一首发主业务，干洗店通过后续 Domain Pack 扩展。
 
@@ -371,3 +371,13 @@ flowchart TD
 检索成功、非空不足、业务结论未验证分开：原文定位和绑定宿主原始目标的语义相关证据均可满足检索任务，但授权/版本/原件跨度/hash/数量要求仍须通过。收据永不自授 P3 verified；因果/指标结论留给外层及后续 P6B。不是只凭非空或向量分数完成。
 
 沿用官方 Saver/原 Journal/父子预算；修复直接进入 Tools 的跨进程重放授权重建，完成收据绑定已提交原生模型响应与工具参数。已提交幂等复用；未知结果继续阻断，旧真实 RAG 协议不兼容时安全拒绝。没有新增迁移/框架/Fork，L0–L4 压缩算法和 Memory 契约不变。详见 [交付与测试](rag-completion-repair.md)、[ADR-011](adr/0011-rag-completion-gate.md)。
+
+## 25. P6B：P3/P4 桥接与跨来源报告
+
+实际链路、桥接 DTO 和验证记录见 [cross-source-report](cross-source-report.md)、[ADR-012](adr/0012-cross-source-report.md)。可信 ReportScope 绑定原始问题、owner、显式 Dataset/version、已经确认的 MetricRequest 和文档目标关联；Planner 通过原 Gateway 只安排这些源任务和 report。没有另建 Runtime、Agent Loop、ToolRegistry 或业务 Verifier。SQL/Decimal 分析复用原 P3 analyze 与封闭配方；RAG 继续原独立 Worker Loop，Report 是确定性证据投影。
+
+新增 MetricBridge 保存最小 Context、Source/Semantic/Metric/query/result hash、时间窗口/单位/过滤与 P3 Evidence/Verification ID/hash/原 verdict。MCP 新增受原 DatasetScope 限制的 get_verification，只读且不改变 grants。可信宿主的 Registry 写操作不是模型工具；原 ask 未配置 ReportScope 时仍不把普通 SQL/Artifact 当作 P3 verified。报告/图表仅使用经 scoped MCP 重新核对的 verified 数值，文档另验原件引用/相关性/指标关联，不建立因果事实。
+
+报告依赖可在源任务终态后执行，以显式显示缺失/不可用；P4 依赖检查仍核对状态和授权，不能升级失败源。源任务安全局部重试复用已验证/明确不可用的原源结果，Report 重新投影，不做全量模型 Replan。已提交 P3 操作/报告工件沿用 Journal 幂等重放，P3 已持久化而 Journal 未提交的未知窗口阻断重发；恢复重新核对 P3 refs/verdict 和 RAG source/index/chunk。
+
+原 status/completion 保持兼容；仅报告模式增加版本化 execution_status、business_completion、结构化 claims/charts，明确 completed/partial/unavailable/blocked、缺证据与未确认结论。可复用事实契约记录授权、快照、P3/RAG 引用、业务定义、时间/单位/过滤和验证观察时间；不是缓存命中、降级或 SLA 实现。本阶段停止在 P6B，不进入 P6C/P7/P11。

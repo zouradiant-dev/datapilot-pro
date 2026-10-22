@@ -93,9 +93,11 @@ class Coordinator:
         durability=None,
         interrupt_before=None,
         interrupt_after=None,
+        reporting=None,
     ):
         self.settings, self.run_id = settings, run_id
         self.question = None
+        self.reporting = reporting
         self.context_metadata = context_metadata or {}
         self.memory_store = memory_store
         self.memory_source_versions = memory_source_versions or {}
@@ -138,6 +140,8 @@ class Coordinator:
         plan = Plan.model_validate_json(plan.model_dump_json())
         if len(plan.tasks) > self.settings.max_tasks:
             raise AgentFailure("PLAN_INVALID", "Plan exceeds the host task quota")
+        if self.reporting:
+            self.reporting.validate_plan(plan)
         if any(t.worker not in self.available for t in plan.tasks):
             raise AgentFailure(
                 "CAPABILITY_UNAVAILABLE", "Plan requires a capability the host did not grant"
@@ -156,8 +160,30 @@ class Coordinator:
 
     def envelope(self, state: RunState, task: TaskSpec) -> TaskEnvelope:
         refs = []
+        dependency_statuses = None
+        if self.reporting and task.worker == "report":
+            dependency_statuses = {}
+            for dependency in task.dependencies:
+                k = key(state["plan_version"], dependency)
+                verified = state["verifications"][k]
+                dependency_statuses[dependency] = (
+                    "failed" if verified.status == "failed" else state["results"][k].status
+                )
         for dependency in task.dependencies:
             parent = state["results"][key(state["plan_version"], dependency)]
+            if (
+                self.reporting
+                and task.worker == "report"
+                and dependency_statuses[dependency] not in {"succeeded", "unavailable"}
+            ):
+                continue
+            if (
+                self.reporting
+                and task.worker == "report"
+                and parent.worker == "rag"
+                and (parent.status != "succeeded")
+            ):
+                continue
             refs.extend(parent.evidence_refs)
         refs = list({r.artifact_id: r for r in refs}.values())
         root = self.ledger.accounts["root"].limits
@@ -165,12 +191,17 @@ class Coordinator:
             run_id=state["run_id"],
             plan_version=state["plan_version"],
             task=task,
-            allowed_tools=sorted(delegated_tools(task.worker, self.retrieval)),
+            allowed_tools=(
+                []
+                if self.reporting and task.task_id in self.reporting.requests
+                else sorted(delegated_tools(task.worker, self.retrieval))
+            ),
             input_refs=refs,
             budget=BudgetLimits(
                 calls=min(root.calls, self.settings.max_worker_turns), tokens=root.tokens
             ),
             parent_id=state["run_id"],
+            dependency_statuses=dependency_statuses,
         )
 
     async def execute(self, envelope: TaskEnvelope) -> TaskResult:
@@ -190,13 +221,27 @@ class Coordinator:
             max_sql_attempts=self.settings.max_sql_attempts,
             max_view_chars=self.settings.max_tool_view_chars,
             durability=self.durability,
-            rag_goal=retrieval_goal(self.question or ""),
+            rag_goal=retrieval_goal(
+                self.reporting.rag_question if self.reporting else self.question or ""
+            ),
         )
         status, error, refs = "succeeded", None, []
         self.trace.emit("worker", "started", version=envelope.plan_version, task_id=task.task_id)
         try:
             self.cancel.check()
-            if task.worker in {"analysis", "report"}:
+            if self.reporting and task.task_id in self.reporting.requests:
+                refs = [await self.execute_metric(envelope)]
+                bridge = self.store.get(refs[0]).metric
+                if bridge.verdict != "verified":
+                    status = "unavailable"
+                    error = execution_error(
+                        AgentFailure(
+                            "METRIC_EVIDENCE_UNAVAILABLE", "P3 did not verify this metric goal"
+                        )
+                    )
+            elif self.reporting and task.worker == "report":
+                refs = [await self.execute_report(envelope)]
+            elif task.worker in {"analysis", "report"}:
                 ref = self.deterministic(envelope)
                 refs = [ref]
             else:
@@ -342,6 +387,108 @@ class Coordinator:
         )
         return result
 
+    async def execute_metric(self, envelope):
+        """Trusted infrastructure operation, never registered as a model tool."""
+        request = self.reporting.requests[envelope.task.task_id]
+        journal, call_key = self.durability, None
+        started = time.monotonic()
+        try:
+            if journal:
+                call_key, cached = journal.begin_tool(
+                    envelope,
+                    "p3_metric_execution",
+                    {"request": request.model_dump(mode="json")},
+                    "metric",
+                )
+                if cached is not None:
+                    ref = EvidenceRef.model_validate(cached["artifact_refs"][0])
+                    await self.reporting.refresh([self.store.get(ref)])
+                    return ref
+            bridge = await self.cancel.wait_for(
+                self.reporting.compute(request.goal_id), 60, timeout_code="TOOL_TIMEOUT"
+            )
+            if journal:
+                journal.backend.hit("report_p3_persisted")
+            ref = self.store.put(
+                Artifact(
+                    run_id=self.run_id,
+                    task_id=request.goal_id,
+                    plan_version=envelope.plan_version,
+                    kind="metric",
+                    source="P3/six-layers-1",
+                    metric=bridge,
+                )
+            )
+            if journal:
+                journal.finish_tool(
+                    call_key,
+                    {"artifact_refs": [ref.model_dump()]},
+                    (time.monotonic() - started) * 1000,
+                )
+                journal.backend.hit("report_metric_committed")
+            self.trace.emit(
+                "metric_execution",
+                bridge.verdict,
+                version=envelope.plan_version,
+                task_id=request.goal_id,
+                refs=[ref],
+            )
+            return ref
+        except BaseException:
+            if journal and call_key:
+                journal.finish_tool(
+                    call_key, {"error": {"code": "RECOVERY_UNCERTAIN"}}, 0, uncertain=True
+                )
+            raise
+
+    async def execute_report(self, envelope):
+        journal, call_key = self.durability, None
+        started = time.monotonic()
+        try:
+            if journal:
+                call_key, cached = journal.begin_tool(
+                    envelope,
+                    "verified_report_projection",
+                    {
+                        "inputs": [r.model_dump() for r in envelope.input_refs],
+                        "source_statuses": envelope.dependency_statuses,
+                    },
+                    "report",
+                )
+                if cached is not None:
+                    if cached.get("error"):
+                        raise AgentFailure(
+                            "REPORT_PROJECTION_FAILED", "Prior report projection failed"
+                        )
+                    return EvidenceRef.model_validate(cached["artifact_refs"][0])
+            parents = [(r, self.store.get(r)) for r in envelope.input_refs]
+            report = self.reporting.build(
+                parents, self.retrieval, source_statuses=envelope.dependency_statuses
+            )
+            ref = self.store.put(
+                Artifact(
+                    run_id=self.run_id,
+                    task_id=envelope.task.task_id,
+                    plan_version=envelope.plan_version,
+                    kind="report",
+                    source="P6B/cross-source-report-1",
+                    report=report,
+                    parents=envelope.input_refs,
+                )
+            )
+            if journal:
+                journal.finish_tool(
+                    call_key,
+                    {"artifact_refs": [ref.model_dump()]},
+                    (time.monotonic() - started) * 1000,
+                )
+                journal.backend.hit("report_artifact_committed")
+            return ref
+        except BaseException:
+            if journal and call_key:
+                journal.finish_tool(call_key, {"error": {"code": "REPORT_PROJECTION_FAILED"}}, 0)
+            raise
+
     def deterministic(self, envelope: TaskEnvelope) -> EvidenceRef:
         task = envelope.task
         if task.worker == "report":
@@ -407,9 +554,9 @@ class Coordinator:
             if task.worker not in self.available:
                 raise AgentFailure("VERIFICATION_ERROR", "Result used an unavailable capability")
             for dep in task.dependencies:
-                if (
-                    state["verifications"].get(key(state["plan_version"], dep), None) is None
-                    or state["verifications"][key(state["plan_version"], dep)].status != "passed"
+                if state["verifications"].get(key(state["plan_version"], dep), None) is None or (
+                    state["verifications"][key(state["plan_version"], dep)].status != "passed"
+                    and not (self.reporting and task.worker == "report")
                 ):
                     raise AgentFailure("VERIFICATION_ERROR", "Dependency did not pass verification")
             envelope = self.envelope(state, task)
@@ -422,7 +569,9 @@ class Coordinator:
                 if receipt is None:
                     raise AgentFailure("EVIDENCE_INVALID", "A committed RAG submission is required")
                 receipt = RagCompletionReceipt.model_validate_json(receipt.model_dump_json())
-                goal = retrieval_goal(self.question or "")
+                goal = retrieval_goal(
+                    self.reporting.rag_question if self.reporting else self.question or ""
+                )
                 origin_version = state["plan_version"]
                 if result.reused_from:
                     if self.reused.get(key(origin_version, task.task_id)) != result.reused_from:
@@ -463,6 +612,8 @@ class Coordinator:
                 "analysis": "analysis",
                 "report": "report",
             }[task.worker]
+            if self.reporting and task.task_id in self.reporting.requests:
+                expected_kind = "metric"
             for ref in result.evidence_refs:
                 artifact = self.store.get(ref)
                 expected_version = state["plan_version"]
@@ -484,6 +635,19 @@ class Coordinator:
                     )
                 if artifact.query and artifact.query.row_count > self.settings.max_rows:
                     raise AgentFailure("VERIFICATION_ERROR", "Query result exceeds host row limit")
+                if artifact.metric:
+                    if not self.reporting:
+                        raise AgentFailure("VERIFICATION_ERROR", "No trusted P3 adapter")
+                    self.reporting.verify_metric(artifact.metric)
+                if artifact.report:
+                    if not self.reporting:
+                        raise AgentFailure("VERIFICATION_ERROR", "No trusted Report scope")
+                    self.reporting.verify_report(
+                        artifact.report,
+                        [(r, self.store.get(r)) for r in artifact.parents],
+                        self.retrieval,
+                        source_statuses=envelope.dependency_statuses,
+                    )
                 if artifact.documents and any(
                     text_hash(d.text) != d.sha256 for d in artifact.documents.documents
                 ):
@@ -538,8 +702,11 @@ class Coordinator:
                     self.gateway.trace = self.trace
                 steps = step(state)
                 self.question = state["question"]
-                plan = self.fast_plan(state["question"]) or await self.planner.plan(
-                    state["question"]
+                plan = (
+                    await self.reporting.plan(self.gateway)
+                    if self.reporting
+                    else self.fast_plan(state["question"])
+                    or await self.planner.plan(state["question"])
                 )
                 plan = self.validate_plan(plan)
                 self.plans[1] = plan
@@ -592,7 +759,12 @@ class Coordinator:
                 ready = [
                     t
                     for t in pending
-                    if all(
+                    if (
+                        self.reporting
+                        and t.worker == "report"
+                        and all(key(version, d) in state["verifications"] for d in t.dependencies)
+                    )
+                    or all(
                         state["verifications"].get(key(version, d))
                         and state["verifications"][key(version, d)].status == "passed"
                         for d in t.dependencies
@@ -630,8 +802,10 @@ class Coordinator:
             result = await self.execute(envelope)
             return {"results": {key(result.plan_version, result.task_id): result}}
 
-        def verifier(state):
+        async def verifier(state):
             try:
+                if self.reporting:
+                    await self.reporting.refresh(self.store.export().values())
                 steps = step(state)
                 version = state["plan_version"]
                 updates = {}
@@ -682,7 +856,9 @@ class Coordinator:
                     if r.plan_version == state["plan_version"]
                 ]
                 plan = self.validate_plan(
-                    await self.planner.plan(state["question"], feedback=feedback)
+                    state["plan"]
+                    if self.reporting
+                    else await self.planner.plan(state["question"], feedback=feedback)
                 )
                 self.plans[version] = plan
                 # Reuse only unchanged, verified task subtrees; source permissions never expand.
@@ -697,7 +873,13 @@ class Coordinator:
                             or now in reused
                             or old.get(task.task_id) != task
                             or not state["verifications"].get(prior)
-                            or state["verifications"][prior].status != "passed"
+                            or (
+                                state["verifications"][prior].status != "passed"
+                                and not (
+                                    self.reporting
+                                    and state["verifications"][prior].status == "unavailable"
+                                )
+                            )
                         ):
                             continue
                         if not all(key(version, d) in reused for d in task.dependencies):
@@ -915,6 +1097,15 @@ class Coordinator:
                     elif result.status == "unavailable":
                         lines.append(cell(result.error.message))
                 answer = "\n".join(lines)
+            report_fields = {}
+            if self.reporting:
+                from datapilot.reporting.adapter import finalize
+
+                report_fields = finalize(self, state, status)
+                if report_fields.get("cross_source_report"):
+                    answer = report_fields["cross_source_report"].markdown
+                if report_fields.get("completion"):
+                    completion = report_fields.pop("completion")
             self.trace.emit(
                 "completion",
                 completion.status,
@@ -935,6 +1126,7 @@ class Coordinator:
                 "result": legacy_result,
                 "results": terminal_missing,
                 "completion": completion,
+                **report_fields,
             }
 
         builder = StateGraph(RunState)

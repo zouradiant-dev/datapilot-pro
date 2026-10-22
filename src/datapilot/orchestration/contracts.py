@@ -2,10 +2,11 @@
 
 from typing import Annotated, Literal
 
-from pydantic import Field, model_validator
+from pydantic import Field, model_serializer, model_validator
 
 from datapilot.contracts import Contract, QueryResult
 from datapilot.rag.contracts import ChunkCitation, EmbeddingUsage
+from datapilot.reporting.contracts import CrossSourceReport, MetricBridge
 
 TaskId = Annotated[str, Field(pattern=r"^[a-z][a-z0-9_]{0,47}$")]
 Digest = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
@@ -85,7 +86,7 @@ class Usage(Contract):
 
 class EvidenceRef(Contract):
     artifact_id: Digest
-    kind: Literal["query", "documents", "analysis", "report", "schema", "context"]
+    kind: Literal["query", "documents", "analysis", "report", "schema", "context", "metric"]
     sha256: Digest
 
 
@@ -115,6 +116,16 @@ class TaskEnvelope(Contract):
     input_refs: list[EvidenceRef] = Field(default_factory=list, max_length=48)
     budget: BudgetLimits
     parent_id: str = Field(max_length=64)
+    dependency_statuses: (
+        dict[TaskId, Literal["succeeded", "failed", "unavailable", "cancelled", "blocked"]] | None
+    ) = Field(default=None, max_length=12)
+
+    @model_serializer(mode="wrap")
+    def legacy_projection(self, handler):
+        data = handler(self)
+        if self.dependency_statuses is None:
+            data.pop("dependency_statuses", None)
+        return data
 
 
 class TaskResult(Contract):
@@ -177,13 +188,23 @@ class Artifact(Contract):
     run_id: str
     task_id: TaskId
     plan_version: int
-    kind: Literal["query", "documents", "analysis", "report", "schema", "context"]
+    kind: Literal["query", "documents", "analysis", "report", "schema", "context", "metric"]
     source: str = Field(max_length=256)
     sql: str | None = Field(default=None, max_length=12000)
     query: QueryResult | None = None
     documents: SearchResult | None = None
+    metric: MetricBridge | None = None
+    report: CrossSourceReport | None = None
     values: dict[str, str] = Field(default_factory=dict, max_length=4)
     parents: list[EvidenceRef] = Field(default_factory=list, max_length=48)
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_hash(self, handler):
+        value = handler(self)
+        for name in ("metric", "report"):
+            if getattr(self, name) is None:
+                value.pop(name, None)
+        return value
 
     @model_validator(mode="after")
     def payload_matches_kind(self):
@@ -195,6 +216,10 @@ class Artifact(Contract):
             raise ValueError("Schema artifacts require complete schema text")
         if self.kind == "context" and set(self.values) != {"messages"}:
             raise ValueError("Context artifacts require the complete original transcript")
+        if (self.kind == "metric") != (self.metric is not None):
+            raise ValueError("Metric artifacts need an explicit P3 bridge")
+        if self.report is not None and self.kind != "report":
+            raise ValueError("Report payload belongs only to a report artifact")
         return self
 
 
@@ -253,6 +278,14 @@ class CompletionDecision(Contract):
     verified_tasks: list[TaskId] = Field(default_factory=list, max_length=12)
     reason_codes: list[str] = Field(default_factory=list, max_length=32)
     business_metrics_required: bool = False
+    business_evidence_verified: bool = False
+
+    @model_serializer(mode="wrap")
+    def legacy_projection(self, handler):
+        data = handler(self)
+        if not self.business_evidence_verified:
+            data.pop("business_evidence_verified", None)
+        return data
 
     @model_validator(mode="after")
     def derived_completion(self):
@@ -261,7 +294,7 @@ class CompletionDecision(Contract):
         if self.status == "completed" and (
             not self.required_tasks
             or set(self.required_tasks) != set(self.verified_tasks)
-            or self.business_metrics_required
+            or (self.business_metrics_required and not self.business_evidence_verified)
         ):
             raise ValueError("Task checks alone cannot complete a business metric request")
         return self

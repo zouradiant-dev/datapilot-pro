@@ -111,3 +111,11 @@ P6A 新增显式 `rag_scope` / CLI `--rag-scope`，不改变普通 SaaS 的旧�
 `rag-submit-v1` 将原始宿主目标/相关性策略与完成协议绑定 manifest；缺少该协议的旧真实 RAG Run 明确 RECOVERY_IDENTITY，不修改历史记录或静默迁移。普通 SaaS 旧身份不变。真实 RAG Tools 节点在直接恢复时也从该 checkpoint 已闭合 ToolMessage 重建证据 grants，避免只在 Decide 重建导致提交重放失败。
 
 收据必须对应同账户已提交模型响应 SHA、原生 submit_rag_result 的 call_id/参数，以及已提交工具日志。一次纠正在原 calls 中原子记账；相同触发重复返回原通知，第二次触发拒绝。提交已验证但未写入日志的故障窗口仍视为未知，禁止自动重发；已提交收据幂等恢复，不增加搜索、模型调用或扣减。仅接收检索完成，不将相关文本/哈希变成业务 verified。完整故障与语义边界见 [本轮交付](rag-completion-repair.md)。
+
+## P6B 报告兼容补充
+
+可信 `report_scope` / CLI `--report-scope` 固定授权问题、Dataset/Metric/Semantic 版本和文档目标；该范围与新 MCP 会话获取的 source/context hash 加入 manifest，恢复须由宿主重新提供，不能从摘要/Checkpoint 自授。未开启报告模式的历史 manifest 与 Artifact 序列化不变；新增 metric/report 字段为 None 时省略，保留旧引用 hash。序列化白名单仅新增 reporting DTO，没有 pickle 回退。
+
+宿主 P3 计算记作原 Journal 的 `p3_metric_execution`，报告投影记作 `verified_report_projection`；两者不是模型工具。已提交返回原 Artifact ID/hash，随后经只读 scoped MCP 重读持久 Evidence/Verification；值、单位、语义/指标版本、source/query/result hash 或 verdict 有变即关闭。没有修改 P3 已发布验证记录，也不增加第二个恢复引擎。
+
+P3 Registry append 与 execution Journal 不在一个全局事务。进程在 P3 Evidence/Verification 追加后、工件/Journal 提交前退出时，调用仍 issued/uncertain；恢复报 RECOVERY_UNCERTAIN，不重新执行 P3，也不生成第二套 Evidence。工具/模型已提交后的 metric/report 工件和 RAG 收据可重用；真实故障注入还检查恢复前后 P3 ID/hash 数量完全一致，预算不重复结算。见 [P6B 交付与测试](cross-source-report.md)。
