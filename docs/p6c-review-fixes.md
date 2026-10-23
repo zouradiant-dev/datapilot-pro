@@ -1,8 +1,29 @@
 # P6C 六项 Review 修复记录
 
-审查与开发基线：`e25adfcea94aa79d53e0e888da26c85592230fe6`。仅修复 A–F 及复审发现的两个相关 P2，不进入 P6C.1/P7。本记录为提交前验收快照；2026-10-23 用户另行授权本次本地 Git 提交，未授权推送。本轮验证独立于历史 GitHub CI；没有付费模型调用。数据库、MCP、PG Saver 和文档 Embedding 使用真实实现，模型决策使用 Fake，UI 协议另有明确 Mock 测试。
+审查与开发基线：`e25adfcea94aa79d53e0e888da26c85592230fe6`。修复代码已提交为 `71695b80c20fce390c96504d2beabc6bbe05b34a`。范围仍限六项问题及复审两个相关 P2，不进入 P6C.1/P7。2026-10-23 用户追加授权：最终源码完整 pytest 与浏览器 Smoke 通过后，提交验证记录、推送并检查 CI。本记录最新节为该次推送前验证快照；后续各节的旧授权/未重测表述均保留为历史。本轮没有付费模型调用；数据库、MCP、Saver、文档 Embedding 真实，模型决策使用 Fake，UI 协议 Mock 另行标注。
 
-## 最终复审核验（2026-10-23，Asia/Shanghai）
+## 最终源码完整验收与浏览器 Smoke（最新：2026-10-23，Asia/Shanghai）
+
+最终源码 `71695b8` 的两套完整 pytest **均通过**，不是此前的 68 项专项或旧 587 项快照。测试前冻结了 160 个源码、依赖和部署文件的 SHA；全量测试、镜像构建、浏览器 Smoke 结束后逐项核对未变。此后只修改本交付记录和结构化验证 JSON。
+
+| 解释器 / 范围 | 真实结果 | JUnit 耗时 | 本地产物 |
+|---|---|---|---|
+| Python 3.11.16 / 完整 pytest | 589 passed，1 skipped，0 failed/errors | 1672.054s | artifacts/p6c-final/20261023T111325/full-py311.xml |
+| Python 3.13.15 / 完整 pytest | 589 passed，1 skipped，0 failed/errors | 1699.448s | artifacts/p6c-final/20261023T111325/full-py313.xml |
+
+唯一 skip 是未授权的真实付费模型用例 test_real_model_postgres_workflow；真实 PG17/pgvector、MCP、Embedding、六项原反例、两个 P2、故障恢复和隔离库保留测试均实际运行。原管理幂等测试验证非空 Seed 拒绝，没有重新 Seed 原业务库。运行完整 pytest 未使用 -k 排除或禁用真实 PG。命令与环境在 JSON 的 commands.final_* 中保留；复跑时换用新的 basetemp/JUnit 路径，不覆盖原证据。
+
+浏览器实测使用新构建镜像 `sha256:55d2364faf1dbdda737dc39c6240c6e94e24992b67cefd494339522d2525e66b`，12 个部署 Web 源文件指纹与本地提交一致。实际完成 XLSX 文件上传（tests/fixtures/semantics/saas_metrics.xlsx）→三表画像/Schema 审阅确认→受限 PG 导入→Semantic v1/已支付账单收入 v1/CNY 明确确认→持久创建→宿主审批→**300 CNY verified 报告和图表**→实际 API/UI 重启→新 UI Session 从持久任务列表恢复同一报告。Dataset `bc5ee580-ebb7-50b7-ae02-aa3f2b7ed604` v1，Run `f3723e43-0d16-4807-8ff6-57657163a8c3`，Evidence `d0de6b2c-1a76-458c-bee9-2b316d19e190`，Verification `a118c9c6-1a40-4060-ae83-92b5bbadc182`；完整报告 SHA 为 `35a61a8702b1d2ec2bbb20da7371859e911f1cd9b245389d559a81d29b06e9b6`。
+
+通过只读 MCP 在重启前后重新读取上述新 Run 及历史 b3356290/f3e0ed7d 两个 Run：三个报告、P3 Evidence/Verification ID/hash/verdict 均逐项一致。浏览器截图、DOM、before/after 证明、部署源码清单、browser-smoke.json、final-local-validation.json 都在 artifacts/p6c-final/20261023T111325/，SHA 写入结构化记录；不把私密运行目录提交 Git。Fake 仅替代模型决策；这不是 DeepSeek 质量/稳定成功率评测，手动浏览器也未新增 RAG 质量基准，真实检索由完整 pytest 覆盖。
+
+初次只读健康检查遇到 Docker 未启动造成连接超时；启动已安装 Docker Desktop 后，原 PG 容器 `6f559b06708f` 恢复健康，PG 17.11 + pgvector 0.8.6、240 客户不变。不重建 PG、不删 DB/Volume、不清理用户 Run。镜像只更新 API/UI；当前 Demo 保持运行且模型模式为 fake。
+
+最终 Ruff check、format（220 files，排除原样保留的用户 v2.5 Markdown）、Diff、JSON 和 Markdown 引用检查通过。无已知未解决的本轮修复失败。用户原有 v2.4 修改与未跟踪 v2.5 文件原样保留、排除提交。
+
+本节/JSON 明确冻结在推送前：GitHub CI 当时尚未运行，不能用本地成功代替。按本次授权推送后，将核对精确提交的 DataPilot checks 两个 Python Job、整体结果和远端文件；实际 CI 记录保存在同目录 github-ci-latest.json，并在最终交付中给出 Actions URL。该时间边界不更改下方历史实验指标。
+
+## 早期专项复审核验（历史快照，2026-10-23，Asia/Shanghai）
 
 已读取两份最终回归 JUnit，Python 3.11.16 **68 passed / 0 failed / 0 skipped，902.261s**，Python 3.13.15 **68 passed / 0 failed / 0 skipped，917.191s**。路径分别为 `artifacts/p6c-rereview/regression-py311.xml`、`regression-py313.xml`；两份均覆盖原六反例、两个复审 P2 及其负面断言。当前没有已知仍失败的修复验收项。之前交接时“仍在运行”的状态已由完成的 JUnit 替代，不再作为当前状态。
 
@@ -115,4 +136,4 @@ git diff --check
 - 未确认退出/遗失派发可能已做完工作，也可能尚未开始；保守停止，需要宿主核对。没有提供强行清空 Journal、重置预算或自动解除 unknown 的入口。poll 熔断后需修复环境并重启 API。
 - offset 分页按当次授权快照排序；并发新增/撤回时跨页不保证全局快照，应刷新。Corpus 保留原 100 项有界列表，未扩展为通用分页系统。
 - UI 创建意图覆盖同一 Streamlit Session 的 rerun/HTTP 失败/重连。完整 Session 丢失应先查看已有任务，不声称跨浏览器新 Session 的自动意图恢复。
-- 本轮不做付费模型质量评测、P6C.1 或其他阶段；按最新授权完成本地提交，不自动推送。最终 SHA 在 Git 成功后另行报告，本记录不嵌入自引用提交 SHA。
+- 本轮不做付费模型质量评测、P6C.1 或其他阶段；按最新授权在完整 pytest/浏览器 Smoke 通过后推送并核验 CI。最终文档提交 SHA 与 CI 状态在 Git/API 核验后另行报告，本记录不嵌入自引用提交 SHA。

@@ -1,8 +1,8 @@
 {
   "schema_version": "p6c-fixes-v1",
   "baseline_commit": "e25adfcea94aa79d53e0e888da26c85592230fe6",
-  "checked_at": "2026-10-23T11:05:58.697882+08:00",
-  "status": "final_local_rereview_validation_passed_pre_commit",
+  "checked_at": "2026-10-23T11:43:11.784140+08:00",
+  "status": "final_source_full_pytest_browser_passed_pre_push",
   "paid_model_calls": 0,
   "records": [
     {
@@ -158,7 +158,18 @@
       "Remove-Item Env:DATAPILOT_RUN_LIVE_TESTS -ErrorAction SilentlyContinue"
     ],
     "rereview_311": ".venv\\Scripts\\python.exe -m pytest tests/test_web_contracts.py tests/test_web_postgres.py tests/test_web_recovery_postgres.py tests/test_web_review_fixes.py tests/test_web_ui_retry.py tests/test_persistence_contracts.py tests/test_recovery_versions.py tests/test_postgres_integration.py -k 'not management_reentry_and_cli_health' --junitxml=artifacts/p6c-rereview/regression-py311.xml --basetemp=artifacts/p6c-rereview/tmp-regression-py311 --tb=short -q",
-    "rereview_313": ".venv-313\\Scripts\\python.exe -m pytest tests/test_web_contracts.py tests/test_web_postgres.py tests/test_web_recovery_postgres.py tests/test_web_review_fixes.py tests/test_web_ui_retry.py tests/test_persistence_contracts.py tests/test_recovery_versions.py tests/test_postgres_integration.py -k 'not management_reentry_and_cli_health' --junitxml=artifacts/p6c-rereview/regression-py313.xml --basetemp=artifacts/p6c-rereview/tmp-regression-py313 --tb=short -q"
+    "rereview_313": ".venv-313\\Scripts\\python.exe -m pytest tests/test_web_contracts.py tests/test_web_postgres.py tests/test_web_recovery_postgres.py tests/test_web_review_fixes.py tests/test_web_ui_retry.py tests/test_persistence_contracts.py tests/test_recovery_versions.py tests/test_postgres_integration.py -k 'not management_reentry_and_cli_health' --junitxml=artifacts/p6c-rereview/regression-py313.xml --basetemp=artifacts/p6c-rereview/tmp-regression-py313 --tb=short -q",
+    "final_environment": [
+      "$env:PYTHONUTF8='1'",
+      "$env:DATAPILOT_RUN_DB_TESTS='1'",
+      "$env:DATAPILOT_LLM_MODE='fake'",
+      "Remove-Item Env:DATAPILOT_RUN_LIVE_TESTS -ErrorAction SilentlyContinue"
+    ],
+    "final_full_311": ".venv\\Scripts\\python.exe -m pytest --junitxml=artifacts/p6c-final/20261023T111325/full-py311.xml --basetemp=artifacts/p6c-final/20261023T111325/tmp-full-py311 --tb=short -q",
+    "final_full_313": ".venv-313\\Scripts\\python.exe -m pytest --junitxml=artifacts/p6c-final/20261023T111325/full-py313.xml --basetemp=artifacts/p6c-final/20261023T111325/tmp-full-py313 --tb=short -q",
+    "final_browser_build": "docker compose -f compose.yaml -f compose.demo.yaml --profile demo build api",
+    "final_browser_start": "docker compose -f compose.yaml -f compose.demo.yaml --profile demo up --no-deps --no-build -d api ui",
+    "final_browser_restart": "docker compose -f compose.yaml -f compose.demo.yaml --profile demo restart api ui"
   },
   "scope": {
     "new_tables": 0,
@@ -169,7 +180,8 @@
     "seed_rerun": false,
     "volumes_deleted": false,
     "committed": false,
-    "pushed": false
+    "pushed": false,
+    "snapshot": "historical: before original repair commit 71695b8; fields below are preserved history"
   },
   "timezone": "Asia/Shanghai",
   "full_regressions": [
@@ -336,11 +348,11 @@
     "docs/codex-prompts-v2.5.md": "fe2289591503a58b98d39e83b9f63bbcb61951dc8dfc8e1f6e09faa048fa5189"
   },
   "checks": {
-    "ruff_check": "passed on final source",
-    "ruff_format": "220 files already formatted; unchanged user v2.5 markdown excluded",
-    "git_diff_check": "passed on final source and delivery documents",
+    "ruff_check": "passed on final source and final-local-validation snapshot",
+    "ruff_format": "passed on final source and final-local-validation snapshot",
+    "git_diff_check": "passed on final source and final-local-validation snapshot",
     "json_and_markdown_references": "passed; both JSON files parse, modified Markdown local references exist and code fences close",
-    "github_ci": "not run: local submission only; no push authorized in this request",
+    "github_ci": "Not yet run at this explicitly pre-push snapshot; user now authorized push after full pytest/browser success. Actual post-push status is recorded separately in artifacts/p6c-final/20261023T111325/github-ci-latest.json and final delivery response.",
     "openapi": "current generated routes/DTO exactly equal checked-in docs/api-v1-openapi.json; Mock metadata store, no DB calls",
     "source_consistency": "passed; see rereview.source_consistency",
     "final_source_hash_recheck": "passed; all 157 frozen code/dependency files and preserved user files unchanged"
@@ -460,7 +472,8 @@
       "post-push GitHub CI"
     ],
     "test_kinds": "Real PostgreSQL/MCP/ONNX and process recovery with Fake model decisions; explicit Mock UI/transport tests. No paid API.",
-    "review_findings_remaining": []
+    "review_findings_remaining": [],
+    "snapshot": "historical targeted-only snapshot; superseded by final_acceptance for full pytest/browser status"
   },
   "git_submission": {
     "record_phase": "pre_commit_validation_snapshot",
@@ -471,6 +484,165 @@
       "docs/codex-prompts-v2.4.md",
       "docs/codex-prompts-v2.5.md"
     ],
-    "note": "Final commit SHA is reported after Git succeeds; this document does not embed a self-referential commit SHA."
+    "note": "Final commit SHA is reported after Git succeeds; this document does not embed a self-referential commit SHA.",
+    "snapshot": "historical pre-71695b8 authorization; superseded by final_acceptance.git_policy"
+  },
+  "final_acceptance": {
+    "checked_at": "2026-10-23T11:43:11.784140+08:00",
+    "status": "passed",
+    "source_commit": "71695b80c20fce390c96504d2beabc6bbe05b34a",
+    "source_before": {
+      "path": "artifacts/p6c-final/20261023T111325/source-before.json",
+      "sha256": "76cab1f64156e1974be01b558595e6586a0327da5876072bd8a42f9841ed7347",
+      "files": 160,
+      "all_unchanged": true
+    },
+    "full_pytest": [
+      {
+        "path": "artifacts/p6c-final/20261023T111325/full-py311.xml",
+        "sha256": "1fe1656dec94321557e15e24b7b169f154348c7c0acde98f4af9b873bbf2b29c",
+        "python": "Python 3.11.16",
+        "tests": 590,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1,
+        "passed": 589,
+        "seconds": 1672.054,
+        "started_at": "2026-10-23T11:13:36.695171+08:00",
+        "skipped_tests": [
+          "test_real_model_postgres_workflow"
+        ]
+      },
+      {
+        "path": "artifacts/p6c-final/20261023T111325/full-py313.xml",
+        "sha256": "bd7df1a6011f38f380a7e69e897d3c054baca00f372c581351e88de4046aa1cc",
+        "python": "Python 3.13.15",
+        "tests": 590,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1,
+        "passed": 589,
+        "seconds": 1699.448,
+        "started_at": "2026-10-23T11:13:38.306628+08:00",
+        "skipped_tests": [
+          "test_real_model_postgres_workflow"
+        ]
+      }
+    ],
+    "browser_smoke": {
+      "path": "artifacts/p6c-final/20261023T111325/browser-smoke.json",
+      "sha256": "599a60815eb362f210fa484597f65a84b6ecf5333ecc9ab4c83e23f777c769c1",
+      "status": "passed"
+    },
+    "checks": {
+      "ruff_check": {
+        "status": "passed",
+        "command": [
+          ".venv/Scripts/ruff.exe",
+          "check",
+          "."
+        ]
+      },
+      "ruff_format": {
+        "status": "passed",
+        "command": [
+          ".venv/Scripts/ruff.exe",
+          "format",
+          "--check",
+          "--exclude",
+          "docs/codex-prompts-v2.5.md",
+          "."
+        ]
+      },
+      "git_diff_check": {
+        "status": "passed",
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ]
+      }
+    },
+    "paid_model_calls": 0,
+    "github_ci": {
+      "snapshot": "before_push",
+      "status": "not_yet_run"
+    },
+    "local_validation_record": {
+      "path": "artifacts/p6c-final/20261023T111325/final-local-validation.json",
+      "sha256": "650917924a4925997cc75871f0364d0fb328d2a954eca821de33a2252f45ad34"
+    },
+    "browser": {
+      "checked_at": "2026-10-23T11:29:08.925346+08:00",
+      "source_commit": "71695b80c20fce390c96504d2beabc6bbe05b34a",
+      "status": "passed",
+      "mode": "Fake model decisions; real PostgreSQL/MCP/P3 verification; browser UI operated via real HTTP",
+      "paid_model_calls": 0,
+      "fixture": "tests/fixtures/semantics/saas_metrics.xlsx",
+      "fixture_sha256": "87df9a81a06c7301c69a13e9d13fd733545eae7180fa9304c62df8ad10dd1ed7",
+      "dataset_id": "bc5ee580-ebb7-50b7-ae02-aa3f2b7ed604",
+      "dataset_version": 1,
+      "steps": [
+        "browser_XLSX_upload",
+        "schema_preview",
+        "explicit_schema_confirmation",
+        "restricted_pg_ingestion",
+        "semantic_v1_confirmation",
+        "paid_invoice_revenue_v1_CNY_confirmation",
+        "durable_create_with_stable_intent",
+        "host_approval",
+        "verified_300_CNY_report_and_chart",
+        "actual_api_ui_restart",
+        "new_UI_session_task_list_restore"
+      ],
+      "report": {
+        "run_id": "f3723e43-0d16-4807-8ff6-57657163a8c3",
+        "http_status": 200,
+        "evidence_id": "d0de6b2c-1a76-458c-bee9-2b316d19e190",
+        "verification_id": "a118c9c6-1a40-4060-ae83-92b5bbadc182",
+        "evidence_sha256": "a248d7d9ccf4c0e6a6244877c82540f0035d1d31061503869548fbf16054b4fa",
+        "verification_sha256": "2bfafe22ab230c6d64c56c166a0bbced81667c56c352f977caef369b008776e6",
+        "verdict": "verified",
+        "report_sha256": "35a61a8702b1d2ec2bbb20da7371859e911f1cd9b245389d559a81d29b06e9b6",
+        "value": {
+          "value": "300.0000000000000000",
+          "unit": "CNY",
+          "numerator": null,
+          "denominator": null,
+          "window_days": 31
+        }
+      },
+      "all_three_report_proofs_unchanged": true,
+      "deployed_web_sources_match": true,
+      "deployed_web_file_count": 12,
+      "image": "sha256:55d2364faf1dbdda737dc39c6240c6e94e24992b67cefd494339522d2525e66b",
+      "postgres_container_id": "6f559b06708f",
+      "artifacts": {
+        "source-before.json": "76cab1f64156e1974be01b558595e6586a0327da5876072bd8a42f9841ed7347",
+        "deployed-source.json": "7d8ab21e09e53685569079f4297f99f8b3d0973a6149a78b45d8fa763282f9d2",
+        "reports-before-restart.json": "49c3a2bd851e4ea347a019c415d6978ae18d182841224d76f33af22a5ee95767",
+        "reports-after-restart.json": "b238eec1b72d9ce8680a9e5fc21c9f92be491dd26472b810439b5084def3c79e",
+        "browser-report.png": "f27e84f1dc183e7133c541bb75629d23e8fdad83dc69f6dd7313dd1183babcdc",
+        "browser-after-restart.png": "482f282545d52d7b3c953e7704cb4e93ac1f868cb954d86eb532dbe8387fbee0",
+        "browser-after-restart.txt": "70ea4b3975229d0ebd7e5de9e5bfdc8fb084cd0de22316ec17d5700ddffac9cb"
+      },
+      "limitations": [
+        "No paid live-model quality experiment",
+        "No manual browser RAG quality benchmark; full pytest covers real retrieval separately"
+      ],
+      "preflight_history": "Docker was stopped initially; read-only PG health timed out before pytest. Started installed Docker Desktop; existing PG container and 240 customers recovered without reseeding."
+    },
+    "git_policy": {
+      "code_commit": "71695b80c20fce390c96504d2beabc6bbe05b34a",
+      "branch": "main",
+      "push_authorized": true,
+      "condition": "Both final-source full pytest versions and browser smoke passed before push",
+      "documentation_commit": "created after this validation snapshot; final SHA reported after Git succeeds",
+      "unrelated_user_files_excluded": [
+        "docs/codex-prompts-v2.4.md",
+        "docs/codex-prompts-v2.5.md"
+      ]
+    },
+    "preflight_history": "Docker was stopped initially; read-only PG health timed out before pytest. Started installed Docker Desktop; existing PG container and 240 customers recovered without reseeding."
   }
 }
