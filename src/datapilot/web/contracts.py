@@ -247,6 +247,9 @@ class DatasetView(DTO):
 
 class DatasetViews(DTO):
     datasets: list[DatasetView] = Field(max_length=100)
+    offset: int = Field(default=0, ge=0)
+    limit: int = Field(default=100, ge=1, le=100)
+    next_offset: int | None = Field(default=None, ge=0)
 
 
 class SessionView(DTO):

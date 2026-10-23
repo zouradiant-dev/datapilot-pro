@@ -42,6 +42,10 @@ Schema、业务映射、指标定义和任务审核都需要明确的人工确�
 
 创建、批准、恢复、取消要求 8–128 字符的 `Idempotency-Key`。宿主将键绑定 owner、操作、run_id、规范载荷 hash 和授权版本；同请求复用原响应，异请求返回 `WEB_IDEMPOTENCY_CONFLICT`。批准重试可在任务继续后重放同一确认，但新键不能批准已经结束的任务。
 
+创建意图在 Streamlit rerun、HTTP 超时及客户端重连后保留原 body/key；“重试同一创建请求”复用它，“明确创建新的分析任务”才开启新意图。`host_policy` 是宿主内部保留键。完整浏览器 Session 丢失后应先查看原任务列表，不保证跨新 Session 自动恢复创建意图。
+
+`GET /datasets?offset=0&limit=100` 按 Dataset ID/version 确定性排序，limit 为 1–100，offset 为 0–1,000,000；返回 `datasets / offset / limit / next_offset`，末页 next_offset=null。UI 提供翻页。授权判定使用直接 ID 查询，不依赖当前列表页。
+
 TaskStatus 为 `pending / running / paused / awaiting_review / partial / unavailable / blocked / failed / completed / cancelled`。`execution_status` 是原 Runtime 的执行状态；`business_completion` 是原 P6B 的目标覆盖结论，两者不能互相冒充。Pending、等待审核、检索非空都不代表业务完成。无可验证证据时报告接口返回 `REPORT_NOT_READY`。
 
 `RECOVERY_UNCERTAIN` 表示调用已发出但无法确认结果，必须保留原预算并人工对账。不得用新 Run/新键自动掩盖或重发。取消只减少执行权限，不扩大数据访问；即使来源 grant 已撤回，宿主仍能取消自己的未过期 Run。已完成运行的取消是幂等空操作，不重新启动图或修改证据。
@@ -54,4 +58,8 @@ TaskStatus 为 `pending / running / paused / awaiting_review / partial / unavail
 
 每个宿主默认 1 个执行进程槽，最多 2 个；默认最多 20 个待派发命令。进程槽及 Run 锁由 PostgreSQL advisory lock 控制，API 重启后以 outbox 和原 P5B 状态有条件续行。没有第二套 Agent Scheduler、计费账本或 Checkpointer。
 
-报告保留 Dataset/source hash、Semantic/Metric 版本、原 P3 Evidence/Verification hash、时间/单位/过滤与 RAG chunk 定位；只提供已验证聚合、引用元数据及安全 Markdown。原业务行、SQL、文档正文、完整工件和 Checkpoint 不可下载。生产认证、TLS/KMS、RLS、分页/存储运维和长期保留制度另行验收。
+新任务先经原 Saver 在 Planner 前暂停初始化，再重新检查持久取消标记；正常执行仍走原 run_durable resume。未确认完成的进程退出或遗失派发标记返回 `WEB_DISPATCH_FAILED` 并要求人工核对；只有明确在执行前未取得槽的 exit 75 最多尝试三次。轮询连续三次基础设施异常后停止自动派发，记录脱敏错误，需宿主修复并重启 API。不会清除 Journal 或自动重发未知调用。
+
+Worker 从当前宿主配置取 Settings，并与 API 发布的策略 hash、原 outbox 载荷和 P5B manifest 核对。该 hash 包含 owner、模型/资源策略和数据库位置/角色，排除 API key/密码。旧已注册 Run 保留原 manifest 恢复校验；旧未注册载荷缺少数据库身份 pin 时明确要求重新授权，不能以旧 Settings 自动启动。
+
+报告保留 Dataset/source hash、Semantic/Metric 版本、原 P3 Evidence/Verification hash、时间/单位/过滤与 RAG chunk 定位；只提供已验证聚合、引用元数据及安全 Markdown。原业务行、SQL、文档正文、完整工件和 Checkpoint 不可下载。生产认证、TLS/KMS、RLS、大规模游标分页/存储运维和长期保留制度另行验收。

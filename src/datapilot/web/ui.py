@@ -6,7 +6,7 @@ from datetime import date
 import httpx
 import streamlit as st
 
-from datapilot.web.client import APIClient, ClientError
+from datapilot.web.client import APIClient, ClientError, creation_intent
 
 st.set_page_config(page_title="DataPilot Pro", page_icon="📊", layout="wide")
 st.title("DataPilot Pro")
@@ -102,7 +102,18 @@ try:
                         },
                     )
                     st.success(f"已发布 Dataset {result['dataset_id']} v{result['version']}")
-    datasets = api.get("/datasets")["datasets"]
+    page_offset = st.session_state.get("dataset_offset", 0)
+    page = api.get(f"/datasets?offset={page_offset}")
+    datasets = page["datasets"]
+    if page_offset or page.get("next_offset") is not None:
+        st.caption(f"Dataset 列表：从第 {page_offset + 1} 项起，每页最多 100 项")
+        previous_page, next_page = st.columns(2)
+        if previous_page.button("上一页 Dataset", disabled=page_offset == 0):
+            st.session_state.dataset_offset = max(0, page_offset - 100)
+            st.rerun()
+        if next_page.button("下一页 Dataset", disabled=page.get("next_offset") is None):
+            st.session_state.dataset_offset = page["next_offset"]
+            st.rerun()
     choices = {
         f"{p['schema']['name']} · v{p['schema']['version']} · {p['schema']['dataset_id'][:8]}": p
         for p in datasets
@@ -251,7 +262,24 @@ try:
                             "corpus_ids": doc_ids,
                             "metric_goals": [r["goal_id"] for r in requests],
                         }
-                    st.session_state.active_run = api.post("/tasks", body)["run_id"]
+                    intent = creation_intent(st.session_state.get("create_intent"), body)
+                    st.session_state.create_intent = intent
+                    ack = api.post("/tasks", intent["body"], key=intent["key"])
+                    intent["run_id"] = ack["run_id"]
+                    st.session_state.active_run = ack["run_id"]
+        if intent := st.session_state.get("create_intent"):
+            if intent.get("run_id"):
+                st.caption("本次创建请求已关联 Run：" + intent["run_id"])
+            else:
+                st.warning("创建结果尚未确认；重试将使用原请求与幂等键。")
+                if st.button("重试同一创建请求"):
+                    ack = api.post("/tasks", intent["body"], key=intent["key"])
+                    intent["run_id"] = ack["run_id"]
+                    st.session_state.active_run = ack["run_id"]
+                    st.rerun()
+            if st.button("明确创建新的分析任务"):
+                del st.session_state["create_intent"]
+                st.rerun()
         ids = api.get("/tasks")["run_ids"]
         if ids:
             run_id = st.selectbox(

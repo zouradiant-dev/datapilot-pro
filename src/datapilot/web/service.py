@@ -167,7 +167,22 @@ def report_view(run_id, report):
 
 class ProductService:
     def __init__(self, settings, store):
-        self.settings, self.store, self.policy = settings, store, store.policy
+        self._settings, self.store, self.policy = settings, store, store.policy
+        self._host_bound = False
+
+    @property
+    def settings(self):
+        return self._settings
+
+    @settings.setter
+    def settings(self, value):
+        if self._host_bound:
+            self.store.publish_host_settings(value)
+        self._settings = value
+
+    def bind_host_settings(self):
+        self.store.publish_host_settings(self.settings)
+        self._host_bound = True
 
     def upload(self, data, name, options=None):
         safe_name(name, {".csv", ".xlsx"})
@@ -213,9 +228,7 @@ class ProductService:
         p = self.store.upload(id_)
         if request.dataset_id:
             # Existing IDs must have been explicitly granted to this host first.
-            if not any(
-                d["schema"]["dataset_id"] == request.dataset_id for d in self.store.datasets()
-            ):
+            if not self.store.has_dataset(request.dataset_id):
                 deny()
         if not p.get("confirmation") or (
             p["confirmation"]["confirmation_sha256"] != request.confirmation_sha256
@@ -354,6 +367,7 @@ class ProductService:
             "rag_scope": rag.model_dump(mode="json") if rag else None,
             "sources": sources,
             "contexts": contexts,
+            "host_policy_sha256": self.store.host_settings_hash(self.settings),
             "settings": self.settings.model_dump(
                 mode="json",
                 exclude={
@@ -367,6 +381,7 @@ class ProductService:
         }
 
     async def authorize_run(self, id_):
+        self.store.check_host_settings(self.settings)
         row = self.store.run(id_)
         p = row["payload"]
         for b in p["report_scope"]["datasets"]["bindings"]:
@@ -395,6 +410,10 @@ class ProductService:
                 causal_requested=rs.causal_requested,
             )
         )
+        # Legacy registered runs still undergo the original P5B manifest checks.
+        # Old unregistered tasks cannot execute without the new infrastructure pin.
+        if "host_policy_sha256" not in p:
+            fresh.pop("host_policy_sha256")
         if fresh != p:
             deny("RECOVERY_VERSION", "Host policy or confirmed scope changed")
         return row
@@ -426,6 +445,7 @@ class ProductService:
             return TaskView(
                 run_id=id_,
                 status=status,
+                usage={} if status == "cancelled" else None,
                 error=ErrorInfo(**error) if error else None,
                 expires_at=row["expires_at"],
                 question=p["question"],

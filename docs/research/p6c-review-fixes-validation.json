@@ -1,0 +1,476 @@
+{
+  "schema_version": "p6c-fixes-v1",
+  "baseline_commit": "e25adfcea94aa79d53e0e888da26c85592230fe6",
+  "checked_at": "2026-10-23T11:05:58.697882+08:00",
+  "status": "final_local_rereview_validation_passed_pre_commit",
+  "paid_model_calls": 0,
+  "records": [
+    {
+      "path": "artifacts/p6c-fixes/before-reproduced.xml",
+      "sha256": "36883ff47daf061541ed71b63687a57e40f4e9c1d9a26e3f8beacf924021bd98",
+      "tests": 6,
+      "failures": 6,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 88.138,
+      "passed": 0
+    },
+    {
+      "path": "artifacts/p6c-fixes/before.xml",
+      "sha256": "f5216b2964f44f3dc3a05daddd331ce9dfce9557749d069469239f99fa75d4d4",
+      "tests": 6,
+      "failures": 1,
+      "errors": 5,
+      "skipped": 0,
+      "seconds": 3.247,
+      "passed": 0
+    },
+    {
+      "path": "artifacts/p6c-fixes/counterexamples-after-first.xml",
+      "sha256": "43897c49623aed3c962da63e7025dfe88d5548a00e217511f23d060b867f3e90",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 79.574,
+      "passed": 6
+    },
+    {
+      "path": "artifacts/p6c-fixes/counterexamples-final.xml",
+      "sha256": "5e2f35724e014257f5f23e47745f92c81dd8077f667d5cd3edfef1178d9fe183",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 78.081,
+      "passed": 6
+    },
+    {
+      "path": "artifacts/p6c-fixes/expanded-first.xml",
+      "sha256": "a423dfcda394e383818367756237163a4db6de9d65ec3ecd7130d3673a040c05",
+      "tests": 15,
+      "failures": 4,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 213.181,
+      "passed": 11
+    },
+    {
+      "path": "artifacts/p6c-fixes/expanded-second.xml",
+      "sha256": "406680e85d54fb983f6557cbfd99730d8b84a731e7676013c47bf923d90ba962",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 298.947,
+      "passed": 19
+    },
+    {
+      "path": "artifacts/p6c-fixes/full-py311.xml",
+      "sha256": "807a132a1cd6545ba7557422a2b9bd624c231bea2f462294ece664858daecfa5",
+      "tests": 588,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "seconds": 1645.199,
+      "passed": 587,
+      "python": "3.11.16"
+    },
+    {
+      "path": "artifacts/p6c-fixes/full-py313.xml",
+      "sha256": "492ddd9ae2065a5a72042d44f41eb4c514650a40c619995280b5ddfa09d1d0c4",
+      "tests": 588,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "seconds": 1680.402,
+      "passed": 587,
+      "python": "3.13.15"
+    },
+    {
+      "path": "artifacts/p6c-fixes/targeted-first.xml",
+      "sha256": "7660216e3972a00d5a8efc58bf0093f7e24fbb2a8b7102f18b11d27ded380a67",
+      "tests": 1,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0,
+      "seconds": 2.884,
+      "passed": 0
+    },
+    {
+      "path": "artifacts/p6c-fixes/ui-unit-first.xml",
+      "sha256": "45c0392f398212391d5278c5673a06418755bc55808740f98f44c1214a6a4aeb",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 6.092,
+      "passed": 2
+    },
+    {
+      "path": "artifacts/p6c-fixes/web-first.xml",
+      "sha256": "634e7101469dcb635be0bbf587f5842f94d695c8af0c35be8f0aff30fd3eb90a",
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 456.873,
+      "passed": 24
+    }
+  ],
+  "source_sha256": {
+    "src/datapilot/web/__init__.py": "4a7b44ee89e78a1e9f4e54de45927776344f7cf77119c070f86c3f661b8c6610",
+    "src/datapilot/web/app.py": "d5e4126cefe1d2048ca94f799f0cd56ec2e374394a4bfcc66d6d0620897e0b8c",
+    "src/datapilot/web/body_limit.py": "84980187c7bd90cd30760e9474b0ddd69af2f46c3d0d899f2ebed725938acc9d",
+    "src/datapilot/web/cli.py": "825240fcda8bd3917e68ad3622974a0eeddc70edf5ecf95492b38a06dd85ce2e",
+    "src/datapilot/web/client.py": "3a64c84a3c8ef6400c4d2bcfc820921af0bcb26fbaa71693cbfe12b38c1930dc",
+    "src/datapilot/web/config.py": "dcfabb069be6a001067c9be77f0458472e17d730e3c08c87de6bb08b43409d05",
+    "src/datapilot/web/contracts.py": "ae2476837718009aa9b047782f0bcbfbb0e09895065213558977a43fc484d45c",
+    "src/datapilot/web/service.py": "c8cda4fd86d5cb75405dce843869fdfd310d499d50e81247d5e9c4a713b9a2dd",
+    "src/datapilot/web/store.py": "d581cb3aeb19a28497e28f07c75e6418b139700e382b980441d32b428785ef0c",
+    "src/datapilot/web/telemetry.py": "738ea473a6ae772b33e86b421d964e212cf99288b59de32d507f3facf4b921b2",
+    "src/datapilot/web/ui.py": "4d56ef712c2b0c1a001a986b2f6b0502d0314851f49864348f3e41b2485f1d26",
+    "src/datapilot/web/worker.py": "5c722dbdab2cca497a0b050ac0f911291f9733a6ce8d8a093143168dbdc80beb",
+    "scripts/web_recovery_probe.py": "1335e74fee213a2f5a823e9d2b4825fae7352e4d28d9427c9a789e3913179ab6",
+    "tests/test_web_review_fixes.py": "6e5418c89f1adf42c9822b09b236f725be52ef54b2f21fe7434f2d48c8562642",
+    "tests/test_web_ui_retry.py": "b229595fd6f1410128e20b423e8eecd873786e1eecd09c01cd6160820269450d",
+    "tests/test_web_recovery_postgres.py": "0dc28e092ebfeb58c301b249df518056bdbb9fce3bd326853d46de4fee3c273d"
+  },
+  "original_counterexample_path": "artifacts/p6c-review/test_boundaries.py",
+  "original_counterexample_sha256": "5eb59218440680705465f5f75246c0e7afd8c48f5fec01830a99169b0d85c234",
+  "test_kinds": {
+    "unit": "Mock HTTP/Streamlit, dispatcher circuit; no model or DB",
+    "postgres": "real PostgreSQL17/pgvector/MCP/Saver, Fake model decisions, real ONNX documents",
+    "live": "not authorized; no paid model calls; live pytest skipped"
+  },
+  "commands": {
+    "before": "$env:DATAPILOT_RUN_DB_TESTS='1'; $env:PYTHONPATH=(Join-Path (Get-Location) 'tests'); .venv\\Scripts\\python.exe -m pytest artifacts/p6c-review/test_boundaries.py --junitxml=artifacts/p6c-fixes/before-reproduced.xml --basetemp=artifacts/p6c-fixes/tmp-before-valid --tb=short -q",
+    "full_311": ".venv\\Scripts\\python.exe -m pytest --junitxml=artifacts/p6c-fixes/full-py311.xml --basetemp=artifacts/p6c-fixes/tmp-full-py311 --tb=short -q",
+    "full_313": ".venv-313\\Scripts\\python.exe -m pytest --junitxml=artifacts/p6c-fixes/full-py313.xml --basetemp=artifacts/p6c-fixes/tmp-full-py313 --tb=short -q",
+    "ruff": [
+      ".venv/Scripts/ruff.exe check .",
+      ".venv/Scripts/ruff.exe format --check --exclude docs/codex-prompts-v2.5.md ."
+    ],
+    "diff": "git diff --check",
+    "rereview_environment": [
+      "$env:PYTHONUTF8='1'",
+      "$env:DATAPILOT_RUN_DB_TESTS='1'",
+      "Remove-Item Env:DATAPILOT_RUN_LIVE_TESTS -ErrorAction SilentlyContinue"
+    ],
+    "rereview_311": ".venv\\Scripts\\python.exe -m pytest tests/test_web_contracts.py tests/test_web_postgres.py tests/test_web_recovery_postgres.py tests/test_web_review_fixes.py tests/test_web_ui_retry.py tests/test_persistence_contracts.py tests/test_recovery_versions.py tests/test_postgres_integration.py -k 'not management_reentry_and_cli_health' --junitxml=artifacts/p6c-rereview/regression-py311.xml --basetemp=artifacts/p6c-rereview/tmp-regression-py311 --tb=short -q",
+    "rereview_313": ".venv-313\\Scripts\\python.exe -m pytest tests/test_web_contracts.py tests/test_web_postgres.py tests/test_web_recovery_postgres.py tests/test_web_review_fixes.py tests/test_web_ui_retry.py tests/test_persistence_contracts.py tests/test_recovery_versions.py tests/test_postgres_integration.py -k 'not management_reentry_and_cli_health' --junitxml=artifacts/p6c-rereview/regression-py313.xml --basetemp=artifacts/p6c-rereview/tmp-regression-py313 --tb=short -q"
+  },
+  "scope": {
+    "new_tables": 0,
+    "new_migrations": 0,
+    "new_dependencies": 0,
+    "persistence_runtime_modified": false,
+    "original_data_deleted": false,
+    "seed_rerun": false,
+    "volumes_deleted": false,
+    "committed": false,
+    "pushed": false
+  },
+  "timezone": "Asia/Shanghai",
+  "full_regressions": [
+    {
+      "path": "artifacts/p6c-fixes/full-py311.xml",
+      "sha256": "807a132a1cd6545ba7557422a2b9bd624c231bea2f462294ece664858daecfa5",
+      "tests": 588,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "seconds": 1645.199,
+      "passed": 587,
+      "python": "3.11.16"
+    },
+    {
+      "path": "artifacts/p6c-fixes/full-py313.xml",
+      "sha256": "492ddd9ae2065a5a72042d44f41eb4c514650a40c619995280b5ddfa09d1d0c4",
+      "tests": 588,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "seconds": 1680.402,
+      "passed": 587,
+      "python": "3.13.15"
+    }
+  ],
+  "counterexamples": [
+    {
+      "test": "test_cancel_between_outbox_read_and_runtime_registration",
+      "before": "failed",
+      "after": "passed"
+    },
+    {
+      "test": "test_retry_of_lost_create_ack_uses_same_logical_key",
+      "before": "failed",
+      "after": "passed"
+    },
+    {
+      "test": "test_transient_poll_failure_does_not_permanently_stop_dispatch",
+      "before": "failed",
+      "after": "passed"
+    },
+    {
+      "test": "test_dataset_list_does_not_break_after_101_accepted_versions",
+      "before": "failed",
+      "after": "passed"
+    },
+    {
+      "test": "test_revoked_corpus_is_filtered_without_breaking_other_authorized_datasets",
+      "before": "failed",
+      "after": "passed"
+    },
+    {
+      "test": "test_worker_rechecks_current_host_policy_instead_of_its_saved_settings",
+      "before": "failed",
+      "after": "passed"
+    }
+  ],
+  "browser": {
+    "mode": "fake_model_decisions_real_postgres_mcp_verified_reports",
+    "dataset_id": "b12beb40-427d-5fe2-92e8-44137ce5228d",
+    "dataset_version": 1,
+    "steps": [
+      "synthetic_workbook_preview",
+      "schema_review",
+      "restricted_pg_import",
+      "semantic_metric_review",
+      "durable_create",
+      "host_approval",
+      "verified_300_CNY_report_chart",
+      "api_ui_restart",
+      "browser_task_list_recovery"
+    ],
+    "before_restart": {
+      "checked_at": "2026-10-22T19:16:13.214014+00:00",
+      "proofs": [
+        {
+          "run_id": "b3356290-33c6-4ac4-b957-93b881fc841c",
+          "http_status": 200,
+          "evidence_id": "5c0143bc-edb1-485b-8223-f0282c684e19",
+          "verification_id": "91e0dd31-5540-4827-86c2-35a96b9259e8",
+          "evidence_sha256": "f27673678cb37cefaf09340393bb90c087539041540c424770c15e0cdde353dc",
+          "verification_sha256": "e0cd2f6d23740f76c70f8196fb94cc3b2052ec8fe0856e9fe3f50c0b937680ab",
+          "verdict": "verified",
+          "report_sha256": "41d008d44b3d4a3c3185ecbd8e21c31f72a9b166dc908ee12d3c7b4946406f76",
+          "value": {
+            "value": "300.0000000000000000",
+            "unit": "CNY",
+            "numerator": null,
+            "denominator": null,
+            "window_days": 31
+          }
+        },
+        {
+          "run_id": "f3e0ed7d-e5f0-492e-9831-501f39e6e4ca",
+          "http_status": 200,
+          "evidence_id": "0b6f18e7-08fa-4270-b994-404e00d57ea6",
+          "verification_id": "53e38105-185e-4c71-8b56-7efd86a177c5",
+          "evidence_sha256": "a1fcd38bdf906a004bd6188d6b689fb9e237211bedce8431d17268d55f863b55",
+          "verification_sha256": "1cc5788f4d7c48e76ef72eff341a27dff0837719a0d29d6f9134127fae57192d",
+          "verdict": "verified",
+          "report_sha256": "1ebeccac089b383d0840c99d7745b6d7a72bb5f4a92cb9bc0610a57d6d7f962c",
+          "value": {
+            "value": "300.0000000000000000",
+            "unit": "CNY",
+            "numerator": null,
+            "denominator": null,
+            "window_days": 31
+          }
+        }
+      ]
+    },
+    "after_restart": {
+      "checked_at": "2026-10-22T19:17:19.237222+00:00",
+      "proofs": [
+        {
+          "run_id": "b3356290-33c6-4ac4-b957-93b881fc841c",
+          "http_status": 200,
+          "evidence_id": "5c0143bc-edb1-485b-8223-f0282c684e19",
+          "verification_id": "91e0dd31-5540-4827-86c2-35a96b9259e8",
+          "evidence_sha256": "f27673678cb37cefaf09340393bb90c087539041540c424770c15e0cdde353dc",
+          "verification_sha256": "e0cd2f6d23740f76c70f8196fb94cc3b2052ec8fe0856e9fe3f50c0b937680ab",
+          "verdict": "verified",
+          "report_sha256": "41d008d44b3d4a3c3185ecbd8e21c31f72a9b166dc908ee12d3c7b4946406f76",
+          "value": {
+            "value": "300.0000000000000000",
+            "unit": "CNY",
+            "numerator": null,
+            "denominator": null,
+            "window_days": 31
+          }
+        },
+        {
+          "run_id": "f3e0ed7d-e5f0-492e-9831-501f39e6e4ca",
+          "http_status": 200,
+          "evidence_id": "0b6f18e7-08fa-4270-b994-404e00d57ea6",
+          "verification_id": "53e38105-185e-4c71-8b56-7efd86a177c5",
+          "evidence_sha256": "a1fcd38bdf906a004bd6188d6b689fb9e237211bedce8431d17268d55f863b55",
+          "verification_sha256": "1cc5788f4d7c48e76ef72eff341a27dff0837719a0d29d6f9134127fae57192d",
+          "verdict": "verified",
+          "report_sha256": "1ebeccac089b383d0840c99d7745b6d7a72bb5f4a92cb9bc0610a57d6d7f962c",
+          "value": {
+            "value": "300.0000000000000000",
+            "unit": "CNY",
+            "numerator": null,
+            "denominator": null,
+            "window_days": 31
+          }
+        }
+      ]
+    },
+    "unchanged": true,
+    "screenshots": {
+      "artifacts\\p6c-fixes\\browser-report.png": "afc13bedd4aedeb415a14606559b5eb9a110cbdc4abec36a5f83b1b3bfcc816f",
+      "artifacts\\p6c-fixes\\browser-after-restart.png": "a9ee9fad8b90cb878ae12eae4fbe58c7eccdfc95bcdd3ae40af2465ead32cb49"
+    },
+    "deployed_web_source_matches": "matched pre_rereview_snapshot; current store.py/worker.py not redeployed",
+    "deployed_web_file_count": 12,
+    "postgres_container_id": "6f559b06708f",
+    "snapshot": "pre_rereview_snapshot"
+  },
+  "preserved_user_files": {
+    "docs/codex-prompts-v2.4.md": "e741a01457caf912968f02276b1894e5cd94803d5a0c12d79993c4fa1b42c74d",
+    "docs/codex-prompts-v2.5.md": "fe2289591503a58b98d39e83b9f63bbcb61951dc8dfc8e1f6e09faa048fa5189"
+  },
+  "checks": {
+    "ruff_check": "passed on final source",
+    "ruff_format": "220 files already formatted; unchanged user v2.5 markdown excluded",
+    "git_diff_check": "passed on final source and delivery documents",
+    "json_and_markdown_references": "passed; both JSON files parse, modified Markdown local references exist and code fences close",
+    "github_ci": "not run: local submission only; no push authorized in this request",
+    "openapi": "current generated routes/DTO exactly equal checked-in docs/api-v1-openapi.json; Mock metadata store, no DB calls",
+    "source_consistency": "passed; see rereview.source_consistency",
+    "final_source_hash_recheck": "passed; all 157 frozen code/dependency files and preserved user files unchanged"
+  },
+  "pre_rereview_snapshot": {
+    "checked_at": "2026-10-22T19:28:19.339957+00:00",
+    "status": "completed_local_validation",
+    "source_sha256": {
+      "src/datapilot/web/__init__.py": "4a7b44ee89e78a1e9f4e54de45927776344f7cf77119c070f86c3f661b8c6610",
+      "src/datapilot/web/app.py": "d5e4126cefe1d2048ca94f799f0cd56ec2e374394a4bfcc66d6d0620897e0b8c",
+      "src/datapilot/web/body_limit.py": "84980187c7bd90cd30760e9474b0ddd69af2f46c3d0d899f2ebed725938acc9d",
+      "src/datapilot/web/cli.py": "825240fcda8bd3917e68ad3622974a0eeddc70edf5ecf95492b38a06dd85ce2e",
+      "src/datapilot/web/client.py": "3a64c84a3c8ef6400c4d2bcfc820921af0bcb26fbaa71693cbfe12b38c1930dc",
+      "src/datapilot/web/config.py": "dcfabb069be6a001067c9be77f0458472e17d730e3c08c87de6bb08b43409d05",
+      "src/datapilot/web/contracts.py": "ae2476837718009aa9b047782f0bcbfbb0e09895065213558977a43fc484d45c",
+      "src/datapilot/web/service.py": "c8cda4fd86d5cb75405dce843869fdfd310d499d50e81247d5e9c4a713b9a2dd",
+      "src/datapilot/web/store.py": "2c5810803c495a318074be0fc899ae7cb34ea13e74ea42ca009d7e853b7b7632",
+      "src/datapilot/web/telemetry.py": "738ea473a6ae772b33e86b421d964e212cf99288b59de32d507f3facf4b921b2",
+      "src/datapilot/web/ui.py": "4d56ef712c2b0c1a001a986b2f6b0502d0314851f49864348f3e41b2485f1d26",
+      "src/datapilot/web/worker.py": "fcc1eee4becedb094534cb40b5b0040a27bf5574c9dbe8a58930cc196f4ffdc0",
+      "scripts/web_recovery_probe.py": "1335e74fee213a2f5a823e9d2b4825fae7352e4d28d9427c9a789e3913179ab6",
+      "tests/test_web_review_fixes.py": "74ab7a10399eccdb167864b131f15b4c6855f23e8f0970079cdaffad39401817",
+      "tests/test_web_ui_retry.py": "b229595fd6f1410128e20b423e8eecd873786e1eecd09c01cd6160820269450d",
+      "tests/test_web_recovery_postgres.py": "0dc28e092ebfeb58c301b249df518056bdbb9fce3bd326853d46de4fee3c273d"
+    },
+    "full_regressions_apply_to": "source_sha256 in this pre_rereview_snapshot",
+    "browser_applies_to": "pre-rereview deployed image; not rebuilt after the two P2 follow-ups"
+  },
+  "full_regressions_snapshot": "pre_rereview_snapshot; 587 passed/1 skipped for each Python, not rerun after P2 follow-ups",
+  "rereview": {
+    "checked_at": "2026-10-23T11:05:58.697882+08:00",
+    "status": "passed",
+    "reproduction_before": {
+      "path": "artifacts/p6c-rereview/before.xml",
+      "sha256": "381031590bcc04e045d6ffb13e16fadcae8072d5c0c2aff754d4edd356557a1b",
+      "tests": 2,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "seconds": 35.161,
+      "started_at": "2026-10-23T03:36:03.507198+08:00"
+    },
+    "reproduction_after": {
+      "path": "artifacts/p6c-rereview/after.xml",
+      "sha256": "9e923244418711e8fb592257a7567c0e8c30785433857da315fb3a94ec180196",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 2,
+      "seconds": 40.889,
+      "started_at": "2026-10-23T03:39:07.362472+08:00"
+    },
+    "final_targeted_regressions": [
+      {
+        "path": "artifacts/p6c-rereview/regression-py311.xml",
+        "sha256": "fa66171e4ffdaa6ba8c2f8f13fa72e783ebe3e2762cbc383f40675562498404d",
+        "tests": 68,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 68,
+        "seconds": 902.261,
+        "started_at": "2026-10-23T03:40:55.193842+08:00",
+        "python": "3.11.16"
+      },
+      {
+        "path": "artifacts/p6c-rereview/regression-py313.xml",
+        "sha256": "a59d0d8128ed87a3f999bc6ddde4b2cb8b44878ab36cfab7e7035e9b1451bce3",
+        "tests": 68,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 68,
+        "seconds": 917.191,
+        "started_at": "2026-10-23T03:41:06.639429+08:00",
+        "python": "3.13.15"
+      }
+    ],
+    "original_six_counterexamples_passed_in_both_targeted_runs": true,
+    "fixes": [
+      {
+        "issue": "legacy-create-upgrade-idempotency",
+        "files": [
+          "src/datapilot/web/store.py",
+          "tests/test_web_review_fixes.py"
+        ],
+        "result": "Legacy body hash may omit only host_policy_sha256; return original ACK without changing payload or execution authorization. Changed question/policy and revoked source remain rejected."
+      },
+      {
+        "issue": "healthy-orphan-capacity-wait",
+        "files": [
+          "src/datapilot/web/worker.py",
+          "tests/test_web_review_fixes.py"
+        ],
+        "result": "Probe existing per-owner 6156 locks before recording a dispatch attempt; busy capacity waits without launch/quarantine, then dispatches after release."
+      }
+    ],
+    "source_consistency": {
+      "path": "artifacts/p6c-rereview/final-source-check.json",
+      "sha256": "ade80c923662341e808e6be87f8a34415598656d9db9bfdb763e397e749dac8a",
+      "changed_since_prior_full": [
+        "src/datapilot/web/store.py",
+        "src/datapilot/web/worker.py",
+        "tests/test_web_review_fixes.py"
+      ],
+      "unchanged_prior_source_files": 13,
+      "all_code_mtime_before_both_targeted_runs": true,
+      "pre_start_hash_manifest_captured": false
+    },
+    "remaining_known_failures": [],
+    "not_rerun": [
+      "full pytest after P2 follow-ups",
+      "manual browser/Docker rebuild after P2 follow-ups",
+      "paid live model API",
+      "post-push GitHub CI"
+    ],
+    "test_kinds": "Real PostgreSQL/MCP/ONNX and process recovery with Fake model decisions; explicit Mock UI/transport tests. No paid API.",
+    "review_findings_remaining": []
+  },
+  "git_submission": {
+    "record_phase": "pre_commit_validation_snapshot",
+    "authorized_action": "local git commit of only P6C fixes and validation documents",
+    "push_authorized": false,
+    "baseline_commit": "e25adfcea94aa79d53e0e888da26c85592230fe6",
+    "user_prompt_files_excluded": [
+      "docs/codex-prompts-v2.4.md",
+      "docs/codex-prompts-v2.5.md"
+    ],
+    "note": "Final commit SHA is reported after Git succeeds; this document does not embed a self-referential commit SHA."
+  }
+}

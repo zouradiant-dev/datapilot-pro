@@ -21,6 +21,52 @@ pytestmark = pytest.mark.integration
 ROOT = Path(__file__).parents[1]
 
 
+def test_pre_runtime_cancel_survives_actual_api_restart(pg_settings, tmp_path):
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        port = sock.getsockname()[1]
+    path = tmp_path / "cancel-host.json"
+    bootstrap(path, api_host=f"127.0.0.1:{port}")
+    policy = json.loads(path.read_text(encoding="utf-8"))
+    policy["owner"] = "cancel-restart-" + uuid4().hex[:12]
+    path.write_text(json.dumps(policy), encoding="utf-8")
+    child = start_api(path, dispatch=False)
+    c = connect(path, child)
+    try:
+        body = import_sample(c)
+        key = uuid4().hex
+        ack = c.post("/api/v1/tasks", json=body, headers={"Idempotency-Key": key}).json()
+        id_ = ack["run_id"]
+        assert (
+            c.post(
+                f"/api/v1/tasks/{id_}/cancel", json={}, headers={"Idempotency-Key": uuid4().hex}
+            ).status_code
+            == 200
+        )
+        child.terminate()
+        child.wait(timeout=15)
+        c.close()
+        child = start_api(path, dispatch=True)
+        c = connect(path, child)
+        assert c.post("/api/v1/tasks", json=body, headers={"Idempotency-Key": key}).json() == ack
+        for _ in range(100):
+            view = c.get("/api/v1/tasks/" + id_).json()
+            if view["status"] == "cancelled":
+                break
+            time.sleep(0.1)
+        assert view["status"] == "cancelled" and view["usage"]["calls"] == 0
+        assert (
+            c.post(
+                f"/api/v1/tasks/{id_}/resume", json={}, headers={"Idempotency-Key": uuid4().hex}
+            ).status_code
+            == 403
+        )
+    finally:
+        c.close()
+        child.terminate()
+        child.wait(timeout=15)
+
+
 def start_api(path, *, dispatch):
     child = subprocess.Popen(
         [

@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import FastAPI, File, Form, Header, UploadFile
+from fastapi import FastAPI, File, Form, Header, Query, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import JSONResponse
@@ -54,6 +54,8 @@ def create_app(*, policy=None, settings=None, dispatch=True, policy_file=None):
     settings = settings or Settings()
     store = WebStore(management_url("web"), policy)
     service = ProductService(settings, store)
+    service.bind_host_settings()
+    store.settings_provider = lambda: service.settings
 
     @asynccontextmanager
     async def lifespan(app):
@@ -241,8 +243,14 @@ def create_app(*, policy=None, settings=None, dispatch=True, policy_file=None):
         return run_async(service.import_upload(id_, request))
 
     @app.get("/api/v1/datasets", response_model=DatasetViews)
-    def datasets():
-        return {"datasets": [public_schema(p) for p in store.datasets()]}
+    def datasets(offset: int = Query(0, ge=0, le=1_000_000), limit: int = Query(100, ge=1, le=100)):
+        rows = store.datasets(offset=offset, limit=limit)
+        return {
+            "datasets": [public_schema(p) for p in rows[:limit]],
+            "offset": offset,
+            "limit": limit,
+            "next_offset": offset + limit if len(rows) > limit else None,
+        }
 
     @app.get("/api/v1/datasets/{id_}/versions/{version}", response_model=DatasetView)
     def dataset(id_: str, version: int):
@@ -334,16 +342,16 @@ def create_app(*, policy=None, settings=None, dispatch=True, policy_file=None):
         if action != "cancel":
             run_async(service.authorize_run(str(id_)))
         old = store.replay(idempotency_key, action, request.model_dump(mode="json"), str(id_))
-        if old:
+        if old and action != "cancel":
             return old
         if action == "cancel":
             from datapilot.persistence.backend import Backend
             from datapilot.persistence.inspection import control_state
 
             _, terminal = run_async(
-                control_state(settings, str(id_), policy.owner, row["payload"]["question"])
+                control_state(service.settings, str(id_), policy.owner, row["payload"]["question"])
             )
-            result = store.command(
+            result = old or store.command(
                 idempotency_key,
                 action,
                 request.model_dump(mode="json"),
@@ -352,11 +360,22 @@ def create_app(*, policy=None, settings=None, dispatch=True, policy_file=None):
             )
             if not terminal:
                 backend = Backend(
-                    settings.runtime_database_url.get_secret_value(), str(id_), policy.owner
+                    service.settings.runtime_database_url.get_secret_value(), str(id_), policy.owner
                 )
                 try:
-                    with suppress(AgentFailure):
+                    try:
                         backend.cancel()
+                    except AgentFailure as exc:
+                        # Missing Runtime is legitimate only before initialization. The
+                        # monotonic outbox flag then prevents starting after registration.
+                        from datapilot.persistence.backend import execute
+
+                        with backend.engine.connect() as conn:
+                            exists = execute(
+                                conn, "SELECT 1 FROM execution.runs WHERE run_id=:r", r=str(id_)
+                            ).first()
+                        if exists or exc.error.code != "RECOVERY_FORBIDDEN":
+                            raise
                 finally:
                     backend.close()
             return result

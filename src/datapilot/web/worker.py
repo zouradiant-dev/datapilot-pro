@@ -3,6 +3,7 @@
 import argparse
 import asyncio
 import json
+import logging
 import os
 import subprocess
 import sys
@@ -19,6 +20,8 @@ from datapilot.web.config import load_policy
 from datapilot.web.service import ProductService
 from datapilot.web.store import WebStore
 
+log = logging.getLogger(__name__)
+
 
 def safe_error(exc):
     code = exc.error.code if isinstance(exc, AgentFailure) else "WEB_EXECUTION_ERROR"
@@ -27,7 +30,14 @@ def safe_error(exc):
         "message": "执行未完成；检查任务状态后再决定是否恢复",
         "retryable": code in {"MODEL_TIMEOUT", "MODEL_RATE_LIMIT", "RECOVERY_BUSY"},
         "manual_action_required": code
-        in {"RECOVERY_UNCERTAIN", "BUDGET_INVALID", "RECOVERY_CORRUPT", "RECOVERY_IDENTITY"},
+        in {
+            "RECOVERY_UNCERTAIN",
+            "BUDGET_INVALID",
+            "RECOVERY_CORRUPT",
+            "RECOVERY_IDENTITY",
+            "RECOVERY_POLICY_UNBOUND",
+            "RECOVERY_VERSION",
+        },
     }
 
 
@@ -60,7 +70,13 @@ async def execute_one(settings, store, run_id, *, transport=None, fault=None, in
                 return False
             seq = row["command_seq"]
             try:
-                service = ProductService(settings, store)
+                # The caller and persisted Settings are comparison inputs, never authority.
+                current = store.settings_provider() if store.settings_provider else Settings()
+                if store.host_settings_hash(settings) != store.host_settings_hash(current):
+                    raise AgentFailure("RECOVERY_VERSION", "Caller configuration is stale")
+                settings = current
+                store.check_host_settings(settings)
+                service = ProductService(current, store)
                 p = row["payload"]
                 backend = Backend(
                     settings.runtime_database_url.get_secret_value(), run_id, store.policy.owner
@@ -70,27 +86,12 @@ async def execute_one(settings, store, run_id, *, transport=None, fault=None, in
                         exists = execute(
                             conn, "SELECT 1 FROM execution.runs WHERE run_id=:r", r=run_id
                         ).first()
-                    if row["cancel_requested"]:
-                        if exists:
-                            from datapilot.persistence.inspection import control_state
-
-                            _, terminal = await control_state(
-                                settings, run_id, store.policy.owner, p["question"]
-                            )
-                            if not terminal:
-                                backend.cancel()
-                        store.mark(run_id, seq, "cancelled")
-                        return True
                 finally:
                     backend.close()
-                await service.authorize_run(run_id)
-                result = await run_durable(
-                    settings,
-                    run_id,
-                    p["question"] if not exists else None,
+                if not row["cancel_requested"]:
+                    await service.authorize_run(run_id)
+                options = dict(
                     owner=store.policy.owner,
-                    resume=bool(exists),
-                    approve=True if row["action"] == "approve" else None,
                     require_review=p["require_review"],
                     ttl_seconds=store.policy.ttl_seconds,
                     report_scope=ReportScope.model_validate_json(json.dumps(p["report_scope"])),
@@ -99,7 +100,61 @@ async def execute_one(settings, store, run_id, *, transport=None, fault=None, in
                     else None,
                     transport=transport,
                     fault=fault,
+                )
+                if not exists:
+                    # Original Saver/interrupt initializes with zero model/metric work.
+                    # Re-read the durable outbox after initialization, before any execution.
+                    fresh = store.run(run_id)
+                    if fresh["cancel_requested"]:
+                        store.mark(run_id, fresh["command_seq"], "cancelled")
+                        return True
+                    if fresh["processed_seq"] >= seq or fresh["command_seq"] != seq:
+                        return False
+                    store.check_host_settings(settings)
+                    if "host_policy_sha256" not in p:
+                        raise AgentFailure(
+                            "RECOVERY_POLICY_UNBOUND",
+                            "Legacy pending task needs host reauthorization",
+                        )
+                    result = await run_durable(
+                        settings,
+                        run_id,
+                        p["question"],
+                        interrupt_before=["planner"],
+                        **options,
+                    )
+                    if result["status"] == "awaiting_review":
+                        store.mark(run_id, seq, result["status"])
+                        return True
+                fresh = store.run(run_id)
+                if fresh["cancel_requested"]:
+                    from datapilot.persistence.inspection import control_state
+
+                    _, terminal = await control_state(
+                        settings, run_id, store.policy.owner, p["question"]
+                    )
+                    if not terminal:
+                        backend = Backend(
+                            settings.runtime_database_url.get_secret_value(),
+                            run_id,
+                            store.policy.owner,
+                        )
+                        try:
+                            backend.cancel()
+                        finally:
+                            backend.close()
+                    store.mark(run_id, fresh["command_seq"], "cancelled")
+                    return True
+                if fresh["processed_seq"] >= seq or fresh["command_seq"] != seq:
+                    return False
+                store.check_host_settings(settings)
+                result = await run_durable(
+                    settings,
+                    run_id,
+                    resume=True,
+                    approve=True if row["action"] == "approve" else None,
                     interrupt_after=interrupt_after,
+                    **options,
                 )
                 store.mark(run_id, seq, result["status"])
             except Exception as exc:
@@ -120,26 +175,67 @@ class Dispatcher:
     def __init__(self, store, policy_file):
         self.store, self.policy_file = store, str(policy_file)
         self.children = {}
+        self.sequences = {}
         self.stopping = False
+        self.poll_failures = 0
+        self.last_error = None
 
     async def run(self):
         while not self.stopping:
-            for id_, child in list(self.children.items()):
-                if child.poll() is not None:
-                    self.children.pop(id_)
-            for id_ in self.store.pending():
-                if len(self.children) >= self.store.policy.max_workers:
-                    break
-                if id_ in self.children:
-                    continue
-                # Advisory probe avoids launch storms while an orphan worker is still active.
-                with self.store.transaction() as conn:
-                    free = execute(
-                        conn, "SELECT pg_try_advisory_xact_lock(hashtextextended(:r,6155))", r=id_
+            try:
+                self.poll()
+                self.poll_failures = 0
+                self.last_error = None
+            except Exception:
+                self.poll_failures += 1
+                self.last_error = "WEB_DISPATCH_UNAVAILABLE"
+                log.error("Web dispatcher poll failed (%s/3); details redacted", self.poll_failures)
+                if self.poll_failures >= 3:
+                    # A circuit breaker, not an unbounded crash/restart loop. Host restart
+                    # is required after repeated infrastructure failures.
+                    while not self.stopping:
+                        await asyncio.sleep(0.5)
+                    return
+            await asyncio.sleep(0.5 * max(1, self.poll_failures))
+
+    def poll(self):
+        for id_, child in list(self.children.items()):
+            code = child.poll()
+            if code is not None:
+                seq = self.sequences[id_]
+                if code == 75:
+                    self.store.dispatch_busy(id_, seq)
+                else:
+                    # CAS leaves acknowledged commands alone; every unacknowledged exit,
+                    # even exit 0, is uncertain and cannot be automatically relaunched.
+                    self.store.dispatch_failed(id_, seq)
+                self.children.pop(id_)
+                self.sequences.pop(id_)
+        for id_ in self.store.pending():
+            if len(self.children) >= self.store.policy.max_workers:
+                break
+            if id_ in self.children:
+                continue
+            # Advisory probe avoids launch storms while an orphan worker is still active.
+            with self.store.transaction() as conn:
+                free = execute(
+                    conn, "SELECT pg_try_advisory_xact_lock(hashtextextended(:r,6155))", r=id_
+                ).scalar_one()
+                capacity = free and any(
+                    execute(
+                        conn,
+                        "SELECT pg_try_advisory_xact_lock(hashtextextended(:host,6156))",
+                        host=self.store.policy.owner + ":" + str(slot),
                     ).scalar_one()
-                if not free:
-                    continue
-                flags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+                    for slot in range(self.store.policy.max_workers)
+                )
+            if not capacity:
+                continue
+            seq = self.store.dispatch_start(id_)
+            if seq is None:
+                continue
+            flags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+            try:
                 self.children[id_] = subprocess.Popen(
                     [
                         sys.executable,
@@ -154,7 +250,10 @@ class Dispatcher:
                     creationflags=flags,
                     env={**os.environ, "PYTHONUTF8": "1"},
                 )
-            await asyncio.sleep(0.5)
+                self.sequences[id_] = seq
+            except Exception:
+                self.store.dispatch_failed(id_, seq)
+                log.error("Web worker launch failed; task quarantined, details redacted")
 
     async def close(self):
         self.stopping = True
@@ -174,8 +273,9 @@ def main():
     policy = load_policy(args.host_file)
     store = WebStore(management_url("web"), policy)
     try:
-        row = store.run(args.run_id)
-        run_async(execute_one(Settings(**row["payload"]["settings"]), store, args.run_id))
+        completed = run_async(execute_one(Settings(), store, args.run_id))
+        if not completed:
+            raise SystemExit(75)
     finally:
         store.close()
 

@@ -14,6 +14,21 @@ class ClientError(Exception):
         super().__init__(error.get("message", "API request failed"))
 
 
+def creation_intent(previous, body):
+    """Serializable UI intent survives reruns/client reconnects, separate from HTTP state."""
+    snapshot = json.loads(json.dumps(body, ensure_ascii=False, allow_nan=False))
+    if previous is not None:
+        if previous["body"] != snapshot:
+            raise ClientError(
+                {
+                    "code": "CREATE_INTENT_PENDING",
+                    "message": "请重试原创建请求，或明确选择创建新分析任务",
+                }
+            )
+        return previous
+    return {"key": uuid4().hex, "body": snapshot}
+
+
 class APIClient:
     def __init__(self, policy_path=None):
         path = Path(
@@ -53,7 +68,13 @@ class APIClient:
         return self._read(self.http.get("/api/v1" + path))
 
     def post(self, path, body=None, *, files=None, data=None, key=None):
-        return self._read(
+        # An uncertain create keeps its key even when the caller did not supply one.
+        # Explicit UI intents supply their own key and survive a new APIClient instance.
+        implicit = path == "/tasks" and key is None
+        if implicit:
+            self._pending_create = creation_intent(getattr(self, "_pending_create", None), body)
+            key = self._pending_create["key"]
+        result = self._read(
             self.http.post(
                 "/api/v1" + path,
                 json=body if files is None else None,
@@ -62,6 +83,9 @@ class APIClient:
                 headers={"Idempotency-Key": key or uuid4().hex},
             )
         )
+        if implicit:
+            self._pending_create = None
+        return result
 
     def close(self):
         self.http.close()

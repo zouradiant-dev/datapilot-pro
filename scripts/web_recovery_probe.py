@@ -21,6 +21,7 @@ def main():
     parser.add_argument("--cut")
     parser.add_argument("--pause-after")
     args = parser.parse_args()
+    os.environ["DATAPILOT_LLM_MODE"] = "fake"
     settings = Settings(llm_mode="fake")
     policy = load_policy(args.policy)
     if args.action == "api":
@@ -42,6 +43,7 @@ def main():
                 os._exit(91)
 
         store = WebStore(management_url("web"), policy)
+        store.settings_provider = lambda: settings
         try:
             run_async(
                 execute_one(
