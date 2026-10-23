@@ -1,5 +1,7 @@
 # P6C：可信本地单用户产品 Demo
 
+本页保留 P6C 历史交付记录。当前新增 Chat-first 交互见 [P6C.1](chat-first-ui.md)；已有部署只追加 0007 并重启 API/UI，不重复 Seed 或重置数据。原上传、确认、ReportView、Journal 和恢复契约保持。
+
 本轮只实现 P6C，保留 P1–P6B；不进入 P7/P8/P9/P10/P11，不自动 commit/push。基线 `fe05ba23197bb1577ce2ba7693a36d25b641f63f`。预检经 GitHub API 核对 **P6B** Actions `39717954797`（DataPilot checks / Python 3.11、3.13 success），不是尚未提交的 P6C CI。用户已有 v2.4 修改与新增 v2.5 Prompt 保持原样，不据此扩大阶段。
 
 以上“未提交/CI 未运行”及下方本地验证是 **2026-10-23 推送前快照**。用户随后单独授权上传；推送后的提交与 Actions 状态以 GitHub 对应记录为准，不能把本地测试当作远端 CI。

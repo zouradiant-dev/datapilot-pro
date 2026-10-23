@@ -1,5 +1,19 @@
 # DataPilot Pro v2 架构：Day 1 基线与目标设计
 
+当前交互层增量为 **P6C.1**，下文阶段停止点保留历史属性；见 [Chat-first 契约](chat-first-ui.md)、[ADR-015](adr/0015-chat-first-conversation.md)。Conversation/Message 是有界私密索引，0007 只追加两张元数据表，不成为权限、Checkpoint 或第二套 Runtime。候选请求以 source/context/当前宿主策略 hash 固定，提交时经原 task_payload/MCP 重核；原 command 在同一 PG 事务创建 Run 并填充消息引用。追问创建独立 Run，审批仍由原 Journal，GET 历史/状态只读。原 P3/P4/P5B/P6A/P6B 不改。
+
+```mermaid
+flowchart LR
+  UI[HTTP-only Chat / 原管理页] --> API[原 Host / Origin / CSRF]
+  API --> INDEX[Conversation / Message 索引]
+  INDEX --> CAND[有界候选 / 人工补充]
+  CAND --> SCOPE[原 task_payload / MCP 校验]
+  SCOPE --> OUTBOX[原 Outbox / 原子关联 Run]
+  OUTBOX --> DURABLE[原 P5B / Journal / 人工审批]
+  DURABLE --> REPORT[原 P3 / P6A / P6B 报告]
+  REPORT --> UI
+```
+
 ## 1. 目标、阶段边界与技术决策
 
 面向 SaaS 企业的、证据可验证的经营分析系统。业务目标、技术方案、重大架构决策与验收标准由用户掌握。当前 P0–P6B 与 P6C 本地产品边界已实现；各节保留历史阶段边界，最新实现见文末 P6C 节。不宣称生产多租户、因果验证或真实模型完整业务基准已完成。
@@ -407,3 +421,13 @@ Web outbox 管理请求幂等和待派发序号，不规划 Agent 依赖或存�
 新增 Alembic `0006` 仅管理 Web 元数据/保留标记/审计，0001–0005 未修改。web、maintenance 与 runtime/业务 Reader 分离；runtime、MCP、模型无 DELETE/DDL。清理使用独立 CLI、精确计划 hash、同一事务整 Run/官方 thread 删除；默认 dry-run，仅在新隔离测试库验证实际删除，不触碰用户已有 Run、业务表、P3 Registry 或 Volume。
 
 默认回环单用户；Docker 仅内部监听 0.0.0.0，宿主端口仍发布到 127.0.0.1。可选本地 OTel 是安全白名单的事后观测投影，不导出 Prompt、SQL、业务行、文档原文或凭据；缓存与费用无可靠数据时为 null。不实现远程 Langfuse、生产认证/RLS/KMS、自动清理或 P11 引擎。详见 [P6C 交付](product-demo.md)、[API](api-v1.md)、[ADR-013](adr/0013-local-product-boundary.md)、[ADR-014](adr/0014-execution-retention.md)。
+
+## 27. P6C.1：Chat-first 与持久交互索引
+
+本节更新当前停止点到 P6C.1，不改变 Runtime/Harness/Domain/Data 分层。Streamlit 默认聊天工作台，保留管理页面；所有 UI 模块仅通过 HTTP 请求原产品接口和六个新增会话/审核路由。有限确定性意图适配器只生成既有 CreateTask 的候选，Dataset/Metric/时间/文档有歧义先确认，明确 MRR 不允许以账单收入替代。
+
+新增 0007 仅追加 Conversation/Message 私密元数据，记录有界用户文本、附件和候选 hash、顺序、TTL 与原 Run 引用。候选源检查在锁外，消息写入及 Run 创建/关联在原 owner advisory lock 和 WebStore.command 事务中完成；一条消息最多一个 Run。追问生成新消息和独立 Run，不改旧 Manifest；会话不是长期 Memory、Checkpoint 或授权来源。
+
+历史读取和启动继续重核当前宿主策略、grant、版本及引用；读取不执行模型或恢复。审批沿用原 Journal；取消/unknown-outcome 沿用原 P6C/P5B。报告和图表只是 P6B ReportView 的安全投影，精确 Decimal、P3 verdict/hash 不变。UI 分开展示任务/审批状态、Runtime execution_status 和 business_completion，部分结果不能冒充完整分析。
+
+详见 [Chat-first 交付与边界](chat-first-ui.md)、[ADR-015](adr/0015-chat-first-conversation.md)。本轮不新增模型调用、业务配方、调度器、恢复引擎、主动 Agent 或生产多租户能力；不修改 v2.4/v2.5 规划文档。

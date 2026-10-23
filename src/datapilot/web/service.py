@@ -338,7 +338,7 @@ class ProductService:
             for id_ in request.documents.corpus_ids:
                 matches = [
                     c
-                    for c in self.store.corpora()
+                    for c in self.store.corpora(corpus_id=id_)
                     if c["corpus_id"] == id_
                     and (c["dataset_id"], c["dataset_version"])
                     in {(b.dataset_id, b.version) for b in datasets.bindings}

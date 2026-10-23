@@ -2,7 +2,7 @@
 
 ## 架构和范围
 
-- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/codex-prompts-v2.4.md、docs/recovery.md、docs/cross-source-report.md、docs/product-demo.md 与相关 ADR。当前仅授权 P6C：可信本地单用户 FastAPI + HTTP-only Streamlit、默认原 P5B Durable、数据访问保护、可关闭的脱敏本地 OTel 与受控保留/清理。完整复用 P0–P6B，验收后停止；不开始 P7/P8/P9/P10/P11，不自动提交/推送。生产公网多租户/RLS、KMS/自动清理不在本轮。
+- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/recovery.md、docs/cross-source-report.md、docs/product-demo.md、docs/chat-first-ui.md 与相关 ADR。当前仅授权 P6C.1：在原可信本地单用户 P6C 上增加 Chat-first Streamlit 与最小 Conversation/Message 元数据。完整复用 P0–P6C，验收后停止；不开始 P7/P8/P9/P10/P11，不自动提交/推送。生产公网多租户/RLS、KMS/自动清理和主动 Agent 不在本轮。
 - 按功能依赖与验收 Gate 推进，工作单元/工作日编号不是截止日期；旧七天计划已由 roadmap-v2 取代。SaaS 是唯一首发主业务，drycleaning 是独立可选 Phase F，不复制 Runtime/Harness/Worker。
 - Python 3.11+、src 布局、类型标注、Pydantic 2 严格契约、LangGraph StateGraph 编排。
 - Planner/Coordinator 路由；P4 Worker 只接收宿主生成的 TaskEnvelope，不读取整个 RunState。旧 SQLTask/SQLAgentResult 保留兼容投影，P3 MetricRequest 路径独立。Worker 有独立工具句柄/能力、消息与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
@@ -42,6 +42,7 @@
 - Domain Pack 是版本化字段映射/指标/质量/Verifier/评测的可信配置，不是可执行上传脚本或不同 Prompt。Source Connector 首发文件快照；未知 POS/API 不编造适配器。
 - P6C 前后端严格分离：Streamlit 只能用 HTTP 客户端调用版本化 API，不能导入 Runtime/MCP/Repository/Registry/maintenance。owner 与 scope 来自宿主；session_state、run_id、客户端 owner 或 model 输入都不是授权。默认仅回环监听，Host/Origin/Session/CSRF 检查不可省略。
 - Web 只增加有界本地进程派发与 PG outbox，不增加 Agent Scheduler/Checkpoint。每个分析调用原 run_durable；幂等绑定宿主身份、操作、run_id、请求 hash 和授权。恢复/审核/取消不能清除 unknown-outcome、重复扣费或把终态退回 running；UI 仅显示真实状态投影。
+- P6C.1 见 ADR-015：Conversation/Message 仅为有界私密交互索引，不是 Checkpoint/Memory 或权限。0001–0006 不改，0007 只加会话/消息表。全部 UI 模块 HTTP-only；历史/selection 仅作候选，每次启动经原 task_payload/MCP 重核 source/版本/策略 pin。每条消息最多关联一个原 Outbox Run，关联与创建同事务；追问是独立新 Run，审批仍走原 Journal。GET 历史/轮询不可执行模型、恢复、结算或写入业务数据。消息不存原始业务行/文档正文/SQL/Prompt/Checkpoint；过期、撤权、hash 错误失败关闭。有限规则不能代替完整自然语言理解或静默确认口径。
 - 清理仅限独立 maintenance CLI/身份，默认 dry-run、显式确认、同一事务双重检查 TTL/终态/审批/保全/未知调用/原 Run 锁，整 Run 删除 execution + 官方 Saver thread 的父子图记录；不动业务表、Dataset/P3 Registry 或被其他运行引用的工件。开发执行测试只能在新建隔离数据库，不能删除现有用户运行/Volume。不能证明完整性时必须 fail-closed。
 
 ## 安全和数据

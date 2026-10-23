@@ -1,0 +1,175 @@
+{
+  "schema_version": "p6c1-review-fixes-1",
+  "status": "accepted_local",
+  "verified_at": "2026-10-23T14:32:45.797564+00:00",
+  "baseline_commit": "85e5652bbb57e6099021c88e8a09b8c6d6fa68c3",
+  "scope": "P6C.1 and five review fixes; no later stages",
+  "review_findings_fixed": [
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5"
+  ],
+  "formal_counterexamples": "tests/test_chat_review_regressions.py",
+  "before": {
+    "tests": 8,
+    "failures": 8,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 0,
+    "seconds": 35.324,
+    "junit_sha256": "978a8a955ca8846fdc74fa36be5d92b72a6a7bfa5f00e02bfd4c91ff686a6968"
+  },
+  "after": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 8,
+    "seconds": 30.964,
+    "junit_sha256": "3afb29abe0d437a340c35b5cb108563d72db61014595f49eb3aceaa3b865e43c"
+  },
+  "targeted": {
+    "tests": 44,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 44,
+    "seconds": 42.29,
+    "junit_sha256": "07cfcc643dab323bcd86e84c3df4a1ad5672fb95d3fd5510ee0933194378e7a5"
+  },
+  "full_regressions": {
+    "py311": {
+      "started_at": "2026-10-23T13:18:22.805774+00:00",
+      "finished_at": "2026-10-23T13:53:31.371882+00:00",
+      "exit_code": 0,
+      "source_unchanged": true,
+      "command": [
+        "D:\\桌面\\llm-learning\\datapilot-pro\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "-x",
+        "--tb=short",
+        "--junitxml=artifacts\\p6c1-review-fixes\\frozen\\full-py311.xml"
+      ],
+      "tests": 641,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 640,
+      "seconds": 2106.247,
+      "junit_sha256": "ade2732183af633c3dc03360bb36b8826e7c70461d7e0726c3ee2ffda2e8fdd1"
+    },
+    "py313": {
+      "started_at": "2026-10-23T13:53:31.395396+00:00",
+      "finished_at": "2026-10-23T14:31:16.824987+00:00",
+      "exit_code": 0,
+      "source_unchanged": true,
+      "command": [
+        "D:\\桌面\\llm-learning\\datapilot-pro\\.venv-313\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "-x",
+        "--tb=short",
+        "--junitxml=artifacts\\p6c1-review-fixes\\frozen\\full-py313.xml"
+      ],
+      "tests": 641,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 640,
+      "seconds": 2261.434,
+      "junit_sha256": "ada7b98e0d865aea1864235430f4b035b2018b4f0ee94780198f1a2096a64ae4"
+    }
+  },
+  "frozen_files": 192,
+  "frozen_manifest_sha256": "7c39dcd095571911741b8f08d7a1b454dde630b89c64387c3976a5f0ce1e7ebb",
+  "deployed_web_files_equal": 19,
+  "openapi_equal": true,
+  "history_restart_checks": {
+    "old_history_equal": true,
+    "old_three_reports_p3_budget_calls_equal": true,
+    "new_history_equal": true,
+    "new_report_p3_budget_calls_equal": true
+  },
+  "browser": {
+    "conversation_id": "59f64568-7557-4db7-8f2b-c6f838506d83",
+    "run": {
+      "run_id": "4f359af8-87ac-4b9c-8b04-a3d74fce0de5",
+      "payload_hash": "b374689257398a9ba9748d68f59492629be4d2faa985f055cdbe6460947d0f9d",
+      "command_seq": 2,
+      "processed_seq": 2,
+      "call_count": 3,
+      "status": "completed",
+      "execution_status": "succeeded",
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "completed",
+        "required_goals": [
+          "metric_1"
+        ],
+        "verified_goals": [
+          "metric_1"
+        ],
+        "missing_evidence": {},
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "report_sha256": "dd5695447c4087f7b63dcccc560677ca041b62b7bd89abed31bac303d98b8124",
+      "facts": [
+        {
+          "evidence_id": "021bd251-1d2f-48ff-be9c-fb21baa70c9f",
+          "verification_id": "1ca78efb-4941-4e34-8aa3-0d4d2d86f01e",
+          "evidence_sha256": "d0894c0c5e73dde602193b610194db93c0ca5fe3257c2963a962f1c418b27beb",
+          "verification_sha256": "24e5ea8c7bdcf081da631444c15be6cd9b4107ca4724241e8b86637096cee07e",
+          "value": {
+            "value": "300.0000000000000000",
+            "unit": "CNY",
+            "numerator": null,
+            "denominator": null,
+            "window_days": 31
+          }
+        }
+      ],
+      "usage": {
+        "calls": 1,
+        "total_tokens": 0,
+        "reported_tokens": 0,
+        "usage_complete": true
+      },
+      "task_workers": [
+        {
+          "worker": "sql",
+          "status": "succeeded"
+        },
+        {
+          "worker": "report",
+          "status": "succeeded"
+        }
+      ],
+      "trace_sha256": "109233bf70a07c2b33be1615fef4367f9420b996be062e56d6d08ebf2553f088",
+      "citation_count": 0
+    },
+    "screenshot": "artifacts/p6c1-review-fixes/browser-after-restart.png",
+    "invalid_message_then_corrected_and_approved": true
+  },
+  "test_kinds": {
+    "ui": "Streamlit HTTP Mock plus actual browser",
+    "database": "real PostgreSQL 17 / MCP / local ONNX",
+    "model": "Fake, no paid API"
+  },
+  "live_model_calls": 0,
+  "provider_cost": null,
+  "provider_cache_savings": null,
+  "user_planning_sha256": {
+    "docs/codex-prompts-v2.4.md": "e741a01457caf912968f02276b1894e5cd94803d5a0c12d79993c4fa1b42c74d",
+    "docs/codex-prompts-v2.5.md": "fe2289591503a58b98d39e83b9f63bbcb61951dc8dfc8e1f6e09faa048fa5189"
+  },
+  "post_push_ci": {
+    "status": "not_yet_pushed_snapshot",
+    "will_verify_exact_commit": true
+  }
+}

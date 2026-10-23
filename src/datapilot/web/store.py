@@ -2,7 +2,7 @@
 
 import hashlib
 import secrets
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 from datetime import UTC, datetime, timedelta
 from uuid import uuid4
 
@@ -297,7 +297,7 @@ class WebStore:
                 h=digest(payload),
             )
 
-    def corpora(self):
+    def corpora(self, *, corpus_id=None):
         with self.transaction() as conn:
             rows = (
                 execute(
@@ -308,8 +308,10 @@ class WebStore:
                     "JOIN execution.web_datasets d ON d.owner=c.owner "
                     "AND d.dataset_id=c.dataset_id AND d.version=c.dataset_version "
                     "WHERE c.owner=:o AND d.enabled "
+                    "AND (CAST(:id AS text) IS NULL OR c.corpus_id=:id) "
                     "ORDER BY c.corpus_id,c.index_version LIMIT 100",
                     o=self.policy.owner,
+                    id=corpus_id,
                 )
                 .mappings()
                 .all()
@@ -376,7 +378,7 @@ class WebStore:
             self.run(old["object_id"], conn)
             return old["response"]
 
-    def command(self, key, operation, body, *, run_id=None, payload=None, no_op=False):
+    def command(self, key, operation, body, *, run_id=None, payload=None, no_op=False, conn=None):
         """Serialize identical requests and changes to one run in a single PG transaction."""
         if (
             not 8 <= len(key) <= 128
@@ -387,7 +389,7 @@ class WebStore:
         hashed = digest(
             {"owner": self.policy.owner, "operation": operation, "run_id": run_id, "body": body}
         )
-        with self.transaction() as conn:
+        with self.transaction() if conn is None else nullcontext(conn) as conn:
             execute(
                 conn, "SELECT pg_advisory_xact_lock(hashtextextended(:o,6153))", o=self.policy.owner
             )

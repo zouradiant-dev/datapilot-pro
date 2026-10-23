@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Annotated, Literal
 
-from pydantic import Field, field_validator
+from pydantic import AfterValidator, Field, field_validator
 
 from datapilot.datasets.contracts import DatasetColumn, DatasetId, Version
 from datapilot.ingestion.contracts import (
@@ -43,6 +43,17 @@ TaskStatus = Literal[
     "cancelled",
 ]
 IdempotencyKey = Annotated[str, Field(pattern=r"^[A-Za-z0-9_-]{8,128}$")]
+
+
+def database_text(value: str) -> str:
+    """Public persisted text must be representable by PostgreSQL JSONB."""
+    if "\x00" in value:
+        raise ValueError("NUL is not supported")
+    value.encode("utf-8", errors="strict")
+    return value
+
+
+DatabaseText = Annotated[str, AfterValidator(database_text)]
 
 
 class ErrorInfo(DTO):
@@ -95,13 +106,13 @@ class MetricReview(DTO):
 
 
 class DocumentQuery(DTO):
-    question: str = Field(min_length=1, max_length=512)
+    question: DatabaseText = Field(min_length=1, max_length=512)
     metric_goals: list[str] = Field(min_length=1, max_length=6)
     corpus_ids: list[DatasetId] = Field(min_length=1, max_length=8)
 
 
 class CreateTask(DTO):
-    question: str = Field(min_length=1, max_length=8000)
+    question: DatabaseText = Field(min_length=1, max_length=8000)
     metrics: list[MetricRequest] = Field(min_length=1, max_length=6)
     documents: DocumentQuery | None = None
     require_review: bool = True

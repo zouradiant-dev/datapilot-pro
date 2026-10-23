@@ -1,0 +1,616 @@
+{
+  "schema_version": "p6c1-validation-1",
+  "phase": "P6C.1",
+  "updated_at": "2026-10-23T09:46:29.632911+00:00",
+  "status": "accepted_local",
+  "git": {
+    "baseline_head": "85e5652bbb57e6099021c88e8a09b8c6d6fa68c3",
+    "branch": "main",
+    "working_tree": "uncommitted",
+    "commit_performed": false,
+    "push_performed": false,
+    "new_github_ci": "not_run"
+  },
+  "frozen_source": {
+    "path": "artifacts/p6c1/frozen-validation/source-frozen.json",
+    "sha256": "ec072b466e1c12c64895c4c113972944ff34d451dae7bb5ec10ba361bc84e51c",
+    "file_count": 191,
+    "unchanged_at_record_time": true,
+    "deployed_web_file_count": 19,
+    "deployed_web_matches_local": true,
+    "deployed_image": "sha256:9def426f02a7eb905a609f867d94740934a225f5520585cd44fe7ed682fed652"
+  },
+  "regressions": [
+    {
+      "python": "py311",
+      "status": "passed",
+      "execution": {
+        "started_at": "2026-10-23T08:38:53.881533+00:00",
+        "finished_at": "2026-10-23T09:11:53.201863+00:00",
+        "exit_code": 0,
+        "source_unchanged": true,
+        "command": [
+          "D:\\桌面\\llm-learning\\datapilot-pro\\.venv\\Scripts\\python.exe",
+          "-m",
+          "pytest",
+          "-q",
+          "-x",
+          "--tb=short",
+          "--junitxml=artifacts\\p6c1\\frozen-validation\\full-py311.xml"
+        ]
+      },
+      "critical_groups": {
+        "test_chat_contracts": {
+          "cases": 31,
+          "all_passed": true
+        },
+        "test_chat_postgres": {
+          "cases": 9,
+          "all_passed": true
+        },
+        "test_chat_ui": {
+          "cases": 3,
+          "all_passed": true
+        },
+        "test_web_review_fixes": {
+          "cases": 19,
+          "all_passed": true
+        },
+        "test_web_postgres": {
+          "cases": 10,
+          "all_passed": true
+        },
+        "test_recovery_postgres": {
+          "cases": 22,
+          "all_passed": true
+        },
+        "test_rag_postgres": {
+          "cases": 18,
+          "all_passed": true
+        }
+      },
+      "path": "artifacts/p6c1/frozen-validation/full-py311.xml",
+      "sha256": "e55a9a9dd632debd3e55b9df6defa87608e43cbb402f79a13a601261bdb0314f",
+      "tests": 633,
+      "passed": 632,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 1,
+      "seconds": 1977.187,
+      "skipped_cases": [
+        {
+          "test": "tests.test_live_model::test_real_model_postgres_workflow",
+          "reason": "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials"
+        }
+      ]
+    },
+    {
+      "python": "py313",
+      "status": "passed",
+      "execution": {
+        "started_at": "2026-10-23T09:11:53.228082+00:00",
+        "finished_at": "2026-10-23T09:45:16.323812+00:00",
+        "exit_code": 0,
+        "source_unchanged": true,
+        "command": [
+          "D:\\桌面\\llm-learning\\datapilot-pro\\.venv-313\\Scripts\\python.exe",
+          "-m",
+          "pytest",
+          "-q",
+          "-x",
+          "--tb=short",
+          "--junitxml=artifacts\\p6c1\\frozen-validation\\full-py313.xml"
+        ]
+      },
+      "critical_groups": {
+        "test_chat_contracts": {
+          "cases": 31,
+          "all_passed": true
+        },
+        "test_chat_postgres": {
+          "cases": 9,
+          "all_passed": true
+        },
+        "test_chat_ui": {
+          "cases": 3,
+          "all_passed": true
+        },
+        "test_web_review_fixes": {
+          "cases": 19,
+          "all_passed": true
+        },
+        "test_web_postgres": {
+          "cases": 10,
+          "all_passed": true
+        },
+        "test_recovery_postgres": {
+          "cases": 22,
+          "all_passed": true
+        },
+        "test_rag_postgres": {
+          "cases": 18,
+          "all_passed": true
+        }
+      },
+      "path": "artifacts/p6c1/frozen-validation/full-py313.xml",
+      "sha256": "4ad1e269c8af57df7a4bfb694db811116ad0f2b91edc039f742fb562c4d81c37",
+      "tests": 633,
+      "passed": 632,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 1,
+      "seconds": 2000.301,
+      "skipped_cases": [
+        {
+          "test": "tests.test_live_model::test_real_model_postgres_workflow",
+          "reason": "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials"
+        }
+      ]
+    }
+  ],
+  "targeted_history": {
+    "chat-initial.xml": {
+      "path": "artifacts/p6c1/chat-initial.xml",
+      "sha256": "698e96dd78b4c4770e2938674c869cc380706e0a0c8c749d5959f589e4834e81",
+      "tests": 1,
+      "passed": 0,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 10.751,
+      "skipped_cases": []
+    },
+    "chat-pg-round3.xml": {
+      "path": "artifacts/p6c1/chat-pg-round3.xml",
+      "sha256": "d8cf94ffc8c04c6cf24ea681f4ee1c617ee2c2970df56a5072342bffa65d6a30",
+      "tests": 9,
+      "passed": 8,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 330.268,
+      "skipped_cases": []
+    },
+    "concurrent-fix.xml": {
+      "path": "artifacts/p6c1/concurrent-fix.xml",
+      "sha256": "1aff80338140abb533734862aa70bbbdb551499e8115e00ac8a419ac712ffa53",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 31.555,
+      "skipped_cases": []
+    },
+    "unit-ui-resume2.xml": {
+      "path": "artifacts/p6c1/unit-ui-resume2.xml",
+      "sha256": "9e91cf507bb66cb64ac4765a2ad673cbaf48c7489af087b953ba26fdc4570a80",
+      "tests": 33,
+      "passed": 33,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 1.5,
+      "skipped_cases": []
+    },
+    "review-contract-debug.xml": {
+      "path": "artifacts/p6c1/review-contract-debug.xml",
+      "sha256": "9ef8a6026137191f6f79404a4508ce5a77b82270330c180f4c2c4ccbc74427a8",
+      "tests": 1,
+      "passed": 0,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 39.619,
+      "skipped_cases": []
+    },
+    "review-contract-fixed.xml": {
+      "path": "artifacts/p6c1/review-contract-fixed.xml",
+      "sha256": "bbdfdb3c7710a8d66fb849550cccc828f4373803c950f6dd94f595be8d900856",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 136.527,
+      "skipped_cases": []
+    },
+    "partial-state-before.xml": {
+      "path": "artifacts/p6c1/partial-state-before.xml",
+      "sha256": "0e7094aa42f3895ecb2f50830b9815970110e361757a97447d1352264c7efd4f",
+      "tests": 1,
+      "passed": 0,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 1.106,
+      "skipped_cases": []
+    },
+    "partial-state-after.xml": {
+      "path": "artifacts/p6c1/partial-state-after.xml",
+      "sha256": "f5088a4f91b061967aad416da6ed931cbb44dc08d79c78498654c79906fd16d9",
+      "tests": 3,
+      "passed": 3,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 1.424,
+      "skipped_cases": []
+    }
+  },
+  "superseded_full_runs": {
+    "acceptance": false,
+    "source_unchanged": false,
+    "parallel_shared_pg": true,
+    "py311": {
+      "path": "artifacts/p6c1/full-py311.xml",
+      "sha256": "871b17d211b876987f18147ac92e93a4c8bbac01b4d5f95771713a833d20db2b",
+      "tests": 628,
+      "passed": 626,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 1,
+      "seconds": 2099.841,
+      "skipped_cases": [
+        {
+          "test": "tests.test_live_model::test_real_model_postgres_workflow",
+          "reason": "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials"
+        }
+      ]
+    },
+    "py313": {
+      "path": "artifacts/p6c1/full-py313.xml",
+      "sha256": "cb4a10469dae660822fd9481ca1501f78d1eb47458e5878be240d3cd9e4afc37",
+      "tests": 628,
+      "passed": 627,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 1,
+      "seconds": 2132.951,
+      "skipped_cases": [
+        {
+          "test": "tests.test_live_model::test_real_model_postgres_workflow",
+          "reason": "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials"
+        }
+      ]
+    },
+    "py311_failure": {
+      "test": "test_real_rag_persistent_artifacts_cross_process_and_replay[False]",
+      "error_code": "RAG_DATABASE_ERROR",
+      "pg_log": "2026-10-23T05:10:23.530Z canceling statement due to lock timeout",
+      "explanation": "Observed lock timeout; concurrent fault-injection suite interference is an inference, not a proven runtime defect."
+    }
+  },
+  "interrupted_runs": [
+    {
+      "directory": "artifacts/p6c1/final",
+      "acceptance": false
+    },
+    {
+      "directory": "artifacts/p6c1/acceptance",
+      "acceptance": false
+    },
+    {
+      "directory": "artifacts/p6c1/acceptance-final",
+      "acceptance": false
+    }
+  ],
+  "test_kinds": {
+    "unit_and_http_mock": "Finite intent, DTO, UI AppTest and protocol substitutes; no real model API",
+    "postgres_mcp": "Real PostgreSQL 17 + pgvector, real MCP subprocesses, actual P3/P5B/P6A/P6B; explicit Fake decisions",
+    "browser": "Real IAB + Streamlit + FastAPI + PG + MCP + original Durable approval/report; Fake decisions",
+    "live_model": {
+      "status": "not_authorized_not_run",
+      "paid_api_calls": 0,
+      "provider_token_cost": null,
+      "provider_cache_tokens": null,
+      "fake_zero_usage_is_not_live_cost_measurement": true
+    }
+  },
+  "browser": {
+    "conversation_id": "f60ad5fc-0968-4b07-8326-0e90f42bb0f6",
+    "url": "http://127.0.0.1:8501/?conversation=f60ad5fc-0968-4b07-8326-0e90f42bb0f6",
+    "fixture": "tests/fixtures/semantics/saas_metrics.xlsx",
+    "fixture_sha256": "87df9a81a06c7301c69a13e9d13fd733545eae7180fa9304c62df8ad10dd1ed7",
+    "upload_id": "494a7af0-f9de-4c27-93f9-6e89428540ad",
+    "dataset_id": "7772e79f-999a-59c8-a2f7-b36e78738ac4",
+    "dataset_version": 1,
+    "document_fixture": "tests/fixtures/reporting/billing.md",
+    "corpus_id": "ef74f239-4280-4ced-a3ad-95c764fc454b",
+    "steps": [
+      "xlsx_upload",
+      "schema_confirmation",
+      "restricted_import",
+      "semantic_metric_review",
+      "chat_clarification",
+      "explicit_approval",
+      "verified_revenue_300_CNY",
+      "followup_new_run_300_and_400_CNY",
+      "authorized_local_embedding",
+      "causal_request_partial_not_verified",
+      "api_ui_restart",
+      "original_history_and_evidence_revalidated"
+    ],
+    "proofs": [
+      {
+        "run_id": "3225d1a5-2dec-471c-9145-4da0029672f2",
+        "payload_hash": "b374689257398a9ba9748d68f59492629be4d2faa985f055cdbe6460947d0f9d",
+        "command_seq": 2,
+        "processed_seq": 2,
+        "call_count": 3,
+        "status": "completed",
+        "execution_status": "succeeded",
+        "business_completion": {
+          "schema_version": "business-completion-1",
+          "status": "completed",
+          "required_goals": [
+            "metric_1"
+          ],
+          "verified_goals": [
+            "metric_1"
+          ],
+          "missing_evidence": {},
+          "unconfirmed_claims": [],
+          "limited_results_visible": true
+        },
+        "report_sha256": "fc177c3dee381975bff5dbaf50a516282b90aea9b7af892619a6b3e3f4db81f5",
+        "facts": [
+          {
+            "evidence_id": "dd13fbb4-79ca-4642-873d-cef3aad75bd1",
+            "verification_id": "4efdbd6f-d0d9-4ba5-b0f4-fd219f3fe392",
+            "evidence_sha256": "cb7c9bef27ac7f148430ddd913b7d5164df5a6a171c0cea5b8a652ff56f9312a",
+            "verification_sha256": "5291cc59fccb7c379da546141e26c19820f394c0c6d5979361e3846c4ef12364",
+            "value": {
+              "value": "300.0000000000000000",
+              "unit": "CNY",
+              "numerator": null,
+              "denominator": null,
+              "window_days": 31
+            }
+          }
+        ],
+        "usage": {
+          "calls": 1,
+          "total_tokens": 0,
+          "reported_tokens": 0,
+          "usage_complete": true
+        },
+        "task_workers": [
+          {
+            "worker": "sql",
+            "status": "succeeded"
+          },
+          {
+            "worker": "report",
+            "status": "succeeded"
+          }
+        ],
+        "trace_sha256": "05d992e855e2f02c9343c376d2bc144442173e06de73af0f424f205916d5320a",
+        "citation_count": 0
+      },
+      {
+        "run_id": "629cb330-3a67-429e-9441-923ae59ac233",
+        "payload_hash": "d54ba91b5a0b08ba48cb4e46e9257d3cd6afddea528be08b84dde8e4bdc4c02c",
+        "command_seq": 2,
+        "processed_seq": 2,
+        "call_count": 4,
+        "status": "completed",
+        "execution_status": "succeeded",
+        "business_completion": {
+          "schema_version": "business-completion-1",
+          "status": "completed",
+          "required_goals": [
+            "metric_0",
+            "metric_1"
+          ],
+          "verified_goals": [
+            "metric_0",
+            "metric_1"
+          ],
+          "missing_evidence": {},
+          "unconfirmed_claims": [],
+          "limited_results_visible": true
+        },
+        "report_sha256": "d46490e91dc917265b071aa244e9a814adc8ce2959916d98ff6a66a6525e11ed",
+        "facts": [
+          {
+            "evidence_id": "3a8c8495-3b39-4dd4-831d-f03ee67b99de",
+            "verification_id": "14e40e7e-8e9a-4e42-9449-eec1090344b1",
+            "evidence_sha256": "502cc40208e64ee8794fbc643047c1d984323c53ec18d37ee839879a5c71cc70",
+            "verification_sha256": "70367c68cfcf31978d1aec679d4710ce478ae4540ce021e843afc370a185fd45",
+            "value": {
+              "value": "300.0000000000000000",
+              "unit": "CNY",
+              "numerator": null,
+              "denominator": null,
+              "window_days": 31
+            }
+          },
+          {
+            "evidence_id": "8ebc4e24-be79-413d-879e-9665923d37ce",
+            "verification_id": "f80ada37-3a30-420b-863a-b376dbfe4bfc",
+            "evidence_sha256": "45942a1a9a1a1971b2ddaf103d236f4b6f413396e926e414d5582bc3db960568",
+            "verification_sha256": "7a6c49413465ae724c8914018a6000e3ff978b0d4ab2cc9700437ca24578c0f0",
+            "value": {
+              "value": "400.0000000000000000",
+              "unit": "CNY",
+              "numerator": null,
+              "denominator": null,
+              "window_days": 30
+            }
+          }
+        ],
+        "usage": {
+          "calls": 1,
+          "total_tokens": 0,
+          "reported_tokens": 0,
+          "usage_complete": true
+        },
+        "task_workers": [
+          {
+            "worker": "sql",
+            "status": "succeeded"
+          },
+          {
+            "worker": "sql",
+            "status": "succeeded"
+          },
+          {
+            "worker": "report",
+            "status": "succeeded"
+          }
+        ],
+        "trace_sha256": "af3601d3a23a6f6c5bea918c83e29277cb6fcaa7f00242332714082c8a7d267d",
+        "citation_count": 0
+      },
+      {
+        "run_id": "ef1515d2-5cb7-4ab1-858a-c6d2bfd77484",
+        "payload_hash": "7950f56a29b14675ad2d35e40b860313ac01b07e9e12e4ab273eb08385cd19e4",
+        "command_seq": 2,
+        "processed_seq": 2,
+        "call_count": 7,
+        "status": "unavailable",
+        "execution_status": "unavailable",
+        "business_completion": {
+          "schema_version": "business-completion-1",
+          "status": "partial",
+          "required_goals": [
+            "metric_1",
+            "documents"
+          ],
+          "verified_goals": [
+            "metric_1"
+          ],
+          "missing_evidence": {
+            "documents": [
+              "matching_document_or_metric_evidence_missing"
+            ]
+          },
+          "unconfirmed_claims": [
+            "causal_conclusion_not_verified"
+          ],
+          "limited_results_visible": true
+        },
+        "report_sha256": "ac53ca8f16fd340361c10429831c2b4f42c5fe736538bae1ae001e2cffcc341c",
+        "facts": [
+          {
+            "evidence_id": "f10202fc-43d6-49d7-8c1a-43e0e425997d",
+            "verification_id": "4a9089b1-f82b-41cf-94a4-f0b93e730c93",
+            "evidence_sha256": "a02cdb32e699d48e1205a8197d2a2106a5493d4a3daf0061cd46e8a088eca34c",
+            "verification_sha256": "ee569b803b27d279c03f280211f4e11ab7f94a8eb09357167fd422daeb17c18d",
+            "value": {
+              "value": "300.0000000000000000",
+              "unit": "CNY",
+              "numerator": null,
+              "denominator": null,
+              "window_days": 31
+            }
+          }
+        ],
+        "usage": {
+          "calls": 3,
+          "total_tokens": 0,
+          "reported_tokens": 0,
+          "usage_complete": true
+        },
+        "task_workers": [
+          {
+            "worker": "sql",
+            "status": "succeeded"
+          },
+          {
+            "worker": "rag",
+            "status": "unavailable"
+          },
+          {
+            "worker": "report",
+            "status": "succeeded"
+          }
+        ],
+        "trace_sha256": "b7bbaf71b984be043b2549f0b5969101b5d1d8d0cdd50c4c290bc4c7b4c475fe",
+        "citation_count": 0
+      }
+    ],
+    "restart_comparison": {
+      "chat_history_unchanged": true,
+      "chat_run_proofs_unchanged": true,
+      "original_p6c_report_proofs_unchanged": true,
+      "deployed_web_matches_local": true,
+      "deployed_web_files": 19,
+      "compared_new_runs": 3,
+      "compared_original_runs": 3
+    },
+    "rag_browser_positive_citation": false,
+    "rag_browser_result": "SQL verified; RAG unavailable; business partial; no invented cause or citation",
+    "desktop": {
+      "width": 1440,
+      "height": 1000,
+      "screenshot": "artifacts/p6c1/browser-frozen-partial-desktop.png"
+    },
+    "narrow": {
+      "clientWidth": 480,
+      "scrollWidth": 480,
+      "viewport": 480,
+      "height": 900,
+      "screenshot": "artifacts/p6c1/browser-frozen-partial-narrow.png"
+    },
+    "viewport_reset": true
+  },
+  "openapi": {
+    "matches_running_api": true,
+    "path_count": 24,
+    "json_path": "docs/api-v1-openapi.json"
+  },
+  "health": {
+    "api": {
+      "status": "ready",
+      "mode": "fake",
+      "durable": true,
+      "telemetry": "off",
+      "production_multi_tenant": false
+    },
+    "postgres_version_num": 170011,
+    "pgvector": "0.8.6",
+    "migration": "0007",
+    "customers": 240,
+    "seeded": true,
+    "database_deletion": false,
+    "reseed": false,
+    "volume_deletion": false
+  },
+  "protected_user_documents": {
+    "unchanged": true,
+    "sha256": {
+      "docs/codex-prompts-v2.4.md": "e741a01457caf912968f02276b1894e5cd94803d5a0c12d79993c4fa1b42c74d",
+      "docs/codex-prompts-v2.5.md": "fe2289591503a58b98d39e83b9f63bbcb61951dc8dfc8e1f6e09faa048fa5189"
+    }
+  },
+  "static_checks": {
+    "ruff_check": "passed",
+    "ruff_format_check": "passed_excluding_untouched_user_v2.5",
+    "format_exclusion": "docs/codex-prompts-v2.5.md",
+    "git_diff_check": "passed",
+    "markdown_local_links": {
+      "status": "passed",
+      "checked": 92,
+      "missing": []
+    },
+    "openapi_internal_refs": "passed",
+    "validated_at": "2026-10-23T09:47:49.683177+00:00"
+  },
+  "remaining_boundaries": [
+    "finite_intent_not_general_nlu",
+    "comparison_is_parallel_verified_windows_not_growth",
+    "trusted_local_single_user_not_production_tenant_isolation",
+    "ttl_denies_access_no_auto_cleanup",
+    "no_new_paid_live_experiment",
+    "no_proactive_agent_or_later_phase",
+    "source_revalidation_can_add_visible_latency",
+    "new_browser_session_without_create_ack_must_consult_history",
+    "clarification_form_example_dates_require_explicit_review"
+  ],
+  "subsequent_review_fixes": {
+    "record": "p6c1-review-fixes-validation.json",
+    "original_results": "preserved_pre_fix_snapshot"
+  }
+}

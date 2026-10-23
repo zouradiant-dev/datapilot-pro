@@ -1,6 +1,5 @@
 """Streamlit reruns and HTTP intent boundaries with an explicit Mock API, no PG/model."""
 
-from pathlib import Path
 from uuid import uuid4
 
 import httpx
@@ -62,7 +61,19 @@ def test_streamlit_lost_ack_reconnect_retry_and_explicit_new_task(monkeypatch):
     monkeypatch.setattr(APIClient, "get", get)
     monkeypatch.setattr(APIClient, "post", post)
     monkeypatch.setattr(APIClient, "close", lambda self: None)
-    ui = AppTest.from_file(str(Path(__file__).parents[1] / "src/datapilot/web/ui.py"))
+    # The original management workflow remains accessible behind the new chat navigation.
+    ui = AppTest.from_string(
+        "from datapilot.web.client import APIClient\n"
+        "from datapilot.web.ui_management import render_management\n"
+        "from datapilot.web.ui_components import show_error\n"
+        "import streamlit as st\n"
+        "import httpx\n"
+        "try:\n"
+        "    render_management(APIClient())\n"
+        "except httpx.HTTPError as exc:\n"
+        "    show_error(exc)\n"
+        "    st.button('重新连接本地 API')\n"
+    )
 
     def click(label):
         button = next(b for b in ui.button if b.label == label)

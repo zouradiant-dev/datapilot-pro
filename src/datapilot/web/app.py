@@ -20,6 +20,7 @@ from datapilot.ingestion.contracts import ParseFailure, ParseOptions
 from datapilot.persistence.session import run_async
 from datapilot.semantics.contracts import MetricVersion, SemanticDraft, SemanticVersion
 from datapilot.web.body_limit import BodyLimit
+from datapilot.web.chat_routes import register_chat_routes
 from datapilot.web.config import ROOT, load_policy
 from datapilot.web.contracts import (
     Acknowledgement,
@@ -87,6 +88,7 @@ def create_app(*, policy=None, settings=None, dispatch=True, policy_file=None):
     )
     app.state.store, app.state.service = store, service
     app.add_middleware(BodyLimit)
+    register_chat_routes(app, service)
 
     def openapi():
         if app.openapi_schema is None:

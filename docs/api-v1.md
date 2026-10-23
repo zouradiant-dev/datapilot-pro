@@ -40,6 +40,23 @@ Schema、业务映射、指标定义和任务审核都需要明确的人工确�
 
 ## 任务、幂等与错误
 
+### P6C.1 交互索引（chat-v1）
+
+新增路径仍继承原 Host、Origin、Session、CSRF、BodyLimit 和安全错误投影。消息拒绝 role/owner/scope/verified/Run/审批字段。
+
+| 路由 | 契约 | 边界 |
+|---|---|---|
+| POST `/conversations` | ConversationCreate → ConversationView | 稳定创建键去重；最多 30 个有效会话/owner |
+| GET `/conversations` | → ConversationsView | 本 owner 未过期索引，不返回正文 |
+| POST `/conversations/{id}/messages` | MessageCreate → MessageView | 问题或已授权 upload_id；2000 字符，200 条/会话；键绑定完整输入 |
+| GET `/conversations/{id}/messages?before=201` | → MessagesView | 最近 20 条；next_before 查看前页；失效引用脱敏 |
+| POST `/conversations/{id}/messages/{message}/launch` | ChatLaunch → Acknowledgement | confirmed=true；以 message 固定键原子创建/关联原 Run，重复只返回原 Run |
+| GET `/tasks/{run}/review` | → ReviewView | 当前授权和冻结问题、定义/版本、文档、模型/预算/费用提示；纯读取 |
+
+会话/消息 `schema_version=chat-v1`，原 Run/Report 保持 `api-v1`。TTL 沿用宿主，不因读取延长；过期创建键不能重建替代会话。消息/hash 追加后 API 不可修改，唯一可填充字段为 run_id。补充条件追加消息，不改旧目标；launch 强制 require_review，真正审批仍用原 tasks/approve。
+
+ChatSelection 只允许精确 Dataset/version、已确认 metric/version、右开 window、corpus_ids。宿主取当前定义，候选 source/context/策略 hash 启动时重核；变化需重新确认。客户端无自由 SQL、脚本或消息权限。GET 不调用模型/图恢复/账本结算；历史不是 Durable 状态。
+
 创建、批准、恢复、取消要求 8–128 字符的 `Idempotency-Key`。宿主将键绑定 owner、操作、run_id、规范载荷 hash 和授权版本；同请求复用原响应，异请求返回 `WEB_IDEMPOTENCY_CONFLICT`。批准重试可在任务继续后重放同一确认，但新键不能批准已经结束的任务。
 
 创建意图在 Streamlit rerun、HTTP 超时及客户端重连后保留原 body/key；“重试同一创建请求”复用它，“明确创建新的分析任务”才开启新意图。`host_policy` 是宿主内部保留键。完整浏览器 Session 丢失后应先查看原任务列表，不保证跨新 Session 自动恢复创建意图。
