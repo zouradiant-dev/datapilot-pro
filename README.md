@@ -8,7 +8,7 @@
 
 v2 目标闭环：**CSV/XLSX 上传 → Schema 预览确认 → 受限入库/数据集版本 → 动态 MCP 查询 → 语义指标与证据验证 → 多 Agent 报告**。P6B 通过可信宿主 ReportScope 显式选择已确认的 MetricRequest 和文档目标；模型只能安排这些任务，不确认字段或生成新指标配方。P3 独立入口、普通 ask 快速 SQL 路径保留，长期 Memory 后端仍未实现。
 
-首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates；当前仅推进到 P7 Gate 1 有界开发试验，未开始 Gate 2 或实施 P11，不承诺生产 SLA 或真实模型稳定成功率。
+首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates；当前完成 [P7 Gate 2 的意图变体 Holdout 对照](docs/p7-gate2.md)，独立业务 E2E 尚未运行，Gate 2 整体未验收；未实施 Gate 3/P11，不承诺生产 SLA 或真实模型稳定成功率。
 
 P4.1 在现有组件上增加受控工具生命周期、宿主 `completion` 三态、完整工件先保存的 L0 模型视图与上下文计量。`status=succeeded` 仍表示工具执行成功；业务指标缺少 P3 六层已验证证据时 `completion=blocked`，不能当作已验证报告。简单客户数查询仍只需两次 Fake 决策。历史记录见 [P4.1 交付](docs/p4-hardening.md)。
 
@@ -16,7 +16,7 @@ P5A 复用 Gateway/ArtifactStore/父子账本，实现 L1 旧工具视图裁剪�
 
 ## 本地产品 Demo（P6C / P6C.1）
 
-P6C.1 默认打开对话工作台，支持安全上传卡片、有限规则的 SaaS 指标提问、补充条件、人工审批、可信报告与独立 Run 追问。业务映射/指标/诊断仍保留在数据管理。会话历史存 PostgreSQL，不能作为授权或执行 Checkpoint；未确认口径不会自动分析。详见 [Chat-first 契约与验收](docs/chat-first-ui.md)、[ADR-015](docs/adr/0015-chat-first-conversation.md)。默认 Fake 只替代模型决策，数据库/MCP/P3 验证实际执行；P6C 原交付无额外付费模型实验；后续 Gate 0/1 的独立 Live 记录另列。
+P6C.1 默认打开对话工作台，支持安全上传卡片、有限规则的 SaaS 指标提问、补充条件、人工审批、可信报告与独立 Run 追问。业务映射/指标/诊断仍保留在数据管理。会话历史存 PostgreSQL，不能作为授权或执行 Checkpoint；未确认口径不会自动分析。详见 [Chat-first 契约与验收](docs/chat-first-ui.md)、[ADR-015](docs/adr/0015-chat-first-conversation.md)。默认 Fake 只替代模型决策，数据库/MCP/P3 验证实际执行；P6C 原交付无额外付费模型实验；后续 Gate 0/1/2 的独立 Live 记录另列。
 
 已有 P6C 部署只需显式执行 `uv run --locked datapilot migrate` 追加 0007，再重启 API/UI；不重新 Seed，不重置数据库或 Volume。新聊天接口与原 `/api/v1/tasks` 同用 Host/Session/CSRF、Outbox、Durable 和报告投影。
 

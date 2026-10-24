@@ -142,3 +142,9 @@ DeepSeek 非思考 profile 已有真实 SQL smoke、P5A 压缩 A/B 和 P5B 恢�
 Gate 0 三路径已有真实单次 Smoke；本轮按用户最新收紧，仅完成 Gate 1 的原 Rule-only 基线、独立候选接口、12 条获授权的开发 Live 对照与冻结。网站默认不切换，Holdout 59 条保持 sealed；不开始 Gate 2 或新的 Gate 3 实验。详见 [Gate 1 交付](p7-gate1.md)、[评测索引](evaluation.md)、[ADR-016](adr/0016-evaluation-intent-boundary.md)。
 
 原 P7 的 ≥50 独立业务任务、真实故障/RAG/消融/成本目标保留；收紧前启动的工程结果单列，不构成整个 P7 验收。后续推进/付费/正式 Holdout 需明确授权。原 Gate 0 未提交修改与用户 v2.4/v2.5 规划均保留，不自动 Git 提交或推送。
+
+## P7 Gate 2 当前增量（2026-10-24）
+
+用户随后单独授权进入 Gate 2，并明确批准 59 条意图 Holdout 的 LLM-only/Hybrid 一次有界 Live。按原冻结候选、原 Gold 与新冻结评测入口首次运行，Rule-only 46/59、LLM-only 58/59、Hybrid 57/59；实际 67 次/59,640 Token，失败保留，不看结果后调 Prompt/规则。详见 [Gate 2 交付与限制](p7-gate2.md)、[冻结授权](research/p7-gate2-plan.json)、[原收据核验](research/p7-gate2-validation.json)。
+
+这只完成 Gate 2 的意图候选评测。原 50 条业务目标是已观测 dev，业务执行/P3/RAG/报告的独立 Holdout 尚未准备、未运行，不能声称 Gate 2 整体通过。需要先封存独立业务/文档任务、源快照与 Gold，再申请相应模型执行预算；本次授权不含业务 Run，已结束。默认网站仍 Rule-only，不开展 Gate 3/后续阶段，不自动 Git 提交或推送。

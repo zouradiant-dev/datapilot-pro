@@ -1,0 +1,135 @@
+{
+  "recorded_at": "2026-10-24T12:31:45.336115+00:00",
+  "purpose": "Original measured source bytes, no Holdout/credentials/provider responses",
+  "archive_path": "artifacts/p7/gate2/frozen-sources.zip",
+  "archive_sha256": "f76d24761c6943518a27436b177eef4637cf01636ca3e0730460c71dc6332bec",
+  "files": {
+    "src/datapilot/web/semantic_intent.py": {
+      "raw_sha256": "69f50309f35eb41b22650c20bccee8cb4fc581549c1bc26e7457305a54a8da68",
+      "lf_normalized_sha256": "715eb25baf799295d4ce4f5622c362275693ae4cff126c0e91842519e26775f5",
+      "crlf_count": 314,
+      "lone_lf_count": 0,
+      "head_blob_raw_match": false
+    },
+    "src/datapilot/web/intent.py": {
+      "raw_sha256": "7e6dfbc4f549f372f4a61d200590b919780821707d46ef9baef76227fce73f92",
+      "lf_normalized_sha256": "7e6dfbc4f549f372f4a61d200590b919780821707d46ef9baef76227fce73f92",
+      "crlf_count": 0,
+      "lone_lf_count": 240,
+      "head_blob_raw_match": true
+    },
+    "src/datapilot/evaluation.py": {
+      "raw_sha256": "4ef0662c6165d1167532f9f0883e55a02366294687a6dcc1387a14eb30b4cce6",
+      "lf_normalized_sha256": "4ef0662c6165d1167532f9f0883e55a02366294687a6dcc1387a14eb30b4cce6",
+      "crlf_count": 0,
+      "lone_lf_count": 134,
+      "head_blob_raw_match": true
+    },
+    "src/datapilot/orchestration/model.py": {
+      "raw_sha256": "0a75b8f073767ca9b7a1342869da28875be92239f5b21fa18c1368a08fdb30fb",
+      "lf_normalized_sha256": "0a75b8f073767ca9b7a1342869da28875be92239f5b21fa18c1368a08fdb30fb",
+      "crlf_count": 0,
+      "lone_lf_count": 395,
+      "head_blob_raw_match": true
+    },
+    "src/datapilot/orchestration/budget.py": {
+      "raw_sha256": "5b805e1a5168f0438ca93c5c05701c61626a49df952d7fce93fe9c6b107161fe",
+      "lf_normalized_sha256": "5b805e1a5168f0438ca93c5c05701c61626a49df952d7fce93fe9c6b107161fe",
+      "crlf_count": 0,
+      "lone_lf_count": 170,
+      "head_blob_raw_match": true
+    },
+    "src/datapilot/llm/provider.py": {
+      "raw_sha256": "b3b89b0ab08dd4c3b78df209ce6dd32c3e15a4b03a1f3b608c524b1911d1254c",
+      "lf_normalized_sha256": "b3b89b0ab08dd4c3b78df209ce6dd32c3e15a4b03a1f3b608c524b1911d1254c",
+      "crlf_count": 0,
+      "lone_lf_count": 32,
+      "head_blob_raw_match": true
+    },
+    "src/datapilot/persistence/journal.py": {
+      "raw_sha256": "b612c59708a4e2576b8dcc4378db05d4c70f4b01f87e3528684de3b02f9203f3",
+      "lf_normalized_sha256": "b612c59708a4e2576b8dcc4378db05d4c70f4b01f87e3528684de3b02f9203f3",
+      "crlf_count": 0,
+      "lone_lf_count": 405,
+      "head_blob_raw_match": true
+    },
+    "scripts/evaluate_intent.py": {
+      "raw_sha256": "5043c0a3f88f18c112f60decdc41a3174158638b61c7342d862fe42784d5d654",
+      "lf_normalized_sha256": "5043c0a3f88f18c112f60decdc41a3174158638b61c7342d862fe42784d5d654",
+      "crlf_count": 0,
+      "lone_lf_count": 88,
+      "head_blob_raw_match": true
+    },
+    "scripts/evaluate_intent_live.py": {
+      "raw_sha256": "b481192df0d982f2b62c038ea5dead116cdf3931db3e2ea71dc8e2d3ce30b72b",
+      "lf_normalized_sha256": "8acf5aa58814c5ad4aaa3fba3bff8fd2871594207a3b5f73697105a5487f4e7d",
+      "crlf_count": 171,
+      "lone_lf_count": 0,
+      "head_blob_raw_match": false
+    },
+    "tests/fixtures/evaluation/intent-dev.jsonl": {
+      "raw_sha256": "5f68f775c479cd9d8043871b5e17249101783d7167b5879bc7fe575f246bd75c",
+      "lf_normalized_sha256": "5f68f775c479cd9d8043871b5e17249101783d7167b5879bc7fe575f246bd75c",
+      "crlf_count": 0,
+      "lone_lf_count": 59,
+      "head_blob_raw_match": true
+    },
+    "tests/test_p7_intent.py": {
+      "raw_sha256": "27470bc4695a960737b1ee1ce072b6a8178039b1b9f691e779d7a4cd51dd7ba4",
+      "lf_normalized_sha256": "27470bc4695a960737b1ee1ce072b6a8178039b1b9f691e779d7a4cd51dd7ba4",
+      "crlf_count": 0,
+      "lone_lf_count": 278,
+      "head_blob_raw_match": true
+    },
+    "pyproject.toml": {
+      "raw_sha256": "082ff8d9de6cd7d5f133078d46550560d6f6c5890545d3f46348741cda888d9c",
+      "lf_normalized_sha256": "082ff8d9de6cd7d5f133078d46550560d6f6c5890545d3f46348741cda888d9c",
+      "crlf_count": 0,
+      "lone_lf_count": 62,
+      "head_blob_raw_match": true
+    },
+    "uv.lock": {
+      "raw_sha256": "bc2ad9b153bd9cec30cf83d6081cee546175afc3d906b84cdeba88aecdbc848c",
+      "lf_normalized_sha256": "bc2ad9b153bd9cec30cf83d6081cee546175afc3d906b84cdeba88aecdbc848c",
+      "crlf_count": 0,
+      "lone_lf_count": 2624,
+      "head_blob_raw_match": true
+    },
+    "scripts/evaluate_gate2.py": {
+      "raw_sha256": "0d2ddb16a8d58b712eee2c54f798a2e2874ca845d4c4802a2c1739afb8b87de5",
+      "lf_normalized_sha256": "0d2ddb16a8d58b712eee2c54f798a2e2874ca845d4c4802a2c1739afb8b87de5",
+      "crlf_count": 0,
+      "lone_lf_count": 315,
+      "head_blob_raw_match": null
+    },
+    "scripts/summarize_p7_gate1.py": {
+      "raw_sha256": "1914bc41968cdc4fb2004ccd2be06fbcf8de162656df68869359bd7544f7a824",
+      "lf_normalized_sha256": "7c4891cd959874ab4297353e7ff8d2fb2b8f6c29658ddc1e964f37292edbcff6",
+      "crlf_count": 309,
+      "lone_lf_count": 0,
+      "head_blob_raw_match": false
+    },
+    "scripts/p7_isolated_pg.py": {
+      "raw_sha256": "cdb21aba7dfa76a86ac073c5885bb836b8eb52fd488eb3ff4a5ec8bf9bc97d3a",
+      "lf_normalized_sha256": "3f72fcda76c62b633cb9b8a7e3570479127eaf59c1a9cd7745674811d10353d1",
+      "crlf_count": 206,
+      "lone_lf_count": 0,
+      "head_blob_raw_match": false
+    },
+    "docs/research/p7-intent-corpus-manifest.json": {
+      "raw_sha256": "41f3daaee458009b8a45f4822a89c005d175063f61a5f5d8c1e1e5594a1b98a7",
+      "lf_normalized_sha256": "9915166ad6fa3338b059287bd1596944fd19df0d03d78397cb1f6e35dc95e2dd",
+      "crlf_count": 24,
+      "lone_lf_count": 0,
+      "head_blob_raw_match": false
+    },
+    "tests/test_p7_gate2.py": {
+      "raw_sha256": "03f08c80fd7d39cb3de29f39319c87882aeaa84067a6bff591275f8b2cda90c2",
+      "lf_normalized_sha256": "03f08c80fd7d39cb3de29f39319c87882aeaa84067a6bff591275f8b2cda90c2",
+      "crlf_count": 0,
+      "lone_lf_count": 268,
+      "head_blob_raw_match": null
+    }
+  },
+  "note": "Raw byte hashes intentionally fail closed after CRLF/LF conversion; restore only the original measured bytes in a dedicated reproduction workspace. No candidate or scoring change."
+}

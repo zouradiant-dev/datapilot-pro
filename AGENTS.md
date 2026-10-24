@@ -2,7 +2,7 @@
 
 ## 架构和范围
 
-- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/recovery.md、docs/cross-source-report.md、docs/product-demo.md、docs/chat-first-ui.md、docs/rag-only-web.md 与相关 ADR。P6C.1/Gate 0 为已有基线；当前仅授权 P7 Gate 1 有界开发评测，用户已要求完成后停止，不开始 Gate 2 或新的 Gate 3 实验，不推进 P8–P11，不自动提交/推送。保留已启动隔离工程实验的失败/收束记录，但不充作 P7 全部验收。生产公网多租户/RLS、KMS/自动清理和主动 Agent 不在本轮。
+- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/recovery.md、docs/cross-source-report.md、docs/product-demo.md、docs/chat-first-ui.md、docs/rag-only-web.md 与相关 ADR。P6C.1/Gate 0–1 为已有基线；用户本轮授权进入 P7 Gate 2，并另行批准一次有界意图 Holdout Live，见 docs/p7-gate2.md。只评测冻结候选，不用结果改 Prompt/规则；不开展 Gate 3 或 P8–P11，不自动提交/推送。保留已启动隔离工程实验的失败/收束记录，但不充作 P7 全部验收。生产公网多租户/RLS、KMS/自动清理和主动 Agent 不在本轮。
 - 按功能依赖与验收 Gate 推进，工作单元/工作日编号不是截止日期；旧七天计划已由 roadmap-v2 取代。SaaS 是唯一首发主业务，drycleaning 是独立可选 Phase F，不复制 Runtime/Harness/Worker。
 - Python 3.11+、src 布局、类型标注、Pydantic 2 严格契约、LangGraph StateGraph 编排。
 - Planner/Coordinator 路由；P4 Worker 只接收宿主生成的 TaskEnvelope，不读取整个 RunState。旧 SQLTask/SQLAgentResult 保留兼容投影，P3 MetricRequest 路径独立。Worker 有独立工具句柄/能力、消息与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
@@ -73,6 +73,14 @@
 - 59 条意图 dev 与 59 条 sealed Holdout 分离；本轮只实测获授权的 12 条 dev，两策略合计 13 次/11783 Token。不能把同批开发选择集的 12/12 称稳定业务成功率，也不能用其替代剩余 47 条的 Live。
 - Gate 0 与这次 Gate 1 的付费授权均已消耗/结束。后续 Live、Holdout 或 Gate 2/3 必须重新取得明确授权；读取已提交收据不算新调用，未知结果仍不得盲重发。
 - 候选源码、Prompt/profile/规则/数据 hash 在 candidate-freeze 中固定；holdout_authorized=false。禁止查看 Holdout 结果后修改代码、Prompt、Gold 或阈值刷分。
+
+## P7 Gate 2 当前边界
+
+- Gate 1 的 freeze/验证记录为历史快照，保持原值。Gate 2 的独立宿主授权、18 文件 hash 和固定批次见 docs/research/p7-gate2-plan.json；原 DEV runner 仍不得读 Holdout。默认网站仍 Rule-only。
+- 59 条合成意图 Holdout 已首次评测，原 Gold/候选/Prompt/规则不改。新 evaluate_gate2.py 只复用原 Gateway/Journal/持久 Ledger，按 12/12/12/12/11 分批，不提高 Settings/BudgetLimits 的上限；不是新 Scheduler 或恢复引擎。
+- 本次付费范围只有两种意图策略，总上限 118 次/750,000 Token，不执行业务任务。实际 67 次/59,640 Token；10 个冻结批次已完成，授权结束，剩余额度不能挪用或自动重跑。未知结果仍保守结算并阻断，原批次身份/记录拒绝重建。
+- 原 50 条业务任务是已观测 dev，不能当独立业务 Holdout。当前 Agent 完成、P3 数值/Evidence、RAG 和业务 E2E 均 not_run，Gate 2 整体尚未验收。后续应先封存独立业务/文档 Gold 与可信数据版本，再单独批准相应 Live；不能拿意图正确率或旧 Fake 业务结果填这些分母。
+- 新的意图失败仅作 Bad Case 分析，不修改本次冻结候选、Gold 或阈值后重测；后续改进须新独立集，P11 不能复用已看过的这批 Holdout 调优。
 
 ## 测试与交付
 

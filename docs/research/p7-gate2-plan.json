@@ -1,0 +1,73 @@
+{
+  "schema_version": "p7-gate2-intent-plan-1",
+  "phase": "p7-gate2-intent",
+  "prepared_at": "2026-10-24T12:04:18.686701+00:00",
+  "source_commit": "49969b7e32c7f88846f37e61f3ed78ba2ef7b978",
+  "campaign_id": "f4b3617f-2e8a-4665-98d7-d3ee15bfa0cb",
+  "holdout_authorized": true,
+  "holdout_authorization_text": "进入gate2",
+  "live_allowed": true,
+  "live_approval_status": "explicit_human_approved",
+  "live_approval_text": "允许这一次有界 Holdout Live",
+  "holdout_tasks": 59,
+  "batch_sizes": [
+    12,
+    12,
+    12,
+    12,
+    11
+  ],
+  "strategies": [
+    "llm_only",
+    "hybrid"
+  ],
+  "order": "all 5 llm_only batches, then all 5 hybrid batches; file order; no selection",
+  "total_max_calls": 118,
+  "total_max_tokens": 750000,
+  "max_tokens_per_batch": 75000,
+  "max_output_tokens": 768,
+  "automatic_retries": 0,
+  "model_profile": {
+    "provider": "deepseek",
+    "endpoint": "https://api.deepseek.com",
+    "model_alias": "deepseek-flash",
+    "thinking": "disabled",
+    "temperature": 0,
+    "sdk_retries": 0
+  },
+  "gateway_limits": {
+    "max_input_chars": 16000,
+    "max_context_tokens": 18000,
+    "model_timeout_seconds": 30.0
+  },
+  "files": {
+    "src/datapilot/web/semantic_intent.py": "69f50309f35eb41b22650c20bccee8cb4fc581549c1bc26e7457305a54a8da68",
+    "src/datapilot/web/intent.py": "7e6dfbc4f549f372f4a61d200590b919780821707d46ef9baef76227fce73f92",
+    "src/datapilot/evaluation.py": "4ef0662c6165d1167532f9f0883e55a02366294687a6dcc1387a14eb30b4cce6",
+    "src/datapilot/orchestration/model.py": "0a75b8f073767ca9b7a1342869da28875be92239f5b21fa18c1368a08fdb30fb",
+    "src/datapilot/orchestration/budget.py": "5b805e1a5168f0438ca93c5c05701c61626a49df952d7fce93fe9c6b107161fe",
+    "src/datapilot/llm/provider.py": "b3b89b0ab08dd4c3b78df209ce6dd32c3e15a4b03a1f3b608c524b1911d1254c",
+    "src/datapilot/persistence/journal.py": "b612c59708a4e2576b8dcc4378db05d4c70f4b01f87e3528684de3b02f9203f3",
+    "scripts/evaluate_intent.py": "5043c0a3f88f18c112f60decdc41a3174158638b61c7342d862fe42784d5d654",
+    "scripts/evaluate_intent_live.py": "b481192df0d982f2b62c038ea5dead116cdf3931db3e2ea71dc8e2d3ce30b72b",
+    "tests/fixtures/evaluation/intent-dev.jsonl": "5f68f775c479cd9d8043871b5e17249101783d7167b5879bc7fe575f246bd75c",
+    "tests/test_p7_intent.py": "27470bc4695a960737b1ee1ce072b6a8178039b1b9f691e779d7a4cd51dd7ba4",
+    "pyproject.toml": "082ff8d9de6cd7d5f133078d46550560d6f6c5890545d3f46348741cda888d9c",
+    "uv.lock": "bc2ad9b153bd9cec30cf83d6081cee546175afc3d906b84cdeba88aecdbc848c",
+    "scripts/evaluate_gate2.py": "0d2ddb16a8d58b712eee2c54f798a2e2874ca845d4c4802a2c1739afb8b87de5",
+    "scripts/summarize_p7_gate1.py": "1914bc41968cdc4fb2004ccd2be06fbcf8de162656df68869359bd7544f7a824",
+    "scripts/p7_isolated_pg.py": "cdb21aba7dfa76a86ac073c5885bb836b8eb52fd488eb3ff4a5ec8bf9bc97d3a",
+    "docs/research/p7-intent-corpus-manifest.json": "41f3daaee458009b8a45f4822a89c005d175063f61a5f5d8c1e1e5594a1b98a7",
+    "tests/test_p7_gate2.py": "03f08c80fd7d39cb3de29f39319c87882aeaa84067a6bff591275f8b2cda90c2"
+  },
+  "prior_gate1_freeze_sha256": "48100029a98c7e479e82c9a512fb93ba51a0076d0871abcb21b33cf982fc09f0",
+  "data": "Only synthetic Holdout questions, selection and synthetic catalog metadata; never Gold, business rows or documents",
+  "task_execution": false,
+  "business_e2e_holdout": "not_presealed; old 50 business tasks are dev only",
+  "missing_live_denominators": "Agent/P3/RAG/Report remain not_run for this intent-only batch",
+  "no_automatic_paid_retry": true,
+  "do_not_tune_after_holdout": true,
+  "stop_boundary": "Gate 2 only; no Gate 3/P8-P11; no automatic commit/push",
+  "bill_status": "unknown; Token caps are not a charge receipt",
+  "approved_at": "2026-10-24T12:05:55.142825+00:00"
+}

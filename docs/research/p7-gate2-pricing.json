@@ -1,0 +1,14 @@
+{
+  "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+  "verified_at": "2026-10-24T12:12:32.799217+00:00",
+  "model_alias": "deepseek-flash",
+  "documented_model_version": "DeepSeek-V4.1-Flash-1017",
+  "currency": "USD",
+  "rate_unit": "per_1000000_tokens",
+  "period": "off_peak",
+  "period_reason": "Saturday 2026-10-24; official schedule excludes weekends from peak",
+  "input_cache_hit_usd": "0.003",
+  "input_cache_miss_usd": "0.15",
+  "output_usd": "0.6",
+  "billed_cost_known": false
+}

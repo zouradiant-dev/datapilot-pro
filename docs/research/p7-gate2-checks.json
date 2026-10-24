@@ -1,0 +1,112 @@
+{
+  "checked_at": "2026-10-24T12:33:30.364718+00:00",
+  "source_commit": "49969b7e32c7f88846f37e61f3ed78ba2ef7b978",
+  "tests": [
+    {
+      "junit": "artifacts/p7/gate2/frozen-nonpg-py311.xml",
+      "tests": 532,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "junit": "artifacts/p7/gate2/frozen-nonpg-py313.xml",
+      "tests": 532,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "junit": "artifacts/p7/gate2/journal-pg-py311-final.xml",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "junit": "artifacts/p7/gate2/journal-pg-py313-final.xml",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "junit": "artifacts/p7/gate2/reporter-fixed-py311.xml",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "non_pg_deselected_per_python": 194,
+  "postgresql_boundary": "2 new cases per Python against explicitly labelled P7 PG17/pgvector; provider fully Mock; not a full PG suite rerun",
+  "ruff_check": "passed",
+  "ruff_format": "262 files already formatted; protected user v2.5 planning file excluded",
+  "frozen_source_checks": {
+    "src/datapilot/web/semantic_intent.py": true,
+    "src/datapilot/web/intent.py": true,
+    "src/datapilot/evaluation.py": true,
+    "src/datapilot/orchestration/model.py": true,
+    "src/datapilot/orchestration/budget.py": true,
+    "src/datapilot/llm/provider.py": true,
+    "src/datapilot/persistence/journal.py": true,
+    "scripts/evaluate_intent.py": true,
+    "scripts/evaluate_intent_live.py": true,
+    "tests/fixtures/evaluation/intent-dev.jsonl": true,
+    "tests/test_p7_intent.py": true,
+    "pyproject.toml": true,
+    "uv.lock": true,
+    "scripts/evaluate_gate2.py": true,
+    "scripts/summarize_p7_gate1.py": true,
+    "scripts/p7_isolated_pg.py": true,
+    "docs/research/p7-intent-corpus-manifest.json": true,
+    "tests/test_p7_gate2.py": true
+  },
+  "no_business_runtime_migrations_permissions_or_lock_changes": true,
+  "protected_user_planning_files_unchanged": true,
+  "live_calls": 67,
+  "live_tokens": 59640,
+  "read_only_audit_preserves_all_scores_receipts_and_ledger_hashes": true,
+  "original_failure_logs": [
+    "artifacts/p7/gate2/harness-initial-py311.xml",
+    "artifacts/p7/gate2/journal-pg-py311.xml",
+    "artifacts/p7/gate2/readonly-audit-repeat.log",
+    "artifacts/p7/gate2/reporter-output-counterexample.xml"
+  ],
+  "private_receipt_archive": {
+    "private_path": "artifacts/p7/gate2/private-original-receipts.json",
+    "sha256": "4fbc0f30fba726c703ba1625368b099e10533d22afa0bc4798302d7fff90c64a",
+    "runs": 10,
+    "model_calls": 67,
+    "raw_responses_private_only": true,
+    "original_manifests_and_ledger_unchanged": true
+  },
+  "new_github_ci": "not_run; no commit/push authorized this turn",
+  "full_pg_regression_this_turn": "not_run; frozen base CI is historical evidence only",
+  "git_diff_check": "passed",
+  "markdown_links": {
+    "checked": 76,
+    "missing": 0
+  },
+  "json_format": "5 Gate 2 JSON files valid",
+  "own_changed_files": [
+    "AGENTS.md",
+    "README.md",
+    "docs/evaluation.md",
+    "docs/roadmap-v2.md",
+    "docs/p7-gate2.md",
+    "docs/research/p7-gate2-checks.json",
+    "docs/research/p7-gate2-plan.json",
+    "docs/research/p7-gate2-pricing.json",
+    "docs/research/p7-gate2-source-bytes.json",
+    "docs/research/p7-gate2-validation.json",
+    "scripts/evaluate_gate2.py",
+    "scripts/summarize_p7_gate2.py",
+    "tests/test_p7_gate2.py",
+    "tests/test_p7_gate2_summary.py"
+  ],
+  "credential_scan": "no configured secret in changed deliverables",
+  "private_artifacts_ignored": true,
+  "snapshot_kind": "pre_push_evaluation_validation",
+  "subsequent_git_delivery": "User separately requested upload; use the resulting commit GitHub Actions for post-push status. Original test and Live records remain unchanged."
+}
