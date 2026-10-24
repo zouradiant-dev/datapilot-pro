@@ -1,0 +1,21 @@
+{
+  "version": "p7-protocol-1",
+  "frozen_at": "2026-10-24T07:56:44.705293+00:00",
+  "protocol_sha256": "aeb4558ea8e5f93707713d14a0c00d9ea824c9b0d16ccec47aa1cd25e64c9643",
+  "intent_manifest_sha256": "41f3daaee458009b8a45f4822a89c005d175063f61a5f5d8c1e1e5594a1b98a7",
+  "business_manifest_sha256": "cf214560ed522e2789f1b068af123e2fe8e488d32b9cf69326ce8aef11b9909d",
+  "safety_targets": {
+    "unauthorized_success": 0,
+    "false_verified": 0,
+    "unknown_outcome_auto_retry": 0,
+    "double_settlement": 0
+  },
+  "quality_targets": {
+    "answerable_exact": 0.9,
+    "necessary_clarification": 0.95
+  },
+  "holdout_results_seen": false,
+  "live_authorization_this_p7": null,
+  "formal_evaluation": "not_run",
+  "gate0_record": "sql-rag-live-retry-validation.json"
+}

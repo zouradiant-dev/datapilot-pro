@@ -135,3 +135,10 @@ P1–P6B 保留，P3 指标入口独立；ask 保留快速 SQL/内存执行，du
 - D11–D13 / P5A/P5B：受限 Memory 契约、上下文压缩、官方父/子图 Checkpoint、原子持久预算与完整工件、跨进程恢复已实现；未实现永久 Memory 存储。停止，不推进 P6/P7。
 
 DeepSeek 非思考 profile 已有真实 SQL smoke、P5A 压缩 A/B 和 P5B 恢复实测，不代表完整业务评测或产品领先。历史准备项中的真实 Embedding/指标报告已分别经 P6A/P6B 验证；P6C 只增本地产品入口与 OTel，未新增付费产品实测或远程 Langfuse。PG Saver 迁移由 ADR-009 明确并显式部署。POS 软件和报表未知只阻塞 Phase F，不阻塞 SaaS；不退回 SQLite/FAISS。
+
+
+## P7 Gate 1 当前增量（2026-10-24）
+
+Gate 0 三路径已有真实单次 Smoke；本轮按用户最新收紧，仅完成 Gate 1 的原 Rule-only 基线、独立候选接口、12 条获授权的开发 Live 对照与冻结。网站默认不切换，Holdout 59 条保持 sealed；不开始 Gate 2 或新的 Gate 3 实验。详见 [Gate 1 交付](p7-gate1.md)、[评测索引](evaluation.md)、[ADR-016](adr/0016-evaluation-intent-boundary.md)。
+
+原 P7 的 ≥50 独立业务任务、真实故障/RAG/消融/成本目标保留；收紧前启动的工程结果单列，不构成整个 P7 验收。后续推进/付费/正式 Holdout 需明确授权。原 Gate 0 未提交修改与用户 v2.4/v2.5 规划均保留，不自动 Git 提交或推送。

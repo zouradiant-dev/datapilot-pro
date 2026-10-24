@@ -1,0 +1,25 @@
+{
+  "schema_version": "p7-intent-corpus-1",
+  "sealed_at": "2026-10-24T07:50:50.805937+00:00",
+  "purpose": "Intent candidate evaluation; these are NOT completed Agent business E2E tasks",
+  "seeds": {
+    "dev": 7101,
+    "holdout": 7197
+  },
+  "rule_source_sha256": "7e6dfbc4f549f372f4a61d200590b919780821707d46ef9baef76227fce73f92",
+  "splits": {
+    "dev": {
+      "path": "tests/fixtures/evaluation/intent-dev.jsonl",
+      "sha256": "5f68f775c479cd9d8043871b5e17249101783d7167b5879bc7fe575f246bd75c",
+      "tasks": 59
+    },
+    "holdout": {
+      "path": "artifacts/p7/sealed/intent-holdout.jsonl",
+      "sha256": "74b87fa7b3b67fa087fe2b1232ec9ed72acce5be99aba7af22465cfdd3daca92",
+      "tasks": 59
+    }
+  },
+  "holdout_evaluation": "not_run",
+  "human_blind_independent_audit": false,
+  "limitations": "Synthetic author-built corpus; sealed from subsequent tuning, not independently authored unseen human benchmark"
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": "p7-gate1-freeze-1",
+  "frozen_at": "2026-10-24T08:38:20.041874+00:00",
+  "holdout_authorized": false,
+  "gate2_started": false,
+  "files": {
+    "src/datapilot/web/semantic_intent.py": "69f50309f35eb41b22650c20bccee8cb4fc581549c1bc26e7457305a54a8da68",
+    "src/datapilot/web/intent.py": "7e6dfbc4f549f372f4a61d200590b919780821707d46ef9baef76227fce73f92",
+    "src/datapilot/evaluation.py": "4ef0662c6165d1167532f9f0883e55a02366294687a6dcc1387a14eb30b4cce6",
+    "src/datapilot/orchestration/model.py": "0a75b8f073767ca9b7a1342869da28875be92239f5b21fa18c1368a08fdb30fb",
+    "src/datapilot/orchestration/budget.py": "5b805e1a5168f0438ca93c5c05701c61626a49df952d7fce93fe9c6b107161fe",
+    "src/datapilot/llm/provider.py": "b3b89b0ab08dd4c3b78df209ce6dd32c3e15a4b03a1f3b608c524b1911d1254c",
+    "src/datapilot/persistence/journal.py": "b612c59708a4e2576b8dcc4378db05d4c70f4b01f87e3528684de3b02f9203f3",
+    "scripts/evaluate_intent.py": "5043c0a3f88f18c112f60decdc41a3174158638b61c7342d862fe42784d5d654",
+    "scripts/evaluate_intent_live.py": "b481192df0d982f2b62c038ea5dead116cdf3931db3e2ea71dc8e2d3ce30b72b",
+    "tests/fixtures/evaluation/intent-dev.jsonl": "5f68f775c479cd9d8043871b5e17249101783d7167b5879bc7fe575f246bd75c",
+    "tests/test_p7_intent.py": "27470bc4695a960737b1ee1ce072b6a8178039b1b9f691e779d7a4cd51dd7ba4",
+    "pyproject.toml": "082ff8d9de6cd7d5f133078d46550560d6f6c5890545d3f46348741cda888d9c",
+    "uv.lock": "bc2ad9b153bd9cec30cf83d6081cee546175afc3d906b84cdeba88aecdbc848c"
+  },
+  "model_profile": {
+    "provider": "deepseek",
+    "model_alias": "deepseek-flash",
+    "temperature": 0,
+    "thinking": "disabled",
+    "sdk_retries": 0,
+    "max_output_tokens": 768,
+    "max_model_calls_per_strategy": 12,
+    "max_tokens_per_strategy": 75000,
+    "reported_weight_version": null
+  },
+  "packages": {
+    "langgraph": "1.2.16",
+    "langchain-core": "1.6.12",
+    "langchain-openai": "1.7.2",
+    "pydantic": "2.14.1",
+    "psycopg": "3.3.6",
+    "mcp": "1.30.0"
+  },
+  "intent_corpus_manifest_sha256": "41f3daaee458009b8a45f4822a89c005d175063f61a5f5d8c1e1e5594a1b98a7",
+  "all_candidate_live_sources_equal_approved_hashes": true,
+  "completed_live_calls": 13,
+  "completed_live_tokens": 11783,
+  "default_website_strategy": "rule_only"
+}

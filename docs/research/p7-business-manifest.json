@@ -1,0 +1,18 @@
+{
+  "tasks": 50,
+  "source": "tests/fixtures/semantics/saas_metrics.xlsx",
+  "source_sha256": "87df9a81a06c7301c69a13e9d13fd733545eae7180fa9304c62df8ad10dd1ed7",
+  "tasks_sha256": "0928a7679f39ed5b42588f28a43261f7c160a533efb64f4d7799ef148def5260",
+  "gold_method": "Independent openpyxl records + Decimal/set arithmetic over docs/semantic-metrics.md reviewed definitions; no Agent/recipe imports",
+  "coverage": [
+    "5 metric kinds",
+    "half-open date boundaries",
+    "cohort deduplication/re-subscription",
+    "unit/minor currency",
+    "empty valid period",
+    "zero denominator",
+    "outside confirmed coverage"
+  ],
+  "formal_unseen_holdout": false,
+  "execution": "not_run"
+}

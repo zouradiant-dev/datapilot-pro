@@ -2,7 +2,7 @@
 
 ## 架构和范围
 
-- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/recovery.md、docs/cross-source-report.md、docs/product-demo.md、docs/chat-first-ui.md、docs/rag-only-web.md 与相关 ADR。P6C.1 为已有交互基线；当前增量只补 Gate 0 的 RAG-only Web 与文档读取参数修复，复用 P0–P6C.1，验收后停止。不开始正式 P7 Benchmark、Gate 1 或 P8–P11，不自动提交/推送。生产公网多租户/RLS、KMS/自动清理和主动 Agent 不在本轮。
+- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/recovery.md、docs/cross-source-report.md、docs/product-demo.md、docs/chat-first-ui.md、docs/rag-only-web.md 与相关 ADR。P6C.1/Gate 0 为已有基线；当前仅授权 P7 Gate 1 有界开发评测，用户已要求完成后停止，不开始 Gate 2 或新的 Gate 3 实验，不推进 P8–P11，不自动提交/推送。保留已启动隔离工程实验的失败/收束记录，但不充作 P7 全部验收。生产公网多租户/RLS、KMS/自动清理和主动 Agent 不在本轮。
 - 按功能依赖与验收 Gate 推进，工作单元/工作日编号不是截止日期；旧七天计划已由 roadmap-v2 取代。SaaS 是唯一首发主业务，drycleaning 是独立可选 Phase F，不复制 Runtime/Harness/Worker。
 - Python 3.11+、src 布局、类型标注、Pydantic 2 严格契约、LangGraph StateGraph 编排。
 - Planner/Coordinator 路由；P4 Worker 只接收宿主生成的 TaskEnvelope，不读取整个 RunState。旧 SQLTask/SQLAgentResult 保留兼容投影，P3 MetricRequest 路径独立。Worker 有独立工具句柄/能力、消息与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
@@ -66,6 +66,13 @@
 - SQLAgent.run_metric 只接收 MetricRequest 和最小 MetricContext；可信宿主固定 Dataset/version，模型参数不能授权。saas_metrics_v1 封闭配方不接受任意 SQL 模板/脚本；公式改动新增 policy/computation 版本，不能悄改旧证据口径。只有验证过的结构化 claim 进入 P3 报告；原 ask 保留 Day 1 路径，不能宣称它已获得 P3 全部验证。
 - 复算由受控 MCP 内部原始列投影 + 确定性 Python 完成，保留每页安全/输出限制、只读一致快照和总配额。六层按 safety/shape/semantics/recomputation/references/coverage 判定；Evidence raw 与 Verification 分离。MRR 未实现配方、缺字段/覆盖范围、未知合同历史、零分母、因果问题必须明确无法计算/验证；失败证据不能发布数值。
 - Trace 目标为 Langfuse，经可替换接口集成；凭据、原始个人资料、业务行及含敏感值的完整 SQL/Prompt 默认不记录。经营者真实数据不提交 Git，不擅自外传模型/观测服务。
+
+## P7 Gate 1 冻结边界
+
+- 见 docs/p7-gate1.md、docs/evaluation-protocol.md 和 ADR-016。默认 ChatService 仍为原 Rule-only；新候选仅为显式实验，不擅自接入消息落库前的付费调用。模型不提供 Dataset/版本/SQL/权限/审批字段。
+- 59 条意图 dev 与 59 条 sealed Holdout 分离；本轮只实测获授权的 12 条 dev，两策略合计 13 次/11783 Token。不能把同批开发选择集的 12/12 称稳定业务成功率，也不能用其替代剩余 47 条的 Live。
+- Gate 0 与这次 Gate 1 的付费授权均已消耗/结束。后续 Live、Holdout 或 Gate 2/3 必须重新取得明确授权；读取已提交收据不算新调用，未知结果仍不得盲重发。
+- 候选源码、Prompt/profile/规则/数据 hash 在 candidate-freeze 中固定；holdout_authorized=false。禁止查看 Holdout 结果后修改代码、Prompt、Gold 或阈值刷分。
 
 ## 测试与交付
 
