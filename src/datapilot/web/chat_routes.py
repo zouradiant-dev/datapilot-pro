@@ -89,8 +89,16 @@ def register_chat_routes(app, product):
             definitions=definitions,
             dataset_names=dataset_names,
             document_scope=[
-                {"corpus_id": c["corpus_id"], "index_version": c["index_version"]}
+                {
+                    "corpus_id": c["corpus_id"],
+                    "index_version": c["index_version"],
+                    "dataset_id": grant["dataset_id"],
+                    "dataset_version": grant["dataset_version"],
+                    "source_sha256": p["sources"][grant["dataset_id"]],
+                }
                 for c in (p.get("rag_scope") or {}).get("corpora", [])
+                for grant in product.store.corpora(corpus_id=c["corpus_id"])
+                if grant["index_version"] == c["index_version"]
             ],
             model_mode=product.settings.llm_mode,
             max_model_calls=product.settings.max_model_calls,

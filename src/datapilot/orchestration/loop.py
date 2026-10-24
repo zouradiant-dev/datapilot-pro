@@ -61,7 +61,9 @@ def build_worker_loop():
                             "Call submit_rag_result alone with actual artifact_refs IDs. "
                             "No plain final text. Search may be closed; read_context and submit "
                             "remain subject to host permission. Use insufficient for inadequate "
-                            "nonempty evidence, unavailable for empty retrieval."
+                            "nonempty evidence, unavailable for empty retrieval. "
+                            "For read_context on documents, supply BOTH artifact_id and the "
+                            "actual documents[].document_id from search feedback; never guess."
                         ),
                     }
                 ),
@@ -209,7 +211,7 @@ def build_worker_loop():
                     "RAG_ATTEMPTS_EXHAUSTED",
                     "RAG_OUTCOME_INVALID",
                     "EVIDENCE_INSUFFICIENT",
-                } | ({"INPUT_INVALID"} if call["name"] == SUBMIT else set()):
+                } | ({"INPUT_INVALID"} if call["name"] in {SUBMIT, "read_context"} else set()):
                     repair = True
                     repair_reason = exc.error.code
                 if not fatal and not repair:
@@ -301,6 +303,8 @@ def initial_messages(envelope, schema="", *, rag_control=False, rag_goal=None):
             "unavailable for empty retrieval, "
             "insufficient for genuine passages which cannot meet the contract. "
             "The host renders source excerpts. "
+            "Document read_context requires BOTH artifact_id and the actual "
+            "documents[].document_id from search feedback; context/schema reads omit document_id. "
             "HOST_GOAL_CONTRACT: " + json.dumps(rag_goal, ensure_ascii=False)
         )
     content = envelope.task.instruction + ("\nSCHEMA:\n" + schema if schema else "")

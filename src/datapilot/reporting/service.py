@@ -348,7 +348,20 @@ class ReportService:
                     )
                 )
         if goal := self.scope.document_goal:
+            if not self.scope.metrics and (
+                retrieval is None
+                or not retrieval.scope.corpora
+                or retrieval.scope.owner != self.scope.owner
+                or retrieval.scope.datasets != self.scope.datasets
+            ):
+                reject("Document-only report needs the original host-bound Corpus/source scope")
             docs, seen = [], set()
+            requested_names = (
+                set(re.findall(r"(?<![\w.-])([\w-]+\.(?:md|txt))(?![\w.-])", goal.question))
+                if not self.scope.metrics
+                else set()
+            )
+            selected_names = set()
             requirements = retrieval_goal(goal.question)
             # A source task's insufficient receipt cannot be promoted by the report.
             source_ready = (
@@ -381,7 +394,19 @@ class ReportService:
                     ):
                         continue  # Content is data, never an instruction or a report approval.
                     manifest = retrieval.manifests[doc.citation.corpus_id]
+                    source = next(
+                        s for s in manifest.sources if s.source_id == doc.citation.source_id
+                    )
+                    if requested_names and source.name not in requested_names:
+                        continue
                     target = manifest.target
+                    if (
+                        not self.scope.metrics
+                        and target.dataset_id
+                        and (target.dataset_id, target.dataset_version)
+                        not in {(b.dataset_id, b.version) for b in self.scope.datasets.bindings}
+                    ):
+                        reject("Document-only source escaped host Dataset/version")
                     for id_ in goal.metric_goals:
                         r = self.requests[id_]
                         if target.dataset_id and (target.dataset_id, target.dataset_version) != (
@@ -393,6 +418,7 @@ class ReportService:
                     if identity in seen:
                         continue
                     seen.add(identity)
+                    selected_names.add(source.name)
                     docs.append(
                         DocumentReference(
                             artifact_id=ref.artifact_id, citation=doc.citation, excerpt=doc.text
@@ -401,6 +427,7 @@ class ReportService:
             topics_match = (
                 len({d.citation.source_id for d in docs}) >= requirements["minimum_sources"]
                 and bool(docs)
+                and requested_names <= selected_names
                 and all(
                     any(
                         any(
@@ -431,8 +458,14 @@ class ReportService:
                         missing_requirements=[
                             MissingRequirement(
                                 code=missing[goal.goal_id][0],
-                                message="缺少满足检索要求且与指标匹配的授权文档，或关联指标尚未通过验证",
-                                fields=["document_source", "metric_evidence"],
+                                message="缺少满足原始问题证据要求的授权文档"
+                                if not self.scope.metrics
+                                else (
+                                    "缺少满足检索要求且与指标匹配的授权文档，或关联指标尚未通过验证"
+                                ),
+                                fields=["document_source"]
+                                if not self.scope.metrics
+                                else ["document_source", "metric_evidence"],
                             )
                         ],
                     )

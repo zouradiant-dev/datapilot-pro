@@ -9,6 +9,19 @@ from streamlit.testing.v1 import AppTest
 from datapilot.web.client import APIClient
 
 
+def test_document_only_answer_is_quoted_plain_text_and_has_no_financial_chart():
+    ui = AppTest.from_string(
+        "from datapilot.web.ui_components import render_report\n"
+        "render_report({'business_completion':{'status':'completed'},'facts':[],"
+        "'charts':[],'missing_requirements':[],'markdown':'文档引述，不证明因果',"
+        "'citations':[{'quotation':'<script>not executed</script> 收入规则',"
+        "'citation':{'line_start':1,'line_end':3,'chunk_id':'actual-chunk'}}]})"
+    ).run(timeout=20)
+    assert not ui.exception and not ui.metric
+    assert any(x.value == "<script>not executed</script> 收入规则" for x in ui.text)
+    assert any("actual-chunk" in x.value for x in ui.caption)
+
+
 def test_chat_lost_message_ack_rerun_reconnect_and_safe_text(monkeypatch):
     cid, mid = str(uuid4()), str(uuid4())
     history, messages, keys = [], [], []

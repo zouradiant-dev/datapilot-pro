@@ -58,7 +58,8 @@ def finalize(engine, state, execution_status):
             reason_codes=[]
             if business.status == "completed"
             else ["BUSINESS_" + business.status.upper()],
-            business_metrics_required=True,
-            business_evidence_verified=business.status == "completed",
+            business_metrics_required=bool(engine.reporting.requests),
+            business_evidence_verified=bool(engine.reporting.requests)
+            and business.status == "completed",
         )
     return fields

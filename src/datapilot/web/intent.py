@@ -71,6 +71,38 @@ def parse_window(text, today, previous=None):
 def resolve(text: str, selection: ChatSelection, datasets, *, today: date, previous=None):
     """Return a candidate or explicit clarification. Host revalidates on Run creation."""
     missing, notes = [], []
+    document_question = bool(re.search(r"文档|资料|\.md\b|\.txt\b", text, re.I)) and not bool(
+        re.search(
+            r"计算|统计|分析|汇总|多少|总额|总数|趋势|环比|同比|查询.*(?:收入|营收|使用量|流失)",
+            text,
+        )
+    )
+    if document_question and selection.metric_id is None:
+        notes = ["仅文档问答：不计算指标；仅引用授权原文，仍须人工审批。"]
+        if len(text) > 512:
+            return ChatDraft(
+                missing=["请将完整文档问题缩短至 512 字符；不会截断原始目标。"], notes=notes
+            )
+        if not selection.corpus_ids:
+            return ChatDraft(
+                missing=["请选择明确授权的 Corpus；聊天中的文件名不是授权。"], notes=notes
+            )
+        if selection.window is not None:
+            return ChatDraft(
+                missing=["文档问答不使用指标日期筛选；请重新确认文档范围。"], notes=notes
+            )
+        return ChatDraft(
+            request=CreateTask(
+                question=text,
+                metrics=[],
+                documents={
+                    "question": text,
+                    "metric_goals": [],
+                    "corpus_ids": selection.corpus_ids,
+                },
+            ),
+            notes=notes,
+        )
     if re.search(
         r"(?<![A-Za-z])mrr(?![A-Za-z])|monthly\s+recurring\s+revenue|月度经常性", text, re.I
     ):

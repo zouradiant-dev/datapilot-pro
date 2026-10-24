@@ -21,7 +21,7 @@ from datapilot.semantics.contracts import (
 class DocumentGoal(Contract):
     goal_id: str = Field(pattern=r"^[a-z][a-z0-9_]{0,47}$")
     question: str = Field(min_length=1, max_length=512)
-    metric_goals: list[str] = Field(min_length=1, max_length=6)
+    metric_goals: list[str] = Field(max_length=6)
 
 
 class ReportScope(Contract):
@@ -29,7 +29,7 @@ class ReportScope(Contract):
     owner: str = Field(default="local-user", min_length=1, max_length=64)
     question: str = Field(min_length=1, max_length=8000)
     datasets: DatasetScope
-    metrics: list[MetricRequest] = Field(min_length=1, max_length=6)
+    metrics: list[MetricRequest] = Field(max_length=6)
     document_goal: DocumentGoal | None = None
     causal_requested: bool = False
 
@@ -38,6 +38,8 @@ class ReportScope(Contract):
         import re
 
         goals = [m.goal_id for m in self.metrics]
+        if not goals and self.document_goal is None:
+            raise ValueError("A report must have a real metric or document goal")
         allowed = {(b.dataset_id, b.version) for b in self.datasets.bindings}
         if any((m.dataset_id, m.dataset_version) not in allowed for m in self.metrics):
             raise ValueError("Metric goals require explicit Dataset/version authorization")
@@ -51,6 +53,10 @@ class ReportScope(Contract):
                 raise ValueError("Document associations must reference authorized metric goals")
             if len(set(doc.metric_goals)) != len(doc.metric_goals):
                 raise ValueError("Repeated document association")
+            if goals and not doc.metric_goals:
+                raise ValueError("Combined reports require metric associations")
+            if not goals and doc.question != self.question:
+                raise ValueError("Document-only scope must preserve the original question")
         return self
 
 
@@ -153,11 +159,7 @@ class ReportClaim(Contract):
         ):
             raise ValueError("Metric claim requires matching P3 verified evidence")
         if self.kind == "context" and (
-            self.metric
-            or not self.documents
-            or not self.related_metric_goals
-            or self.codes
-            or self.missing_requirements
+            self.metric or not self.documents or self.codes or self.missing_requirements
         ):
             raise ValueError("Document context needs explicit citations and related goals")
         if self.kind == "unavailable" and (self.metric or self.documents or not self.codes):
@@ -209,4 +211,12 @@ class CrossSourceReport(Contract):
     def observation_is_dated(self):
         if self.verified_at.tzinfo is None:
             raise ValueError("Report verification observation needs a timezone")
+        if not self.authorization_scope.metrics and (
+            self.charts or any(c.kind == "metric" for c in self.claims)
+        ):
+            raise ValueError("Document-only reports cannot publish metric facts or charts")
+        if self.authorization_scope.metrics and any(
+            c.kind == "context" and not c.related_metric_goals for c in self.claims
+        ):
+            raise ValueError("Combined context must name its related metric goals")
         return self

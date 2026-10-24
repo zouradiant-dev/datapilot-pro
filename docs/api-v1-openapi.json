@@ -2829,6 +2829,12 @@
           },
           "citation": {
             "$ref": "#/components/schemas/ChunkCitation"
+          },
+          "quotation": {
+            "type": "string",
+            "maxLength": 4096,
+            "title": "Quotation",
+            "default": ""
           }
         },
         "additionalProperties": false,
@@ -3216,7 +3222,6 @@
             },
             "type": "array",
             "maxItems": 6,
-            "minItems": 1,
             "title": "Metrics"
           },
           "documents": {
@@ -3246,7 +3251,8 @@
           "question",
           "metrics"
         ],
-        "title": "CreateTask"
+        "title": "CreateTask",
+        "description": "SQL: confirmed metrics; combined: associated documents; documents-only: no\nmetrics, nonempty authorized corpora, unchanged full question and mandatory review.\nCross-field conditions are enforced by the host, including after candidate replay."
       },
       "DatasetColumn": {
         "properties": {
@@ -3450,7 +3456,6 @@
             },
             "type": "array",
             "maxItems": 6,
-            "minItems": 1,
             "title": "Metric Goals"
           },
           "corpus_ids": {
@@ -5385,6 +5390,43 @@
             "type": "string",
             "pattern": "^[a-f0-9]{64}$",
             "title": "Index Version"
+          },
+          "dataset_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset Id"
+          },
+          "dataset_version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 1000000.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset Version"
+          },
+          "source_sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Sha256"
           }
         },
         "additionalProperties": false,

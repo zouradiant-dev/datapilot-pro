@@ -102,6 +102,9 @@ class ChatLaunch(DTO):
 class ReviewDocument(DTO):
     corpus_id: DatasetId
     index_version: Digest
+    dataset_id: DatasetId | None = None
+    dataset_version: Version | None = None
+    source_sha256: Digest | None = None
 
 
 class ReviewView(DTO):

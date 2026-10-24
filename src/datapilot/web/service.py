@@ -110,14 +110,18 @@ def report_view(run_id, report):
         for doc in claim.documents:
             citations.append(
                 CitationView(
-                    artifact_id=doc.artifact_id, citation=doc.citation.model_dump(mode="json")
+                    artifact_id=doc.artifact_id,
+                    citation=doc.citation.model_dump(mode="json"),
+                    quotation=doc.excerpt if not report.authorization_scope.metrics else "",
                 )
             )
     lines = [
         "# SaaS 可验证报告",
         "",
         "业务状态：" + report.business_completion.status,
-        "文档背景不证明因果；原文和业务明细不传入浏览器。",
+        "文档引述仅说明来源明确记载的内容，不证明业务数值或因果。"
+        if not report.authorization_scope.metrics
+        else "文档背景不证明因果；原文和业务明细不传入浏览器。",
         "",
     ]
     for fact in facts:
@@ -331,7 +335,6 @@ class ProductService:
                 deny("METRIC_CONFIRMATION_REQUIRED", "Host review of metric policy is required")
             async with metric_session(self.settings, DatasetScope(bindings=[b])) as tools:
                 contexts.append((await tools.context(metric)).context_sha256)
-        datasets = DatasetScope(bindings=list(bindings.values()))
         doc_goal, rag = None, None
         if request.documents:
             selected = []
@@ -340,13 +343,28 @@ class ProductService:
                     c
                     for c in self.store.corpora(corpus_id=id_)
                     if c["corpus_id"] == id_
-                    and (c["dataset_id"], c["dataset_version"])
-                    in {(b.dataset_id, b.version) for b in datasets.bindings}
+                    and (
+                        not request.metrics
+                        or (c["dataset_id"], c["dataset_version"])
+                        in {(b.dataset_id, b.version) for b in bindings.values()}
+                    )
                 ]
                 if len(matches) != 1:
                     deny("WEB_SCOPE", "Choose a current host-authorized document index")
+                if not request.metrics:
+                    c = matches[0]
+                    p = await self.dataset(c["dataset_id"], c["dataset_version"])
+                    b = DatasetBinding(dataset_id=c["dataset_id"], version=c["dataset_version"])
+                    if b.dataset_id in bindings and bindings[b.dataset_id] != b:
+                        deny("WEB_SCOPE", "One Dataset version per run is required")
+                    bindings[b.dataset_id] = b
+                    sources[b.dataset_id] = p["schema"]["source_sha256"]
                 selected.append(CorpusPin.model_validate(matches[0]["payload"]))
-            rag = RagScope(owner=self.policy.owner, corpora=selected, datasets=datasets)
+            rag = RagScope(
+                owner=self.policy.owner,
+                corpora=selected,
+                datasets=DatasetScope(bindings=list(bindings.values())),
+            )
             doc_goal = DocumentGoal(
                 goal_id="documents",
                 question=request.documents.question,
@@ -355,7 +373,7 @@ class ProductService:
         report = ReportScope(
             owner=self.policy.owner,
             question=request.question,
-            datasets=datasets,
+            datasets=DatasetScope(bindings=list(bindings.values())),
             metrics=request.metrics,
             document_goal=doc_goal,
             causal_requested=request.causal_requested,

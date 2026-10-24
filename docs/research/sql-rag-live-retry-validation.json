@@ -1,0 +1,398 @@
+{
+  "schema_version": "sql-rag-live-retry-validation-1",
+  "checked_at": "2026-10-24T07:32:52.616654+00:00",
+  "baseline_commit": "ed7fc79efe9b308603ab45c22e85bacb76c6602d",
+  "frozen_source": {
+    "record": "artifacts/rag-only-web/source-frozen-live.json",
+    "files": 194,
+    "changes_this_retry": []
+  },
+  "authorization": {
+    "new_runs": 1,
+    "calls_per_run": 8,
+    "total_tokens_per_run": 18000,
+    "automatic_failed_run_repeats": 0,
+    "prior_failed_run": "30b093f9-127a-485d-a7c8-7a2993780a1c",
+    "prior_failed_record_preserved": true
+  },
+  "outcome": "passed_single_live_smoke",
+  "run_id": "817e4cc8-483f-42f5-a567-2c27055d0cda",
+  "conversation_id": "e1aa2bce-baa7-46be-bcb9-d9101cb02ce5",
+  "approved_at": "2026-10-24T04:04:24.598909+00:00",
+  "execution_status": "succeeded",
+  "business_completion": {
+    "schema_version": "business-completion-1",
+    "status": "completed",
+    "required_goals": [
+      "metric_1",
+      "documents"
+    ],
+    "verified_goals": [
+      "metric_1",
+      "documents"
+    ],
+    "missing_evidence": {},
+    "unconfirmed_claims": [],
+    "limited_results_visible": true
+  },
+  "model_config": {
+    "provider": "deepseek",
+    "model_alias": "deepseek-flash",
+    "thinking": "disabled",
+    "sdk_retries": 0,
+    "max_output_tokens": 1200,
+    "timeout_seconds": 30,
+    "exact_weight_version_verified": false
+  },
+  "usage": {
+    "model_calls": 4,
+    "tokens": {
+      "input_tokens": 5898,
+      "output_tokens": 516,
+      "total_tokens": 6414
+    },
+    "provider_cache_read_tokens": 2816,
+    "source": "provider",
+    "usage_complete": true,
+    "model_elapsed_ms": 3640.0,
+    "approval_to_ack_ms": 20304.909,
+    "cost": {
+      "currency": "USD",
+      "estimated_amount": "0.000780348",
+      "billed_amount": null,
+      "rate_period": "off_peak",
+      "source": "https://api-docs.deepseek.com/quick_start/pricing/"
+    }
+  },
+  "models": [
+    {
+      "account": "1:documents",
+      "status": "complete",
+      "usage": {
+        "input_tokens": 2251,
+        "total_tokens": 2349,
+        "output_tokens": 98,
+        "input_token_details": {
+          "cache_read": 1920
+        },
+        "output_token_details": {}
+      },
+      "elapsed_ms": 750.0,
+      "model": {
+        "model_name": "deepseek-flash",
+        "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501",
+        "finish_reason": "tool_calls"
+      },
+      "tool_names": [
+        "submit_rag_result"
+      ]
+    },
+    {
+      "account": "1:documents",
+      "status": "complete",
+      "usage": {
+        "input_tokens": 1296,
+        "total_tokens": 1437,
+        "output_tokens": 141,
+        "input_token_details": {
+          "cache_read": 0
+        },
+        "output_token_details": {}
+      },
+      "elapsed_ms": 1077.999999979511,
+      "model": {
+        "model_name": "deepseek-flash",
+        "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501",
+        "finish_reason": "tool_calls"
+      },
+      "tool_names": [
+        "search_documents",
+        "search_documents"
+      ]
+    },
+    {
+      "account": "1:documents",
+      "status": "complete",
+      "usage": {
+        "input_tokens": 1808,
+        "total_tokens": 1955,
+        "output_tokens": 147,
+        "input_token_details": {
+          "cache_read": 512
+        },
+        "output_token_details": {}
+      },
+      "elapsed_ms": 811.9999999180436,
+      "model": {
+        "model_name": "deepseek-flash",
+        "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501",
+        "finish_reason": "tool_calls"
+      },
+      "tool_names": [
+        "read_context"
+      ]
+    },
+    {
+      "account": "root",
+      "status": "complete",
+      "usage": {
+        "input_tokens": 543,
+        "total_tokens": 673,
+        "output_tokens": 130,
+        "input_token_details": {
+          "cache_read": 384
+        },
+        "output_token_details": {}
+      },
+      "elapsed_ms": 1000.0,
+      "model": {
+        "model_name": "deepseek-flash",
+        "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501",
+        "finish_reason": "stop"
+      },
+      "tool_names": []
+    }
+  ],
+  "tool_receipts": [
+    {
+      "account": "1:documents",
+      "name": "submit_rag_result",
+      "status": "complete",
+      "elapsed_ms": 30.999999959021807
+    },
+    {
+      "account": "1:documents",
+      "name": "search_documents",
+      "status": "complete",
+      "elapsed_ms": 422.0000000204891
+    },
+    {
+      "account": "1:documents",
+      "name": "read_context",
+      "status": "complete",
+      "elapsed_ms": 31.00000007543713
+    },
+    {
+      "account": "1:documents",
+      "name": "search_documents",
+      "status": "complete",
+      "elapsed_ms": 47.0000000204891
+    },
+    {
+      "account": "1:metric_1",
+      "name": "p3_metric_execution",
+      "status": "complete",
+      "elapsed_ms": 1937.999999965541
+    },
+    {
+      "account": "1:report",
+      "name": "verified_report_projection",
+      "status": "complete",
+      "elapsed_ms": 15.000000013969839
+    }
+  ],
+  "metrics": [
+    {
+      "evidence_id": "c002f686-b5b6-48d4-819b-564bb229056c",
+      "verification_id": "17648117-039a-4068-b284-51007d498c35",
+      "evidence_sha256": "6d6a4d85ba006ca127daca2e0a6fd4fb144fca82bb3aef8a6e9cf751a524fc65",
+      "verification_sha256": "e8ef3f944d175b42f99c5e55f3a6f836f719b416c3a43a6a82e87fc51e3339c8",
+      "verdict": "verified",
+      "checks": [
+        {
+          "layer": "safety",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "shape",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "semantics",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "recomputation",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "references",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "coverage",
+          "status": "passed",
+          "codes": []
+        }
+      ],
+      "value": {
+        "value": "300.0000000000000000",
+        "unit": "CNY",
+        "numerator": null,
+        "denominator": null,
+        "window_days": 31
+      },
+      "source_sha256": "87df9a81a06c7301c69a13e9d13fd733545eae7180fa9304c62df8ad10dd1ed7",
+      "semantic_sha256": "0ab3332218fd8184d6b3fc33015306fe705f8258f35031ac40125298e86555d6",
+      "metric_sha256": "0bdecf66964ab18eb992e5f018d1f3fd2fd7e8578e447e5653bc5c2b6138ac73",
+      "query_sha256": "7d3a13f0f71f690717b51a834bea581906243e43318cccb30d45a838332206cd",
+      "result_sha256": "bc1bffdda9c05ef1e2f0ccb650a0f60c0ecd2532ad4096eda15bb75df46745c9",
+      "request": {
+        "goal_id": "metric_1",
+        "dataset_id": "a3c64b99-d463-54eb-8a0e-55eebc725d53",
+        "dataset_version": 1,
+        "semantic_version": 1,
+        "metric_id": "paid_invoice_revenue",
+        "metric_version": 1,
+        "window": {
+          "start": "2025-10-01",
+          "end_exclusive": "2025-11-01"
+        },
+        "as_of": null,
+        "intent": "measure"
+      }
+    }
+  ],
+  "citations": [
+    {
+      "artifact_id": "d58e03f2b97825c6ecd44e8970b0a33317d6a541fde100d0645ef4e3dcbf6d69",
+      "citation": {
+        "chunk_id": "3ed7b7048d8df89584b581d199049083f3d35ad5ae751bd765e90f813d29733e",
+        "start": 0,
+        "end": 103,
+        "line_start": 1,
+        "line_end": 3,
+        "sha256": "172ded94f285154b2b8fcfd78f1ac70a0c9e793ad5542434c457ff2b17f2eb43",
+        "corpus_id": "cc196ad2-2b8d-4b24-8b0a-926f78c0b07f",
+        "index_version": "45dba19f4ae81e168a5e64a642f8a7df8057e19470ec202f1f71608c76df2dae",
+        "source_id": "3bd4c918208ac45a1f1dbb32c83ba6bff7c0bc17729a0b48ceda83cfbc8e41d2",
+        "document_id": "cd746f18c9d0b128631eba16cd8c8dae89198861a293106adabed8ebfa90f28a",
+        "version": "172ded94f285154b2b8fcfd78f1ac70a0c9e793ad5542434c457ff2b17f2eb43",
+        "source_sha256": "172ded94f285154b2b8fcfd78f1ac70a0c9e793ad5542434c457ff2b17f2eb43",
+        "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+        "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+        "retriever": "pg-cosine-exact-1",
+        "score": 0.6994617164455834,
+        "goal_sha256": "c03b47e88e95a31a1818e9121157b328d13e167132d69ce0ea41052d574089c1",
+        "goal_score": 0.7114380598068237,
+        "page": null
+      },
+      "original_file_located": true,
+      "excerpt_equal": true,
+      "related_metric_goals": [
+        "metric_1"
+      ],
+      "business_causality_verified": false
+    }
+  ],
+  "rag_receipt": [
+    {
+      "protocol": "rag-submit-v1",
+      "call_id": "call_00_lmZrJJapUMftyIUp3q7T8418",
+      "submission": {
+        "artifact_ids": [
+          "d58e03f2b97825c6ecd44e8970b0a33317d6a541fde100d0645ef4e3dcbf6d69"
+        ],
+        "outcome": "complete"
+      },
+      "verdict": "semantic_retrieval",
+      "goal_sha256": "e807988ccaf32a4d82dc7dcbc9784216265d1072ddc1dbf2f0211d612de496df",
+      "model_response_sha256": "8e1f0109a8df368a9f0ecbec3f7ea7a340cf2f8610abbf308258726ad1994256",
+      "relevant_chunk_ids": [
+        "3ed7b7048d8df89584b581d199049083f3d35ad5ae751bd765e90f813d29733e"
+      ],
+      "business_conclusions_verified": false
+    }
+  ],
+  "read_context": {
+    "call_count": 1,
+    "actual_document_id_supplied_by_model": true,
+    "host_filled_document_id": false,
+    "stop_hook_correction_exercised_live": false
+  },
+  "independent_verification": {
+    "method": "original NoModel inspect_run + scoped real PostgreSQL/MCP and real ONNX pgvector retrieval; source bytes + independent openpyxl/Decimal Gold",
+    "all_journal_calls_settled": true,
+    "extra_paid_model_calls": 0,
+    "gold_sha256": "cb3e4c9cf3f55e5ff58ac3ae80dc10bddc2393d3de882fd2aa5bb6b65c553b4a",
+    "business_causality_verified": false
+  },
+  "restart_verification": {
+    "checked_at": "2026-10-24T07:31:28.498820+00:00",
+    "checks": [
+      "run_id",
+      "payload_sha256",
+      "manifest_sha256",
+      "ledger_sha256",
+      "calls_sha256",
+      "rag_scope_sha256",
+      "report_sha256",
+      "artifacts",
+      "tokens",
+      "models",
+      "tools"
+    ],
+    "all_equal": true,
+    "state_and_report_equal": true,
+    "model_calls_before": 4,
+    "model_calls_after": 4,
+    "additional_model_calls": 0,
+    "actual_api_ui_restart": {
+      "restarted_at": "2026-10-24T07:30:41.9305647Z",
+      "api_pid": 33684,
+      "previous_api_pid": 43440,
+      "previous_ui_pid": 41988,
+      "ui_pid": 30900,
+      "old_processes_absent": true,
+      "reason": "Observed Docker and native processes stopped after completed smoke; restart original services read-only",
+      "stamp": "20261024T153041"
+    },
+    "same_conversation_id": "e1aa2bce-baa7-46be-bcb9-d9101cb02ce5"
+  },
+  "tests": {
+    "new_pytest_runs_this_retry": 0,
+    "reused_source_unchanged": true,
+    "nonpg_py311": 484,
+    "nonpg_py313": 484,
+    "related_pg_py311": {
+      "final_group": 23,
+      "compat_group": 2
+    },
+    "related_pg_py313": 9,
+    "paid_model": false,
+    "full_suite_rerun": false,
+    "ruff_check": "passed",
+    "ruff_format_excluding_user_v25_plan": "240 files already formatted",
+    "full_format_existing_user_plan_issue": "docs/codex-prompts-v2.5.md; preserved",
+    "git_diff_check": "passed"
+  },
+  "gate0": {
+    "status": "passed_engineering_smoke",
+    "sql_only_run": "4d4caa90-ae26-44fa-98ac-77d868219a57",
+    "rag_only_run": "1a29dac0-cbf1-4582-a541-1a89bae75dc5",
+    "sql_rag_run": "817e4cc8-483f-42f5-a567-2c27055d0cda",
+    "formal_business_evaluation": false,
+    "gate1_started": false
+  },
+  "limitations": [
+    "Single successful bounded combined smoke; prior failed experiment retained, no stable success rate or benchmark conclusion",
+    "No paid SQL or RAG model calls were repeated during inspection/restart",
+    "Source/schema/threshold/budget unchanged; no LLM semantic intent enhancement",
+    "Mutable model alias; exact weights not independently pinned; billed invoice unavailable",
+    "Main Docker UI remains Fake; separate loopback Live Host used"
+  ],
+  "raw_prompts_rows_document_bodies_vectors_exported": false,
+  "local_artifacts": [
+    "artifacts/sql-rag-retry/live-before.json",
+    "artifacts/sql-rag-retry/live-result.json",
+    "artifacts/sql-rag-retry/live-after-restart.json",
+    "artifacts/sql-rag-retry/source-verification.json",
+    "artifacts/sql-rag-retry/gold.json",
+    "artifacts/sql-rag-retry/restart-verification.json"
+  ]
+}

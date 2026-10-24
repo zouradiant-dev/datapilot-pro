@@ -115,34 +115,40 @@ def clarification(api, cid, message, datasets):
         if (c["dataset_id"], c["dataset_version"])
         == (ds["schema"]["dataset_id"], ds["schema"]["version"])
     ]
+    metric = st.selectbox(
+        "已确认的指标与版本",
+        [None, *definitions],
+        index=0 if any("仅文档问答" in n for n in draft.get("notes", [])) or not definitions else 1,
+        key=prefix + "-metric",
+        format_func=lambda m: (
+            "不计算指标（仅文档问答）"
+            if m is None
+            else (metric_label(m["metric_id"]) + " · v" + str(m["metric_version"]))
+        ),
+    )
     with st.form("clarify-" + prefix):
-        metric = (
-            st.selectbox(
-                "已确认的指标与版本",
-                definitions,
-                format_func=lambda m: (
-                    metric_label(m["metric_id"]) + " · v" + str(m["metric_version"])
-                ),
-            )
-            if definitions
-            else None
-        )
-        start = st.date_input("开始日期（含）", date(2025, 10, 1))
-        end = st.date_input("结束日期（不含）", date(2025, 11, 1))
+        if metric:
+            start = st.date_input("开始日期（含）", date(2025, 10, 1))
+            end = st.date_input("结束日期（不含）", date(2025, 11, 1))
+        else:
+            st.caption("仅引用授权文档，不计算指标或生成财务图表；日期筛选不适用。")
         docs = st.multiselect("关联授权文档（可选）", [c["corpus_id"] for c in corpora])
         reviewed = st.checkbox("我确认此快照、指标、时间和文档范围")
-        if st.form_submit_button("补充条件并重新确认", disabled=metric is None):
+        if st.form_submit_button("补充条件并重新确认", disabled=metric is None and not corpora):
             if not reviewed:
                 st.warning("请先明确确认条件。")
             else:
                 selection = {
                     "dataset_id": ds["schema"]["dataset_id"],
                     "dataset_version": ds["schema"]["version"],
-                    "metric_id": metric["metric_id"],
-                    "metric_version": metric["metric_version"],
-                    "window": {"start": start.isoformat(), "end_exclusive": end.isoformat()},
                     "corpus_ids": docs,
                 }
+                if metric:
+                    selection.update(
+                        metric_id=metric["metric_id"],
+                        metric_version=metric["metric_version"],
+                        window={"start": start.isoformat(), "end_exclusive": end.isoformat()},
+                    )
                 append(api, cid, {"text": message["text"], "selection": selection})
                 st.rerun()
 
@@ -230,6 +236,8 @@ def render_chat(api, datasets):
                     st.write("已形成候选请求，等待你提交审批。")
                     for req in draft["request"]["metrics"]:
                         st.write(metric_label(req["metric_id"]), " · 时间：", time_label(req))
+                    if not draft["request"]["metrics"]:
+                        st.write("文档问答 · 仅引用已授权来源，不计算业务指标")
                     for note in draft["notes"]:
                         st.caption(note)
                     with st.expander("候选数据与指标版本"):

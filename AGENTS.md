@@ -2,7 +2,7 @@
 
 ## 架构和范围
 
-- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/recovery.md、docs/cross-source-report.md、docs/product-demo.md、docs/chat-first-ui.md 与相关 ADR。当前仅授权 P6C.1：在原可信本地单用户 P6C 上增加 Chat-first Streamlit 与最小 Conversation/Message 元数据。完整复用 P0–P6C，验收后停止；不开始 P7/P8/P9/P10/P11，不自动提交/推送。生产公网多租户/RLS、KMS/自动清理和主动 Agent 不在本轮。
+- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/recovery.md、docs/cross-source-report.md、docs/product-demo.md、docs/chat-first-ui.md、docs/rag-only-web.md 与相关 ADR。P6C.1 为已有交互基线；当前增量只补 Gate 0 的 RAG-only Web 与文档读取参数修复，复用 P0–P6C.1，验收后停止。不开始正式 P7 Benchmark、Gate 1 或 P8–P11，不自动提交/推送。生产公网多租户/RLS、KMS/自动清理和主动 Agent 不在本轮。
 - 按功能依赖与验收 Gate 推进，工作单元/工作日编号不是截止日期；旧七天计划已由 roadmap-v2 取代。SaaS 是唯一首发主业务，drycleaning 是独立可选 Phase F，不复制 Runtime/Harness/Worker。
 - Python 3.11+、src 布局、类型标注、Pydantic 2 严格契约、LangGraph StateGraph 编排。
 - Planner/Coordinator 路由；P4 Worker 只接收宿主生成的 TaskEnvelope，不读取整个 RunState。旧 SQLTask/SQLAgentResult 保留兼容投影，P3 MetricRequest 路径独立。Worker 有独立工具句柄/能力、消息与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
@@ -37,6 +37,7 @@
 - P6A 完成修复见 ADR-011、docs/rag-completion-repair.md：真实 RAG 经宿主本地 submit_rag_result 与原 Verifier 接收收据；Stop Hook 共享一次纠正，不是 Evaluator LLM。阶段工具只按宿主规则收缩，不能用隐藏 Schema 代替授权。检索相关且满足要求可 complete，业务结论仍未验证；不能仅凭非空/hash/score 完成，也不能把全部因果验证前置给 RAG。收据与纠正在原 Journal 持久化，unknown-outcome 禁止自动重发。
 - `status` 保留执行兼容语义；`completion.status` 是宿主任务契约三态。没有可信 ReportScope 的普通 ask 仍不得将已识别指标问题升级为 verified，保留 P3_VERIFIED_EVIDENCE_REQUIRED。P6B 仅在原 P3 持久 Evidence/Verification 经 scoped MCP 重新读取并核对后发布数值；P4 五层身份/依赖验证不能替代 P3 六层业务验证。completed 只覆盖宿主确认的必需 goals，不证明任意自然语言目标等价/完整性。
 - P6B 见 ADR-012：ReportScope 固定 owner、Dataset/version、MetricRequest 与文档目标关联，不是模型可提交的授权参数。Planner 只排宿主批准的同名任务；指标 Worker 无任意 SQL/DDL/脚本工具，可信服务复用 P3 analyze/封闭配方/Decimal。Registry 写仅在宿主，MCP 新增 get_verification 只读接口，不新增写工具/数据库 grants。
+- Gate 0 RAG-only 允许 metrics=[]，但必须有完整原问题、授权 CorpusPin/DocumentGoal、可信 Dataset/version/source pin 和人工审批；空任务拒绝，不伪造 Metric。纯文档只发布经源/跨度/hash/目标要求复核的原文引述，不标记 P3 数值已验证或生成财务图表。公开 quotation 仅用于该路径，旧组合报告投影保持；正文不进入 Trace。read_context 文档读取必须有实际 document_id，参数纠正共享原一次 Stop Hook/Journal 额度，权限拒绝不纠正，unknown-outcome 不重发。
 - MetricBridge 保留 source/context/semantic/metric/query/result hash、时间/单位/过滤、P3 原始 verdict 与引用；raw Evidence、普通 Query/Analysis/Chart 不得升级为 verified。Report 独立重建结构化 claim/图表并校验 RAG 原 scope/index/source/chunk/hash、目标要求及指标关联；insufficient/unavailable 收据不能被 Report 升级。文档背景只做引述，不证明数字或因果，文档指令不得执行。
 - P6B execution_status 与 business_completion（completed/partial/unavailable/blocked）分开，缺失/确认需求明确展示；只重试缺失且安全就绪的源任务，已通过/明确不可用源保留。P3 追加与 Journal 之间无法确认的窗口必须 uncertain 阻断重发；恢复重查全部持久引用与原 verdict，禁止覆盖旧证据。可复用事实元数据仅为 P11 契约，不实现降级/缓存/SLA。
 - Domain Pack 是版本化字段映射/指标/质量/Verifier/评测的可信配置，不是可执行上传脚本或不同 Prompt。Source Connector 首发文件快照；未知 POS/API 不编造适配器。

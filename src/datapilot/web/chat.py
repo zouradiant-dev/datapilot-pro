@@ -211,7 +211,11 @@ class ChatService:
                 datasets = [
                     await self.product.dataset(selection.dataset_id, selection.dataset_version)
                 ]
-            elif prior_request and re.search(r"那|继续|同样|对比|比较|比呢", request.text):
+            elif (
+                prior_request
+                and prior_request["metrics"]
+                and re.search(r"那|继续|同样|对比|比较|比呢", request.text)
+            ):
                 m = prior_request["metrics"][0]
                 datasets = [await self.product.dataset(m["dataset_id"], m["dataset_version"])]
             else:
@@ -225,6 +229,16 @@ class ChatService:
             )
             if draft.request:
                 fresh = await self.product.task_payload(draft.request)
+                if (
+                    selection.dataset_id
+                    and not draft.request.metrics
+                    and any(
+                        (b["dataset_id"], b["version"])
+                        != (selection.dataset_id, selection.dataset_version)
+                        for b in fresh["report_scope"]["datasets"]["bindings"]
+                    )
+                ):
+                    deny("WEB_SCOPE", "Selected document source differs from the chosen snapshot")
                 draft = draft.model_copy(update={"authorization_sha256": digest(fresh)})
         payload = {
             "schema_version": "chat-v1",

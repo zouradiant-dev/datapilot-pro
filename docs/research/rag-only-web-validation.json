@@ -1,0 +1,779 @@
+{
+  "schema_version": "rag-only-web-validation-1",
+  "checked_at": "2026-10-24T03:48:09.394479+00:00",
+  "baseline_commit": "ed7fc79efe9b308603ab45c22e85bacb76c6602d",
+  "working_tree_uncommitted": true,
+  "scope": "Gate 0 document read parameter repair and RAG-only Web only",
+  "engineering_gate": "passed",
+  "new_live_runs": 1,
+  "authorized_limits": {
+    "runs": 1,
+    "model_calls": 8,
+    "total_tokens": 18000,
+    "new_sql_or_combined_runs": 0,
+    "whole_run_retries": 0
+  },
+  "gold": {
+    "frozen_at": "2026-10-24T03:05:48.634303+00:00",
+    "question": "根据已授权的 billing.md，说明文档明确记载的已支付账单收入规则，并给出对应引用。如果文档没有充分证据，请明确说明不足，不要自行补充。",
+    "source": "tests/fixtures/reporting/billing.md",
+    "source_sha256": "172ded94f285154b2b8fcfd78f1ac70a0c9e793ad5542434c457ff2b17f2eb43",
+    "span": [
+      0,
+      103
+    ],
+    "lines": [
+      1,
+      3
+    ],
+    "expected": "Exact quoted rules with authorized source/version/chunk refs; no computed metrics or causal claims",
+    "model_output_seen": false
+  },
+  "regression": {
+    "nonpg-py311-livegate.xml": {
+      "counts": {
+        "tests": 484,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      "sha256": "83d5883f77f5ac7f16301f41a45c6f20b72a6baea5560a8b82797e7cdf0ebd0c",
+      "paid_api": false
+    },
+    "nonpg-py313-livegate.xml": {
+      "counts": {
+        "tests": 484,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      "sha256": "e5440d0ed41b7c64698befce2f35fc6c16441cb841d7df2039dcc420d84febdd",
+      "paid_api": false
+    },
+    "pg-py311-final.xml": {
+      "counts": {
+        "tests": 23,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      "sha256": "21c816a028a066cbc5e529ed8236a736155d7c3358b8517ad8df3b9b6a156296",
+      "paid_api": false
+    },
+    "pg-py311-compat.xml": {
+      "counts": {
+        "tests": 2,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      "sha256": "478c0d902694f98878d18bdb6856a2867cf06d7dba8404dcd43dfa08f6e6e85f",
+      "paid_api": false
+    },
+    "pg-py313-final.xml": {
+      "counts": {
+        "tests": 9,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      "sha256": "3c056dc33fe6cb29013b39f0d176089fa546c7accc09ae4800a1e6b35f6959a4",
+      "paid_api": false
+    }
+  },
+  "full_all_markers_regression": "not_run; related PG suites and all non-integration/non-live tests executed",
+  "freeze": {
+    "files": 194,
+    "sha256": "c3055677d6ad4906e234f6a8ad5e74e861509c820dab9b548418950e4d1b2233",
+    "pg311_core_followups": [
+      "format-only AST-equivalent blank line",
+      "empty quotation serializer compatibility guard rechecked by 2 real PG report cases",
+      "test-only sibling read batch added; both versions reran 484 non-PG tests"
+    ]
+  },
+  "parameter_fix": {
+    "original_run_id": "30b093f9-127a-485d-a7c8-7a2993780a1c",
+    "original_four_cases_before": "4 failed; original JUnit retained",
+    "regression_cases_included": true,
+    "trace_audit": {
+      "checked_at": "2026-10-24T03:00:28.221791+00:00",
+      "run_id": "30b093f9-127a-485d-a7c8-7a2993780a1c",
+      "observations": [
+        {
+          "call_id": "call_00_AazxIFidsExbdukXUaOH8069",
+          "model_response_sha256": "bb3639f1bfba1051fe8afaf15e973bd8f78fd6bc7d53448c3c7d67d4d6eb2ea3",
+          "parsed_argument_keys": [
+            "artifact_id",
+            "max_chars"
+          ],
+          "native_argument_keys": null,
+          "native_equals_parsed": null,
+          "document_id_present": false
+        },
+        {
+          "call_id": "call_01_ucbXRLOIh1YGd4qaw2YP8401",
+          "model_response_sha256": "bb3639f1bfba1051fe8afaf15e973bd8f78fd6bc7d53448c3c7d67d4d6eb2ea3",
+          "parsed_argument_keys": [
+            "artifact_id",
+            "max_chars"
+          ],
+          "native_argument_keys": null,
+          "native_equals_parsed": null,
+          "document_id_present": false
+        }
+      ],
+      "diagnosis": "The persisted normalized AI tool_calls omit document_id. The generic tool Schema allowed omission while document dispatch required it; the old loop made this non-submission INPUT_INVALID fatal. The original HTTP response was not retained, so exact wire arguments cannot be independently reconstructed. A separate native HTTP Mock verifies supplied document_id survives SDK parsing.",
+      "paid_model_calls": 0,
+      "native_wire_response_retained": false
+    },
+    "native_read_check": {
+      "run_id": "1a29dac0-cbf1-4582-a541-1a89bae75dc5",
+      "model_supplied_actual_document_id": true,
+      "reads": [
+        {
+          "call_id": "call_00_6hXdSVWLzPIFMcxnhdku9332",
+          "artifact_id": "fcf4508dd95de7c8ab6e78b6726747531903c7f1bd01cf8248f8bece5458d31c",
+          "document_id": "3ed7b7048d8df89584b581d199049083f3d35ad5ae751bd765e90f813d29733e"
+        }
+      ],
+      "tool_feedback_sha256": [
+        "172ded94f285154b2b8fcfd78f1ac70a0c9e793ad5542434c457ff2b17f2eb43"
+      ],
+      "host_did_not_guess_id": true,
+      "paid_model_calls": 0
+    },
+    "correction_policy": "original shared one correction; no permission repair or ID guessing"
+  },
+  "live": {
+    "run_id": "1a29dac0-cbf1-4582-a541-1a89bae75dc5",
+    "conversation_id": "52ec1210-56c3-402b-ab14-c3d042e206c4",
+    "outcome": "passed_single_live_smoke",
+    "execution_status": "succeeded",
+    "business_completion": {
+      "schema_version": "business-completion-1",
+      "status": "completed",
+      "required_goals": [
+        "documents"
+      ],
+      "verified_goals": [
+        "documents"
+      ],
+      "missing_evidence": {},
+      "unconfirmed_claims": [],
+      "limited_results_visible": true
+    },
+    "api_mode": "live",
+    "worker_mode": "live",
+    "provider": "deepseek",
+    "model_alias": "deepseek-flash",
+    "thinking": "disabled",
+    "sdk_retries": 0,
+    "max_output_tokens": 1200,
+    "model_timeout_seconds": 30,
+    "usage_source": "provider",
+    "models": [
+      {
+        "account": "1:documents",
+        "status": "complete",
+        "usage": {
+          "input_tokens": 2293,
+          "total_tokens": 2399,
+          "output_tokens": 106,
+          "input_token_details": {
+            "cache_read": 1920
+          },
+          "output_token_details": {}
+        },
+        "elapsed_ms": 937.9999999655411,
+        "model": {
+          "model_name": "deepseek-flash",
+          "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501",
+          "finish_reason": "tool_calls"
+        },
+        "tool_names": [
+          "submit_rag_result"
+        ]
+      },
+      {
+        "account": "1:documents",
+        "status": "complete",
+        "usage": {
+          "input_tokens": 1820,
+          "total_tokens": 2001,
+          "output_tokens": 181,
+          "input_token_details": {
+            "cache_read": 512
+          },
+          "output_token_details": {}
+        },
+        "elapsed_ms": 1030.9999999590218,
+        "model": {
+          "model_name": "deepseek-flash",
+          "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501",
+          "finish_reason": "tool_calls"
+        },
+        "tool_names": [
+          "read_context"
+        ]
+      },
+      {
+        "account": "1:documents",
+        "status": "complete",
+        "usage": {
+          "input_tokens": 1305,
+          "total_tokens": 1374,
+          "output_tokens": 69,
+          "input_token_details": {
+            "cache_read": 0
+          },
+          "output_token_details": {}
+        },
+        "elapsed_ms": 1046.9999999040738,
+        "model": {
+          "model_name": "deepseek-flash",
+          "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501",
+          "finish_reason": "tool_calls"
+        },
+        "tool_names": [
+          "search_documents"
+        ]
+      },
+      {
+        "account": "1:documents",
+        "status": "complete",
+        "usage": {
+          "input_tokens": 1506,
+          "total_tokens": 1585,
+          "output_tokens": 79,
+          "input_token_details": {
+            "cache_read": 1280
+          },
+          "output_token_details": {}
+        },
+        "elapsed_ms": 875.0,
+        "model": {
+          "model_name": "deepseek-flash",
+          "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501",
+          "finish_reason": "tool_calls"
+        },
+        "tool_names": [
+          "search_documents"
+        ]
+      },
+      {
+        "account": "root",
+        "status": "complete",
+        "usage": {
+          "input_tokens": 529,
+          "total_tokens": 638,
+          "output_tokens": 109,
+          "input_token_details": {
+            "cache_read": 256
+          },
+          "output_token_details": {}
+        },
+        "elapsed_ms": 812.9999999655411,
+        "model": {
+          "model_name": "deepseek-flash",
+          "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501",
+          "finish_reason": "stop"
+        },
+        "tool_names": []
+      }
+    ],
+    "model_call_count": 5,
+    "tokens": {
+      "input_tokens": 7453,
+      "output_tokens": 544,
+      "total_tokens": 7997
+    },
+    "cache_read_tokens": 3968,
+    "usage_complete": true,
+    "model_elapsed_ms": 4703.999999794178,
+    "approval_to_worker_ack_ms": 19097.828,
+    "approved_at": "2026-10-24T03:39:08.202022+00:00",
+    "cost": {
+      "currency": "USD",
+      "estimated_amount": "0.000861054",
+      "billed_amount": null,
+      "rate_period": "off_peak",
+      "source": "https://api-docs.deepseek.com/quick_start/pricing/"
+    },
+    "pricing_checked_date": "2026-10-24",
+    "cost_is_invoice": false,
+    "tools": [
+      {
+        "account": "1:documents",
+        "name": "read_context",
+        "status": "complete",
+        "elapsed_ms": 16.00000006146729
+      },
+      {
+        "account": "1:documents",
+        "name": "submit_rag_result",
+        "status": "complete",
+        "elapsed_ms": 16.00000006146729
+      },
+      {
+        "account": "1:documents",
+        "name": "search_documents",
+        "status": "complete",
+        "elapsed_ms": 297.0000000204891
+      },
+      {
+        "account": "1:documents",
+        "name": "search_documents",
+        "status": "complete",
+        "elapsed_ms": 47.0000000204891
+      },
+      {
+        "account": "1:report",
+        "name": "verified_report_projection",
+        "status": "complete",
+        "elapsed_ms": 15.000000013969839
+      }
+    ],
+    "worker_types": [
+      "rag",
+      "report"
+    ],
+    "report_metric_facts": 0,
+    "report_charts": 0,
+    "citations": [
+      {
+        "artifact_id": "fcf4508dd95de7c8ab6e78b6726747531903c7f1bd01cf8248f8bece5458d31c",
+        "citation": {
+          "chunk_id": "3ed7b7048d8df89584b581d199049083f3d35ad5ae751bd765e90f813d29733e",
+          "start": 0,
+          "end": 103,
+          "line_start": 1,
+          "line_end": 3,
+          "sha256": "172ded94f285154b2b8fcfd78f1ac70a0c9e793ad5542434c457ff2b17f2eb43",
+          "corpus_id": "cc196ad2-2b8d-4b24-8b0a-926f78c0b07f",
+          "index_version": "45dba19f4ae81e168a5e64a642f8a7df8057e19470ec202f1f71608c76df2dae",
+          "source_id": "3bd4c918208ac45a1f1dbb32c83ba6bff7c0bc17729a0b48ceda83cfbc8e41d2",
+          "document_id": "cd746f18c9d0b128631eba16cd8c8dae89198861a293106adabed8ebfa90f28a",
+          "version": "172ded94f285154b2b8fcfd78f1ac70a0c9e793ad5542434c457ff2b17f2eb43",
+          "source_sha256": "172ded94f285154b2b8fcfd78f1ac70a0c9e793ad5542434c457ff2b17f2eb43",
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.6047118541770079,
+          "goal_sha256": "8900ced3c42d216782c187888cd8abdd13de1f8441082856e0b1132ebf6e9a41",
+          "goal_score": 0.5906627774238586,
+          "page": null
+        },
+        "quotation_sha256": "172ded94f285154b2b8fcfd78f1ac70a0c9e793ad5542434c457ff2b17f2eb43",
+        "original_quote_equal": true
+      }
+    ],
+    "accepted_receipts": [
+      {
+        "protocol": "rag-submit-v1",
+        "call_id": "call_00_FxUFD3biKXucUQaFY4P94181",
+        "submission": {
+          "artifact_ids": [
+            "fcf4508dd95de7c8ab6e78b6726747531903c7f1bd01cf8248f8bece5458d31c"
+          ],
+          "outcome": "complete"
+        },
+        "verdict": "semantic_retrieval",
+        "goal_sha256": "6423c342b02cc5fd408f8f201a8cf7fe830cc2b0f85ea42b1eeedaced0ec3ae4",
+        "model_response_sha256": "f2112bc0a0e052f43cc2f703b05cfdc0fbf73093aeffb24cc8cbc577e538ad96",
+        "relevant_chunk_ids": [
+          "3ed7b7048d8df89584b581d199049083f3d35ad5ae751bd765e90f813d29733e"
+        ],
+        "business_conclusions_verified": false
+      }
+    ],
+    "payload_sha256": "9306fd756b45ae8cc189f689e13ba5fb13d4f06a4d3e2f4afb5c381e23a2a423",
+    "manifest_sha256": "8763ee3a6c1206a86b4b19c03c8eb8e7afd6d51fa361abe41899719734bf5976",
+    "rag_scope_sha256": "466ef276e8030bd9faea629ee1bae877a3a89ebf7387c7f1ddb99c662eda8d43",
+    "report_sha256": "0f13c9bde2b262b907b13d83b467c3791cfa1f90a8697e5e156345cb7bc84129",
+    "no_p3_numbers_claimed": true,
+    "no_additional_live_retry": true,
+    "trace_routes": [
+      {
+        "node": "recovery",
+        "status": "awaiting_review",
+        "artifact_ids": [],
+        "latency_ms": 0
+      },
+      {
+        "node": "recovery",
+        "status": "resumed",
+        "artifact_ids": [],
+        "latency_ms": 0
+      },
+      {
+        "node": "model_context",
+        "status": "accepted",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "planner",
+        "status": "succeeded",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 844.0
+      },
+      {
+        "node": "scheduler",
+        "status": "dispatch",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "worker",
+        "status": "started",
+        "task_id": "documents",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "model_context",
+        "status": "accepted",
+        "task_id": "documents",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "worker_decide",
+        "status": "completed",
+        "task_id": "documents",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 1078.0
+      },
+      {
+        "node": "tool",
+        "status": "succeeded",
+        "task_id": "documents",
+        "plan_version": 1,
+        "tool_call_id": "9d881bad1663c36a34a25045c9998d46e2dead88de3f93b85915b89ea92d033d",
+        "artifact_ids": [
+          "9c2279ef701ce8dd0445579c1e07b1b989f24638d41088131d33375753f69962"
+        ],
+        "latency_ms": 297.0
+      },
+      {
+        "node": "model_context",
+        "status": "accepted",
+        "task_id": "documents",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "worker_decide",
+        "status": "completed",
+        "task_id": "documents",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 906.0
+      },
+      {
+        "node": "tool",
+        "status": "succeeded",
+        "task_id": "documents",
+        "plan_version": 1,
+        "tool_call_id": "c63f9fbcf4d9fbf60a44610c83ac97929e21d979f46e9748eb04f3048c1c881e",
+        "artifact_ids": [
+          "fcf4508dd95de7c8ab6e78b6726747531903c7f1bd01cf8248f8bece5458d31c"
+        ],
+        "latency_ms": 47.0
+      },
+      {
+        "node": "model_context",
+        "status": "accepted",
+        "task_id": "documents",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "worker_decide",
+        "status": "completed",
+        "task_id": "documents",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 1094.0
+      },
+      {
+        "node": "tool",
+        "status": "succeeded",
+        "task_id": "documents",
+        "plan_version": 1,
+        "tool_call_id": "464d72fad624fa2db6611bcb8f18a3ec66190831fa368b458573f452fb14d6eb",
+        "artifact_ids": [],
+        "latency_ms": 32.0
+      },
+      {
+        "node": "model_context",
+        "status": "accepted",
+        "task_id": "documents",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "worker_decide",
+        "status": "completed",
+        "task_id": "documents",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 1000.0
+      },
+      {
+        "node": "tool",
+        "status": "succeeded",
+        "task_id": "documents",
+        "plan_version": 1,
+        "tool_call_id": "ffc3c9ca527c6a5c15cdd59e1dd2b4812d12c1073d1170ffddbd224838589fcb",
+        "artifact_ids": [],
+        "latency_ms": 32.0
+      },
+      {
+        "node": "worker",
+        "status": "succeeded",
+        "task_id": "documents",
+        "plan_version": 1,
+        "artifact_ids": [
+          "fcf4508dd95de7c8ab6e78b6726747531903c7f1bd01cf8248f8bece5458d31c"
+        ],
+        "latency_ms": 4688.0
+      },
+      {
+        "node": "verifier",
+        "status": "completed",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "scheduler",
+        "status": "dispatch",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "worker",
+        "status": "started",
+        "task_id": "report",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "worker",
+        "status": "succeeded",
+        "task_id": "report",
+        "plan_version": 1,
+        "artifact_ids": [
+          "4a7717595eed51afe24630fe09eccf7050d76d6e80baccdfa07ab79eda68240e"
+        ],
+        "latency_ms": 47.0
+      },
+      {
+        "node": "verifier",
+        "status": "completed",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "completion",
+        "status": "completed",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "finish",
+        "status": "succeeded",
+        "plan_version": 1,
+        "artifact_ids": [],
+        "latency_ms": 0.0
+      },
+      {
+        "node": "recovery",
+        "status": "succeeded",
+        "artifact_ids": [],
+        "latency_ms": 0
+      }
+    ],
+    "journal_array_order": "hashed call keys; trace_routes retains event order"
+  },
+  "restart": {
+    "checks": [
+      "run_id",
+      "payload_sha256",
+      "manifest_sha256",
+      "ledger_sha256",
+      "calls_sha256",
+      "rag_scope_sha256",
+      "report_sha256",
+      "artifacts",
+      "tokens",
+      "models",
+      "tools"
+    ],
+    "all_equal": true,
+    "report_and_state_equal": true,
+    "model_calls_before": 5,
+    "model_calls_after": 5,
+    "additional_model_calls": 0,
+    "actual_api_ui_restart": {
+      "previous_ui_pid": 11764,
+      "api_pid": 43440,
+      "ui_pid": 41988,
+      "restarted_at": "2026-10-24T03:42:51.6333148Z",
+      "previous_api_pid": 51056,
+      "stamp": "20261024T034251",
+      "reason": "Post-smoke actual API/UI restart; no Run resume"
+    },
+    "same_conversation_id": "52ec1210-56c3-402b-ab14-c3d042e206c4"
+  },
+  "historical_p3_readback": {
+    "checked_at": "2026-10-24T03:24:13.063387+00:00",
+    "cases": [
+      {
+        "run_id": "4d4caa90-ae26-44fa-98ac-77d868219a57",
+        "evidence_id": "0f63ad1c-31fd-4f6c-a18d-158ebc856de4",
+        "verification_id": "66684fdd-fd14-48d3-9213-f0c061826791",
+        "evidence_sha256": "bd5d228d2bb868850126e2c26596b706937e123ddae58dd28ee532026eb9fde0",
+        "verification_sha256": "224d5f92119071b17b543ebfd075ce589fbdb0aba1ed1d3c9a14571e2850fdf5",
+        "verdict": "verified"
+      },
+      {
+        "run_id": "30b093f9-127a-485d-a7c8-7a2993780a1c",
+        "evidence_id": "bd9ddf12-16ca-4471-8b94-5dc92a03fd1d",
+        "verification_id": "a45cfc79-848b-456c-9723-0987ff38617b",
+        "evidence_sha256": "8f827d632e9464d641d72029275eec638415d7694006377fc1fbbbf0b6bf33cc",
+        "verification_sha256": "af5841bab7df27a4551d0828bc4f7866e60ae3cf95c764232016a2b9996d68fb",
+        "verdict": "verified"
+      }
+    ],
+    "paid_model_calls": 0,
+    "access": "original scoped MCP"
+  },
+  "source_name_negative_case": {
+    "receipts": [
+      {
+        "run_id": "5a8850c6-ab22-40b6-9fa0-1cbc7b1f7de4",
+        "outcome": "complete"
+      }
+    ],
+    "meaning": "RAG retrieval complete; separate wrong-name report must remain unavailable"
+  },
+  "gate0": {
+    "status": "not_passed",
+    "sql_only": {
+      "status": "passed_single_live_smoke",
+      "run_id": "4d4caa90-ae26-44fa-98ac-77d868219a57"
+    },
+    "sql_rag": {
+      "status": "failed_single_live_smoke",
+      "run_id": "30b093f9-127a-485d-a7c8-7a2993780a1c",
+      "repair": "offline regressions passed; real successful RAG-only read exercised; no new combined Live authorized"
+    },
+    "rag_only": {
+      "status": "passed_single_live_smoke",
+      "run_id": "1a29dac0-cbf1-4582-a541-1a89bae75dc5"
+    },
+    "reason": "No successful combined SQL+RAG Live evidence; historical failed experiment must not be rewritten",
+    "snapshot_scope": "End of RAG-only phase before separately authorized SQL+RAG retry; current Gate 0 status in later_gate0_update"
+  },
+  "validation": {
+    "ruff_check": "passed",
+    "ruff_format_excluding_protected_v2_5": "239 files already formatted",
+    "unexcluded_format": "executed: only protected docs/codex-prompts-v2.5.md would be reformatted; 239 other files formatted",
+    "openapi_paths": 24,
+    "openapi_snapshot": "docs/api-v1-openapi.json",
+    "git_diff_check": "passed",
+    "user_planning_hashes_unchanged": {
+      "docs/codex-prompts-v2.4.md": "e741a01457caf912968f02276b1894e5cd94803d5a0c12d79993c4fa1b42c74d",
+      "docs/codex-prompts-v2.5.md": "fe2289591503a58b98d39e83b9f63bbcb61951dc8dfc8e1f6e09faa048fa5189"
+    },
+    "no_migrations_dependencies_or_journal_changes": true,
+    "json_and_markdown_links": "passed"
+  },
+  "deployment": {
+    "original_8501": "unchanged Fake deployment",
+    "isolated_8502": "live; original host profile; retained for viewing this report; no automatic execution",
+    "conversation_url": "http://127.0.0.1:8502/?conversation=52ec1210-56c3-402b-ab14-c3d042e206c4"
+  },
+  "local_receipts": {
+    "before.xml": "bb5b59b35c1fc058a322a8047ef7f5acddd4682cef45c6776e0ae15f243d2019",
+    "gold.json": "d350f2fc3fdc5a377daacc5145c105b25767ec0b6b0aeb9b57ba383c5a7d950a",
+    "source-frozen-live.json": "c3055677d6ad4906e234f6a8ad5e74e861509c820dab9b548418950e4d1b2233",
+    "live-gate-preflight.json": "dcd5b87e88f3019084f293cacd282de46e50497541e5340aa5392d90e1d20213",
+    "live-before.json": "c6cc327658e1f682f63e6506f78a413417ee91646d8e4df92d4a22291cee70d8",
+    "live-result.json": "510f64ca2380663d68f9f5a6c556383fec81563d200ad42da33240e1b637a297",
+    "live-after-restart.json": "75de61bfddb22514ee98a3671ae8744d9172e31b47f8a47f453c54f99307d024",
+    "source-verification.json": "1ab3de1d1f7525fcde50e00a95490a264bf577a7ae2da8fa6266a2449a3bb166",
+    "restart-verification.json": "a4a85747be0918094fe003fd3a99906d7463baac6e73ef136c4a79068fcf2a66",
+    "read-argument-check.json": "c82d42d708dc15150c8d13fad11b95726908eae2fcecf03de45f7e466b8082a3",
+    "verified-quotation.png": "418950ca5cf81118ef41385c597428d8d5700115deb59cadfe022ee33e085aed",
+    "live-answer.png": "b3ba9a2ecdffaca2cd042be9dbf27bd77bd1cabe64c3dbade08d29c40fce3aee"
+  },
+  "limitations": [
+    "One authorized positive RAG-only run is not a stable success-rate estimate",
+    "Final answer is exact source quotation, not unconstrained LLM synthesis",
+    "BGE goal threshold stays 0.55; no threshold tuning; one source only",
+    "Arbitrary semantic entailment, filenames and exhaustive source coverage are not general capabilities",
+    "No Gate 1, holdout, formal benchmark, P8-P11, commit or push",
+    "No invoice access; cost is provider usage times official rate estimate"
+  ],
+  "private_source_bodies_prompts_vectors_or_secrets_in_public_record": false,
+  "regression_commands": {
+    "nonpg": ".venv/Scripts/python.exe -m pytest -m \"not integration and not live\" -q (repeat with .venv-313; DATAPILOT_RUN_LIVE_TESTS=0)",
+    "pg311_core": ".venv/Scripts/python.exe -m pytest tests/test_rag_only_postgres.py tests/test_rag_completion_postgres.py tests/test_web_recovery_postgres.py tests/test_web_postgres.py::test_real_document_upload_retrieval_report_and_source_ref tests/test_chat_postgres.py::test_chat_verified_report_followup_restart_and_read_only_history tests/test_deepseek_transport.py::test_deepseek_http_mock_with_real_postgres_mcp -q",
+    "pg311_compat": ".venv/Scripts/python.exe -m pytest tests/test_rag_only_postgres.py::test_document_only_approval_concurrency_real_citations_and_restart tests/test_web_postgres.py::test_real_document_upload_retrieval_report_and_source_ref -q",
+    "pg313": ".venv-313/Scripts/python.exe -m pytest tests/test_rag_only_postgres.py tests/test_web_postgres.py::test_real_document_upload_retrieval_report_and_source_ref tests/test_chat_postgres.py::test_chat_verified_report_followup_restart_and_read_only_history tests/test_rag_completion_postgres.py::test_uncommitted_submission_is_not_assumed_to_have_failed_and_reissued -q",
+    "pg_environment": "DATAPILOT_RUN_DB_TESTS=1; DATAPILOT_RUN_LIVE_TESTS=0; fresh repository basetemp/cache per invocation, PG groups serial"
+  },
+  "modified_tracked_files": [
+    "AGENTS.md",
+    "docs/api-v1-openapi.json",
+    "src/datapilot/orchestration/loop.py",
+    "src/datapilot/orchestration/tools.py",
+    "src/datapilot/reporting/adapter.py",
+    "src/datapilot/reporting/contracts.py",
+    "src/datapilot/reporting/service.py",
+    "src/datapilot/web/chat.py",
+    "src/datapilot/web/chat_contracts.py",
+    "src/datapilot/web/chat_routes.py",
+    "src/datapilot/web/contracts.py",
+    "src/datapilot/web/intent.py",
+    "src/datapilot/web/service.py",
+    "src/datapilot/web/ui_chat.py",
+    "src/datapilot/web/ui_components.py",
+    "tests/test_chat_ui.py",
+    "tests/test_deepseek_transport.py"
+  ],
+  "added_files_this_phase": [
+    "tests/test_rag_only_web.py",
+    "tests/test_rag_only_postgres.py",
+    "docs/rag-only-web.md",
+    "docs/research/rag-only-web-validation.json"
+  ],
+  "new_parameterized_test_cases": 21,
+  "updated_preexisting_gate0_records": [
+    "docs/p7-gate0.md",
+    "docs/research/p7-gate0-validation.json"
+  ],
+  "later_gate0_update": {
+    "checked_at": "2026-10-24T07:32:52.616654+00:00",
+    "gate_status": "passed_engineering_smoke",
+    "sql_rag_run": "817e4cc8-483f-42f5-a567-2c27055d0cda",
+    "record": "sql-rag-live-retry-validation.json",
+    "scope": "Later separately authorized experiment; original pure-document phase snapshot/metrics unchanged"
+  }
+}

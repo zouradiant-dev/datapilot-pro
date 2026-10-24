@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Annotated, Literal
 
-from pydantic import AfterValidator, Field, field_validator
+from pydantic import AfterValidator, Field, field_validator, model_serializer, model_validator
 
 from datapilot.datasets.contracts import DatasetColumn, DatasetId, Version
 from datapilot.ingestion.contracts import (
@@ -107,16 +107,42 @@ class MetricReview(DTO):
 
 class DocumentQuery(DTO):
     question: DatabaseText = Field(min_length=1, max_length=512)
-    metric_goals: list[str] = Field(min_length=1, max_length=6)
+    metric_goals: list[str] = Field(max_length=6)
     corpus_ids: list[DatasetId] = Field(min_length=1, max_length=8)
 
 
 class CreateTask(DTO):
+    """SQL: confirmed metrics; combined: associated documents; documents-only: no
+    metrics, nonempty authorized corpora, unchanged full question and mandatory review.
+    Cross-field conditions are enforced by the host, including after candidate replay.
+    """
+
     question: DatabaseText = Field(min_length=1, max_length=8000)
-    metrics: list[MetricRequest] = Field(min_length=1, max_length=6)
+    metrics: list[MetricRequest] = Field(max_length=6)
     documents: DocumentQuery | None = None
     require_review: bool = True
     causal_requested: bool = False
+
+    @model_validator(mode="after")
+    def actual_goals(self):
+        goals = [m.goal_id for m in self.metrics]
+        if not goals and self.documents is None:
+            raise ValueError("A task requires confirmed metrics or an authorized document goal")
+        if not goals and not self.require_review:
+            raise ValueError("Document-only tasks require host approval")
+        if len(set(goals)) != len(goals):
+            raise ValueError("Repeated metric goal")
+        if self.documents:
+            refs = self.documents.metric_goals
+            if len(set(refs)) != len(refs) or not set(refs) <= set(goals):
+                raise ValueError("Document associations must name actual metric goals")
+            if self.metrics and not refs:
+                raise ValueError("Combined tasks require explicit metric associations")
+            if len(set(self.documents.corpus_ids)) != len(self.documents.corpus_ids):
+                raise ValueError("Repeated corpus")
+            if not self.metrics and self.documents.question != self.question:
+                raise ValueError("Document-only task must preserve the entire original question")
+        return self
 
     @field_validator("metrics", mode="before")
     @classmethod
@@ -181,6 +207,14 @@ class MetricFact(DTO):
 class CitationView(DTO):
     artifact_id: Digest
     citation: ChunkCitation
+    quotation: str = Field(default="", max_length=4096)
+
+    @model_serializer(mode="wrap")
+    def legacy_projection(self, handler):
+        data = handler(self)
+        if not self.quotation:
+            data.pop("quotation", None)
+        return data
 
 
 class PublicColumnProfile(DTO):

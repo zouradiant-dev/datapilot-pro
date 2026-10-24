@@ -97,6 +97,36 @@ def gateway(settings):
     )
 
 
+async def test_deepseek_document_id_native_argument_is_preserved(monkeypatch):
+    from datapilot.orchestration.tools import DEFINITIONS
+
+    args = {"artifact_id": "a" * 64, "document_id": "actual-authorized-document", "max_chars": 512}
+
+    async def respond(request):
+        raw = json.loads(request.content)
+        assert "document_id" in raw["tools"][0]["function"]["parameters"]["properties"]
+        return completion(
+            {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [
+                    {
+                        "id": "native-document-read",
+                        "type": "function",
+                        "function": {"name": "read_context", "arguments": json.dumps(args)},
+                    }
+                ],
+            }
+        )
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(respond)) as http:
+        monkeypatch.setattr(provider, "ChatOpenAI", partial(ChatOpenAI, http_async_client=http))
+        response = await gateway(config()).invoke(
+            MESSAGES, [DEFINITIONS["read_context"].schema()], "root"
+        )
+    assert response.tool_calls[0]["args"] == args
+
+
 @pytest.mark.parametrize("base_url", ["https://api.deepseek.com", "https://api.deepseek.com/v1"])
 async def test_deepseek_native_payload_and_tool_roundtrip(monkeypatch, base_url):
     requests = []

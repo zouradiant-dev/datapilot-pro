@@ -46,7 +46,15 @@ class ContextReadArguments(Contract):
     artifact_id: Digest
     start: int = Field(default=0, ge=0, le=16 * 1024**2)
     max_chars: int = Field(default=512, ge=64, le=2048)
-    document_id: str | None = Field(default=None, min_length=1, max_length=128)
+    document_id: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=128,
+        description=(
+            "Required for document artifacts: use an actual documents[].document_id "
+            "from search_documents; omit only for context/schema artifacts."
+        ),
+    )
 
 
 class RetrievalTools(Protocol):
@@ -93,7 +101,9 @@ DEFINITIONS = {
     "read_context": ToolDefinition(
         "read_context",
         ContextReadArguments,
-        "Read bounded task-owned context/schema/documents; no paths, SQL rows or siblings",
+        "Read bounded task-owned context/schema/documents. For documents pass BOTH "
+        "artifact_id and the actual documents[].document_id from search_documents. "
+        "Never infer document_id from artifact/chunk IDs. No paths, SQL rows or siblings",
     ),
 }
 CAPABILITIES = {

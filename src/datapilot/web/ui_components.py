@@ -56,6 +56,13 @@ def render_report(report):
         )
         st.caption(time_label(fact["request"]))
     st.markdown(report["markdown"], unsafe_allow_html=False)
+    for item in report.get("citations", []):
+        if item.get("quotation"):
+            st.text(item["quotation"])
+            c = item["citation"]
+            st.caption(
+                f"授权原文引述 · 行 {c['line_start']}–{c['line_end']} · Chunk {c['chunk_id']}"
+            )
     labels = {f["request"]["goal_id"]: time_label(f["request"]) for f in report["facts"]}
     for chart in report["charts"]:
         values = [float(p["value"]) for p in chart["points"]]
