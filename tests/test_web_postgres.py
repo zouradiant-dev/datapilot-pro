@@ -218,6 +218,7 @@ def test_real_document_upload_retrieval_report_and_source_ref(api):
     query = "已付款账单收入和经常性订阅金额有什么区别？"
     request["documents"] = {
         "question": query,
+        "purpose": "summary",  # Explicit synthetic host confirmation, not an inferred default.
         "metric_goals": ["revenue"],
         "corpus_ids": [r.json()["corpus_id"]],
     }

@@ -145,21 +145,34 @@ def test_holdout_hash_checked_before_json_is_decoded(harness, plan, tmp_path):
 @pytest.mark.integration
 @pytest.mark.skipif(
     os.environ.get("DATAPILOT_P7_ISOLATED") != "1",
-    reason="Only the explicitly labelled disposable P7 PostgreSQL instance",
+    reason="Explicit isolated P7 PostgreSQL opt-in required",
 )
 @pytest.mark.parametrize("fail_transport", [False, True])
 async def test_batch_real_isolated_journal_with_mock_never_paid(
-    harness, plan, tmp_path, monkeypatch, fail_transport
+    harness, plan, tmp_path, monkeypatch, fail_transport, portable_pg
 ):
     from langchain_core.messages import AIMessage
-    from p7_isolated_pg import environment, inspect
+    from reporting_fixtures import validate_environment
 
     from datapilot.contracts import AgentFailure
     from datapilot.web.semantic_intent import IntentProposal
 
-    inspect()  # Rejects all existing user databases and unlabelled containers.
-    for key, value in environment().items():
+    # The shared fixture validates explicit test DB identity and designated roles.
+    # Keep the original Mock transport, Journal/ledger and unknown-outcome assertions.
+    mock_environment = dict(os.environ) | {
+        "DATAPILOT_API_KEY": "synthetic-mock-only-not-a-provider-key",
+        "DATAPILOT_MODEL": "deepseek-flash",
+        "DATAPILOT_MODEL_PROVIDER": "deepseek",
+        "DATAPILOT_BASE_URL": "https://api.deepseek.com",
+    }
+    for key, value in mock_environment.items():
         monkeypatch.setenv(key, value)
+    # live_batch reloads its environment. Keep the same isolated DSNs and Mock-only
+    # profile there as well; no operator credential or real HTTP transport is used.
+    # portable_pg already checked the actual PG17/role; recheck the exact immutable
+    # test environment at the old host guard boundary without needing a Docker socket.
+    monkeypatch.setattr(harness, "inspect", lambda: validate_environment(mock_environment))
+    monkeypatch.setattr(harness, "environment", lambda: dict(mock_environment))
     monkeypatch.setattr(harness, "BASE", tmp_path)
     plan.update(
         live_allowed=True,

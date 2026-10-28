@@ -17,7 +17,7 @@ from datapilot.semantics.contracts import (
     VerificationRecord,
 )
 from datapilot.semantics.recipes import build_context, missing, quote, request_missing
-from datapilot.semantics.recompute import compute_rows
+from datapilot.semantics.recompute import RecomputationUnavailable, compute_rows
 from datapilot.semantics.registry import metric_record, semantic_record, stored_record
 from datapilot.tools.sql import SQLPolicy
 
@@ -117,6 +117,8 @@ class MetricRepository:
                         source_rows=len(rows),
                         page_hashes=hashes,
                     )
+                except RecomputationUnavailable as exc:
+                    problems = [exc.reason]
                 except (ValueError, ArithmeticError) as exc:
                     problems = [missing("data_not_verifiable", str(exc)[:256])]
                 except (AgentFailure, sa.exc.SQLAlchemyError):

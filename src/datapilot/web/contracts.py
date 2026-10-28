@@ -105,10 +105,38 @@ class MetricReview(DTO):
     reviewed: bool
 
 
+class FactRequirement(DTO):
+    """A question to verify, without a client-provided proof or approval reference."""
+
+    fact_id: str = Field(pattern=r"^[a-z][a-z0-9_]{0,47}$")
+    description: DatabaseText = Field(min_length=1, max_length=256)
+
+
 class DocumentQuery(DTO):
     question: DatabaseText = Field(min_length=1, max_length=512)
     metric_goals: list[str] = Field(max_length=6)
     corpus_ids: list[DatasetId] = Field(min_length=1, max_length=8)
+    purpose: Literal["locate", "summary", "facts", "conclusion"] | None = None
+    required_facts: list[FactRequirement] = Field(default_factory=list, max_length=8)
+
+    @model_validator(mode="after")
+    def requirements(self):
+        if self.purpose == "facts" and not self.required_facts:
+            raise ValueError("State the facts to verify; user text is not proof")
+        if self.required_facts and self.purpose not in {"facts", "conclusion"}:
+            raise ValueError("Facts require an explicit fact/conclusion purpose")
+        if len({f.fact_id for f in self.required_facts}) != len(self.required_facts):
+            raise ValueError("Duplicate fact requirement")
+        return self
+
+    @model_serializer(mode="wrap")
+    def legacy_projection(self, handler):
+        value = handler(self)
+        if self.purpose is None:
+            value.pop("purpose", None)
+        if not self.required_facts:
+            value.pop("required_facts", None)
+        return value
 
 
 class CreateTask(DTO):

@@ -19,6 +19,31 @@ def metric_label(id_):
     return METRIC_LABELS.get(id_, id_)
 
 
+def document_requirements(key):
+    purpose = st.selectbox(
+        "文档用途（需明确确认）",
+        [None, "locate", "summary", "facts", "conclusion"],
+        format_func=lambda p: {
+            None: "请选择用途",
+            "locate": "定位原文",
+            "summary": "总结授权文档",
+            "facts": "核验具体事实",
+            "conclusion": "分析结论（可能无法验证）",
+        }[p],
+        key=key + "-purpose",
+    )
+    facts = []
+    if purpose in {"facts", "conclusion"}:
+        st.caption("待核验问题不是证明；没有可信原文支持时会保持未验证。")
+        text = st.text_area("必需事实（每行一项，最多 8 项，每项 256 字符）", key=key + "-facts")
+        facts = [
+            {"fact_id": f"fact_{i}", "description": line.strip()}
+            for i, line in enumerate(text.splitlines(), 1)
+            if line.strip()
+        ]
+    return {"purpose": purpose, "required_facts": facts}
+
+
 def time_label(request):
     window = request.get("window")
     return (

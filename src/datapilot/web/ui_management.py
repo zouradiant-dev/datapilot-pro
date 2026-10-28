@@ -6,7 +6,7 @@ from datetime import date
 import streamlit as st
 
 from datapilot.web.client import ClientError, creation_intent
-from datapilot.web.ui_components import show_error
+from datapilot.web.ui_components import document_requirements, show_error
 
 
 def render_management(api):
@@ -174,6 +174,7 @@ def render_management(api):
         valid = {k: p for k, p in choices.items() if p["metrics"]}
         if valid:
             selected = valid[st.selectbox("已确认的业务数据", list(valid))]
+            requirements = document_requirements("management-documents")
             definitions = {
                 f"{m['metric_id']} v{m['metric_version']}": m for m in selected["metrics"]
             }
@@ -226,6 +227,7 @@ def render_management(api):
                             "question": query,
                             "corpus_ids": doc_ids,
                             "metric_goals": [r["goal_id"] for r in requests],
+                            **requirements,
                         }
                     intent = creation_intent(st.session_state.get("create_intent"), body)
                     st.session_state.create_intent = intent

@@ -65,6 +65,11 @@ def register_chat_routes(app, product):
                         "question": docs["question"],
                         "metric_goals": docs["metric_goals"],
                         "corpus_ids": [c["corpus_id"] for c in p["rag_scope"]["corpora"]],
+                        "purpose": docs.get("purpose"),
+                        "required_facts": [
+                            {"fact_id": f["fact_id"], "description": f["description"]}
+                            for f in docs.get("required_facts", [])
+                        ],
                     }
                     if docs
                     else None,

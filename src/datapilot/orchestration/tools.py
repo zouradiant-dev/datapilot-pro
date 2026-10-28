@@ -24,6 +24,7 @@ from datapilot.orchestration.rag_completion import (
     enabled,
     goal_hash,
     relevant_ids,
+    retrieval_goal,
     validate_submission,
 )
 from datapilot.orchestration.runtime import Cancellation, text_hash
@@ -134,6 +135,7 @@ class ToolRegistry:
         max_view_chars=4096,
         durability=None,
         rag_goal=None,
+        original_query=None,
     ):
         self.envelope, self.store = envelope, store
         self.database = database if envelope.task.worker == "sql" else None
@@ -152,6 +154,23 @@ class ToolRegistry:
         self.durability = durability
         self.rag_control = envelope.task.worker == "rag" and enabled(retrieval)
         self.rag_goal = json.loads(json.dumps(rag_goal)) if rag_goal is not None else None
+        self.original_query = original_query
+        if original_query is not None:
+            if not self.rag_control:
+                raise AgentFailure("TOOL_FORBIDDEN", "Original query needs host-bound RAG tools")
+            try:
+                original = SearchArguments(query=original_query)
+                if (
+                    not original.query.strip()
+                    or retrieval_goal(original.query) != self.rag_goal
+                    or getattr(retrieval, "goal_sha256", text_hash(original.query))
+                    != text_hash(original.query)
+                ):
+                    raise ValueError("Host retrieval goal differs")
+            except ValueError:
+                raise AgentFailure(
+                    "RAG_QUERY_POLICY", "Use the exact bounded, host-bound document goal"
+                ) from None
         self.accepted = None
         self._correction = None
         self._submission_calls = {}
@@ -169,7 +188,19 @@ class ToolRegistry:
 
     def schemas(self, *, initial=False):
         names = self.allowed if initial else self.active_tools()
-        return [DEFINITIONS[name].schema() for name in sorted(names)]
+        schemas = [DEFINITIONS[name].schema() for name in sorted(names)]
+        if self.original_query is not None:
+            for schema in schemas:
+                if schema["function"]["name"] == "search_documents":
+                    # Stable for the whole task: replay must use the original schema even
+                    # if a committed search is ahead of the graph's current checkpoint.
+                    schema["function"]["parameters"]["properties"]["query"]["description"] = (
+                        "For the FIRST search use this exact host document goal, without "
+                        "translation or truncation. Later searches may choose a query within "
+                        "the same goal and existing quota. HOST_FIRST_QUERY_JSON: "
+                        + json.dumps(self.original_query, ensure_ascii=False)
+                    )
+        return schemas
 
     def validate_phase(self, names, authority):
         if set(authority) != set(self.allowed) or set(names) != set(self.active_tools()):
@@ -261,6 +292,14 @@ class ToolRegistry:
             ):
                 raise AgentFailure("RAG_ATTEMPTS_EXHAUSTED", "At most two searches per worker task")
             if name == "search_documents":
+                if (
+                    self.original_query is not None
+                    and self.search_attempts == 0
+                    and args.query != self.original_query
+                ):
+                    raise AgentFailure(
+                        "RAG_QUERY_POLICY", "First search must use the exact host document goal"
+                    )
                 self.search_attempts += 1
             if name == "query_database":
                 # No await before reservation: simultaneous calls cannot both take the last slot.

@@ -16,7 +16,7 @@ from datapilot.ingestion.service import IngestionService
 from datapilot.persistence.backend import Backend, execute
 from datapilot.persistence.inspection import inspect_run
 from datapilot.rag.contracts import CorpusPin, RagScope, Target
-from datapilot.reporting.contracts import DocumentGoal, ReportScope
+from datapilot.reporting.contracts import DocumentFact, DocumentGoal, ReportScope
 from datapilot.runtime.mcp_client import dataset_session
 from datapilot.semantics.registry import RegistryStore
 from datapilot.web.config import private_directory
@@ -315,9 +315,11 @@ class ProductService:
             "usage": usage.model_dump() if usage else None,
         }
 
-    async def task_payload(self, request):
+    async def task_payload(self, request, *, allow_unconfirmed=False):
         from datapilot.runtime.mcp_client import metric_session
 
+        if request.documents and request.documents.purpose is None and not allow_unconfirmed:
+            deny("DOCUMENT_CONFIRMATION_REQUIRED", "请先确认文档用途；不会自动推断为总结")
         bindings, sources, contexts = {}, {}, []
         for metric in request.metrics:
             p = await self.dataset(metric.dataset_id, metric.dataset_version)
@@ -369,6 +371,10 @@ class ProductService:
                 goal_id="documents",
                 question=request.documents.question,
                 metric_goals=request.documents.metric_goals,
+                purpose=request.documents.purpose,
+                required_facts=[
+                    DocumentFact(**f.model_dump()) for f in request.documents.required_facts
+                ],
             )
         report = ReportScope(
             owner=self.policy.owner,
@@ -415,6 +421,11 @@ class ProductService:
                 question=rs.document_goal.question,
                 metric_goals=rs.document_goal.metric_goals,
                 corpus_ids=[c["corpus_id"] for c in p["rag_scope"]["corpora"]],
+                purpose=rs.document_goal.purpose,
+                required_facts=[
+                    {"fact_id": f.fact_id, "description": f.description}
+                    for f in rs.document_goal.required_facts
+                ],
             )
             if rs.document_goal
             else None
@@ -426,7 +437,8 @@ class ProductService:
                 documents=docs,
                 require_review=p["require_review"],
                 causal_requested=rs.causal_requested,
-            )
+            ),
+            allow_unconfirmed=True,  # Historical scopes remain unconfirmed, never upgraded.
         )
         # Legacy registered runs still undergo the original P5B manifest checks.
         # Old unregistered tasks cannot execute without the new infrastructure pin.

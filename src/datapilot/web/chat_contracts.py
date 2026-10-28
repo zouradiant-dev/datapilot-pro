@@ -4,12 +4,12 @@ import json
 from datetime import datetime
 from typing import Literal
 
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, field_validator, model_serializer, model_validator
 
 from datapilot.datasets.contracts import DatasetId, Version
 from datapilot.ingestion.contracts import DTO, Digest
 from datapilot.semantics.contracts import MetricId, MetricVersion, MetricWindow
-from datapilot.web.contracts import CreateTask, DatabaseText
+from datapilot.web.contracts import CreateTask, DatabaseText, FactRequirement
 
 
 class ConversationCreate(DTO):
@@ -35,6 +35,17 @@ class ChatSelection(DTO):
     metric_version: Version | None = None
     window: MetricWindow | None = None
     corpus_ids: list[DatasetId] = Field(default_factory=list, max_length=8)
+    document_purpose: Literal["locate", "summary", "facts", "conclusion"] | None = None
+    required_facts: list[FactRequirement] = Field(default_factory=list, max_length=8)
+
+    @model_serializer(mode="wrap")
+    def legacy_projection(self, handler):
+        value = handler(self)
+        if self.document_purpose is None:
+            value.pop("document_purpose", None)
+        if not self.required_facts:
+            value.pop("required_facts", None)
+        return value
 
     @field_validator("window", mode="before")
     @classmethod
@@ -53,6 +64,10 @@ class ChatSelection(DTO):
             raise ValueError("Select a metric before its version")
         if len(set(self.corpus_ids)) != len(self.corpus_ids):
             raise ValueError("Duplicate document selection")
+        if self.required_facts and self.document_purpose not in {"facts", "conclusion"}:
+            raise ValueError("Choose a fact/conclusion purpose before specifying facts")
+        if len({f.fact_id for f in self.required_facts}) != len(self.required_facts):
+            raise ValueError("Duplicate fact requirement")
         return self
 
 

@@ -17,6 +17,7 @@ from datapilot.reporting.contracts import (
     MetricBridge,
     ReportClaim,
     ReportScope,
+    source_identity,
 )
 from datapilot.runtime.mcp_client import metric_session
 from datapilot.semantics.contracts import MissingRequirement
@@ -90,6 +91,21 @@ def render(report):
                     f"[Chunk {c.chunk_id}; source {c.source_id}; version {c.version}; "
                     f"span {c.start}:{c.end}; hash {c.sha256}]"
                 )
+            for fact_id, support in claim.fact_coverage.items():
+                lines.append(
+                    "  必需事实 "
+                    + escaped(fact_id)
+                    + "："
+                    + ("宿主确认的原文引述已核对" if support else "尚未验证")
+                )
+            for fact_id, support in claim.supplementary_coverage.items():
+                c = support.citation
+                lines.append(
+                    f"  补充事实 {escaped(fact_id)}（不计入必需来源覆盖；不证明数值或因果）："
+                    f"{escaped(support.excerpt)} [Chunk {c.chunk_id}; source {c.source_id}; "
+                    f"document {c.document_id}; index {c.index_version}; version {c.version}; "
+                    f"span {c.start}:{c.end}; hash {c.sha256}]"
+                )
         else:
             lines.append("- " + escaped(claim.goal_id) + "：无法确认，" + ", ".join(claim.codes))
             lines.extend(
@@ -100,7 +116,32 @@ def render(report):
             )
     if report.business_completion.unconfirmed_claims:
         lines.append("未确认结论：" + ", ".join(report.business_completion.unconfirmed_claims))
+    for goal, codes in report.business_completion.missing_evidence.items():
+        lines.append("缺少必需证据 " + escaped(goal) + "：" + ", ".join(map(escaped, codes)))
     return "\n".join(lines)
+
+
+def fact_coverage(goal, documents, *, facts=None):
+    """Verify host-reviewed literal support, not arbitrary natural-language truth.
+
+    Query scores/goal vectors are observations, not immutable source identity. Authority
+    still comes only from the actual retrieval's original scope and source verification.
+    """
+    observations = {"score", "goal_sha256", "goal_score"}
+    coverage = {}
+    for fact in goal.required_facts if facts is None else facts:
+        support = None
+        if fact.citation is not None:
+            for doc in documents:
+                if (
+                    fact.citation.model_dump(exclude=observations)
+                    == doc.citation.model_dump(exclude=observations)
+                    and fact.quotation in doc.excerpt
+                ):
+                    support = doc.model_copy(update={"excerpt": fact.quotation}, deep=True)
+                    break
+        coverage[fact.fact_id] = support
+    return coverage
 
 
 class ReportService:
@@ -123,6 +164,36 @@ class ReportService:
             "contexts": {g: digest(c) if c else None for g, c in self.contexts.items()},
             "problems": self.problems,
         }
+
+    def validate_citation_policy(self, retrieval):
+        """Classifications only narrow the original MCP scope; they never grant a source."""
+        policy = self.scope.citation_policy
+        if policy is None:
+            return
+        if retrieval is None:
+            reject("Citation policy requires the original RAG scope")
+        pins = {p.corpus_id: p for p in retrieval.scope.corpora}
+        for anchor in [
+            *policy.required_sources,
+            *(f.citation for f in policy.supplementary_claims),
+        ]:
+            pin = pins.get(anchor.corpus_id)
+            manifest = retrieval.manifests.get(anchor.corpus_id)
+            source = (
+                next((s for s in manifest.sources if s.source_id == anchor.source_id), None)
+                if manifest
+                else None
+            )
+            if (
+                pin is None
+                or source is None
+                or pin.index_version != anchor.index_version
+                or anchor.document_id not in pin.document_ids
+                or not retrieval.scope.permits(manifest.target)
+                or (source.document_id, source.version, source.text_sha256)
+                != (anchor.document_id, anchor.version, anchor.source_sha256)
+            ):
+                reject("Citation classification escaped the authorized source/version pin")
 
     def plan_menu(self):
         goals = [
@@ -293,7 +364,20 @@ class ReportService:
     ):
         from datapilot.orchestration.rag_completion import retrieval_goal
 
+        if not isinstance(self.scope, ReportScope) or type(self.scope.causal_requested) is not bool:
+            raise AgentFailure(
+                "REPORT_SCOPE_INVALID", "Host report scope requires boolean causality"
+            )
+        try:
+            # Reject bypassed/mutated host DTOs; never accept a Worker's replacement contract.
+            ReportScope.model_validate_json(self.scope.model_dump_json())
+        except ValueError:
+            raise AgentFailure(
+                "REPORT_SCOPE_INVALID", "Invalid host document requirements"
+            ) from None
+        self.validate_citation_policy(retrieval)
         claims, charts, covered, missing = [], [], [], {}
+        partial_facts = False
         authorization = digest(
             {
                 "report_scope": self.scope.model_dump(mode="json"),
@@ -304,6 +388,12 @@ class ReportService:
         )
         by_goal = {}
         for ref, artifact in artifacts:
+            if (
+                ref.kind != artifact.kind
+                or ref.artifact_id != ref.sha256
+                or digest(artifact) != ref.sha256
+            ):
+                reject("Artifact reference/hash differs from its source payload")
             by_goal.setdefault(artifact.task_id, []).append((ref, artifact))
         for request in self.scope.metrics:
             items = by_goal.get(request.goal_id, [])
@@ -355,7 +445,11 @@ class ReportService:
                 or retrieval.scope.datasets != self.scope.datasets
             ):
                 reject("Document-only report needs the original host-bound Corpus/source scope")
-            docs, seen = [], set()
+            docs, supplementary_docs, seen = [], [], set()
+            policy = self.scope.citation_policy
+            required_sources = (
+                {source_identity(s) for s in policy.required_sources} if policy else None
+            )
             requested_names = (
                 set(re.findall(r"(?<![\w.-])([\w-]+\.(?:md|txt))(?![\w.-])", goal.question))
                 if not self.scope.metrics
@@ -367,10 +461,15 @@ class ReportService:
             source_ready = (
                 source_statuses is None or source_statuses.get(goal.goal_id) == "succeeded"
             )
+            partial_source = (
+                self.scope.partial_evidence_policy == "partial-facts-v1"
+                and source_statuses is not None
+                and source_statuses.get(goal.goal_id) == "unavailable"
+            )
             for ref, artifact in by_goal.get(goal.goal_id, []):
                 if (
                     not artifact.documents
-                    or not source_ready
+                    or not (source_ready or partial_source)
                     or requirements["unsupported_requirements"]
                 ):
                     continue
@@ -397,7 +496,11 @@ class ReportService:
                     source = next(
                         s for s in manifest.sources if s.source_id == doc.citation.source_id
                     )
-                    if requested_names and source.name not in requested_names:
+                    is_required = (
+                        required_sources is None
+                        or source_identity(doc.citation) in required_sources
+                    )
+                    if is_required and requested_names and source.name not in requested_names:
                         continue
                     target = manifest.target
                     if (
@@ -418,68 +521,162 @@ class ReportService:
                     if identity in seen:
                         continue
                     seen.add(identity)
-                    selected_names.add(source.name)
-                    docs.append(
+                    if is_required:
+                        selected_names.add(source.name)
+                    (docs if is_required else supplementary_docs).append(
                         DocumentReference(
                             artifact_id=ref.artifact_id, citation=doc.citation, excerpt=doc.text
                         )
                     )
+            metric_topics_match = all(
+                any(
+                    any(term in d.excerpt.lower() for term in TOPICS[self.requests[g].metric_id])
+                    for d in docs
+                )
+                for g in goal.metric_goals
+            )
+            coverage = fact_coverage(goal, docs)
+            supplementary = (
+                {
+                    id_: proof
+                    for id_, proof in fact_coverage(
+                        goal, docs + supplementary_docs, facts=policy.supplementary_claims
+                    ).items()
+                    if proof is not None
+                }
+                if policy and all(g in covered for g in goal.metric_goals)
+                else {}
+            )
+            if policy and goal.required_facts:
+                # For fact goals a classified source alone is not proof: publish/count
+                # only passages that actually support host-confirmed required facts.
+                docs = list(
+                    {
+                        (p.artifact_id, p.citation.chunk_id, p.excerpt): p
+                        for p in coverage.values()
+                        if p is not None
+                    }.values()
+                )
             topics_match = (
                 len({d.citation.source_id for d in docs}) >= requirements["minimum_sources"]
                 and bool(docs)
                 and requested_names <= selected_names
-                and all(
-                    any(
-                        any(
-                            term in d.excerpt.lower() for term in TOPICS[self.requests[g].metric_id]
-                        )
-                        for d in docs
-                    )
-                    for g in goal.metric_goals
+                and metric_topics_match
+                and (
+                    required_sources is None
+                    or required_sources <= {source_identity(d.citation) for d in docs}
                 )
             )
-            if topics_match and all(g in covered for g in goal.metric_goals):
-                covered.append(goal.goal_id)
+            # Only exact host-reviewed facts may survive an incomplete retrieval.
+            # Related background, similarity and an accepted receipt are not fact proof.
+            partial_display = (
+                self.scope.partial_evidence_policy == "partial-facts-v1"
+                and (source_ready or partial_source)
+                and any(coverage.values())
+                and all(g in covered for g in goal.metric_goals)
+                and metric_topics_match
+            )
+            if (source_ready and topics_match and all(g in covered for g in goal.metric_goals)) or (
+                partial_display
+            ):
+                codes = [
+                    "document_fact_unverified:" + id_
+                    for id_, proof in coverage.items()
+                    if proof is None
+                ]
+                if goal.purpose is None:
+                    codes.append("document_goal_unconfirmed")
+                elif goal.purpose == "conclusion":
+                    codes.append("document_conclusion_unverified")
+                if partial_source:
+                    codes.append("rag_task_insufficient")
+                if not topics_match:
+                    codes.append("matching_document_or_metric_evidence_missing")
+                if required_sources is not None and not required_sources <= {
+                    source_identity(d.citation) for d in docs
+                }:
+                    codes.append("required_document_source_missing")
+                if codes:
+                    missing[goal.goal_id] = codes
+                else:
+                    covered.append(goal.goal_id)
+                partial_facts = any(coverage.values()) or goal.purpose == "conclusion"
                 claims.append(
                     ReportClaim(
                         goal_id=goal.goal_id,
                         kind="context",
-                        documents=docs,
+                        documents=(
+                            list(
+                                {
+                                    (p.artifact_id, p.citation.chunk_id, p.excerpt): p
+                                    for p in coverage.values()
+                                    if p is not None
+                                }.values()
+                            )
+                            if partial_display and (partial_source or not topics_match)
+                            else docs
+                        ),
                         related_metric_goals=goal.metric_goals,
+                        fact_coverage=coverage,
+                        supplementary_coverage=supplementary,
                     )
                 )
             else:
-                missing[goal.goal_id] = ["matching_document_or_metric_evidence_missing"]
-                claims.append(
-                    ReportClaim(
-                        goal_id=goal.goal_id,
-                        kind="unavailable",
-                        codes=missing[goal.goal_id],
-                        missing_requirements=[
-                            MissingRequirement(
-                                code=missing[goal.goal_id][0],
-                                message="缺少满足原始问题证据要求的授权文档"
-                                if not self.scope.metrics
-                                else (
-                                    "缺少满足检索要求且与指标匹配的授权文档，或关联指标尚未通过验证"
-                                ),
-                                fields=["document_source"]
-                                if not self.scope.metrics
-                                else ["document_source", "metric_evidence"],
-                            )
-                        ],
+                missing[goal.goal_id] = [
+                    "snapshot_not_attested"
+                    if requirements.get("unsupported_reason") == "snapshot_not_attested"
+                    else "matching_document_or_metric_evidence_missing"
+                ]
+                if required_sources is not None and not required_sources <= {
+                    source_identity(d.citation) for d in docs
+                }:
+                    missing[goal.goal_id].append("required_document_source_missing")
+                if policy:
+                    missing[goal.goal_id].extend(
+                        "document_fact_unverified:" + id_
+                        for id_, proof in coverage.items()
+                        if proof is None
                     )
-                )
+                if supplementary:
+                    # Optional facts remain visible without satisfying any required goal.
+                    claims.append(
+                        ReportClaim(
+                            goal_id=goal.goal_id,
+                            kind="context",
+                            related_metric_goals=goal.metric_goals,
+                            supplementary_coverage=supplementary,
+                        )
+                    )
+                else:
+                    claims.append(
+                        ReportClaim(
+                            goal_id=goal.goal_id,
+                            kind="unavailable",
+                            codes=missing[goal.goal_id],
+                            missing_requirements=[
+                                MissingRequirement(
+                                    code=missing[goal.goal_id][0],
+                                    message="宿主未证明所要求的最新或跨来源一致快照"
+                                    if "snapshot_not_attested" in missing[goal.goal_id]
+                                    else "缺少满足原始问题证据要求的授权文档"
+                                    if not self.scope.metrics
+                                    else (
+                                        "缺少满足检索要求且与指标匹配的授权文档，或关联指标尚未通过验证"
+                                    ),
+                                    fields=["document_source"]
+                                    if not self.scope.metrics
+                                    else ["document_source", "metric_evidence"],
+                                )
+                            ],
+                        )
+                    )
         required = list(self.requests) + (
             [self.scope.document_goal.goal_id] if self.scope.document_goal else []
         )
-        causal = self.scope.causal_requested or bool(
-            re.search(r"因果|原因|导致|证明|caus(?:e|al)", self.scope.question, re.IGNORECASE)
-        )
-        unconfirmed = ["causal_conclusion_not_verified"] if causal else []
+        unconfirmed = ["causal_conclusion_not_verified"] if self.scope.causal_requested else []
         status = (
             "partial"
-            if covered and (missing or unconfirmed)
+            if (covered or partial_facts) and (missing or unconfirmed)
             else ("completed" if not missing and not unconfirmed else "unavailable")
         )
         outcomes = set((source_statuses or {}).values())
@@ -498,7 +695,7 @@ class ReportService:
             verified_goals=covered,
             missing_evidence=missing,
             unconfirmed_claims=unconfirmed,
-            limited_results_visible=bool(covered),
+            limited_results_visible=bool(covered) or any(c.kind == "context" for c in claims),
         )
         document_claims = [c for c in claims if c.kind == "context"]
         for chart in charts:

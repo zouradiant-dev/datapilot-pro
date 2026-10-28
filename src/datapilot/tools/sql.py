@@ -205,7 +205,19 @@ def _serialize_cell(value):
     if isinstance(value, (date, datetime)):
         return value.isoformat()
     if isinstance(value, Decimal):
-        return str(value)  # Preserve exact PostgreSQL numeric precision; never float money.
+        if not value.is_finite():
+            raise AgentFailure("VERIFICATION_ERROR", "NUMERIC cells must be finite")
+        sign, digits, exponent = value.as_tuple()
+        # Bound expansion BEFORE formatting. Match the existing P3 fixed-point text cap,
+        # preserving scale/precision without float conversion or zero-specific exceptions.
+        size = sign + (
+            len(digits) + exponent
+            if exponent >= 0
+            else max(len(digits) + exponent, 1) + 1 - exponent
+        )
+        if size > 80:
+            raise AgentFailure("RESULT_TOO_LARGE", "NUMERIC fixed-point text exceeds 80 characters")
+        return format(value, "f")
     if value is None or type(value) in (str, int, float, bool):
         if isinstance(value, str) and len(value) > 4096:
             raise AgentFailure("RESULT_TOO_LARGE", "A query cell exceeds the size limit")

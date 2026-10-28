@@ -1,0 +1,181 @@
+{
+  "version": "public-reporting-fixtures-1",
+  "cases": [
+    {
+      "id": "cp04",
+      "topic": "供应商采购",
+      "question": "供应商采购的验收和赔付规则是什么？至少两份文档。",
+      "rewrite": "外部供应商采购验收及赔偿条款如何执行？",
+      "english": "Find vendor procurement acceptance and compensation requirements.",
+      "documents": {
+        "acceptance.md": "供应商采购验收由采购负责人签署。赔付条款见独立采购合同，本资料未附采购合同。"
+      },
+      "facts": [
+        [
+          "signer",
+          "acceptance.md",
+          "采购负责人签署"
+        ],
+        [
+          "compensation",
+          null,
+          null
+        ]
+      ],
+      "required": [
+        "acceptance.md",
+        "missing-contract.md"
+      ],
+      "outcome": "insufficient",
+      "expected": "partial"
+    },
+    {
+      "id": "cp05",
+      "topic": "短信提醒",
+      "question": "短信提醒会使续费率增加多少个百分点？",
+      "rewrite": "续费短信提示对客户续订比例有多少提升？",
+      "english": "How much does SMS notification improve subscription renewals?",
+      "documents": {
+        "sms.md": "短信提醒在客户套餐到期前发送。该说明只记录通知方式，没有对照试验，也没有续费率变化数据。"
+      },
+      "facts": [
+        [
+          "lift",
+          null,
+          null
+        ]
+      ],
+      "required": [
+        "sms.md"
+      ],
+      "outcome": "complete",
+      "expected": "unavailable"
+    },
+    {
+      "id": "cp06",
+      "topic": "打印水印",
+      "question": "打印水印显示哪些身份信息，离线打印是否例外？",
+      "rewrite": "纸质报表水印包含哪些用户身份，断网打印如何处理？",
+      "english": "What identity appears in print watermarks and is offline printing exempt?",
+      "documents": {
+        "watermark.md": "打印水印显示操作者账号与打印日期。离线打印的豁免规则尚未制定。"
+      },
+      "facts": [
+        [
+          "identity",
+          "watermark.md",
+          "显示操作者账号与打印日期"
+        ],
+        [
+          "offline",
+          null,
+          null
+        ]
+      ],
+      "required": [
+        "watermark.md"
+      ],
+      "outcome": "insufficient",
+      "expected": "partial"
+    },
+    {
+      "id": "cp07",
+      "topic": "账单补寄",
+      "question": "核对已支付账单收入，并说明账单补寄是否保证到达。",
+      "rewrite": "已付款账单收入与电子账单补寄送达承诺分别是什么？",
+      "english": "Explain paid invoice revenue and guaranteed delivery of replacement bills.",
+      "documents": {
+        "delivery.md": "已支付账单收入只包含已付款记录。电子账单补寄采用邮件队列，本文没有承诺必然送达。"
+      },
+      "facts": [
+        [
+          "delivery",
+          null,
+          null
+        ]
+      ],
+      "required": [
+        "delivery.md"
+      ],
+      "outcome": "insufficient",
+      "metric": true,
+      "expected": "partial"
+    },
+    {
+      "id": "cp09",
+      "topic": "存储配额",
+      "question": "存储配额GiB口径与计量舍入如何关联？",
+      "rewrite": "云空间容量单位和上传计费取整的对应规则是什么？",
+      "english": "Explain storage GiB accounting and upload rounding.",
+      "documents": {
+        "quota.md": "存储配额采用GiB，按二进制容量计量。附件的原始字节数进入存储计量。",
+        "rounding.md": "存储计量按原始字节累计，展示值向上取整到整MiB。展示取整不会修改存储配额。"
+      },
+      "facts": [
+        [
+          "unit",
+          "quota.md",
+          "采用GiB，按二进制容量计量"
+        ]
+      ],
+      "required": [
+        "quota.md"
+      ],
+      "supplement": "rounding.md",
+      "outcome": "complete",
+      "expected": "completed"
+    },
+    {
+      "id": "cp10",
+      "topic": "工单计时",
+      "question": "工单等待客户回复时计时器是否暂停？",
+      "rewrite": "客服单转入客户待答状态会暂停处理计时吗？",
+      "english": "Does the support ticket clock pause while waiting for a customer reply?",
+      "documents": {
+        "clock.md": "工单进入等待客户回复状态时暂停处理计时器。客户再次回复后恢复计时。",
+        "orchard.md": "果园夏季采用滴灌。桃树修剪应避开雨天，与客服工单计时无关。"
+      },
+      "facts": [
+        [
+          "pause",
+          "clock.md",
+          "暂停处理计时器"
+        ]
+      ],
+      "required": [
+        "clock.md"
+      ],
+      "irrelevant": "orchard.md",
+      "outcome": "complete",
+      "expected": "completed"
+    },
+    {
+      "id": "cp12",
+      "topic": "新手引导",
+      "question": "新手引导卡片是否已经证明提升客户激活率？",
+      "rewrite": "产品引导提示与激活率的因果关系是否得到证实？",
+      "english": "Have onboarding cards been proven to cause higher activation?",
+      "documents": {
+        "cards.md": "新手引导卡片在首页展示三个步骤。该资料记录了上线安排，没有随机试验或激活率因果证明。"
+      },
+      "facts": [
+        [
+          "steps",
+          "cards.md",
+          "首页展示三个步骤"
+        ],
+        [
+          "causality",
+          null,
+          null
+        ]
+      ],
+      "required": [
+        "cards.md"
+      ],
+      "causal": true,
+      "outcome": "complete",
+      "expected": "partial"
+    }
+  ]
+}

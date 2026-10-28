@@ -55,7 +55,17 @@ Schema、业务映射、指标定义和任务审核都需要明确的人工确�
 
 会话/消息 `schema_version=chat-v1`，原 Run/Report 保持 `api-v1`。TTL 沿用宿主，不因读取延长；过期创建键不能重建替代会话。消息/hash 追加后 API 不可修改，唯一可填充字段为 run_id。补充条件追加消息，不改旧目标；launch 强制 require_review，真正审批仍用原 tasks/approve。
 
-ChatSelection 只允许精确 Dataset/version、已确认 metric/version、右开 window、corpus_ids。宿主取当前定义，候选 source/context/策略 hash 启动时重核；变化需重新确认。客户端无自由 SQL、脚本或消息权限。GET 不调用模型/图恢复/账本结算；历史不是 Durable 状态。
+ChatSelection 允许精确 Dataset/version、已确认 metric/version、右开 window、corpus_ids，以及明确的 `document_purpose` 和待核验的 `required_facts`。宿主取当前定义，候选 source/context/策略 hash 启动时重核；变化需重新确认。客户端无自由 SQL、脚本或消息权限。GET 不调用模型/图恢复/账本结算；历史不是 Durable 状态。
+
+### 文档用途确认与事实边界
+
+文档请求的 `documents.purpose` 必须由宿主用户明确选择 `locate / summary / facts / conclusion`；Chat-first 对应 `selection.document_purpose`。未选择时聊天返回待确认，新的 `/tasks` 创建返回 `DOCUMENT_CONFIRMATION_REQUIRED`，不会默认当成总结。用途通过原候选提交和审批绑定到 `ReportScope/DocumentGoal`，恢复时重新核对相同的用途与版本。修改用途追加新 Message/Run，不改旧 Run。
+
+`required_facts` 最多 8 项，每项仅允许 `fact_id` 和不超过 256 字符的 `description`。这是需要核验的问题，不能提交 citation、quotation、confirmation_ref、verified、owner 或权限。`facts` 至少需要一项；没有可信证明的事实保持未验证。当前 Web 只接用途和事实要求，不提供签发可信原文证明的界面，不能把用户输入升级为 Phase 3D 的已确认 Fact Proof。
+
+纯定位/总结仍须通过原 RAG Completion、Source/Chunk/Index/hash 验证；检索完成不自动证明事实、数值或因果。因果、开放结论和最新/共同快照限制继续生效。Default Fake 可能保守返回 insufficient/unavailable，这不是实测模型质量。
+
+旧客户端省略字段时保持未确认。空新增字段不进入旧请求哈希；已经创建的旧 Scope 不被重写或自动升级，读取/取消仍检查原授权，新执行需明确确认。旧报告与新规则冲突时按原 Verifier 拒绝。实际统一验收及限制见 [P7 统一回归](p7-unified-regression.md)。
 
 创建、批准、恢复、取消要求 8–128 字符的 `Idempotency-Key`。宿主将键绑定 owner、操作、run_id、规范载荷 hash 和授权版本；同请求复用原响应，异请求返回 `WEB_IDEMPOTENCY_CONFLICT`。批准重试可在任务继续后重放同一确认，但新键不能批准已经结束的任务。
 

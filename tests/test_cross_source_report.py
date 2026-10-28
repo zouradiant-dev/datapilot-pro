@@ -135,6 +135,7 @@ def test_report_is_independently_rebuilt_not_self_verified(bridge_case, mutation
 def test_causality_is_unconfirmed_while_verified_descriptive_metric_remains_visible(bridge_case):
     service, _, inputs = bridge_case
     service.scope.question = "解释收入变化的原因"
+    service.scope.causal_requested = True
     report = service.build(inputs, None)
     assert report.business_completion.status == "partial"
     assert report.execution_status == "succeeded"

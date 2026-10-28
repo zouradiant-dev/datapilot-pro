@@ -35,11 +35,24 @@ def retrieval_goal(question):
     retrieval_only = bool(re.match(r"(?:仅)?(?:检索|查找|定位|搜索|寻找)", question)) or not bool(
         re.search(r"分析|解释|因果|计算|统计", question)
     )
-    unsupported = not match and bool(
-        re.search(r"至少(?:[6-9]|\d{2,}|[六七八九十])|(?:全部|所有|完整的?)(?:文档|资料)", question)
-        or (retrieval_only and re.search(r"全部|所有|完整|最近|最新|\d{4}[-年]", question))
+    snapshot_unattested = not match and bool(
+        re.search(
+            r"(?:最新|同一时点|全局|跨来源一致)[^。！？\n]{0,128}快照"
+            r"|(?:latest|global|consistent|point.in.time)[^.!?\n]{0,128}snapshot",
+            question,
+            re.IGNORECASE,
+        )
     )
-    return {
+    unsupported = snapshot_unattested or (
+        not match
+        and bool(
+            re.search(
+                r"至少(?:[6-9]|\d{2,}|[六七八九十])|(?:全部|所有|完整的?)(?:文档|资料)", question
+            )
+            or (retrieval_only and re.search(r"全部|所有|完整|最近|最新|\d{4}[-年]", question))
+        )
+    )
+    goal = {
         "protocol": "retrieval-task-v1",
         "relevance_policy": RELEVANCE_POLICY,
         "minimum_goal_score": RELEVANCE_THRESHOLD,
@@ -50,6 +63,11 @@ def retrieval_goal(question):
         "unsupported_requirements": unsupported,
         "business_conclusions_verified": False,
     }
+    if snapshot_unattested:
+        # Immutable per-source versions do not attest global freshness or a common cut-off.
+        # This is a refusal reason, never a model-supplied snapshot ID or authorization.
+        goal["unsupported_reason"] = "snapshot_not_attested"
+    return goal
 
 
 def validate_submission(envelope, store, granted, submission, retrieval, goal):
@@ -95,7 +113,10 @@ def validate_submission(envelope, store, granted, submission, retrieval, goal):
     if not relevant or len(source_ids) < (goal["minimum_sources"] if goal else 1):
         raise AgentFailure(
             "EVIDENCE_INSUFFICIENT",
-            "Authorized relevant passages meeting the retrieval requirements are missing; "
+            "Host versions do not attest the requested latest/global snapshot; "
+            "submit insufficient or unavailable."
+            if goal and goal.get("unsupported_reason") == "snapshot_not_attested"
+            else "Authorized relevant passages meeting the retrieval requirements are missing; "
             "submit insufficient or unavailable. Business conclusions are a separate check.",
         )
     return "literal_locator" if goal["required_terms"] else "semantic_retrieval"

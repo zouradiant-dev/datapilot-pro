@@ -316,14 +316,23 @@ class ContextManager:
             {t["function"]["name"] for t in tools}, self.authority.allowed_tools
         )
         before = measure_context(view, tools, self.limits.output_tokens)[1].estimated_input_tokens
+        available_calls, available_tokens = gateway.ledger.remaining(account)
+
+        def fits_budget(candidate):
+            usage = measure_context(candidate, tools, self.limits.output_tokens)[1]
+            return usage.estimated_input_tokens + usage.output_reserved_tokens <= available_tokens
+
+        base = self._with_anchor(view) if self.memories else view
         now = self.clock()
         cold = self.last_call is not None and now - self.last_call >= self.limits.idle_seconds
         self.last_call = now
-        under_pressure = not self.fits(view, tools, ratio=self.limits.trigger_ratio)
-        if not self.limits.enabled or (not under_pressure and not cold):
-            return PreparedContext(self._with_anchor(view) if self.memories else view)
+        under_pressure = not self.fits(
+            base, tools, ratio=self.limits.trigger_ratio
+        ) or not fits_budget(base)
+        if not self.limits.enabled or not available_calls or (not under_pressure and not cold):
+            return PreparedContext(base)
         if len(batches) < 2:
-            return PreparedContext(self._with_anchor(view) if self.memories else view)
+            return PreparedContext(base)
         archive = self._archive(messages)  # Must succeed BEFORE anything is omitted from a view.
         levels, ticket, summary_calls, summary_tokens, summary_complete = [], None, 0, 0, True
         usage_before = None
@@ -408,7 +417,7 @@ class ContextManager:
                                 levels.append("L2")
                     seen.update(ids)
             candidate = self._with_anchor(view) if levels or self.memories else view
-            if self.fits(candidate, tools):
+            if self.fits(candidate, tools) and fits_budget(candidate):
                 record(candidate)
                 return PreparedContext(candidate)
             # L3: remove whole closed turns, not half of the provider tool protocol.
@@ -416,9 +425,16 @@ class ContextManager:
             if folded != view:
                 levels.append("L3")
             candidate = self._with_anchor(folded)
-            if self.fits(candidate, tools):
+            if self.fits(candidate, tools) and fits_budget(candidate):
                 record(candidate)
                 return PreparedContext(candidate)
+            if self.fits(candidate, tools):
+                # Budget-only pressure gets one deterministic L1-L3 pass. Do not add a
+                # paid summary merely to spend a scarce last call; the existing L4 path
+                # below remains available for genuine window pressure with paired reserve.
+                raise AgentFailure(
+                    "BUDGET_EXCEEDED", "Pinned context cannot fit the remaining parent/child budget"
+                )
             if not self.limits.allow_summary:
                 raise AgentFailure("CONTEXT_LIMIT", "Deterministic compaction cannot fit context")
             expected = self._summary_expected(archive)

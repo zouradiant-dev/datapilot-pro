@@ -270,6 +270,9 @@ class DurableLedger(BudgetLedger):
     def snapshot(self, account="root"):
         return self.mutate(lambda: super(DurableLedger, self).snapshot(account))
 
+    def remaining(self, account):
+        return self.mutate(lambda: super(DurableLedger, self).remaining(account))
+
 
 class DurableArtifacts(ArtifactStore):
     def __init__(self, backend):

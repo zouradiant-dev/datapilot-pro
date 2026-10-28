@@ -1,0 +1,431 @@
+{
+  "schema_version": "p7-three-step-regression-1",
+  "verified_at": "2026-10-28T11:39:01.697343+00:00",
+  "head": "18271d7b5159dff7e01bb1e6edd3257f9fd78be4",
+  "status": "local_engineering_pass_with_quality_and_release_limitations",
+  "scope": "joint_regression_only",
+  "new_production_changes": [],
+  "new_test_changes": [],
+  "new_paid_calls": 0,
+  "formal_campaigns_created": 0,
+  "policy_defaults_changed": false,
+  "live_authorized": false,
+  "tests": {
+    "311": {
+      "initial_results": {
+        "unit": {
+          "collected": 885,
+          "passed": 885,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed_seconds": 17.347,
+          "junit_sha256": "e390b5cdd527c22e88996c267d58d390c0ae1c0e93c3d545d73983f979e3af78"
+        },
+        "pg": {
+          "collected": 256,
+          "passed": 241,
+          "failed": 13,
+          "errors": 0,
+          "skipped": 2,
+          "elapsed_seconds": 3451.488,
+          "junit_sha256": "2ea8b56a631da8374dd6397d933ebf08813a171ef2dcd920c92733bd205a29a8"
+        },
+        "fixture-pg": {
+          "collected": 14,
+          "passed": 14,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed_seconds": 150.307,
+          "junit_sha256": "e073243c490fcf3280f6168f0274953f67652df42b25b745c595107b9432b747"
+        },
+        "ledger-pg": {
+          "collected": 1,
+          "passed": 1,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed_seconds": 0.305,
+          "junit_sha256": "37567b6edc91f1cbb20b22b131599861a6b5a15a610b05ebbcc15154b0ef2218"
+        }
+      },
+      "initial_nonpasses": {
+        "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[missing]": "failure",
+        "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[year]": "failure",
+        "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[absence]": "failure",
+        "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[partial]": "failure",
+        "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[summary]": "failure",
+        "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[causal]": "failure",
+        "tests.test_document_fact_postgres::test_real_pins_and_scope_cannot_be_forged": "failure",
+        "tests.test_live_model::test_real_model_postgres_workflow": "skipped",
+        "tests.test_p7_smoke::test_original_durable_campaign_ledger_survives_process_reopen": "skipped",
+        "tests.test_phase4_postgres::test_real_rag_budget_pressure_uses_only_original_limit_and_preserves_facts[False]": "failure",
+        "tests.test_phase4_postgres::test_real_rag_budget_pressure_uses_only_original_limit_and_preserves_facts[True]": "failure",
+        "tests.test_phase4_postgres::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[None]": "failure",
+        "tests.test_phase4_postgres::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[tool_committed]": "failure",
+        "tests.test_phase4_postgres::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[model_response]": "failure",
+        "tests.test_phase4_postgres::test_pinned_source_validity_and_unattested_snapshot_remain_independent": "failure"
+      },
+      "environment_revalidation": [
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[missing]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[year]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[absence]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[partial]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[summary]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[causal]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_pins_and_scope_cannot_be_forged",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_real_rag_budget_pressure_uses_only_original_limit_and_preserves_facts[False]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_real_rag_budget_pressure_uses_only_original_limit_and_preserves_facts[True]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[None]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[tool_committed]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[model_response]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_pinned_source_validity_and_unattested_snapshot_remain_independent",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_durable_remaining_refreshes_pending_sibling_reservations",
+          "initial": "passed",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_p7_smoke::test_original_durable_campaign_ledger_survives_process_reopen",
+          "initial": "skipped",
+          "revalidated": "passed",
+          "reason": "explicit_nonpaid_isolated_environment_path_missing"
+        }
+      ],
+      "unique_collected": 1141,
+      "unique_passed": 1140,
+      "skipped_identities": [
+        "tests.test_live_model::test_real_model_postgres_workflow"
+      ],
+      "failures": {}
+    },
+    "313": {
+      "initial_results": {
+        "unit": {
+          "collected": 885,
+          "passed": 885,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed_seconds": 17.656,
+          "junit_sha256": "35ee4a6b2ace3b9ce5da47abda80cd39395af0b9eedc3654643952b7d0a3f6b2"
+        },
+        "pg": {
+          "collected": 256,
+          "passed": 241,
+          "failed": 13,
+          "errors": 0,
+          "skipped": 2,
+          "elapsed_seconds": 3518.175,
+          "junit_sha256": "788fba66d06d8162a5426baa665c08f862262cdcda05e0e2d56fc535a4ea07bf"
+        },
+        "fixture-pg": {
+          "collected": 14,
+          "passed": 14,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed_seconds": 152.415,
+          "junit_sha256": "e4eac95b41f00be11a15314d75ee7b0e68dff032d07494e15e3ee4bc0799be8f"
+        },
+        "ledger-pg": {
+          "collected": 1,
+          "passed": 1,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "elapsed_seconds": 0.309,
+          "junit_sha256": "fac4096eb64200f7ea6bc55a4ceaa52458b250e7fb775c103f1c369a94a0f708"
+        }
+      },
+      "initial_nonpasses": {
+        "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[missing]": "failure",
+        "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[year]": "failure",
+        "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[absence]": "failure",
+        "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[partial]": "failure",
+        "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[summary]": "failure",
+        "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[causal]": "failure",
+        "tests.test_document_fact_postgres::test_real_pins_and_scope_cannot_be_forged": "failure",
+        "tests.test_live_model::test_real_model_postgres_workflow": "skipped",
+        "tests.test_p7_smoke::test_original_durable_campaign_ledger_survives_process_reopen": "skipped",
+        "tests.test_phase4_postgres::test_real_rag_budget_pressure_uses_only_original_limit_and_preserves_facts[False]": "failure",
+        "tests.test_phase4_postgres::test_real_rag_budget_pressure_uses_only_original_limit_and_preserves_facts[True]": "failure",
+        "tests.test_phase4_postgres::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[None]": "failure",
+        "tests.test_phase4_postgres::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[tool_committed]": "failure",
+        "tests.test_phase4_postgres::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[model_response]": "failure",
+        "tests.test_phase4_postgres::test_pinned_source_validity_and_unattested_snapshot_remain_independent": "failure"
+      },
+      "environment_revalidation": [
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[missing]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[year]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[absence]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[partial]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[summary]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_worker_receipt_report_and_persistent_fact_coverage[causal]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_document_fact_postgres::test_real_pins_and_scope_cannot_be_forged",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_real_rag_budget_pressure_uses_only_original_limit_and_preserves_facts[False]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_real_rag_budget_pressure_uses_only_original_limit_and_preserves_facts[True]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[None]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[tool_committed]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[model_response]",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_pinned_source_validity_and_unattested_snapshot_remain_independent",
+          "initial": "failure",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_phase4_postgres::test_durable_remaining_refreshes_pending_sibling_reservations",
+          "initial": "passed",
+          "revalidated": "passed",
+          "reason": "old_private_pins_missing_in_current_instance_public_fresh_fixture"
+        },
+        {
+          "identity": "tests.test_p7_smoke::test_original_durable_campaign_ledger_survives_process_reopen",
+          "initial": "skipped",
+          "revalidated": "passed",
+          "reason": "explicit_nonpaid_isolated_environment_path_missing"
+        }
+      ],
+      "unique_collected": 1141,
+      "unique_passed": 1140,
+      "skipped_identities": [
+        "tests.test_live_model::test_real_model_postgres_workflow"
+      ],
+      "failures": {}
+    }
+  },
+  "same_test_identities": true,
+  "same_test_verdicts": true,
+  "counting_method": "partitioned_complete_collection_with_explicit_environment_revalidation_not_a_clean_first_attempt",
+  "source_closure": {
+    "files": 290,
+    "manifest": "artifacts/p7/three-step-regression-v1/tested-files.json",
+    "sha256": "0e0e72d4c84a458150b09956d4f3ce244f960d170dd11b94b358effa1690a45c",
+    "new_live_freeze": false
+  },
+  "integrity": {
+    "existing_files_unchanged": 2090,
+    "older_artifact_files_unchanged": 373,
+    "existing_database_rows_unchanged": 85630,
+    "existing_rows_modified_or_deleted": 0,
+    "new_execution_registrations": 293,
+    "new_evidence_records": 98,
+    "new_verification_records": 96,
+    "new_rows_by_schema": {
+      "catalog": 2566,
+      "checkpoints": 21287,
+      "execution": 8379,
+      "rag": 888,
+      "uploads": 3058
+    },
+    "new_records_are_formal_business_tasks": false
+  },
+  "static": {
+    "ruff_check": "passed",
+    "ruff_format": "passed",
+    "python_files_formatted": 273,
+    "diff_check": "passed",
+    "openapi": {
+      "equal": true,
+      "paths": 24,
+      "host_policy_fields_exposed": false
+    }
+  },
+  "environment": {
+    "database": "existing_attested_disposable_postgresql17_pgvector",
+    "container": "datapilot-p7-unified-postgres-1",
+    "port": 55441,
+    "test_process_peak": 4,
+    "seed_existing_database": false,
+    "user_database_modified": false,
+    "dependencies": {
+      "311": {
+        "python": "3.11.16 (main, Aug 14 2026, 15:34:35) [MSC v.1944 64 bit (AMD64)]",
+        "platform": "Windows-10-10.0.26100-SP0",
+        "checked_installed_packages": 113,
+        "resolution_markers_applied": true,
+        "mismatches": {}
+      },
+      "313": {
+        "python": "3.13.15 (main, Aug 14 2026, 15:36:10) [MSC v.1944 64 bit (AMD64)]",
+        "platform": "Windows-11-10.0.26100-SP0",
+        "checked_installed_packages": 113,
+        "resolution_markers_applied": true,
+        "mismatches": {}
+      }
+    }
+  },
+  "english_quality_control": {
+    "independent_inputs": 1,
+    "repeat_observations": 2,
+    "observations": [
+      {
+        "run_id": "1d533a9a-7a73-46a0-9eb1-38d1ce5ec679",
+        "expected_business_status": "completed",
+        "observed_business_status": "unavailable",
+        "business_correct": false,
+        "retrieved_chunks": 0,
+        "threshold": "0.55",
+        "path": "artifacts/p7/original-query-repair-v1/1d533a9a-7a73-46a0-9eb1-38d1ce5ec679/english-quality.json"
+      },
+      {
+        "run_id": "a2f7cf3b-fab5-4727-a413-369c722ae8a5",
+        "expected_business_status": "completed",
+        "observed_business_status": "unavailable",
+        "business_correct": false,
+        "retrieved_chunks": 0,
+        "threshold": "0.55",
+        "path": "artifacts/p7/original-query-repair-v1/a2f7cf3b-fab5-4727-a413-369c722ae8a5/english-quality.json"
+      }
+    ],
+    "all_business_correct": false
+  },
+  "not_run": [
+    "paid_provider_live",
+    "browser_manual_smoke",
+    "postgresql_instance_restart",
+    "remote_ci"
+  ],
+  "release_limitations": [
+    "english_control_false_empty_recall_remains",
+    "new_pg_suites_require_local_private_dev_bindings_and_windows_docker_path",
+    "web_still_legacy_no_host_policy_activation",
+    "real_provider_first_query_adherence_and_cost_not_measured"
+  ],
+  "ready_for_default_enablement": false,
+  "ready_for_clean_ci_release": false,
+  "commit_push": false,
+  "public_files_created": [
+    "docs/p7-three-step-regression.md",
+    "docs/research/p7-three-step-regression.json"
+  ],
+  "private_evidence_directory": "artifacts/p7/three-step-regression-v1"
+}

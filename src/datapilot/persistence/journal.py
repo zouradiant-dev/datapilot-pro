@@ -33,8 +33,19 @@ class Journal:
             self.require_known_execution(conn)
             row = self._row(conn, key)
             if row and row["status"] == "complete":
-                return messages_from_dict([row["payload"]])[0]
+                return self._restore_model(row)
         return None
+
+    def _restore_model(self, row):
+        try:
+            response = messages_from_dict([row["payload"]])[0]
+            if response.type != "ai":
+                raise ValueError("Recorded response is not an assistant message")
+            return response
+        except (ValueError, TypeError, KeyError, IndexError) as exc:
+            raise AgentFailure(
+                "RECOVERY_CORRUPT", "Recorded model response cannot be safely decoded"
+            ) from exc
 
     def _row(self, conn, key):
         row = (
@@ -66,12 +77,13 @@ class Journal:
             if row:
                 if row["fingerprint"] != fingerprint or row["status"] != "complete":
                     raise AgentFailure("RECOVERY_UNCERTAIN", "External model result is uncertain")
+                response = self._restore_model(row)
                 if reservation:
                     self.ledger.mutate(
                         lambda: self.ledger.record_settlement(reservation, None, released=True),
                         conn,
                     )
-                return key, None, messages_from_dict([row["payload"]])[0]
+                return key, None, response
 
             def reserve():
                 if reservation:

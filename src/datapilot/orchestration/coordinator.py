@@ -98,6 +98,8 @@ class Coordinator:
         self.settings, self.run_id = settings, run_id
         self.question = None
         self.reporting = reporting
+        if reporting and getattr(reporting.scope, "citation_policy", None) is not None:
+            reporting.validate_citation_policy(retrieval)
         self.context_metadata = context_metadata or {}
         self.memory_store = memory_store
         self.memory_source_versions = memory_source_versions or {}
@@ -183,7 +185,19 @@ class Coordinator:
                 and parent.worker == "rag"
                 and (parent.status != "succeeded")
             ):
-                continue
+                if not (
+                    self.reporting.scope.partial_evidence_policy == "partial-facts-v1"
+                    and parent.status == "unavailable"
+                    and parent.rag_completion is not None
+                    and parent.rag_completion.submission.outcome == "insufficient"
+                    and self.verify(
+                        state,
+                        next(t for t in state["plan"].tasks if t.task_id == dependency),
+                        parent,
+                    ).status
+                    == "unavailable"
+                ):
+                    continue
             refs.extend(parent.evidence_refs)
         refs = list({r.artifact_id: r for r in refs}.values())
         root = self.ledger.accounts["root"].limits
@@ -223,6 +237,13 @@ class Coordinator:
             durability=self.durability,
             rag_goal=retrieval_goal(
                 self.reporting.rag_question if self.reporting else self.question or ""
+            ),
+            original_query=(
+                self.reporting.rag_question
+                if self.reporting
+                and self.reporting.scope.rag_query_policy == "original-first-v1"
+                and task.worker == "rag"
+                else None
             ),
         )
         status, error, refs = "succeeded", None, []

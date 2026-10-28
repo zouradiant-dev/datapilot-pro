@@ -123,6 +123,7 @@ def test_corpus_listing_cap_must_not_revoke_existing_run_authority(api):
     assert UUID(corpus_id).int > 100
     request["documents"] = {
         "question": "paid invoice revenue",
+        "purpose": "summary",
         "metric_goals": [metric["goal_id"]],
         "corpus_ids": [corpus_id],
     }

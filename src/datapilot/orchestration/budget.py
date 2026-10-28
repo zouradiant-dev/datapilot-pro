@@ -35,6 +35,26 @@ class BudgetLedger:
     def reserve(self, account: str, text: str, output_tokens: int) -> str:
         return self.reserve_batch(account, [(len(text.encode("utf-8")) + 128, output_tokens)])[0]
 
+    def remaining(self, account: str) -> tuple[int, int]:
+        """Advisory headroom across the same ancestry; pending reservations already count.
+
+        This does not reserve or authorize a call. reserve_batch remains the final atomic gate.
+        """
+        with self._lock:
+            calls, tokens, seen = [], [], set()
+            key = account
+            while key is not None:
+                if key not in self.accounts or key in seen:
+                    raise AgentFailure("BUDGET_INVALID", "Invalid budget ancestry")
+                seen.add(key)
+                item = self.accounts[key]
+                calls.append(max(0, item.limits.calls - item.usage.calls))
+                tokens.append(max(0, item.limits.tokens - item.usage.total_tokens))
+                key = item.parent
+            if not calls:
+                raise AgentFailure("BUDGET_INVALID", "Missing budget account")
+            return min(calls), min(tokens)
+
     def reserve_batch(self, account: str, requests: list[tuple[int, int]]) -> list[str]:
         """Atomic summary + worst-case follow-up, on the original parent/child ledger."""
         if not requests or any(

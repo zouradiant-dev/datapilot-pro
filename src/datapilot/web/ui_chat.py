@@ -6,7 +6,7 @@ from datetime import date
 import streamlit as st
 
 from datapilot.web.client import ClientError, creation_intent
-from datapilot.web.ui_components import metric_label, render_run, time_label
+from datapilot.web.ui_components import document_requirements, metric_label, render_run, time_label
 
 
 def send_intent(api, slot, path, body):
@@ -126,6 +126,7 @@ def clarification(api, cid, message, datasets):
             else (metric_label(m["metric_id"]) + " · v" + str(m["metric_version"]))
         ),
     )
+    requirements = document_requirements(prefix) if corpora else None
     with st.form("clarify-" + prefix):
         if metric:
             start = st.date_input("开始日期（含）", date(2025, 10, 1))
@@ -148,6 +149,11 @@ def clarification(api, cid, message, datasets):
                         metric_id=metric["metric_id"],
                         metric_version=metric["metric_version"],
                         window={"start": start.isoformat(), "end_exclusive": end.isoformat()},
+                    )
+                if docs and requirements:
+                    selection.update(
+                        document_purpose=requirements["purpose"],
+                        required_facts=requirements["required_facts"],
                     )
                 append(api, cid, {"text": message["text"], "selection": selection})
                 st.rerun()

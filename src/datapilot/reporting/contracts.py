@@ -1,9 +1,10 @@
 """Versioned host authorization, P3 bridge and auditable report projections."""
 
+import hashlib
 from datetime import datetime
 from typing import Literal
 
-from pydantic import Field, model_validator
+from pydantic import Field, model_serializer, model_validator
 
 from datapilot.contracts import Contract
 from datapilot.datasets.contracts import DatasetId, DatasetScope
@@ -18,10 +19,89 @@ from datapilot.semantics.contracts import (
 )
 
 
+class DocumentFact(Contract):
+    """Host-confirmed interpretation of a literal source quote, never a Worker assertion.
+
+    No proof means unverified. Confirmation comes from the trusted host, not a model tool;
+    the report independently checks the immutable citation and exact quoted text.
+    """
+
+    fact_id: str = Field(pattern=r"^[a-z][a-z0-9_]{0,47}$")
+    description: str = Field(min_length=1, max_length=256)
+    citation: ChunkCitation | None = None
+    quotation: str | None = Field(default=None, min_length=1, max_length=256)
+    confirmation_ref: str | None = Field(default=None, min_length=1, max_length=128)
+
+    @model_validator(mode="after")
+    def explicit_host_proof(self):
+        fields = (self.citation, self.quotation, self.confirmation_ref)
+        if any(v is not None for v in fields) and not all(v is not None for v in fields):
+            raise ValueError("A fact proof needs a host confirmation, immutable pin and quote")
+        if self.quotation is not None and (
+            not self.quotation.strip() or not self.confirmation_ref.strip()
+        ):
+            raise ValueError("Blank confirmation or quote is not proof")
+        return self
+
+
 class DocumentGoal(Contract):
     goal_id: str = Field(pattern=r"^[a-z][a-z0-9_]{0,47}$")
     question: str = Field(min_length=1, max_length=512)
     metric_goals: list[str] = Field(max_length=6)
+    purpose: Literal["locate", "summary", "facts", "conclusion"] | None = None
+    required_facts: list[DocumentFact] = Field(default_factory=list, max_length=8)
+
+    @model_validator(mode="after")
+    def explicit_business_requirements(self):
+        if self.purpose == "facts" and not self.required_facts:
+            raise ValueError("Fact extraction requires explicit host fact requirements")
+        if self.required_facts and self.purpose not in {"facts", "conclusion"}:
+            raise ValueError("Facts cannot be silently added to an unconfirmed/summary goal")
+        if len({f.fact_id for f in self.required_facts}) != len(self.required_facts):
+            raise ValueError("Required fact identities must be unique")
+        return self
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_projection(self, handler):
+        value = handler(self)
+        if self.purpose is None:
+            value.pop("purpose", None)
+        if not self.required_facts:
+            value.pop("required_facts", None)
+        return value
+
+
+class CitationSource(Contract):
+    """Source classification pin, never an authorization grant or a chunk counter."""
+
+    corpus_id: DatasetId
+    index_version: Digest
+    source_id: Digest
+    document_id: Digest
+    version: Digest
+    source_sha256: Digest
+
+
+def source_identity(source):
+    return tuple(getattr(source, name) for name in CitationSource.model_fields)
+
+
+class CitationPolicy(Contract):
+    schema_version: Literal["required-supplement-v1"] = "required-supplement-v1"
+    goal_sha256: Digest
+    required_sources: list[CitationSource] = Field(min_length=1, max_length=8)
+    # Reviewed literal document facts only; no numeric/causal verification authority.
+    supplementary_claims: list[DocumentFact] = Field(default_factory=list, max_length=4)
+
+    @model_validator(mode="after")
+    def explicit_claims(self):
+        if len({source_identity(s) for s in self.required_sources}) != len(self.required_sources):
+            raise ValueError("Required sources must be distinct, not multiple chunks")
+        if len({f.fact_id for f in self.supplementary_claims}) != len(self.supplementary_claims):
+            raise ValueError("Supplementary claim IDs must be distinct")
+        if any(f.citation is None for f in self.supplementary_claims):
+            raise ValueError("Supplementary claims require reviewed immutable quote proofs")
+        return self
 
 
 class ReportScope(Contract):
@@ -32,6 +112,21 @@ class ReportScope(Contract):
     metrics: list[MetricRequest] = Field(max_length=6)
     document_goal: DocumentGoal | None = None
     causal_requested: bool = False
+    # Trusted host only; included in manifest/report hashes when explicitly enabled.
+    partial_evidence_policy: Literal["legacy", "partial-facts-v1"] = "legacy"
+    citation_policy: CitationPolicy | None = None
+    rag_query_policy: Literal["legacy", "original-first-v1"] = "legacy"
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_policy(self, handler):
+        value = handler(self)
+        if self.partial_evidence_policy == "legacy":
+            value.pop("partial_evidence_policy", None)
+        if self.citation_policy is None:
+            value.pop("citation_policy", None)
+        if self.rag_query_policy == "legacy":
+            value.pop("rag_query_policy", None)
+        return value
 
     @model_validator(mode="after")
     def scope_is_explicit(self):
@@ -57,6 +152,26 @@ class ReportScope(Contract):
                 raise ValueError("Combined reports require metric associations")
             if not goals and doc.question != self.question:
                 raise ValueError("Document-only scope must preserve the original question")
+        if policy := self.citation_policy:
+            if (
+                self.document_goal is None
+                or policy.goal_sha256 != hashlib.sha256(self.question.encode("utf-8")).hexdigest()
+            ):
+                raise ValueError("Citation policy must bind the original host report goal")
+            required = {source_identity(s) for s in policy.required_sources}
+            if any(
+                f.citation and source_identity(f.citation) not in required
+                for f in self.document_goal.required_facts
+            ):
+                raise ValueError("Required facts cannot be relabelled as supplementary")
+            if {f.fact_id for f in self.document_goal.required_facts} & {
+                f.fact_id for f in policy.supplementary_claims
+            }:
+                raise ValueError("Required and supplementary claim IDs must not overlap")
+        if self.rag_query_policy == "original-first-v1" and (
+            self.document_goal is None or not self.document_goal.question.strip()
+        ):
+            raise ValueError("Original-first policy requires a nonblank host document goal")
         return self
 
 
@@ -146,9 +261,22 @@ class ReportClaim(Contract):
     related_metric_goals: list[str] = Field(default_factory=list, max_length=6)
     codes: list[str] = Field(default_factory=list, max_length=32)
     missing_requirements: list[MissingRequirement] = Field(default_factory=list, max_length=32)
+    fact_coverage: dict[str, DocumentReference | None] = Field(default_factory=dict, max_length=8)
+    supplementary_coverage: dict[str, DocumentReference] = Field(default_factory=dict, max_length=4)
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_projection(self, handler):
+        value = handler(self)
+        if not self.fact_coverage:
+            value.pop("fact_coverage", None)
+        if not self.supplementary_coverage:
+            value.pop("supplementary_coverage", None)
+        return value
 
     @model_validator(mode="after")
     def kind_matches_payload(self):
+        if self.kind != "context" and (self.fact_coverage or self.supplementary_coverage):
+            raise ValueError("Document facts cannot become P3 metric/unavailable claims")
         if self.kind == "metric" and (
             not self.metric
             or self.metric.verdict != "verified"
@@ -159,7 +287,10 @@ class ReportClaim(Contract):
         ):
             raise ValueError("Metric claim requires matching P3 verified evidence")
         if self.kind == "context" and (
-            self.metric or not self.documents or self.codes or self.missing_requirements
+            self.metric
+            or not (self.documents or self.supplementary_coverage)
+            or self.codes
+            or self.missing_requirements
         ):
             raise ValueError("Document context needs explicit citations and related goals")
         if self.kind == "unavailable" and (self.metric or self.documents or not self.codes):

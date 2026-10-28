@@ -55,7 +55,7 @@ def document(api):
 
 def candidate(c, corpus, text=QUESTION):
     cid = conversation(c)
-    m = message(c, cid, text, {"corpus_ids": [corpus["corpus_id"]]})
+    m = message(c, cid, text, {"corpus_ids": [corpus["corpus_id"]], "document_purpose": "summary"})
     assert m["draft"]["request"] and m["draft"]["request"]["metrics"] == []
     return cid, m
 

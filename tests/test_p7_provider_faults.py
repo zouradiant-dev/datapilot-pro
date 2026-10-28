@@ -33,15 +33,7 @@ CASES = [
     "connect",
     "read_timeout",
     "cancel",
-    pytest.param(
-        "bad_usage",
-        marks=pytest.mark.xfail(
-            strict=True,
-            reason=(
-                "P7 finding: malformed usage commits; cached replay raises untyped ValidationError"
-            ),
-        ),
-    ),
+    "bad_usage",
     "missing_usage",
     "null_content",
     "incomplete_tool_call",
@@ -57,7 +49,9 @@ async def test_http_fault_preserves_original_journal_budget_and_no_duplicate_att
     calls = []
     settings = config(
         runtime_database_url=pg_settings.runtime_database_url,
-        model_timeout_seconds=0.05,
+        # The injected read timeout/cancellation below supplies the fault. Allow cold
+        # Windows SDK initialization to reach MockTransport instead of timing out first.
+        model_timeout_seconds=2.0,
         max_output_tokens=512,
     )
     backend = Backend(settings.runtime_database_url.get_secret_value(), str(uuid4()), "p7-http")
@@ -122,6 +116,8 @@ async def test_http_fault_preserves_original_journal_budget_and_no_duplicate_att
                         codes.append(exc.error.code)
                     except ValidationError:
                         codes.append("UNHANDLED_VALIDATION_ERROR")
+                    if len(codes) == 1:
+                        first_ledger = ledger.dump_state()
                     if fault == "cancel":
                         assert backend.cancelled()
             with backend.transaction() as conn:
@@ -134,10 +130,12 @@ async def test_http_fault_preserves_original_journal_budget_and_no_duplicate_att
                     .mappings()
                     .all()
                 )
-            assert len(calls) == 1 and len(rows) == 1
+            assert len(calls) == 1 and len(rows) == 1, {"codes": codes, "rows": rows}
             assert ledger.snapshot().calls == 1 and ledger.snapshot().total_tokens > 0
+            assert ledger.dump_state() == first_ledger
             if fault == "bad_usage":
                 assert rows[0]["status"] == "complete" and not ledger.snapshot().usage_complete
+                assert codes == ["PLAN_INVALID", "RECOVERY_CORRUPT"]
             elif fault in {"null_content", "incomplete_tool_call"}:
                 assert rows[0]["status"] == "complete"
                 assert codes[0] in {"PLAN_INVALID", "MODEL_OUTPUT_INVALID"}

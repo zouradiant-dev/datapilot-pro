@@ -1,0 +1,27 @@
+{
+  "schema_version": "p7-citation-policy-owner-decision-1",
+  "recorded_at": "2026-10-28T07:49:55.065042+00:00",
+  "status": "APPROVED_FOR_STEP_2_PRODUCT_IMPLEMENTATION",
+  "policy_version": "required-supplement-v1",
+  "approval_source": {
+    "type": "direct_user_message",
+    "exact_text": "进行第二步修复",
+    "context": "用户先逐字确认了必需引用＋有事实支撑的补充引用政策，随后明确要求执行第二步；本记录不声称独立第三方审核或逐条 Gold 签字。"
+  },
+  "approved_rules": [
+    "Required 来源与必需事实独立覆盖，不被补充来源替代",
+    "Supplement 必须在原授权和版本范围内，与原宿主目标绑定并有可信宿主确认的具体引述",
+    "未证实、无关或误导性额外引用不得发布为报告证据",
+    "补充引用不计 minimum_sources，不补指标/因果证明，不升级 insufficient",
+    "旧政策/Gold/Scorer/成绩不追溯修改"
+  ],
+  "historical_pending_record": "docs/p7-citation-policy-adjudication.md",
+  "historical_pending_preserved": true,
+  "independent_human_gold_review_claimed": false,
+  "individual_business_claims_auto_approved": false,
+  "dataset_metric_authority_expanded": false,
+  "web_default_changed": false,
+  "paid_live_authorized": false,
+  "git_commit_push_authorized": false,
+  "next_query_strategy_step_authorized": false
+}

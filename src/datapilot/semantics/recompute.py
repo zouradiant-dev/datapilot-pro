@@ -3,14 +3,34 @@
 from datetime import date
 from decimal import ROUND_HALF_EVEN, Decimal, localcontext
 
-from datapilot.semantics.contracts import MetricContext, MetricRequest, MetricValue
-from datapilot.semantics.recipes import scalar, unit
+from datapilot.semantics.contracts import (
+    MetricContext,
+    MetricRequest,
+    MetricValue,
+    MissingRequirement,
+)
+from datapilot.semantics.recipes import missing, scalar, unit
+
+
+class RecomputationUnavailable(ValueError):
+    """A known business refusal, retaining ValueError compatibility and the existing DTO."""
+
+    def __init__(self, reason: MissingRequirement):
+        self.reason = reason
+        super().__init__(reason.message)
 
 
 def compute_rows(context: MetricContext, request: MetricRequest, rows: list[dict]) -> MetricValue:
     ids = [r.get("record_id") for r in rows]
-    if any(v is None or v == "" for v in ids) or len(ids) != len(set(ids)):
+    if any(v is None or v == "" for v in ids):
         raise ValueError("Record IDs must be nonnull and unique; duplicate grain cannot be summed")
+    if len(ids) != len(set(ids)):
+        raise RecomputationUnavailable(
+            missing(
+                "duplicate_record_grain",
+                "Record IDs must be nonnull and unique; duplicate grain cannot be summed",
+            )
+        )
     date_roles = {"invoice_date", "event_date", "start_date", "end_date"}
     for row in rows:
         for role in context.entity.fields:
@@ -113,7 +133,12 @@ def compute_rows(context: MetricContext, request: MetricRequest, rows: list[dict
             else:
                 raise ValueError("No deterministic recipe")
             if not denominator:
-                raise ValueError("Empty starting cohort: churn denominator is zero")
+                raise RecomputationUnavailable(
+                    missing(
+                        "zero_denominator",
+                        "Empty starting cohort: churn denominator is zero",
+                    )
+                )
             ratio = (Decimal(numerator) / Decimal(denominator)).quantize(
                 Decimal("0.000000000001"), rounding=ROUND_HALF_EVEN
             )

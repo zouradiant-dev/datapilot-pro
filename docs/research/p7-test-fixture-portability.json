@@ -1,0 +1,171 @@
+{
+  "schema_version": "p7-fixture-portability-1",
+  "verified_at": "2026-10-28T12:12:27.644566+00:00",
+  "head": "18271d7b5159dff7e01bb1e6edd3257f9fd78be4",
+  "status": "clean_local_linux_regression_passed_remote_ci_not_run",
+  "scope": "test_fixtures_and_ci_environment_only",
+  "source_changes": [],
+  "existing_test_ci_changes": {
+    "tests/test_citation_policy_postgres.py": {
+      "before": "94064d6a07f3c3a47182c49f2ac09161da6be19d1b5b5fbf25330165182a7d73",
+      "after": "d8db655f1fb498ea9f566aeb0b1890e12163cfad0fbdc5406cb978b59a87b0a3"
+    },
+    "tests/test_document_fact_postgres.py": {
+      "before": "c545e020e577e720523a3e63b18c2b52ff374bb2d1553aaa69392b2e35af43d5",
+      "after": "59db0f4c74e410c5d27ef2328ff9302a37f518fa14845634e6ce678c39e1df0c"
+    },
+    "tests/test_original_query_postgres.py": {
+      "before": "f11c94d0295e763319ba7689d4950b39cc843744ab9b590ca34193f32dbd7f27",
+      "after": "eeadddbd76fb7d1d2e8222002fafd9be1452e9ea19d9b832c8324437749cca76"
+    },
+    "tests/test_partial_evidence_postgres.py": {
+      "before": "8b9602f0052c7ba4381fbdd3579f17d08ad4ce5dc968642ed57eea74deac4dea",
+      "after": "93ec1021c26d7abc277b1f60c7b07f862926b4355e46d5e61d1f60d299af3fa3"
+    },
+    ".github/workflows/test.yml": {
+      "before": "f7a264f8b53fffb15b469e8be06e1dc5bcddd902c53b1e8b64715661e169720c",
+      "after": "84bbe0912fee06df6798aa5157e41d0e3e76a8e6d73d39027529e529c796f874"
+    },
+    "tests/conftest.py": {
+      "before": "90bc90c11f2d832b64972dbc3a5005ab35eb850ee271ba608d9d09f929b9505d",
+      "after": "f03c8c55df651c20c1942436978a37de00a2cb2fa55277d176103d2ead7721b4"
+    }
+  },
+  "public_case_count": 7,
+  "public_case_inputs_unchanged": true,
+  "english_bytes_unchanged": true,
+  "tests": {
+    "windows_unit": {
+      "311": {
+        "collected": 896,
+        "passed": 896,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 19.699,
+        "junit_sha256": "8e0c64eba1b272346be01104c7f877fa254275ae76a5ff5a121abb403d0f81f9"
+      },
+      "313": {
+        "collected": 896,
+        "passed": 896,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 19.843,
+        "junit_sha256": "7bd88dd5551086acb3be50c3c01f30feaf512e31dbd98357b6b9757a1febd379"
+      }
+    },
+    "clean_linux": {
+      "311": {
+        "collected": 62,
+        "passed": 62,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 663.544,
+        "junit_sha256": "785ee42c8d62e1888e90cff8292d3f205c45ecea34d7c00ee7d1e186a139d14a"
+      },
+      "313": {
+        "collected": 62,
+        "passed": 62,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 694.763,
+        "junit_sha256": "1e149aec5b0307e9bcf4471e327aa800f23fab6b6b625ac12c81b3ef7772f498"
+      }
+    },
+    "clean_linux_real_pg_tests_per_lane": 51,
+    "clean_linux_guard_tests_per_lane": 11,
+    "same_linux_test_identities": true,
+    "windows_pg_smoke": {
+      "collected": 4,
+      "passed": 4,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 69.415,
+      "junit_sha256": "8680878fa939c754a145d5fa7264525833eb398a9c3b0589539f3f25ac4100c4"
+    },
+    "counts_are_overlapping_not_additive": true,
+    "entire_pg_suite_repeated": false
+  },
+  "clean_execution": {
+    "files": 267,
+    "manifest_sha256": "665329c38bcf599e5674b62791faea400bf306a43f9073e92835c1c59c714b66",
+    "evaluation_copied": false,
+    "private_bindings_copied": false,
+    "dotenv_copied": false,
+    "gold_copied": false,
+    "source_read_only": true,
+    "model_files_read_only": true,
+    "docker_socket_mounted": false,
+    "import_paths": [
+      {
+        "python_lane": "311",
+        "module": "/case/src/datapilot/orchestration/tools.py",
+        "report_contract": "/case/src/datapilot/reporting/contracts.py"
+      },
+      {
+        "python_lane": "313",
+        "module": "/case/src/datapilot/orchestration/tools.py",
+        "report_contract": "/case/src/datapilot/reporting/contracts.py"
+      }
+    ]
+  },
+  "database": {
+    "new_databases": [
+      "datapilot_test_portable_311",
+      "datapilot_test_portable_313"
+    ],
+    "new_databases_seeded": false,
+    "historical_integrity": {
+      "baseline": "artifacts/p7/three-step-regression-v1/after.json",
+      "existing_rows_checked": 121808,
+      "changed_tables": [],
+      "old_database_test_writes": false
+    },
+    "deleted_databases_or_volumes": false
+  },
+  "ci_profile": {
+    "ci_environment_validates": true,
+    "database": "datapilot_test_ci",
+    "role_profiles": 13,
+    "workflow_sha256": "ba4f218cea9955d365975386d25feb2b953236708e5f357fad315805f77c9b59",
+    "actual_remote_ci": "not_run"
+  },
+  "english_quality_failures": [
+    {
+      "python_lane": "311",
+      "run_id": "60349e52-9ee8-4327-ac16-4afdcdc31d75",
+      "expected_business_status": "completed",
+      "observed_business_status": "unavailable",
+      "business_correct": false,
+      "retrieved_chunks": 0,
+      "threshold": "0.55"
+    },
+    {
+      "python_lane": "313",
+      "run_id": "b90f1a41-df6d-4de5-b4bd-d22c59a7af1d",
+      "expected_business_status": "completed",
+      "observed_business_status": "unavailable",
+      "business_correct": false,
+      "retrieved_chunks": 0,
+      "threshold": "0.55"
+    }
+  ],
+  "new_paid_calls": 0,
+  "remote_ci": "not_run",
+  "browser_smoke": "not_run",
+  "paid_live": "not_run",
+  "defaults_changed": false,
+  "production_versions_changed": false,
+  "new_live_freeze_created": false,
+  "commit_push": false,
+  "limitations": [
+    "english_false_empty_recall_remains",
+    "actual_github_actions_pending_commit_authorization",
+    "local_51_pg_regressions_do_not_replace_all_old_pg_tests"
+  ],
+  "private_evidence": "artifacts/p7/fixture-portability-v1"
+}

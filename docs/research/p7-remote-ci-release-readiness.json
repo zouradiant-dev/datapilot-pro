@@ -1,0 +1,279 @@
+{
+  "schema_version": "p7-remote-ci-release-readiness-1",
+  "verified_at": "2026-10-28T12:48:11.629571+00:00",
+  "remote_ci": "not_run",
+  "release_ready": false,
+  "block_reason": "current_candidate_uncommitted_unpublished_no_existing_dispatch_trigger",
+  "new_remote_run_id": null,
+  "new_remote_run_url": null,
+  "current_candidate_commit_sha": null,
+  "base_commit_sha": "18271d7b5159dff7e01bb1e6edd3257f9fd78be4",
+  "repository": "zouradiant-dev/datapilot-pro",
+  "remote_matrix": {
+    "3.11": {
+      "status": "not_run",
+      "passed": null,
+      "failed": null,
+      "errors": null,
+      "skipped": null
+    },
+    "3.13": {
+      "status": "not_run",
+      "passed": null,
+      "failed": null,
+      "errors": null,
+      "skipped": null
+    }
+  },
+  "verified_github_evidence": {
+    "verified_at": "2026-10-28T12:31:42.563Z",
+    "repository": "zouradiant-dev/datapilot-pro",
+    "remote_main_sha": "18271d7b5159dff7e01bb1e6edd3257f9fd78be4",
+    "workflows": [
+      {
+        "path": ".github/workflows/test.yml",
+        "blob_sha": "db438cba9e4c57159c7b30c539919944f23efdae",
+        "url": "https://github.com/zouradiant-dev/datapilot-pro/blob/main/.github/workflows/test.yml"
+      }
+    ],
+    "workflow_triggers": [
+      "push",
+      "pull_request"
+    ],
+    "current_candidate_remote_run": null,
+    "latest_historical_runs": [
+      {
+        "id": 40096866653,
+        "url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/40096866653",
+        "head_sha": "18271d7b5159dff7e01bb1e6edd3257f9fd78be4",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-24T13:08:39Z"
+      },
+      {
+        "id": 40083421825,
+        "url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/40083421825",
+        "head_sha": "49969b7e32c7f88846f37e61f3ed78ba2ef7b978",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-24T09:48:37Z"
+      },
+      {
+        "id": 39970784995,
+        "url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/39970784995",
+        "head_sha": "ed7fc79efe9b308603ab45c22e85bacb76c6602d",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-23T14:34:27Z"
+      }
+    ],
+    "historical_jobs": [
+      {
+        "id": 120880848945,
+        "name": "checks (3.13)",
+        "conclusion": "success",
+        "summary": [
+          "709 passed, 17 skipped in 1392.27s (0:23:12) ================="
+        ]
+      },
+      {
+        "id": 120880849144,
+        "name": "checks (3.11)",
+        "conclusion": "success",
+        "summary": [
+          "709 passed, 17 skipped in 1668.26s (0:27:48) ================="
+        ]
+      }
+    ],
+    "artifact_action_ref": {
+      "ref": "refs/tags/v4",
+      "node_id": "MDM6UmVmMTkyNjI1OTU1OnJlZnMvdGFncy92NA==",
+      "url": "https://api.github.com/repos/actions/upload-artifact/git/refs/tags/v4",
+      "object": {
+        "sha": "ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "type": "commit",
+        "url": "https://api.github.com/repos/actions/upload-artifact/git/commits/ea165f8d65b6e75b540449e92b4886f43607fa02"
+      }
+    }
+  },
+  "local_tests": {
+    "final_unit": {
+      "311": {
+        "collected": 901,
+        "passed": 901,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 14.639,
+        "junit_sha256": "f8158b6b4d2a9781903adfc3bfebd069c7626aa0d05fa852326d97dc6a2e0751"
+      },
+      "313": {
+        "collected": 901,
+        "passed": 901,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 15.171,
+        "junit_sha256": "09026efc98a9d47fa9a11a04c6d48faf5a63f4c17b8c1a831f00028bdb417569"
+      }
+    },
+    "initial_ci_contracts": {
+      "311": {
+        "collected": 22,
+        "passed": 20,
+        "failed": 2,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 6.081,
+        "junit_sha256": "576b9591a117f9f07091e1b225caee56d820f0804fd2ce990e6da8fe021178ca"
+      },
+      "313": {
+        "collected": 22,
+        "passed": 20,
+        "failed": 2,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 5.983,
+        "junit_sha256": "2d5c17364935f99b45d54bd506c400c6407d4563d15f0ab98cf39fad21504d82"
+      }
+    },
+    "corrected_ci_contracts": {
+      "311": {
+        "collected": 22,
+        "passed": 22,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 5.714,
+        "junit_sha256": "b4a70d371199a5212944917f135210ac793f5837020a58a3edb9f100bdd598a4"
+      },
+      "313": {
+        "collected": 22,
+        "passed": 22,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 6.025,
+        "junit_sha256": "cfd874b535e75023bdefbd2967fa29bafd56ebd519722aabb7f62bcd9cca284b"
+      }
+    },
+    "warning": "original malformed usage injection",
+    "complete_pg_suite_repeated": false,
+    "total_collected_identities": 1157,
+    "model_transport": "scripted_fake_and_http_mock_not_live"
+  },
+  "shell_error_preservation": [
+    {
+      "step": "Install locked dependencies",
+      "failure_exit": 7,
+      "calls_before_abort": 1,
+      "log_preserved": true
+    },
+    {
+      "step": "Collect exact test identities",
+      "failure_exit": 7,
+      "calls_before_abort": 1,
+      "log_preserved": true
+    },
+    {
+      "step": "Unit and protocol regressions",
+      "failure_exit": 7,
+      "calls_before_abort": 1,
+      "log_preserved": true
+    },
+    {
+      "step": "Initialize disposable PostgreSQL and pinned model",
+      "failure_exit": 7,
+      "calls_before_abort": 1,
+      "log_preserved": true
+    },
+    {
+      "step": "Real PostgreSQL MCP and HTTP Mock regressions",
+      "failure_exit": 7,
+      "calls_before_abort": 1,
+      "log_preserved": true
+    },
+    {
+      "step": "Ruff lint",
+      "failure_exit": 7,
+      "calls_before_abort": 1,
+      "log_preserved": true
+    },
+    {
+      "step": "Python format check",
+      "failure_exit": 7,
+      "calls_before_abort": 1,
+      "log_preserved": true
+    }
+  ],
+  "bootstrap_audit": {
+    "alembic_head": "0007",
+    "checkpoint_schema_expected_version": 9,
+    "embedding": {
+      "model": "BAAI/bge-small-zh-v1.5/Qdrant-onnx",
+      "revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+      "dimensions": 512,
+      "recipe": "cls-l2-query-prefix-1/ort-1.31.0/tokenizers-0.23.3",
+      "files": {
+        "model_optimized.onnx": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38",
+        "tokenizer.json": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+      },
+      "fixture": false
+    },
+    "embedding_files": {
+      "model_optimized.onnx": [
+        94781076,
+        "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38"
+      ],
+      "tokenizer.json": [
+        439125,
+        "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+      ]
+    },
+    "revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+    "production_config_read_only": true
+  },
+  "integrity": {
+    "changed_existing_files": [
+      "tests/test_p7_smoke.py",
+      ".github/workflows/test.yml",
+      "tests/test_p7_gate2.py"
+    ],
+    "unchanged_production_files": 106,
+    "protected_existing_files": 477,
+    "missing_files": [],
+    "historical_rows_unchanged": 121808,
+    "historical_rows_changed": 0,
+    "historical_sealed_artifact_hashes_checked": 1659,
+    "head": "18271d7b5159dff7e01bb1e6edd3257f9fd78be4",
+    "older_gold_scorer_seal_and_result_files_unchanged": 1994
+  },
+  "tested_source_closure_sha256": "7809f0383a29075c3483b8fb9dbd849ea055eed55cf2abbe2dea7fecdeb782a6",
+  "production_changes": [],
+  "existing_files_changed": [
+    ".github/workflows/test.yml",
+    "tests/test_p7_gate2.py",
+    "tests/test_p7_smoke.py"
+  ],
+  "new_files": [
+    "tests/test_ci_workflow.py",
+    "docs/research/p7-remote-ci-release-readiness.md",
+    "docs/research/p7-remote-ci-release-readiness.json"
+  ],
+  "business_policy_changed": false,
+  "embedding_or_threshold_changed": false,
+  "new_paid_model_calls": 0,
+  "historical_live_reexecuted": false,
+  "git_commit_push": false,
+  "remote_mutations": false,
+  "stage_3_entered": false,
+  "remaining_release_blockers": [
+    "publish_reviewed_complete_candidate",
+    "actual_remote_both_python_full_junit_and_artifact_verification",
+    "existing_english_recall_and_real_provider_quality_limits"
+  ],
+  "evidence_directory": "artifacts/p7/remote-ci-readiness-v1"
+}

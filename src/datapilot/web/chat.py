@@ -227,6 +227,20 @@ class ChatService:
                 today=datetime.now(ZoneInfo("Asia/Shanghai")).date(),
                 previous=prior_request,
             )
+            if draft.request and draft.request.documents:
+                if selection.document_purpose is None:
+                    draft = ChatDraft(
+                        missing=["请确认文档用途：定位、总结、事实提取或结论。"], notes=draft.notes
+                    )
+                elif selection.document_purpose == "facts" and not selection.required_facts:
+                    draft = ChatDraft(missing=["请列出需要核验的事实；描述本身不是证明。"])
+                else:
+                    body = draft.request.model_dump(mode="json")
+                    body["documents"].update(
+                        purpose=selection.document_purpose,
+                        required_facts=[f.model_dump() for f in selection.required_facts],
+                    )
+                    draft.request = CreateTask.model_validate_json(json_value(body))
             if draft.request:
                 fresh = await self.product.task_payload(draft.request)
                 if (

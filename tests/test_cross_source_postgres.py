@@ -94,7 +94,9 @@ def scope_for(data, kind, question, query=None, *, unique=False):
             bindings=[DatasetBinding(dataset_id=schema.dataset_id, version=schema.version)]
         ),
         metrics=[req],
-        document_goal=DocumentGoal(goal_id="documents", question=query, metric_goals=[req.goal_id])
+        document_goal=DocumentGoal(
+            goal_id="documents", question=query, metric_goals=[req.goal_id], purpose="summary"
+        )
         if query
         else None,
     )
@@ -264,11 +266,11 @@ def test_five_independent_business_cases_real_sources_and_p3_gold(
 
 
 @pytest.mark.parametrize(
-    "kind,question,query,expected",
+    "kind,question,query,expected,causal_requested",
     [
-        ("mrr", "计算经常性订阅收入 MRR", None, "unavailable"),
-        ("paid_invoice_revenue", "说明收入变化的原因", "已付款账单收入的业务口径", "partial"),
-        ("usage", "统计使用量并附相关文档", "已付款账单收入的业务口径", "partial"),
+        ("mrr", "计算经常性订阅收入 MRR", None, "unavailable", False),
+        ("paid_invoice_revenue", "说明收入变化的原因", "已付款账单收入的业务口径", "partial", True),
+        ("usage", "统计使用量并附相关文档", "已付款账单收入的业务口径", "partial", False),
     ],
 )
 def test_missing_data_causality_and_nonmatching_documents_never_complete(
@@ -278,8 +280,10 @@ def test_missing_data_causality_and_nonmatching_documents_never_complete(
     question,
     query,
     expected,
+    causal_requested,
 ):
     scope = scope_for(report_data, kind, question, query)
+    scope.causal_requested = causal_requested
     result = run_async(
         run_durable(
             pg_settings,

@@ -2677,6 +2677,31 @@
             "type": "array",
             "maxItems": 8,
             "title": "Corpus Ids"
+          },
+          "document_purpose": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "locate",
+                  "summary",
+                  "facts",
+                  "conclusion"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Purpose"
+          },
+          "required_facts": {
+            "items": {
+              "$ref": "#/components/schemas/FactRequirement"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Required Facts"
           }
         },
         "additionalProperties": false,
@@ -3467,6 +3492,31 @@
             "maxItems": 8,
             "minItems": 1,
             "title": "Corpus Ids"
+          },
+          "purpose": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "locate",
+                  "summary",
+                  "facts",
+                  "conclusion"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Purpose"
+          },
+          "required_facts": {
+            "items": {
+              "$ref": "#/components/schemas/FactRequirement"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "title": "Required Facts"
           }
         },
         "additionalProperties": false,
@@ -3673,6 +3723,29 @@
           "error"
         ],
         "title": "ErrorResponse"
+      },
+      "FactRequirement": {
+        "properties": {
+          "fact_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{0,47}$",
+            "title": "Fact Id"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Description"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "fact_id",
+          "description"
+        ],
+        "title": "FactRequirement",
+        "description": "A question to verify, without a client-provided proof or approval reference."
       },
       "HealthView": {
         "properties": {

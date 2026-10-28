@@ -2,6 +2,9 @@ import os
 
 import pytest
 from dotenv import load_dotenv
+from reporting_fixtures import portable_pg as portable_pg
+from reporting_fixtures import reporting_dev as reporting_dev
+from reporting_fixtures import reporting_output as reporting_output
 
 from datapilot.config import Settings
 

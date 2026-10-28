@@ -1,30 +1,37 @@
 name: DataPilot checks
 on: [push, pull_request]
+permissions:
+  contents: read
 jobs:
   checks:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python: ['3.11', '3.13']
     services:
       postgres:
         image: pgvector/pgvector:0.8.6-pg17@sha256:cf134a767f474095eeba57e0117be8e568e011a63f33fbf252f14c9b760f8e6f
         env:
-          POSTGRES_DB: datapilot
+          POSTGRES_DB: datapilot_test_ci
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: ci-admin-only
         ports: ['5432:5432']
         options: >-
-          --health-cmd "pg_isready -U postgres -d datapilot"
+          --health-cmd "pg_isready -U postgres -d datapilot_test_ci"
           --health-interval 3s --health-timeout 3s --health-retries 20
     env:
       PYTHONUTF8: '1'
       DATAPILOT_LLM_MODE: fake
       DATAPILOT_RUN_DB_TESTS: '1'
-      DATAPILOT_ADMIN_DATABASE_URL: postgresql+psycopg://postgres:ci-admin-only@localhost:5432/datapilot
-      DATAPILOT_OWNER_DATABASE_URL: postgresql+psycopg://datapilot_owner:ci-owner-only@localhost:5432/datapilot
-      DATAPILOT_SEED_DATABASE_URL: postgresql+psycopg://datapilot_seed:ci-seed-only@localhost:5432/datapilot
-      DATAPILOT_READER_DATABASE_URL: postgresql+psycopg://datapilot_reader:ci-reader-only@localhost:5432/datapilot
+      DATAPILOT_TEST_ISOLATED: '1'
+      DATAPILOT_P7_ISOLATED: '1'
+      DATAPILOT_RUN_LIVE_TESTS: '0'
+      DATAPILOT_API_KEY: ''
+      DATAPILOT_ADMIN_DATABASE_URL: postgresql+psycopg://postgres:ci-admin-only@localhost:5432/datapilot_test_ci
+      DATAPILOT_OWNER_DATABASE_URL: postgresql+psycopg://datapilot_owner:ci-owner-only@localhost:5432/datapilot_test_ci
+      DATAPILOT_SEED_DATABASE_URL: postgresql+psycopg://datapilot_seed:ci-seed-only@localhost:5432/datapilot_test_ci
+      DATAPILOT_READER_DATABASE_URL: postgresql+psycopg://datapilot_reader:ci-reader-only@localhost:5432/datapilot_test_ci
       DATAPILOT_OWNER_PASSWORD: ci-owner-only
       DATAPILOT_SEED_PASSWORD: ci-seed-only
       DATAPILOT_READER_PASSWORD: ci-reader-only
@@ -37,28 +44,83 @@ jobs:
       DATAPILOT_RAG_READER_PASSWORD: ci-rag-reader-only
       DATAPILOT_WEB_PASSWORD: ci-web-only
       DATAPILOT_MAINTENANCE_PASSWORD: ci-maintenance-only
-      DATAPILOT_WEB_DATABASE_URL: postgresql+psycopg://datapilot_web:ci-web-only@localhost:5432/datapilot
-      DATAPILOT_MAINTENANCE_DATABASE_URL: postgresql+psycopg://datapilot_maintenance:ci-maintenance-only@localhost:5432/datapilot
-      DATAPILOT_RAG_INGEST_DATABASE_URL: postgresql+psycopg://datapilot_rag_ingest:ci-rag-ingest-only@localhost:5432/datapilot
-      DATAPILOT_RAG_READER_DATABASE_URL: postgresql+psycopg://datapilot_rag_reader:ci-rag-reader-only@localhost:5432/datapilot
-      DATAPILOT_RUNTIME_DATABASE_URL: postgresql+psycopg://datapilot_runtime:ci-runtime-only@localhost:5432/datapilot
-      DATAPILOT_CHECKPOINT_OWNER_DATABASE_URL: postgresql+psycopg://datapilot_checkpoint_owner:ci-checkpoint-owner-only@localhost:5432/datapilot
-      DATAPILOT_REGISTRY_DATABASE_URL: postgresql+psycopg://datapilot_registry:ci-registry-only@localhost:5432/datapilot
-      DATAPILOT_INGEST_DATABASE_URL: postgresql+psycopg://datapilot_ingest:ci-ingest-only@localhost:5432/datapilot
-      DATAPILOT_UPLOAD_READER_DATABASE_URL: postgresql+psycopg://datapilot_upload_reader:ci-upload-reader-only@localhost:5432/datapilot
+      DATAPILOT_WEB_DATABASE_URL: postgresql+psycopg://datapilot_web:ci-web-only@localhost:5432/datapilot_test_ci
+      DATAPILOT_MAINTENANCE_DATABASE_URL: postgresql+psycopg://datapilot_maintenance:ci-maintenance-only@localhost:5432/datapilot_test_ci
+      DATAPILOT_RAG_INGEST_DATABASE_URL: postgresql+psycopg://datapilot_rag_ingest:ci-rag-ingest-only@localhost:5432/datapilot_test_ci
+      DATAPILOT_RAG_READER_DATABASE_URL: postgresql+psycopg://datapilot_rag_reader:ci-rag-reader-only@localhost:5432/datapilot_test_ci
+      DATAPILOT_RUNTIME_DATABASE_URL: postgresql+psycopg://datapilot_runtime:ci-runtime-only@localhost:5432/datapilot_test_ci
+      DATAPILOT_CHECKPOINT_OWNER_DATABASE_URL: postgresql+psycopg://datapilot_checkpoint_owner:ci-checkpoint-owner-only@localhost:5432/datapilot_test_ci
+      DATAPILOT_REGISTRY_DATABASE_URL: postgresql+psycopg://datapilot_registry:ci-registry-only@localhost:5432/datapilot_test_ci
+      DATAPILOT_INGEST_DATABASE_URL: postgresql+psycopg://datapilot_ingest:ci-ingest-only@localhost:5432/datapilot_test_ci
+      DATAPILOT_UPLOAD_READER_DATABASE_URL: postgresql+psycopg://datapilot_upload_reader:ci-upload-reader-only@localhost:5432/datapilot_test_ci
     steps:
       - uses: actions/checkout@v4
+      - name: Prepare evidence identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/ci
+          git rev-parse HEAD > artifacts/ci/commit.txt
+          git ls-files -z | xargs -0 sha256sum -- > artifacts/ci/source-sha256.txt
       - uses: astral-sh/setup-uv@v6
         with:
           version: '0.12.5'
           python-version: ${{ matrix.python }}
-      - run: uv sync --locked
-      - run: uv run --locked datapilot db-init
-      - run: uv run --locked datapilot migrate
-      - run: uv run --locked datapilot runtime-init
-      - run: uv run --locked datapilot seed
-      - run: uv run --locked datapilot health
-      - run: uv run --locked datapilot rag model-fetch
-      - run: uv run --locked pytest --cov=datapilot --cov-report=term-missing
-      - run: uv run --locked ruff check .
-      - run: uv run --locked ruff format --check .
+      - name: Install locked dependencies
+        id: dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          uv sync --locked 2>&1 | tee artifacts/ci/dependencies.log
+      - name: Collect exact test identities
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          uv run --locked pytest --collect-only -q -p no:cacheprovider 2>&1 | tee artifacts/ci/nodeids.txt
+      - name: Unit and protocol regressions
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          uv run --locked pytest -m "not integration and not live" -p no:cacheprovider --junitxml=artifacts/ci/unit.xml --cov=datapilot --cov-report=term-missing 2>&1 | tee artifacts/ci/unit.log
+      - name: Initialize disposable PostgreSQL and pinned model
+        id: initialize
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            uv run --locked datapilot db-init
+            uv run --locked datapilot migrate
+            uv run --locked datapilot runtime-init
+            uv run --locked datapilot seed
+            uv run --locked datapilot health
+            uv run --locked datapilot rag model-fetch
+          } 2>&1 | tee artifacts/ci/initialize.log
+      - name: Real PostgreSQL MCP and HTTP Mock regressions
+        if: ${{ !cancelled() && steps.initialize.outcome == 'success' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          uv run --locked pytest -m integration -p no:cacheprovider --junitxml=artifacts/ci/integration.xml --cov=datapilot --cov-append --cov-report=term-missing --cov-report=xml:artifacts/ci/coverage.xml 2>&1 | tee artifacts/ci/integration.log
+      - name: Ruff lint
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          uv run --locked ruff check . 2>&1 | tee artifacts/ci/ruff.log
+      - name: Python format check
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          uv run --locked ruff format --check src tests scripts migrations evaluation 2>&1 | tee artifacts/ci/format.log
+      - name: Preserve logs JUnit and identities on failure
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: datapilot-checks-py${{ matrix.python }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/ci/
+          if-no-files-found: error
+          include-hidden-files: false
