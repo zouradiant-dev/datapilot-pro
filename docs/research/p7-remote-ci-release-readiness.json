@@ -1,28 +1,80 @@
 {
   "schema_version": "p7-remote-ci-release-readiness-1",
-  "verified_at": "2026-10-28T12:48:11.629571+00:00",
-  "remote_ci": "not_run",
+  "verified_at": "2026-10-28T14:00:43.282326+00:00",
+  "remote_ci": "success",
   "release_ready": false,
-  "block_reason": "current_candidate_uncommitted_unpublished_no_existing_dispatch_trigger",
-  "new_remote_run_id": null,
-  "new_remote_run_url": null,
-  "current_candidate_commit_sha": null,
+  "block_reason": "verification_branch_not_merged_and_quality_limits_retained",
+  "new_remote_run_id": 40695049045,
+  "new_remote_run_url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/40695049045",
+  "current_candidate_commit_sha": "f260db8bb7943fb3b085731e1fb48528a9420f24",
   "base_commit_sha": "18271d7b5159dff7e01bb1e6edd3257f9fd78be4",
   "repository": "zouradiant-dev/datapilot-pro",
   "remote_matrix": {
     "3.11": {
-      "status": "not_run",
-      "passed": null,
-      "failed": null,
-      "errors": null,
-      "skipped": null
+      "status": "success",
+      "passed": 1156,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 1,
+      "collected": 1157,
+      "job_id": 122839470598,
+      "source_files_matched": 383,
+      "partitions": {
+        "unit": {
+          "passed": 901,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "seconds": 31.299
+        },
+        "integration": {
+          "passed": 255,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 1,
+          "seconds": 2301.973
+        }
+      },
+      "skip_details": [
+        {
+          "class": "tests.test_live_model",
+          "name": "test_real_model_postgres_workflow",
+          "reason": "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials"
+        }
+      ]
     },
     "3.13": {
-      "status": "not_run",
-      "passed": null,
-      "failed": null,
-      "errors": null,
-      "skipped": null
+      "status": "success",
+      "passed": 1156,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 1,
+      "collected": 1157,
+      "job_id": 122839469846,
+      "source_files_matched": 383,
+      "partitions": {
+        "unit": {
+          "passed": 901,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "seconds": 28.147
+        },
+        "integration": {
+          "passed": 255,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 1,
+          "seconds": 2150.998
+        }
+      },
+      "skip_details": [
+        {
+          "class": "tests.test_live_model",
+          "name": "test_real_model_postgres_workflow",
+          "reason": "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials"
+        }
+      ]
     }
   },
   "verified_github_evidence": {
@@ -97,7 +149,8 @@
         "type": "commit",
         "url": "https://api.github.com/repos/actions/upload-artifact/git/commits/ea165f8d65b6e75b540449e92b4886f43607fa02"
       }
-    }
+    },
+    "scope": "Pre-push historical API inspection; current result is post_push_ci"
   },
   "local_tests": {
     "final_unit": {
@@ -249,9 +302,10 @@
     "historical_rows_changed": 0,
     "historical_sealed_artifact_hashes_checked": 1659,
     "head": "18271d7b5159dff7e01bb1e6edd3257f9fd78be4",
-    "older_gold_scorer_seal_and_result_files_unchanged": 1994
+    "older_gold_scorer_seal_and_result_files_unchanged": 1994,
+    "scope": "Preserved pre-push audit; current publication integrity is publish_scope and post_push_ci"
   },
-  "tested_source_closure_sha256": "7809f0383a29075c3483b8fb9dbd849ea055eed55cf2abbe2dea7fecdeb782a6",
+  "tested_source_closure_sha256": "72698fce9b1bc95b7be1f4e42856421e1fc79fef38b6eb3a322c0878131c8aff",
   "production_changes": [],
   "existing_files_changed": [
     ".github/workflows/test.yml",
@@ -267,13 +321,183 @@
   "embedding_or_threshold_changed": false,
   "new_paid_model_calls": 0,
   "historical_live_reexecuted": false,
-  "git_commit_push": false,
-  "remote_mutations": false,
+  "git_commit_push": true,
+  "remote_mutations": true,
   "stage_3_entered": false,
   "remaining_release_blockers": [
-    "publish_reviewed_complete_candidate",
-    "actual_remote_both_python_full_junit_and_artifact_verification",
-    "existing_english_recall_and_real_provider_quality_limits"
+    "review_and_explicit_merge_decision",
+    "existing_english_recall_failure_and_unmeasured_real_provider_adherence"
   ],
-  "evidence_directory": "artifacts/p7/remote-ci-readiness-v1"
+  "evidence_directory": "artifacts/p7/remote-ci-publish-v1",
+  "pre_push_snapshot": {
+    "verified_at": "2026-10-28T12:48:11.629571+00:00",
+    "remote_ci": "not_run",
+    "release_ready": false,
+    "block_reason": "current_candidate_uncommitted_unpublished_no_existing_dispatch_trigger",
+    "new_remote_run_id": null,
+    "new_remote_run_url": null,
+    "current_candidate_commit_sha": null,
+    "remote_matrix": {
+      "3.11": {
+        "status": "not_run",
+        "passed": null,
+        "failed": null,
+        "errors": null,
+        "skipped": null
+      },
+      "3.13": {
+        "status": "not_run",
+        "passed": null,
+        "failed": null,
+        "errors": null,
+        "skipped": null
+      }
+    },
+    "tested_source_closure_sha256": "7809f0383a29075c3483b8fb9dbd849ea055eed55cf2abbe2dea7fecdeb782a6",
+    "git_commit_push": false,
+    "remote_mutations": false,
+    "remaining_release_blockers": [
+      "publish_reviewed_complete_candidate",
+      "actual_remote_both_python_full_junit_and_artifact_verification",
+      "existing_english_recall_and_real_provider_quality_limits"
+    ],
+    "evidence_directory": "artifacts/p7/remote-ci-readiness-v1",
+    "record_commit_sha": "f260db8bb7943fb3b085731e1fb48528a9420f24",
+    "historical_only": true
+  },
+  "post_push_ci": {
+    "verified_at": "2026-10-28T14:00:43.282326+00:00",
+    "workflow": "DataPilot checks",
+    "run_id": 40695049045,
+    "run_attempt": 1,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/40695049045",
+    "code_commit_sha": "f260db8bb7943fb3b085731e1fb48528a9420f24",
+    "branch": "p7-ci-verification-20261028",
+    "created_at": "2026-10-28T13:17:17Z",
+    "completed_at": "2026-10-28T13:57:12Z",
+    "matrix": {
+      "3.11": {
+        "status": "success",
+        "passed": 1156,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 1,
+        "collected": 1157,
+        "job_id": 122839470598,
+        "source_files_matched": 383,
+        "partitions": {
+          "unit": {
+            "passed": 901,
+            "failed": 0,
+            "errors": 0,
+            "skipped": 0,
+            "seconds": 31.299
+          },
+          "integration": {
+            "passed": 255,
+            "failed": 0,
+            "errors": 0,
+            "skipped": 1,
+            "seconds": 2301.973
+          }
+        },
+        "skip_details": [
+          {
+            "class": "tests.test_live_model",
+            "name": "test_real_model_postgres_workflow",
+            "reason": "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials"
+          }
+        ]
+      },
+      "3.13": {
+        "status": "success",
+        "passed": 1156,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 1,
+        "collected": 1157,
+        "job_id": 122839469846,
+        "source_files_matched": 383,
+        "partitions": {
+          "unit": {
+            "passed": 901,
+            "failed": 0,
+            "errors": 0,
+            "skipped": 0,
+            "seconds": 28.147
+          },
+          "integration": {
+            "passed": 255,
+            "failed": 0,
+            "errors": 0,
+            "skipped": 1,
+            "seconds": 2150.998
+          }
+        },
+        "skip_details": [
+          {
+            "class": "tests.test_live_model",
+            "name": "test_real_model_postgres_workflow",
+            "reason": "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials"
+          }
+        ]
+      }
+    },
+    "artifacts": [
+      {
+        "id": 12821801127,
+        "name": "datapilot-checks-py3.13-40695049045-1",
+        "size_in_bytes": 98925,
+        "digest": "sha256:f372f01e98b746b2822f500d9e8bc80edd76c7af7a896be5b47e6f74d89e8a04",
+        "expires_at": "2027-01-26T13:17:17Z"
+      },
+      {
+        "id": 12821178528,
+        "name": "datapilot-checks-py3.11-40695049045-1",
+        "size_in_bytes": 99076,
+        "digest": "sha256:deeceb3f8d310171f2947c0d484ffd18c213fbb134a9a2de2cc37b6149b61223",
+        "expires_at": "2027-01-26T13:17:17Z"
+      }
+    ],
+    "zip_digest_matches_github": true,
+    "source_files_matched_per_job": 383,
+    "source_closure_hash_method": "sha256 of sorted compact JSON path-to-Git-blob-sha256 mapping",
+    "junit_and_complete_nodeids_verified": true,
+    "warning": "One expected Pydantic malformed-usage fault-injection warning per integration partition",
+    "live_model_test": "intentionally_skipped_not_authorized",
+    "paid_model_calls": 0
+  },
+  "publish_scope": {
+    "authorization_source": {
+      "type": "direct_user_message",
+      "text": "授权进行",
+      "scope": "reviewed independent verification branch commit/push and real CI; no main merge"
+    },
+    "changed_files_published": 99,
+    "prior_product_files_published": 20,
+    "excluded_files_preserved_unchanged": 105,
+    "private_holdout_authors_gold_and_credentials_published": false,
+    "main_sha_unchanged": "18271d7b5159dff7e01bb1e6edd3257f9fd78be4",
+    "business_source_changed_in_this_ci_stage": false,
+    "database_access_this_stage": "No access to or writes in existing local business/history databases; CI initializes fresh disposable services only",
+    "documentation_followup": {
+      "files": [
+        "docs/api-v1.md",
+        "docs/p7-citation-policy-repair.md",
+        "docs/research/p7-remote-ci-release-readiness.md",
+        "docs/research/p7-remote-ci-release-readiness.json"
+      ],
+      "ci": "intentionally_skipped_docs_only",
+      "reason": "Full source/test/PG matrix verified on the code commit; follow-up changes four documentation files only",
+      "checks": [
+        "JSON parse",
+        "Markdown local links",
+        "git diff --check",
+        "Git code/test/workflow paths unchanged"
+      ]
+    }
+  }
 }

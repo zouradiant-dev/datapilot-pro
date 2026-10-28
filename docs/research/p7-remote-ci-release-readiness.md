@@ -1,5 +1,41 @@
 # P7 Remote CI Verification & Release Readiness
 
+**当前代码候选 remote CI：success；尚未合并 main，不宣称业务质量或生产发布全部就绪。**
+
+## Post-push CI Verification
+
+- 实际核验时间：`2026-10-28T14:00:43.282326+00:00`。
+- 独立验证分支：`p7-ci-verification-20261028`；代码提交：`f260db8bb7943fb3b085731e1fb48528a9420f24`。
+- [DataPilot checks / Run 40695049045](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/40695049045)，push / attempt 1；`completed / success`。开始 `2026-10-28T13:17:17Z`，结束 `2026-10-28T13:57:12Z`。
+- 每版收集1,157个测试ID；两分区无重复/缺失。逐项比对383份源码SHA、Commit、JUnit和Artifact ZIP SHA，全部一致。
+
+| Python | 非集成 passed / failed / skipped | 真实PG/MCP集成 passed / failed / skipped | 合计 passed / failed / skipped | Job |
+|---|---|---|---|---|
+| 3.11 | 901 / 0 / 0，31.30秒 | 255 / 0 / 1，2301.97秒 | 1156 / 0 / 1 | success |
+| 3.13 | 901 / 0 / 0，28.15秒 | 255 / 0 / 1，2151.00秒 | 1156 / 0 / 1 | success |
+
+两版唯一skip都是`tests/test_live_model.py::test_real_model_postgres_workflow`，原因是没有启用需另行授权的真实模型推理。没有其他集成测试因环境缺失跳过。CI的Fake/HTTP Mock不是真实DeepSeek质量评测；本轮付费调用0。各有1条预期warning，来自`bad_usage`故障注入的畸形Token字段，保留原日志。
+
+初始化日志确认PostgreSQL 17.11、pgvector 0.8.6、Alembic 0007、官方Checkpointer初始化、全部隔离角色和固定Embedding模型校验通过；只在Actions新建服务Seed 240客户。Required/Supplement、Partial Evidence、Original-query-first及P3/Journal/Ledger/Durable回归均在完整集成集合实际执行。Ruff lint、253份Python格式检查及always() Artifact上传均success。
+
+### 证据保留与发布边界
+
+- Python3.11 Artifact：`12821178528`，ZIP SHA256 `deeceb3f8d310171f2947c0d484ffd18c213fbb134a9a2de2cc37b6149b61223`。
+- Python3.13 Artifact：`12821801127`，ZIP SHA256 `f372f01e98b746b2822f500d9e8bc80edd76c7af7a896be5b47e6f74d89e8a04`。
+- 远端期限依Artifact元数据/仓库设置；已另在忽略的`artifacts/p7/remote-ci-publish-v1/`保留ZIP、两版完整日志、JUnit、nodeids、源码清单与只读审计。机器摘要见[验证JSON](p7-remote-ci-release-readiness.json)。
+- 首次本地候选副本因Windows自动CRLF检出出现899 passed / 2 failed；工作区与Git原始字节均正确。按Git原始blob重新导出后901 passed；两轮日志保留，没有修改冻结源码、CSV或测试断言来处理副本差异。
+- 已审计并发布99份修改文件；正式Holdout作者输入、Gold/审核材料、私密绑定与不相关规划等105份本地文件保持原字节。没有将未跟踪脚本遗漏后仅推工作流；`tests/`的正式默认集合完整保留。公开材料边界见[评测说明](../../evaluation/README.md)。
+- main仍为`18271d7b5159dff7e01bb1e6edd3257f9fd78be4`。没有合并、修改既有本地数据库、重新Seed历史数据、执行历史Live或进入Gate3。
+- CI完成后仅跟进四份文档的状态和链接，使用显式`[skip ci]`文档提交；不重复约40分钟完整矩阵。CI证据绑定上述代码SHA，文档提交不冒称有新CI Run。通过JSON、Markdown链接、Diff检查，并核对源码/测试/工作流与已验证提交完全相同。
+
+### 剩余限制与下一步
+
+远端执行/初始化/证据上传的阻碍已解除。英文控制仍有0.55阈值下错误空召回，Web默认仍legacy，真实模型对新首查约束的遵循率与业务质量/费用未实测；CI全绿不会改变这些负结果。下一步先审阅独立分支并由负责人决定是否合并；质量实验或Gate3仍需后续明确授权。
+
+## 推送前历史快照（以下原记录保留）
+
+以下各节仅描述本次授权推送前的事实。其`not_run`、未提交和等待授权等字段不再作为当前状态；JSON的`pre_push_snapshot`单独保留该状态，当前以`post_push_ci`为准。
+
 **当前候选 remote CI：not_run；发布验收：blocked，等待候选提交/推送与实际远端验证。** 本轮完成远端事实核对、现有工作流审计与证据保留补强。未将旧 Run 或本地通过结果当作当前候选的 GitHub Actions 通过。
 
 ## 远端身份与触发核验

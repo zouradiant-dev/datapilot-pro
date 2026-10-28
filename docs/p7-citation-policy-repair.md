@@ -2,7 +2,7 @@
 
 本轮执行范围仅为第二步引用政策的最小产品实现与定向验收。用户在核对三类政策后明确指示“进行第二步修复”，构成该政策的项目负责人批准；真实依据和记录时间见 [负责人决策](research/p7-citation-policy-owner-decision.json)。这不是独立第三方人工审核，不自动确认任何新 Dataset/Metric/业务 Claim，也不追溯改写旧 Gold、Scorer、分母或成绩。
 
-原 [待裁决提案](p7-citation-policy-adjudication.md) 和 [候选 JSON](research/p7-citation-policy-candidate.json) 保留原字节/PENDING 历史状态；本记录和新的负责人决策记录表达当前获批的产品政策。没有重新执行历史 Holdout、付费 Live、第三步查询策略、Gate 3 或 Git 提交推送。
+原待裁决提案和候选 JSON 在本地私密研究材料中保留原字节/PENDING 历史状态，不随验证分支发布；本记录和上述负责人决策记录表达当前获批的产品政策。本段是第二步修复时的历史快照：当时没有重新执行历史 Holdout、付费 Live、第三步查询策略、Gate 3 或 Git 提交推送。后续提交及 CI 状态见 [远端验证记录](research/p7-remote-ci-release-readiness.md)。
 
 ## 三类来源的实际处理
 

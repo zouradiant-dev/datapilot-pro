@@ -65,7 +65,7 @@ ChatSelection 允许精确 Dataset/version、已确认 metric/version、右开 w
 
 纯定位/总结仍须通过原 RAG Completion、Source/Chunk/Index/hash 验证；检索完成不自动证明事实、数值或因果。因果、开放结论和最新/共同快照限制继续生效。Default Fake 可能保守返回 insufficient/unavailable，这不是实测模型质量。
 
-旧客户端省略字段时保持未确认。空新增字段不进入旧请求哈希；已经创建的旧 Scope 不被重写或自动升级，读取/取消仍检查原授权，新执行需明确确认。旧报告与新规则冲突时按原 Verifier 拒绝。实际统一验收及限制见 [P7 统一回归](p7-unified-regression.md)。
+旧客户端省略字段时保持未确认。空新增字段不进入旧请求哈希；已经创建的旧 Scope 不被重写或自动升级，读取/取消仍检查原授权，新执行需明确确认。旧报告与新规则冲突时按原 Verifier 拒绝。当前联合回归及限制见 [P7 三项策略回归](p7-three-step-regression.md)，远端状态见 [CI 验证记录](research/p7-remote-ci-release-readiness.md)。
 
 创建、批准、恢复、取消要求 8–128 字符的 `Idempotency-Key`。宿主将键绑定 owner、操作、run_id、规范载荷 hash 和授权版本；同请求复用原响应，异请求返回 `WEB_IDEMPOTENCY_CONFLICT`。批准重试可在任务继续后重放同一确认，但新键不能批准已经结束的任务。
 
