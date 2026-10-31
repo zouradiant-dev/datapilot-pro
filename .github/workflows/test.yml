@@ -77,13 +77,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          uv run --locked pytest --collect-only -q -p no:cacheprovider 2>&1 | tee artifacts/ci/nodeids.txt
+          uv run --locked python -m pytest --collect-only -q -p no:cacheprovider 2>&1 | tee artifacts/ci/nodeids.txt
       - name: Unit and protocol regressions
         if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
         shell: bash
         run: |
           set -euo pipefail
-          uv run --locked pytest -m "not integration and not live" -p no:cacheprovider --junitxml=artifacts/ci/unit.xml --cov=datapilot --cov-report=term-missing 2>&1 | tee artifacts/ci/unit.log
+          uv run --locked python -m pytest -m "not integration and not live" -p no:cacheprovider --junitxml=artifacts/ci/unit.xml --cov=datapilot --cov-report=term-missing 2>&1 | tee artifacts/ci/unit.log
       - name: Initialize disposable PostgreSQL and pinned model
         id: initialize
         if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
@@ -103,7 +103,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          uv run --locked pytest -m integration -p no:cacheprovider --junitxml=artifacts/ci/integration.xml --cov=datapilot --cov-append --cov-report=term-missing --cov-report=xml:artifacts/ci/coverage.xml 2>&1 | tee artifacts/ci/integration.log
+          uv run --locked python -m pytest -m integration -p no:cacheprovider --junitxml=artifacts/ci/integration.xml --cov=datapilot --cov-append --cov-report=term-missing --cov-report=xml:artifacts/ci/coverage.xml 2>&1 | tee artifacts/ci/integration.log
       - name: Ruff lint
         if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
         shell: bash
