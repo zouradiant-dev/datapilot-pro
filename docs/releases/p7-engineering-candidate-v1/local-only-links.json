@@ -1,0 +1,486 @@
+{
+  "scope": "all Markdown references in the proposed Git tree; external web URLs/anchors not checked",
+  "historical_reports_not_rewritten": true,
+  "new_public_entry_links_valid": true,
+  "counts": {
+    "local-only": 94
+  },
+  "references": [
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-live/stop-diagnostic.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-live/ledger-audit.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-live/raw-contract-diagnostic.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-v2/private/campaign-results/business-v2-958ee94411d6a6b4/summary.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-live/case-results.jsonl",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-live/campaign-case-ledger.jsonl",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-live/private-ledger-export.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-live/private-p3-readback.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-live/reports",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-live/driver.log",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-live/ledger-audit.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-live/final-validation.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-gate2b-live.md",
+      "target": "artifacts/p7/gate2b-live/delivery-sha256.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-numeric-serialization-fix.md",
+      "target": "artifacts/p7/numeric-serialization-fix/targeted-p3-after.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-p3-confirmation.md",
+      "target": "artifacts/p7/gate2b-v2/private/p3-confirmation-request.md",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-p3-confirmation.md",
+      "target": "artifacts/p7/gate2b-v2/private/p3-confirmation-request.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3-rag-diagnosis.md",
+      "target": "artifacts/p7/phase3a-rag-diagnosis/dev-plan.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3-rag-diagnosis.md",
+      "target": "artifacts/p7/phase3a-rag-diagnosis/diagnose.py",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3-rag-diagnosis.md",
+      "target": "artifacts/p7/phase3a-rag-diagnosis/diagnosis.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3-rag-diagnosis.md",
+      "target": "artifacts/p7/phase3a-rag-diagnosis/dev-bindings.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3-rag-diagnosis.md",
+      "target": "artifacts/p7/phase3a-rag-diagnosis/targeted.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3-rag-diagnosis.md",
+      "target": "artifacts/p7/phase3a-rag-diagnosis/targeted.log",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3-rag-diagnosis.md",
+      "target": "artifacts/p7/phase3a-rag-diagnosis/validation.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3b-rag-query-strategy.md",
+      "target": "artifacts/p7/phase3b-language-strategy/study.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3b-rag-query-strategy.md",
+      "target": "artifacts/p7/phase3b-language-strategy/candidate.py",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3b-rag-query-strategy.md",
+      "target": "artifacts/p7/phase3b-language-strategy/compare.py",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3b-rag-query-strategy.md",
+      "target": "artifacts/p7/phase3b-language-strategy/results.jsonl",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3b-rag-query-strategy.md",
+      "target": "artifacts/p7/phase3b-language-strategy/summary.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3b-rag-query-strategy.md",
+      "target": "artifacts/p7/phase3b-language-strategy/metrics-audit.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3b-rag-query-strategy.md",
+      "target": "artifacts/p7/phase3b-language-strategy/policy-tests.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3b-rag-query-strategy.md",
+      "target": "artifacts/p7/phase3b-language-strategy/targeted.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3b-rag-query-strategy.md",
+      "target": "artifacts/p7/phase3b-language-strategy/validation.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3c-original-goal-safety.md",
+      "target": "artifacts/p7/phase3c-original-goal/candidate.py",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3c-original-goal-safety.md",
+      "target": "artifacts/p7/phase3c-original-goal/plan.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3c-original-goal-safety.md",
+      "target": "artifacts/p7/phase3c-original-goal/executable-freeze.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3c-original-goal-safety.md",
+      "target": "artifacts/p7/phase3c-original-goal/test_safety.py",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3c-original-goal-safety.md",
+      "target": "artifacts/p7/phase3c-original-goal/retention-business-coverage.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3c-original-goal-safety.md",
+      "target": "artifacts/p7/phase3c-original-goal/unit.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3c-original-goal-safety.md",
+      "target": "artifacts/p7/phase3c-original-goal/integration.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3c-original-goal-safety.md",
+      "target": "artifacts/p7/phase3c-original-goal/integration.log",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3c-original-goal-safety.md",
+      "target": "artifacts/p7/phase3c-original-goal/boundary-probe.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3c-original-goal-safety.md",
+      "target": "artifacts/p7/phase3c-original-goal/after-database.log",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3c-original-goal-safety.md",
+      "target": "artifacts/p7/phase3c-original-goal/validation.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/pre-fix.log",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/unit-pre-fix.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/final-unit-py311.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/final-unit-py313.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/final-core-pg-py311.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/final-core-pg-py313.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/phase12-pg-py311.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/final-pg-py313.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/phase12-pg-py313-retry.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/post-fix.log",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/old-report-check.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/validation.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase3d-document-completion.md",
+      "target": "artifacts/p7/phase3d-document-completion/final-source-freeze-v3.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/historical-audit.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/pre-fix.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/final-targeted-source-freeze-v3.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/final-unit-py311.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/final-unit-py313.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/final-snapshot-py311.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/final-snapshot-py313.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/final-budget-py311.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/final-budget-py313.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/final-pg-py311.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/final-pg-py313.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/final-database.log",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/final-file-scope.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-phase4-budget-snapshot.md",
+      "target": "artifacts/p7/phase4-budget-snapshot/validation.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-zero-revenue-diagnosis.md",
+      "target": "artifacts/p7/gate2b-v2/p3-owner-confirmation/targeted-p3.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-zero-revenue-diagnosis.md",
+      "target": "artifacts/p7/gate2b-v2/p3-owner-confirmation/directed-evidence-readback.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/p7-zero-revenue-diagnosis.md",
+      "target": "artifacts/p7/gate2b-v2/p3-owner-confirmation/directed-execution-projection.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/research/p7-goal-confirmation-quality-validation.md",
+      "target": "docs/research/p7-goal-confirmation-quality-handoff.md",
+      "kind": "local-only",
+      "public_alternative": "docs/releases/p7-engineering-candidate-v1/frozen/p7-goal-confirmation-quality-handoff.md"
+    },
+    {
+      "source": "docs/research/p7-qwen3-mcp-lifecycle-reliability.md",
+      "target": "docs/research/p7-qwen3-lifecycle-handoff.md",
+      "kind": "local-only",
+      "public_alternative": "docs/releases/p7-engineering-candidate-v1/frozen/p7-qwen3-lifecycle-handoff.md"
+    },
+    {
+      "source": "docs/research/p7-qwen3-phase2c-business-quality.md",
+      "target": "docs/research/p7-qwen3-phase2c-business-quality.json",
+      "kind": "local-only",
+      "public_alternative": "docs/releases/p7-engineering-candidate-v1/p7-qwen3-phase2c-business-quality.summary.json"
+    },
+    {
+      "source": "docs/research/p7-qwen3-phase2c2-expanded-quality.md",
+      "target": "docs/research/p7-qwen3-phase2c2-expanded-quality.json",
+      "kind": "local-only",
+      "public_alternative": "docs/releases/p7-engineering-candidate-v1/p7-qwen3-phase2c2-expanded-quality.summary.json"
+    },
+    {
+      "source": "docs/research/p7-qwen3-phase2c4-fresh-validation.md",
+      "target": "docs/research/p7-qwen3-phase2c4-fresh-validation.json",
+      "kind": "local-only",
+      "public_alternative": "docs/releases/p7-engineering-candidate-v1/p7-qwen3-phase2c4-fresh-validation.summary.json"
+    },
+    {
+      "source": "docs/research/p7-qwen3-phase2c4-fresh-validation.md",
+      "target": "docs/research/p7-qwen3-phase2c4-fresh-validation.json",
+      "kind": "local-only",
+      "public_alternative": "docs/releases/p7-engineering-candidate-v1/p7-qwen3-phase2c4-fresh-validation.summary.json"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/final/case-differences.jsonl",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/gate2b-v2/private/campaign-results/business-v2-958ee94411d6a6b4/summary.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/final/v1-reproduced.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/final/v2-results.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/final-py313/v2-results.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/private-budget-context.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/budget-analysis.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/budget-supplement.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/reservation-check.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/bad-case-evidence.json",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/final-regression-py311.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/final-regression-py313.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/frozen-tests-v1-red-py311.xml",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/offline-rescore.py",
+      "kind": "local-only"
+    },
+    {
+      "source": "docs/scorer-audit.md",
+      "target": "artifacts/p7/scorer-v2-audit/final-validation.json",
+      "kind": "local-only"
+    }
+  ]
+}

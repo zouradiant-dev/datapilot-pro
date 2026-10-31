@@ -1,5 +1,19 @@
 # DataPilot Pro
 
+## 当前工程候选状态（P7）
+
+| 验收维度 | 当前状态 |
+|---|---|
+| Engineering Demo Candidate | **ACCEPTED**（可信本地单用户、限定合成场景） |
+| Independent Business Quality | **PENDING** |
+| DeepSeek Live Gate | **PENDING** |
+
+最新 Demo 使用真实 PostgreSQL 17/pgvector、MCP、BGE、LangGraph、P3 与 Durable，模型决策由脚本/Fake Worker 提供；不代表真实 DeepSeek 自主分析已通过。收入示例为 **1432.25 CNY**，合同确认、独立执行审批、重启一致性、撤回与 unknown-outcome 防重发均有有界工程记录。
+
+请先看 [GitHub 交付索引与公开结果](docs/releases/p7-engineering-candidate-v1/README.md)：包含 Goal v4 的可信范围确认、Demo、测试证据摘要和已知限制。BGE 仍是默认；Qwen3 1024 是可选 Profile，最新 Web 确认链的 RAM 资源补验仍未完成。独立人工语义审核为 **NOT_VERIFIED**，原质量 A/B、STOP 和 Live 失败记录保留。
+
+历史研究报告中的 `artifacts/...` 引用属于 **local-only**，不随代码上传；公开索引提供脱敏副本、聚合摘要及原件 SHA。旧实验的结果不因本次 Git 整理而改变。
+
 面向 SaaS 企业的智能经营分析系统，当前已实现 **Day 1：SQL 基线**、**P1：CSV/XLSX 解析确认**、**P2：受限入库与动态 MCP**、**P3：SaaS 指标/证据验证**、**P4 / D9–D10：动态任务 DAG 与双层执行**。业务数据库使用 **PostgreSQL 17 + pgvector**，运行期业务查询全部经过真正的 MCP Server/Client。
 
 实现：固定种子、Alembic、隔离角色、AST/只读/资源限制、指标证据、LangGraph 动态 DAG/Send、独立 SQL/RAG Loop、父子预算/取消、L0–L4、脱敏 Trace 和 CLI。P5B 提供官方 PG Checkpoint、持久预算/工件和跨进程恢复；P6A 提供授权 TXT/Markdown 摄取、本地真实 BGE Embedding 与同实例 pgvector/MCP 检索。P6B 将已确认的 P3 指标接入现有 DAG，输出有持久验证引用的结构化报告、Markdown 与图表规格。P6C 增加 FastAPI、仅通过 HTTP 操作业务的 Streamlit、默认 Durable 的 Web 任务、可关闭的本地 OTel 投影及独立维护清理入口；未接远程 Langfuse。旧 RAG fixture 只用于回归。
@@ -8,7 +22,7 @@
 
 v2 目标闭环：**CSV/XLSX 上传 → Schema 预览确认 → 受限入库/数据集版本 → 动态 MCP 查询 → 语义指标与证据验证 → 多 Agent 报告**。P6B 通过可信宿主 ReportScope 显式选择已确认的 MetricRequest 和文档目标；模型只能安排这些任务，不确认字段或生成新指标配方。P3 独立入口、普通 ask 快速 SQL 路径保留，长期 Memory 后端仍未实现。
 
-首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates；当前完成 [P7 Gate 2 的意图变体 Holdout 对照](docs/p7-gate2.md)，独立业务 E2E 尚未运行，Gate 2 整体未验收；未实施 Gate 3/P11，不承诺生产 SLA 或真实模型稳定成功率。
+首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates；已完成 [P7 Gate 2 意图对照及 CI 核验](docs/p7-gate2.md)，另已封存 [60 个新业务目标及 Gold](docs/p7-business-holdout.md)。[Gate 2B v2](docs/p7-gate2b-v2.md) 完成七条 Pin、32 项精确 P3 登记及 [NUMERIC 修复](docs/p7-numeric-serialization-fix.md) 后，本轮 [正式 DeepSeek 业务 Live](docs/p7-gate2b-live.md) 在 bh2-031 预算预留失败时安全停止：观测 31/60，原冻结评分严格通过 25、未通过 6、29 条未运行；完整 Gate 2B 尚未验收，评分汇总缺陷另列。没有调优后重跑、进入 Gate 3/P11 或承诺生产 SLA/稳定成功率。
 
 P4.1 在现有组件上增加受控工具生命周期、宿主 `completion` 三态、完整工件先保存的 L0 模型视图与上下文计量。`status=succeeded` 仍表示工具执行成功；业务指标缺少 P3 六层已验证证据时 `completion=blocked`，不能当作已验证报告。简单客户数查询仍只需两次 Fake 决策。历史记录见 [P4.1 交付](docs/p4-hardening.md)。
 
@@ -120,7 +134,7 @@ uv run --locked datapilot migrate
 uv run --locked datapilot health
 ```
 
-新环境按下一节一次初始化即可。P2 使用 `catalog` 四表和独立 `uploads`；P3 的 0003 增加语义/指标/证据，P5B 的 0004 增加 execution，P6A 的 0005 增加版本化文档/向量，当前 head 为 `0005`；历史 `0001`–`0004` 未修改。
+新环境按下一节一次初始化即可。P2 使用 `catalog` 四表和独立 `uploads`；P3 的 0003 增加语义/指标/证据，P5B 的 0004 增加 execution，P6A 的 0005 增加版本化文档/向量。当前迁移 head 为 `0008`，另含 Web/会话与 Qwen 独立向量表；历史迁移不回写，实际数据库升级需单独核对。
 
 ```powershell
 $demoDir = 'artifacts/demo-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
@@ -222,7 +236,7 @@ CI 配置使用真实 PG17/pgvector 服务，覆盖 Python 3.11/3.13。仓库尚
 
 MCP 仅注册只读数据库工具，SaaS/上传会话各拿自己的 Reader 凭据；模型看不到管理员、Owner、Seed、Ingest 或 Registry 凭据。Reader 无业务写权限、Schema CREATE、TEMP 或角色继承；AST 同时限制表、函数及语句。上传策略每请求绑定精确物理表，多个 Dataset 同时被选中也不允许单次请求跨 Dataset JOIN。数据库端显式只读事务、statement_timeout 与外层 LIMIT 独立生效。默认角色只读设置本身可以被修改，因此权限 grants 不可省略。
 
-`.env` 是本机开发配置，stdio 子进程仍受宿主 OS 信任，不是对恶意宿主进程的沙箱。pgvector 存储表已迁移，文档摄取、Embedding、索引和 RAG 逻辑属于后续 Gate C；当前不运行独立向量服务。
+`.env` 是本机开发配置，stdio 子进程仍受宿主 OS 信任，不是对恶意宿主进程的沙箱。P6A 已提供授权文档摄取、固定 Embedding 和 pgvector/MCP 检索；不运行独立向量服务。索引/模型身份、权限和完成资格分别验证，真实引用不等于业务目标充分。
 
 v2 设计决策：[双层 Runtime/Harness](docs/adr/0001-runtime-harness.md)、[动态导入与权限](docs/adr/0002-ingestion-permissions.md)、[单用户边界](docs/adr/0003-local-single-user.md)、[指标/证据与领域包](docs/adr/0004-metrics-evidence-domain.md)。固定结构由 Alembic 管理，上传动态表仅由受限 Ingestion Service 管理，模型不会取得 DDL 权限。P6C 提供默认关闭的本地 OTel 投影；远程 Langfuse 尚未安装或集成。
 
@@ -233,4 +247,4 @@ v2 设计决策：[双层 Runtime/Harness](docs/adr/0001-runtime-harness.md)、[
 
 [Gate 1 交付](docs/p7-gate1.md)：Rule-only 原始 59 条开发任务为 46/59；同一获授权 12 条开发子集上 Rule-only/LLM-only/Hybrid 为 6/12、10/12、12/12。实际 13 次 DeepSeek 调用、11783 Token。仅是受限开发实验，默认网站仍为原 Rule-only，未新增生产付费意图入口；不能据此宣称稳定业务成功率。
 
-59 条 Holdout 保持封存，Gate 2 未开始。完整 P7 尚未验收，已启动的隔离工程结果见 [评测索引](docs/evaluation.md) 与 [可靠性记录](docs/reliability-matrix.md)。按用户要求停在 Gate 1，不继续下一步。
+此段为 Gate 1 当时的历史快照：59 条 Holdout 保持封存，Gate 2 未开始，按当时指令停止。随后 Gate 2 意图评测已另行授权完成；当前 Gate 2B 状态见上方链接及 [评测索引](docs/evaluation.md)。完整 P7 尚未验收。

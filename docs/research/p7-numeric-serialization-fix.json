@@ -1,0 +1,163 @@
+{
+  "schema_version": "p7-numeric-serialization-fix-1",
+  "checked_at": "2026-10-25T06:53:01.423702+00:00",
+  "status": "ready_for_live_authorization",
+  "ready_for_live_authorization": true,
+  "live_allowed": false,
+  "planned_tasks": 60,
+  "ordinary_runtime_ready": 53,
+  "expected_host_preflight_rejections": 6,
+  "intentional_missing_runtime_negative": 1,
+  "runtime_launches": 54,
+  "formal_agent_runs": 0,
+  "registered_semantics": 12,
+  "registered_metrics": 20,
+  "remaining_engineering_blockers": [],
+  "rejected_history_preserved": true,
+  "tests": [
+    {
+      "python": "3.11",
+      "passed": 262,
+      "deselected": 2,
+      "failures": 0,
+      "skipped": 0,
+      "seconds": "486.928",
+      "junit": "artifacts/p7/numeric-serialization-fix/regression-py311.xml",
+      "sha256": "e1c50e481549dc743dc3066d77c0e1abf9a7a822eb229f223e3c5ba7ba298d29"
+    },
+    {
+      "python": "3.13",
+      "passed": 262,
+      "deselected": 2,
+      "failures": 0,
+      "skipped": 0,
+      "seconds": "496.536",
+      "junit": "artifacts/p7/numeric-serialization-fix/regression-py313.xml",
+      "sha256": "8241017bfc78b84400f8e6f7ca9471300f6e0afe70e7bf9221e2c6ea1b8e9c34"
+    }
+  ],
+  "real_provider_calls": 0,
+  "gate3": "not_run",
+  "commit_push": "not_run",
+  "authorized_change": {
+    "path": "src/datapilot/tools/sql.py",
+    "before_sha256": "a64d9c0310ee44a1c9f8f7847aeeb8440e66b103564855c1fa4b558027d6e9d0",
+    "after_sha256": "9dcb80eb3259fa3fc6529024ea7b139ebae1457dfce25b5110f867c168c7442b",
+    "before_source": "artifacts/p7/numeric-serialization-fix/sql-before.py",
+    "patch": "artifacts/p7/numeric-serialization-fix/source.diff",
+    "scope": "Only bounded finite Decimal fixed-point serialization; parser, verifier, recipes, definitions, model candidates and grants unchanged"
+  },
+  "before_counterexample": {
+    "tests": 1,
+    "failed": 1,
+    "path": "artifacts/p7/numeric-serialization-fix/before.xml"
+  },
+  "local_boundary_tests_each_python": 30,
+  "new_pg_mcp_tests": 2,
+  "targeted_real_p3": {
+    "checked_at": "2026-10-25T06:42:31.016132+00:00",
+    "actual_metric_executions": 3,
+    "covered_cases": 3,
+    "passed": 3,
+    "new_records": [
+      {
+        "case_id": "bh2-016",
+        "evidence_id": "19c811b1-5cc7-4cea-9fe4-53c3fed02e7b",
+        "verification_id": "ff7d0c77-ce29-4626-9bec-82a18b940537",
+        "value": {
+          "value": "0.00000000000000000000",
+          "unit": "CNY",
+          "numerator": null,
+          "denominator": null,
+          "window_days": 31
+        },
+        "verdict": "verified"
+      },
+      {
+        "case_id": "bh2-052",
+        "evidence_id": "f5edd2a2-3612-469a-8fb8-ffd9f2690e6c",
+        "verification_id": "cf695e2b-fab6-4b6f-a669-5481b7d00a38",
+        "value": {
+          "value": "0.00000000000000000000",
+          "unit": "CNY",
+          "numerator": null,
+          "denominator": null,
+          "window_days": 31
+        },
+        "verdict": "verified"
+      },
+      {
+        "case_id": "bh2-047",
+        "evidence_id": "c1f8454e-bc75-49b8-a70f-6df0f3358b65",
+        "verification_id": "11098fe9-ff3d-4bd7-8faa-74d97f9775a8",
+        "value": {
+          "value": "447.5600000000000000",
+          "unit": "CNY",
+          "numerator": null,
+          "denominator": null,
+          "window_days": 31
+        },
+        "verdict": "verified"
+      }
+    ],
+    "original_evidence_verification_unchanged": true,
+    "original_zero_verdict": "rejected",
+    "model_calls": 0,
+    "formal_agent_runs": 0,
+    "paid_calls": 0
+  },
+  "admission": {
+    "checked_at": "2026-10-25T06:46:33.138329+00:00",
+    "planned": 60,
+    "ordinary_runtime_ready": 53,
+    "expected_host_preflight_rejections": 6,
+    "intentional_missing_runtime_negative": 1,
+    "runtime_launches": 54,
+    "unique_run_ids": 54,
+    "registered_definitions": {
+      "semantic": 12,
+      "metric": 20
+    },
+    "exclusions": {
+      "excluded_c_definitions_absent": 2,
+      "metric_999999_absent": true,
+      "dataset_999999_absent": true
+    },
+    "expected_scope_and_budget_hashes_unchanged": true,
+    "authorized_source_changes": [
+      "src/datapilot/tools/sql.py"
+    ],
+    "both_gold_seals_unchanged": true,
+    "formal_agent_runs": 0,
+    "model_calls": 0,
+    "live_authorized": false,
+    "execution_contract_admission": "passed; final readiness still requires regression and new implementation freeze"
+  },
+  "implementation_freeze": {
+    "path": "docs/research/p7-business-v2-numeric-fix-freeze.json",
+    "active_path": "docs/research/p7-business-v2-freeze.json",
+    "sha256": "0094ab595c62b2fadef192728399300855754a97455b19a35d4bb24ffc0ed18f",
+    "old_archive": "docs/research/p7-business-v2-before-numeric-fix.json",
+    "old_sha256": "6de1b0097ffb36b62788d8489b871e53483acac63fd39df8889511b0b3545b50"
+  },
+  "gold_seals_unchanged": {
+    "v1": "7af09ffe2320dfdad3535c55ed89e96124a7fd4bad0d66bc1cc898dbec464ecc",
+    "v2": "958ee94411d6a6b409483c5f494e09ec6792b0d2483762a201ad160d5b540e1a"
+  },
+  "unchanged_p3_parser_verifier_recipes_authorization": true,
+  "validation_scope": {
+    "full_suite": "not repeated; applicable 262-test selection each Python",
+    "excluded_tests": [
+      "test_management_reentry_and_cli_health",
+      "test_timeout_limit_and_seed_refuses_overwrite"
+    ],
+    "reason": "No database init/migration/grant reentry or Seed; other SQL timeout/grants tests included"
+  },
+  "limitations": [
+    "NUMERIC fixed-point output exceeding 80 chars is rejected, not truncated",
+    "Metadata readiness and three directed P3 checks are not 60-case model business quality",
+    "Existing strict refusal/scoring semantics remain unchanged, including intentional missing definitions",
+    "Protected v2.5 Markdown Python example format issue is excluded from scoped format check"
+  ],
+  "new_ci": "not_run"
+}

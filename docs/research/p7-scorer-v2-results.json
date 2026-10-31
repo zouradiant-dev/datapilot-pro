@@ -1,0 +1,713 @@
+{
+  "schema_version": "p7-offline-scorer-v2-audit-summary-1",
+  "checked_at": "2026-10-25T08:28:05.868845+00:00",
+  "status": "scorer_fix_and_offline_audit_complete_campaign_still_stopped",
+  "planned": 60,
+  "observed": 31,
+  "not_run": 29,
+  "original_v1": {
+    "passed": 25,
+    "failed": 6,
+    "summary_sha256": "295574c6e1a3cc81f41303c2771cb2b32f354a1f7430b6250f6ac0b0841094cd"
+  },
+  "revised_v2": {
+    "passed": 26,
+    "failed": 5,
+    "lanes": [
+      {
+        "lane": "sql_only",
+        "planned": 20,
+        "observed": 20,
+        "not_run": 0,
+        "correct": 18,
+        "observed_rate": 0.9,
+        "planned_rate": 0.9,
+        "ci95_observed_wilson": [
+          0.6989663547715128,
+          0.9721335187862318
+        ]
+      },
+      {
+        "lane": "rag_only",
+        "planned": 20,
+        "observed": 11,
+        "not_run": 9,
+        "correct": 8,
+        "observed_rate": 0.7272727272727273,
+        "planned_rate": 0.4,
+        "ci95_observed_wilson": [
+          0.43435469882387095,
+          0.9025394070997511
+        ]
+      },
+      {
+        "lane": "sql_rag",
+        "planned": 20,
+        "observed": 0,
+        "not_run": 20,
+        "correct": 0,
+        "observed_rate": null,
+        "planned_rate": null,
+        "ci95_observed_wilson": null
+      }
+    ],
+    "summary_sha256": "537a832ac8c24472ca8c49cbc37af9ce2b4c9521d71e6c4776e8be040e68e9e3"
+  },
+  "strict_score_changed_cases": [
+    "bh2-030"
+  ],
+  "worker_complete_v1": 0,
+  "worker_complete_v2": 8,
+  "worker_completion_is_not_business_completion": true,
+  "case_differences": [
+    {
+      "case_id": "bh2-001",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "f867c8935a38fb7a9bdf6eb17d58be0ec252a76512e576bccf973c88beea77fc"
+    },
+    {
+      "case_id": "bh2-002",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "5a0349acd58f9b82b0c7e88e6df66b0dfa0039c72ffcbba786f07d46231f7894"
+    },
+    {
+      "case_id": "bh2-003",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "2c60c88140ffef56d70a7bc5e19ef5ba71d798efb769b6a839597fe2a537d2c9"
+    },
+    {
+      "case_id": "bh2-004",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "e3dfde1b4d55592d5c82d3dc27655ecbd27d8a9f9e068da83fbd50f0f2790c53"
+    },
+    {
+      "case_id": "bh2-005",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "bae9376a185ce7a9a031f5cf04fd8639a9231a113b8d704cbe3d42ea3f4a9b2f"
+    },
+    {
+      "case_id": "bh2-006",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "2b1df54fb13b175522a340fd81d3d42d7179b01ec1fb9665f2dd6d1ce02e6fa2"
+    },
+    {
+      "case_id": "bh2-007",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "79cee2edca9cb011c8396967a3ad7fbda5240ea22c0da5d3cf53122a53dbc217"
+    },
+    {
+      "case_id": "bh2-008",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "26bc54f15ebf8abdb06e6ba45babfe228cc88f03e0f67760bab4fa352e11ff18"
+    },
+    {
+      "case_id": "bh2-009",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "9d4bbe6873ea82ffbadbc9f9fa819f697dba683bb4e93808005aa31435610aba"
+    },
+    {
+      "case_id": "bh2-010",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "a78d873a4fc047567178c614cca80adca90c3c74cbb3f29b0189e9adc59ae98c"
+    },
+    {
+      "case_id": "bh2-011",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": false,
+      "v2_correct": false,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "3d47b45503ace325c13aae906d2c95d4e93f10b75ed5101f849b9467464507f4"
+    },
+    {
+      "case_id": "bh2-012",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "35a91a52430fef127523e239e8f60b3df27fe0f78b85f0dcd5c2452abbe57d52"
+    },
+    {
+      "case_id": "bh2-013",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "78ee94cfde1eb4b595050755e45f7ceff344552db99ede0c0b588a49587ad6da"
+    },
+    {
+      "case_id": "bh2-014",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "1a7acac969ac1bffc78b757fe40d951af04136d666df8428d0bdfd988b76a379"
+    },
+    {
+      "case_id": "bh2-015",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "e04f3ccc5b4b0679c33d630f7dd5276453cfdb1bdd4cfe382281b99b99b7ccef"
+    },
+    {
+      "case_id": "bh2-016",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "60e4c383516a536ac958cbc6adc992f53278a4768346e7d976684faef333319a"
+    },
+    {
+      "case_id": "bh2-017",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": false,
+      "v2_correct": false,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "d0329ae2242d4d807e6a9f00bf2f6ff7896feb103978b0213d0e44e5702dd98b"
+    },
+    {
+      "case_id": "bh2-018",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": null,
+      "v2_rag_worker_complete": null,
+      "collection_sha256": "15b1f19bbc67480a96a276770b3bcb80051fdf01a2a9b3a428cf00fb3d38f0ac"
+    },
+    {
+      "case_id": "bh2-019",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": null,
+      "v2_rag_worker_complete": null,
+      "collection_sha256": "75e279e7ee0bb8676d3c06144c25326648af473245b218d683a9083d2f16e6ef"
+    },
+    {
+      "case_id": "bh2-020",
+      "lane": "sql_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": null,
+      "v2_rag_worker_complete": null,
+      "collection_sha256": "e7b8dd408f6c5ca3bdce4c258efc976d76baba097189e9be9d9f2076b32fa206"
+    },
+    {
+      "case_id": "bh2-021",
+      "lane": "rag_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": true,
+      "changed_fields": [
+        "rag_worker_complete"
+      ],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": true,
+      "collection_sha256": "5224ded78af414232177935bdeb26f988102988346f09555a8787b4b67894c93"
+    },
+    {
+      "case_id": "bh2-022",
+      "lane": "rag_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": true,
+      "changed_fields": [
+        "rag_worker_complete"
+      ],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": true,
+      "collection_sha256": "3d7f60681875b50ca1fe29e1dff5d99531fd06b7c6742d78d7a90c27db9ba511"
+    },
+    {
+      "case_id": "bh2-023",
+      "lane": "rag_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": true,
+      "changed_fields": [
+        "rag_worker_complete"
+      ],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": true,
+      "collection_sha256": "2bc446d6b87e22eca3bbb8803b4e8fa75135c168bd501db2e579a2630d4cb1f3"
+    },
+    {
+      "case_id": "bh2-024",
+      "lane": "rag_only",
+      "observation": "observed",
+      "v1_correct": false,
+      "v2_correct": false,
+      "changed": true,
+      "changed_fields": [
+        "rag_worker_complete"
+      ],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": true,
+      "collection_sha256": "e2ad6bf581901f2245938a29a3df0fb5a4f0929df79e5af635b336552100aee5"
+    },
+    {
+      "case_id": "bh2-025",
+      "lane": "rag_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": true,
+      "changed_fields": [
+        "rag_worker_complete"
+      ],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": true,
+      "collection_sha256": "30a4c53a0326d3f6d234d31464e55a44cdf0b6b5000e78c1ff5feb7ccfc119bc"
+    },
+    {
+      "case_id": "bh2-026",
+      "lane": "rag_only",
+      "observation": "observed",
+      "v1_correct": false,
+      "v2_correct": false,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "c6d5399ada720f903dd8f6ba31763c96b64240b61419f019ecdc04d12cd18163"
+    },
+    {
+      "case_id": "bh2-027",
+      "lane": "rag_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": true,
+      "changed_fields": [
+        "rag_worker_complete"
+      ],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": true,
+      "collection_sha256": "6f32ce05a2a492c4e56157389428b65600797fdd6a231a125f010a59bdbc49cb"
+    },
+    {
+      "case_id": "bh2-028",
+      "lane": "rag_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": true,
+      "changed_fields": [
+        "rag_worker_complete"
+      ],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": true,
+      "collection_sha256": "a99fcb4c94b4f5c4387f0124b729ed45877bb1f4d6052e1e3ad874f8ece9385e"
+    },
+    {
+      "case_id": "bh2-029",
+      "lane": "rag_only",
+      "observation": "observed",
+      "v1_correct": true,
+      "v2_correct": true,
+      "changed": true,
+      "changed_fields": [
+        "rag_worker_complete"
+      ],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": true,
+      "collection_sha256": "77219919350e34ce32960328240357e16fb7fbbceba63979c921e159b60ad894"
+    },
+    {
+      "case_id": "bh2-030",
+      "lane": "rag_only",
+      "observation": "observed",
+      "v1_correct": false,
+      "v2_correct": true,
+      "changed": true,
+      "changed_fields": [
+        "failure_class",
+        "strict_correct",
+        "structured_refusals_correct"
+      ],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "130f06206bb468872f8cac684deff83127297bb60d4fc24606f43a7abe7f3db0"
+    },
+    {
+      "case_id": "bh2-031",
+      "lane": "rag_only",
+      "observation": "observed",
+      "v1_correct": false,
+      "v2_correct": false,
+      "changed": false,
+      "changed_fields": [],
+      "v1_rag_worker_complete": false,
+      "v2_rag_worker_complete": false,
+      "collection_sha256": "e038673399d493a50e925d7b7154da994d9f340a2fd336f7f19511ba38f2421d"
+    },
+    {
+      "case_id": "bh2-032",
+      "lane": "rag_only",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-033",
+      "lane": "rag_only",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-034",
+      "lane": "rag_only",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-035",
+      "lane": "rag_only",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-036",
+      "lane": "rag_only",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-037",
+      "lane": "rag_only",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-038",
+      "lane": "rag_only",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-039",
+      "lane": "rag_only",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-040",
+      "lane": "rag_only",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-041",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-042",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-043",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-044",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-045",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-046",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-047",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-048",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-049",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-050",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-051",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-052",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-053",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-054",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-055",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-056",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-057",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-058",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-059",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    },
+    {
+      "case_id": "bh2-060",
+      "lane": "sql_rag",
+      "observation": "not_run",
+      "v1_correct": null,
+      "v2_correct": null,
+      "changed": false
+    }
+  ],
+  "historical_live_usage": {
+    "calls": 61,
+    "tokens": 77897,
+    "estimated_usd": "0.009241476",
+    "actual_bill_usd": null
+  },
+  "new_model_calls": 0,
+  "original_results_or_responses_overwritten": false,
+  "runtime_source_changed": false,
+  "budget_ledger_context_prompt_runner_changed": false,
+  "scorer_freeze_sha256": "b7aa0acb517271f8424a3421675659faf03bdd6c7c22c56dd1b154023b2a6e46",
+  "py311_py313_offline_comparison": "identical_excluding_scored_at",
+  "final_regression": {
+    "py311": "82 passed",
+    "py313": "82 passed",
+    "new_contract_tests": 32
+  },
+  "remaining_product_findings": [
+    "011/017 typed refusal reason lost in independent-proof ValueError catch",
+    "024 negative causal mention triggers Report regex despite causal_requested=false",
+    "026 two English query rewrites return no_matches; unrecorded below-threshold ranks prevent exact causal attribution",
+    "031 window-only context pressure differs from remaining cumulative budget; fixed snapshot request also marked unsupported"
+  ],
+  "gate3": "not_run",
+  "commit_push": "not_run"
+}

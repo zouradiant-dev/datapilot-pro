@@ -1,0 +1,729 @@
+{
+  "schema_version": "p7-three-policy-live-smoke-1",
+  "generated_at": "2026-10-29T08:29:12.766633+00:00",
+  "execution_result": "SMOKE_STOPPED_EVALUATOR",
+  "full_smoke_passed": false,
+  "quality_gate_passed": false,
+  "evaluation_completed": false,
+  "freeze_id": "p7-three-policy-dev-v1-4e9651e1844f",
+  "manifest_sha256": "c46f092849e2fdd98f1220244641a1b8a43942c8b36c34429913cd7b2d6a79ce",
+  "source_sha256": "4e9651e1844f6b1ff5f59633238d25262a70af1de497f1dd8c1ad2410b7a5d92",
+  "source_commit": "f8b122438d2c67ab26e618ecded72ecc18454015",
+  "permit_id": "p7-three-policy-dev-live-20261029-once",
+  "permit_sha256": "b3c6d5c5c8dc9ae00013db7a6610b228d7b719fb7ba469d382b70e3f87f46e93",
+  "authorization_source": "Current direct human message: 授权进入真实 DeepSeek Smoke",
+  "permit_disposition": "consumed_by_this_stopped_campaign_no_reuse",
+  "protocol": "public_nonblind_dev_not_new_holdout",
+  "denominators": {
+    "planned": 8,
+    "runtime_cap": 7,
+    "runtime_dispatched": 7,
+    "terminal_observed": 7,
+    "frozen_scored": 6,
+    "strict_correct": 6,
+    "frozen_scorer_error": 1,
+    "not_run": 1,
+    "actual_host_rejections_in_campaign": 0
+  },
+  "cases": [
+    {
+      "case_id": "tps-01",
+      "lane": "sql_only",
+      "run_id": "0c9d39f9-0d00-55af-ba00-8d502f556adf",
+      "status": "scored",
+      "expected_completion": "completed",
+      "business_completion": "completed",
+      "strict_correct": true,
+      "model_calls": 1,
+      "tokens": 565,
+      "rag_worker_status": null,
+      "rag_receipt": null,
+      "rag_error": null,
+      "original_first_query": null,
+      "published_citation_count": 0,
+      "published_citations": [],
+      "completion": {
+        "limited_results_visible": true,
+        "missing_evidence": {},
+        "required_goals": [
+          "revenue"
+        ],
+        "schema_version": "business-completion-1",
+        "status": "completed",
+        "unconfirmed_claims": [],
+        "verified_goals": [
+          "revenue"
+        ]
+      },
+      "host_case_wall_seconds_including_preflight_container_review_collection": 40.316,
+      "error_codes": []
+    },
+    {
+      "case_id": "tps-02",
+      "lane": "rag_only",
+      "run_id": "8753ba3f-27c7-5243-adb9-f4355ab01205",
+      "status": "scored",
+      "expected_completion": "completed",
+      "business_completion": "completed",
+      "strict_correct": true,
+      "model_calls": 4,
+      "tokens": 7043,
+      "rag_worker_status": "succeeded",
+      "rag_receipt": {
+        "business_conclusions_verified": false,
+        "call_id": "call_00_wBC0rJYEmY7X1Yh26D8E0147",
+        "goal_sha256": "894d0d1ba83c77004411a5c7014f75fd64455846daec7cea9a9e96d1b9e223c3",
+        "model_response_sha256": "0bacd5c6ad42f5331f601293603792754ba953185e7946e93e7c0313bd449765",
+        "protocol": "rag-submit-v1",
+        "relevant_chunk_ids": [
+          "0a64c39511ae66b77ab4f29cab3f34c77603c801c1f87abff6b79c7712f2c6c0",
+          "43c0a67648c6afd3616d68ebc02655c44a30c5f5e6559bb1c69360237faffe97"
+        ],
+        "submission": {
+          "artifact_ids": [
+            "640c7df10ecfcf5fae0ccf8e53c265641fac0899b965f0a11a2b488f32c02252"
+          ],
+          "outcome": "complete"
+        },
+        "verdict": "semantic_retrieval"
+      },
+      "rag_error": null,
+      "original_first_query": true,
+      "published_citation_count": 2,
+      "published_citations": [
+        {
+          "chunk_id": "43c0a67648c6afd3616d68ebc02655c44a30c5f5e6559bb1c69360237faffe97",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "corpus_id": "65adeb14-d4b0-4130-b39e-9865e0520dab",
+          "document_id": "075bbce8ff945a8df0b2d3d99eb837143df7c547cea950ece6641581b1b554b4",
+          "end": 36,
+          "goal_score": 0.7128479480743408,
+          "goal_sha256": "7b28ce2dfd8dfe16fa17c21cd1d02f1290301772b21c12637eb37feb08e5ce56",
+          "index_version": "959bdd9d03b18abec6fd92bf26d04c31dfcc23c3d37e5e33164934c2f985eec4",
+          "line_end": 1,
+          "line_start": 1,
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "page": null,
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.7128480289235127,
+          "sha256": "a97a5692d71efa0a8c85cb99f8596f8ef5cc0c631a87752601e64d03b5d3ba7e",
+          "source_id": "ed28809af49b0d699ced4713b34d53e44e465050d0a59f2db6a1add31762b6f0",
+          "source_sha256": "a97a5692d71efa0a8c85cb99f8596f8ef5cc0c631a87752601e64d03b5d3ba7e",
+          "start": 0,
+          "version": "a97a5692d71efa0a8c85cb99f8596f8ef5cc0c631a87752601e64d03b5d3ba7e"
+        },
+        {
+          "chunk_id": "0a64c39511ae66b77ab4f29cab3f34c77603c801c1f87abff6b79c7712f2c6c0",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "corpus_id": "65adeb14-d4b0-4130-b39e-9865e0520dab",
+          "document_id": "6ad4ae6e315921d96504e582031d6661e7216659ea4e6dc1a62caad36c0f7e74",
+          "end": 40,
+          "goal_score": 0.6487799882888794,
+          "goal_sha256": "7b28ce2dfd8dfe16fa17c21cd1d02f1290301772b21c12637eb37feb08e5ce56",
+          "index_version": "959bdd9d03b18abec6fd92bf26d04c31dfcc23c3d37e5e33164934c2f985eec4",
+          "line_end": 1,
+          "line_start": 1,
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "page": null,
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.6487799496185821,
+          "sha256": "7c7896f4614e1a0aa4d42486e2c0ff872c2b10d27f189d0037307b1b44379350",
+          "source_id": "0e3caea7e6ce86f71b68b7ec757070e42e8dac30890ac0a102b5d6911a78933e",
+          "source_sha256": "7c7896f4614e1a0aa4d42486e2c0ff872c2b10d27f189d0037307b1b44379350",
+          "start": 0,
+          "version": "7c7896f4614e1a0aa4d42486e2c0ff872c2b10d27f189d0037307b1b44379350"
+        }
+      ],
+      "completion": {
+        "limited_results_visible": true,
+        "missing_evidence": {},
+        "required_goals": [
+          "documents"
+        ],
+        "schema_version": "business-completion-1",
+        "status": "completed",
+        "unconfirmed_claims": [],
+        "verified_goals": [
+          "documents"
+        ]
+      },
+      "host_case_wall_seconds_including_preflight_container_review_collection": 41.046,
+      "error_codes": []
+    },
+    {
+      "case_id": "tps-03",
+      "lane": "rag_only",
+      "run_id": "71e837aa-ddca-5a1a-9fac-166fe7c491c2",
+      "status": "scored",
+      "expected_completion": "partial",
+      "business_completion": "partial",
+      "strict_correct": true,
+      "model_calls": 4,
+      "tokens": 6038,
+      "rag_worker_status": "succeeded",
+      "rag_receipt": {
+        "business_conclusions_verified": false,
+        "call_id": "call_00_IAZACCsf7LVgtDa2T1TJ6945",
+        "goal_sha256": "00f2e9998b070ff1bf2f262fc63c78530445f5089e6283e8ce0c7b2d1a977cd0",
+        "model_response_sha256": "baf039d3f556a10a0bdc15845a09d64eab82965ba37d4101029ba2073c29a904",
+        "protocol": "rag-submit-v1",
+        "relevant_chunk_ids": [
+          "9edc6ce31f80c4f8db2facb1f1f44496d60935be45a141546f221540887e363e"
+        ],
+        "submission": {
+          "artifact_ids": [
+            "6e418dc7906d3c7bc65a1be81dbd40aac696518f6bb5a3452a7ed821c5d31a73"
+          ],
+          "outcome": "complete"
+        },
+        "verdict": "semantic_retrieval"
+      },
+      "rag_error": null,
+      "original_first_query": true,
+      "published_citation_count": 1,
+      "published_citations": [
+        {
+          "chunk_id": "9edc6ce31f80c4f8db2facb1f1f44496d60935be45a141546f221540887e363e",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "corpus_id": "08b33cea-1fb4-4b03-b6d9-a8548644b5fc",
+          "document_id": "e9117923318bde2f5d75a831a30687e47a504c3db861accbb42e43c5625426a0",
+          "end": 33,
+          "goal_score": 0.6541744470596313,
+          "goal_sha256": "eb1c6e7e6537a306c7bc66ab7daaf244071ff6c55074f6179b8c4966340f3350",
+          "index_version": "c23d9fd66beb8c8bd360d748d51c129b9f6de42273676f44137823339dfb8bff",
+          "line_end": 1,
+          "line_start": 1,
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "page": null,
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.65417446655555,
+          "sha256": "4688f8f90a075ac27d0204eeafe9cfca5dcce070cd02609daa071aaa10ee454d",
+          "source_id": "105691978dab98e690e063d1448bb8ebfd869caabd299447153b60fd053d67bd",
+          "source_sha256": "4688f8f90a075ac27d0204eeafe9cfca5dcce070cd02609daa071aaa10ee454d",
+          "start": 0,
+          "version": "4688f8f90a075ac27d0204eeafe9cfca5dcce070cd02609daa071aaa10ee454d"
+        }
+      ],
+      "completion": {
+        "limited_results_visible": true,
+        "missing_evidence": {
+          "documents": [
+            "document_fact_unverified:offline"
+          ]
+        },
+        "required_goals": [
+          "documents"
+        ],
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "unconfirmed_claims": [],
+        "verified_goals": []
+      },
+      "host_case_wall_seconds_including_preflight_container_review_collection": 39.393,
+      "error_codes": [
+        "BUSINESS_PARTIAL"
+      ]
+    },
+    {
+      "case_id": "tps-04",
+      "lane": "sql_rag",
+      "run_id": "d24e5e5a-da28-59ee-8ce7-fb5bd6566e2a",
+      "status": "scored",
+      "expected_completion": "partial",
+      "business_completion": "partial",
+      "strict_correct": true,
+      "model_calls": 4,
+      "tokens": 6158,
+      "rag_worker_status": "succeeded",
+      "rag_receipt": {
+        "business_conclusions_verified": false,
+        "call_id": "call_00_YFW1WjXtovRURstAFVQY9076",
+        "goal_sha256": "cf31926f383b91186fdf28bd6617f693c1525a722f900972b7504f7737afb927",
+        "model_response_sha256": "a8af8575d59893bbb5fd2df0101a9905a47e37f9851f7b21733919448c595889",
+        "protocol": "rag-submit-v1",
+        "relevant_chunk_ids": [
+          "839660d8b198791966019988ccdb05f37fe5b48a4f94993fed3f14b9da2ee542"
+        ],
+        "submission": {
+          "artifact_ids": [
+            "644018b7733216c6797cb1653e75034be70fbead39147075433a8a02f5e87e70"
+          ],
+          "outcome": "complete"
+        },
+        "verdict": "semantic_retrieval"
+      },
+      "rag_error": null,
+      "original_first_query": true,
+      "published_citation_count": 1,
+      "published_citations": [
+        {
+          "chunk_id": "839660d8b198791966019988ccdb05f37fe5b48a4f94993fed3f14b9da2ee542",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "corpus_id": "1ba04a82-af2d-411a-9125-753a22dcdec2",
+          "document_id": "1bc9260b2daeaa3d78d339aba0940f8f0217dc10bbb19d613060fa6aa683b6ad",
+          "end": 42,
+          "goal_score": 0.7501341700553894,
+          "goal_sha256": "07c368aefd8b8849224b6865fc310247364d091c40cf4957cbc472bc40113112",
+          "index_version": "dbeadf01f029ec117553506700cfb4438a143ae53994de2210d3aad36e1b81d2",
+          "line_end": 1,
+          "line_start": 1,
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "page": null,
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.7501342743715225,
+          "sha256": "1e41a34c728e4bd6f5b13f0d9e3d2ceaa6d2e782cf11b986b9dba19b6ee4c6bb",
+          "source_id": "d6ab727451055823b5b81bc623395e7c856707fdf3e48840f33423bfd738b251",
+          "source_sha256": "1e41a34c728e4bd6f5b13f0d9e3d2ceaa6d2e782cf11b986b9dba19b6ee4c6bb",
+          "start": 0,
+          "version": "1e41a34c728e4bd6f5b13f0d9e3d2ceaa6d2e782cf11b986b9dba19b6ee4c6bb"
+        }
+      ],
+      "completion": {
+        "limited_results_visible": true,
+        "missing_evidence": {
+          "documents": [
+            "matching_document_or_metric_evidence_missing",
+            "required_document_source_missing",
+            "document_fact_unverified:delivery"
+          ]
+        },
+        "required_goals": [
+          "revenue",
+          "documents"
+        ],
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "unconfirmed_claims": [],
+        "verified_goals": [
+          "revenue"
+        ]
+      },
+      "host_case_wall_seconds_including_preflight_container_review_collection": 53.87,
+      "error_codes": [
+        "BUSINESS_PARTIAL"
+      ]
+    },
+    {
+      "case_id": "tps-05",
+      "lane": "rag_only",
+      "run_id": "41b448d9-ecc5-5872-9277-91b5b920d311",
+      "status": "scored",
+      "expected_completion": "completed",
+      "business_completion": "completed",
+      "strict_correct": true,
+      "model_calls": 3,
+      "tokens": 3784,
+      "rag_worker_status": "succeeded",
+      "rag_receipt": {
+        "business_conclusions_verified": false,
+        "call_id": "call_00_vwf8igxWy0hMUFD9knkd3166",
+        "goal_sha256": "9ffcf9239191d27e8f204d01ad13d1d848f5916c14ee9584bff229f3c52633a7",
+        "model_response_sha256": "c73fd70ba70b413e5035be1410980d441b3e5a27fe748ab7a9e80848866f45ac",
+        "protocol": "rag-submit-v1",
+        "relevant_chunk_ids": [
+          "23f80d74ed8b7879adcb7fdb51384e4e956ce7e84998e260c29ddd31fa80c3f3"
+        ],
+        "submission": {
+          "artifact_ids": [
+            "40ea41cdb8379e99d4ec7a94723d8c946aba8a6a7a90154e05e9f4cb9a9d12fa"
+          ],
+          "outcome": "complete"
+        },
+        "verdict": "semantic_retrieval"
+      },
+      "rag_error": null,
+      "original_first_query": true,
+      "published_citation_count": 1,
+      "published_citations": [
+        {
+          "chunk_id": "23f80d74ed8b7879adcb7fdb51384e4e956ce7e84998e260c29ddd31fa80c3f3",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "corpus_id": "221de997-aa76-4c12-acaa-efbc852a1d4f",
+          "document_id": "21d76df34baabc8e80a92ae4c94baa034af878424a3ad241d4631395cdec2af4",
+          "end": 35,
+          "goal_score": 0.8149966597557068,
+          "goal_sha256": "a4b6ed38a21ff7729a60af95e67b56082dacbbdf01fb870c64e9289d090a3a17",
+          "index_version": "e5a4ba73f319df27218fa9e3dc5f204e027def75da0c9c0bdd0a5c6e9a095cf4",
+          "line_end": 1,
+          "line_start": 1,
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "page": null,
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.8149966597557068,
+          "sha256": "301c05bd12938c6ee13d9de88b6063d1f6b79486fca652ef53d5e7f9a3f68660",
+          "source_id": "b4ba6f3ad55e125da5fca000014040aca98c642d93d760a04942423a3313c328",
+          "source_sha256": "301c05bd12938c6ee13d9de88b6063d1f6b79486fca652ef53d5e7f9a3f68660",
+          "start": 0,
+          "version": "301c05bd12938c6ee13d9de88b6063d1f6b79486fca652ef53d5e7f9a3f68660"
+        }
+      ],
+      "completion": {
+        "limited_results_visible": true,
+        "missing_evidence": {},
+        "required_goals": [
+          "documents"
+        ],
+        "schema_version": "business-completion-1",
+        "status": "completed",
+        "unconfirmed_claims": [],
+        "verified_goals": [
+          "documents"
+        ]
+      },
+      "host_case_wall_seconds_including_preflight_container_review_collection": 38.267,
+      "error_codes": []
+    },
+    {
+      "case_id": "tps-06",
+      "lane": "rag_only",
+      "run_id": "82e9b7ed-9269-5b7d-b469-5c940ab69378",
+      "status": "scored",
+      "expected_completion": "partial",
+      "business_completion": "partial",
+      "strict_correct": true,
+      "model_calls": 4,
+      "tokens": 6046,
+      "rag_worker_status": "succeeded",
+      "rag_receipt": {
+        "business_conclusions_verified": false,
+        "call_id": "call_00_Ml50JV79kPeu304625be6594",
+        "goal_sha256": "b70d47f6d54de808f7617acf1de6fe6be151b61def2c498c0f43d0ccfddc2fec",
+        "model_response_sha256": "07cc629c0386af7171c775890c2520e6f7bde1bafdda0a9d814188827ea8f12d",
+        "protocol": "rag-submit-v1",
+        "relevant_chunk_ids": [
+          "1407777a034d60dfe498e4c1219eef030cf2b7e1c61ba2350e2cc909261c9c7c"
+        ],
+        "submission": {
+          "artifact_ids": [
+            "f94884403b403d8132567d313fda6c7647e65fb4270c42f1761ba3a1185b8922"
+          ],
+          "outcome": "complete"
+        },
+        "verdict": "semantic_retrieval"
+      },
+      "rag_error": null,
+      "original_first_query": true,
+      "published_citation_count": 1,
+      "published_citations": [
+        {
+          "chunk_id": "1407777a034d60dfe498e4c1219eef030cf2b7e1c61ba2350e2cc909261c9c7c",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "corpus_id": "e7b37a52-4624-44da-823f-8cfd7477fd08",
+          "document_id": "9f9acf3ee5a5ea5b1db2f484a8e2bbefd6990bdb7f35dfe9e2230ca59e75c49a",
+          "end": 44,
+          "goal_score": 0.7540165781974792,
+          "goal_sha256": "e4245b4f87ff1e56ea16aa4d664768c2f7777f80220ed7eeea0375ca275b5b3d",
+          "index_version": "03c086c7afb99769d31d5397eb0a2e0bd36828b4292b1ac100ebfaf6ac3bcfc8",
+          "line_end": 1,
+          "line_start": 1,
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "page": null,
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.7540165928592342,
+          "sha256": "e58a78f8a96831f84243a8572cbcb3a832915d17f1b82fd3b19faa54661fe07d",
+          "source_id": "82017a80e66af6ca8267c2a975bd12b9195ba51ced2655b67821e646462ae100",
+          "source_sha256": "e58a78f8a96831f84243a8572cbcb3a832915d17f1b82fd3b19faa54661fe07d",
+          "start": 0,
+          "version": "e58a78f8a96831f84243a8572cbcb3a832915d17f1b82fd3b19faa54661fe07d"
+        }
+      ],
+      "completion": {
+        "limited_results_visible": true,
+        "missing_evidence": {
+          "documents": [
+            "document_fact_unverified:causality"
+          ]
+        },
+        "required_goals": [
+          "documents"
+        ],
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "unconfirmed_claims": [
+          "causal_conclusion_not_verified"
+        ],
+        "verified_goals": []
+      },
+      "host_case_wall_seconds_including_preflight_container_review_collection": 38.281,
+      "error_codes": [
+        "BUSINESS_PARTIAL"
+      ]
+    },
+    {
+      "case_id": "tps-07",
+      "lane": "rag_only",
+      "run_id": "d5f9a4e1-c64c-563b-827e-5350ad549369",
+      "status": "frozen_scorer_error",
+      "expected_completion": "completed",
+      "business_completion": "blocked",
+      "strict_correct": null,
+      "model_calls": 5,
+      "tokens": 7686,
+      "rag_worker_status": "failed",
+      "rag_receipt": null,
+      "rag_error": {
+        "category": "tool",
+        "code": "WORKER_LIMIT",
+        "message": "Worker model/tool turn limit reached",
+        "retryable": false
+      },
+      "original_first_query": true,
+      "published_citation_count": 0,
+      "published_citations": [],
+      "completion": {
+        "limited_results_visible": false,
+        "missing_evidence": {
+          "documents": [
+            "matching_document_or_metric_evidence_missing",
+            "required_document_source_missing"
+          ]
+        },
+        "required_goals": [
+          "documents"
+        ],
+        "schema_version": "business-completion-1",
+        "status": "blocked",
+        "unconfirmed_claims": [],
+        "verified_goals": []
+      },
+      "host_case_wall_seconds_including_preflight_container_review_collection": 38.836,
+      "error_codes": [
+        "BUSINESS_BLOCKED",
+        "EVIDENCE_INSUFFICIENT",
+        "WORKER_LIMIT"
+      ]
+    },
+    {
+      "case_id": "tps-08",
+      "lane": "rag_only",
+      "run_id": null,
+      "expected_completion": "blocked",
+      "status": "not_run",
+      "business_completion": null,
+      "strict_correct": null,
+      "model_calls": 0,
+      "tokens": 0
+    }
+  ],
+  "lanes": {
+    "sql_only": {
+      "planned": 1,
+      "terminal_observed": 1,
+      "scored": 1,
+      "strict_correct": 1,
+      "scorer_error": 0,
+      "not_run": 0
+    },
+    "rag_only": {
+      "planned": 6,
+      "terminal_observed": 5,
+      "scored": 4,
+      "strict_correct": 4,
+      "scorer_error": 1,
+      "not_run": 1
+    },
+    "sql_rag": {
+      "planned": 1,
+      "terminal_observed": 1,
+      "scored": 1,
+      "strict_correct": 1,
+      "scorer_error": 0,
+      "not_run": 0
+    }
+  },
+  "confusion_matrix": [
+    {
+      "expected": "completed",
+      "actual": "blocked",
+      "count": 1
+    },
+    {
+      "expected": "completed",
+      "actual": "completed",
+      "count": 3
+    },
+    {
+      "expected": "partial",
+      "actual": "partial",
+      "count": 3
+    }
+  ],
+  "observed_business_completions": {
+    "completed": 3,
+    "partial": 3,
+    "blocked": 1
+  },
+  "four_layers": {
+    "authorization": {
+      "audited_runtime": 7,
+      "violations_observed": 0,
+      "planned_host_denial_not_run": 1
+    },
+    "p3_numeric_evidence": {
+      "applicable": 2,
+      "verified_correct_value_unit_and_pins": 2,
+      "records": [
+        {
+          "case_id": "tps-01",
+          "evidence_id": "95cf524a-e64e-4a84-8902-64720a327d1e",
+          "verification_id": "78f61bf3-38e3-4848-bf9c-9495a1d5b172",
+          "verification_sha256": "e76e1c642d5a3b34f72ce170cb4da98a2d95bb4a5920ef79886301b37fc1807a",
+          "source_sha256": "eaab6bc88058e86a873a23180dfc38fad22f443dc216401df6c9e25acab86a2f",
+          "semantic_sha256": "7f26ef6a27317f8edd6541abe38b27bbdb1bf2635b70640617ea99d4c562bd85",
+          "metric_sha256": "6d26cb45971dbf48b24fdd49d5541bf83a41610ebe1d2d2178986e246feb6450",
+          "value": {
+            "denominator": null,
+            "numerator": null,
+            "unit": "CNY",
+            "value": "637.4500000000000000",
+            "window_days": 31
+          },
+          "verdict": "verified"
+        },
+        {
+          "case_id": "tps-04",
+          "evidence_id": "fe70d695-0b23-41ac-9af3-da8590dceb0f",
+          "verification_id": "8dcb74da-09c3-4847-8d72-d8e3d2a35baf",
+          "verification_sha256": "2e2aa14a3a8cfb76c98fadc2dd09d0ba089aae19b49e0f3ad6b29843ce5aa816",
+          "source_sha256": "eaab6bc88058e86a873a23180dfc38fad22f443dc216401df6c9e25acab86a2f",
+          "semantic_sha256": "7f26ef6a27317f8edd6541abe38b27bbdb1bf2635b70640617ea99d4c562bd85",
+          "metric_sha256": "6d26cb45971dbf48b24fdd49d5541bf83a41610ebe1d2d2178986e246feb6450",
+          "value": {
+            "denominator": null,
+            "numerator": null,
+            "unit": "CNY",
+            "value": "637.4500000000000000",
+            "window_days": 31
+          },
+          "verdict": "verified"
+        }
+      ]
+    },
+    "published_rag_citations": {
+      "runs_with_published_citations": 5,
+      "fresh_inspection_all_existing_references_valid": true
+    },
+    "rag_completion": {
+      "applicable_observed": 6,
+      "worker_succeeded_with_receipt": 5,
+      "worker_failed_without_receipt": 1,
+      "first_query_exact_goal": 6
+    },
+    "business": {
+      "completed": 3,
+      "partial": 3,
+      "blocked": 1,
+      "not_run": 1
+    }
+  },
+  "provider": {
+    "configured_provider": "deepseek",
+    "endpoint": "https://api.deepseek.com",
+    "requested_model": "deepseek-flash",
+    "returned_models": [
+      "deepseek-flash"
+    ],
+    "sdk_adapter_model_provider_labels": [
+      "openai"
+    ],
+    "thinking": "disabled",
+    "temperature": 0,
+    "timeout_seconds": 30,
+    "sdk_retries": 0,
+    "outer_retries": 0,
+    "attempts": 25,
+    "all_responses_known": true,
+    "input_tokens": 34811,
+    "output_tokens": 2509,
+    "total_tokens": 37320,
+    "cache_hit_tokens": 19584,
+    "cache_miss_tokens": 15227,
+    "cache_is_not_context_token_reduction": true
+  },
+  "cost": {
+    "peak_usd_per_million": {
+      "cache_hit": "0.006",
+      "cache_miss": "0.3",
+      "output": "1.2"
+    },
+    "estimate_usd": "0.007696404",
+    "authorized_estimate_cap_usd": "0.108",
+    "official_pricing_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "actual_bill_status": "not_reconciled",
+    "actual_bill_usd": null
+  },
+  "performance": {
+    "campaign_seconds": 293.23399999993853,
+    "model_attempt_client_observed_ms": {
+      "n": 25,
+      "p50": 1062.7784680000332,
+      "p95": 1767.169449999983
+    },
+    "case_engineering_wall_seconds": {
+      "n": 7,
+      "p50": 39.393,
+      "p95": 53.87
+    },
+    "percentile_method": "nearest-rank; small nonblind smoke, includes local container startup and collection; not API/Web/SLA performance"
+  },
+  "budget": {
+    "admission": {
+      "calls": 7,
+      "reported_tokens": 37320,
+      "total_tokens": 37320,
+      "usage_complete": true
+    },
+    "pending": 0,
+    "unknown_calls": 0,
+    "unknown_usage": 0,
+    "model_attempts_max": 56,
+    "tokens_max": 90000,
+    "per_run_calls_max": 8,
+    "per_child_calls_max": 4,
+    "overages": 0
+  },
+  "failure_classification": [
+    {
+      "case_id": "tps-07",
+      "layer": "RAG completion and worker turn budget",
+      "codes": [
+        "EVIDENCE_INSUFFICIENT",
+        "WORKER_LIMIT",
+        "BUSINESS_BLOCKED"
+      ],
+      "description": "Initial original English query returned no matches; second rewrite retrieved an authorized passage but original-goal score 0.5200636386871338 is below frozen 0.55. complete submission was refused and the four-turn Worker ended without a receipt. Report safely blocked."
+    },
+    {
+      "case_id": "tps-07",
+      "layer": "frozen evaluation adapter",
+      "code": "TypeError",
+      "description": "p7_policy_smoke.py:237 indexes rag_completion[verdict] while failed TaskResult legally has rag_completion=null. No strict score was emitted; next case was not dispatched."
+    }
+  ],
+  "offline_verification": {
+    "scored_agreement": 6,
+    "scored_denominator": 6,
+    "same_error_reproduced": 1,
+    "fresh_durable_collection_agreement": 7,
+    "fresh_durable_denominator": 7,
+    "score_disagreements": 0,
+    "new_provider_calls": 0,
+    "call_order_only_difference": "An unordered SQL SELECT changed list order; identical primary keys and every row hash were proven equal. Initial over-strict comparison log retained; no frozen scorer repair."
+  },
+  "preservation": {
+    "source_and_freeze_unchanged": true,
+    "old_files_unchanged": 631,
+    "old_database_rows_unchanged": 8188,
+    "old_gold_scorer_seal_history_preserved": true,
+    "new_document_ingestion_or_seed_or_permission_change": false
+  },
+  "not_run": [
+    "tps-08 in this campaign",
+    "new live retries or second campaign",
+    "full pytest",
+    "browser smoke",
+    "Gate3",
+    "commit/push"
+  ],
+  "next_action_proposal": "Authorize only a separate minimal nullable-receipt scorer repair and offline re-evaluation of original signed records. Do not alter this freeze/Gold/runtime, and obtain new authorization for any future paid campaign."
+}

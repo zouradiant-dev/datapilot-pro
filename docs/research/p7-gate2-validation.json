@@ -2461,5 +2461,44 @@
     "container_memory_limit_bytes": 0,
     "vm_memory_and_background_load": "not_measured"
   },
-  "reporter_sha256": "8161644cd026d83fdd157410419114d35758885ff4109d6a474ba37cd39b257f"
+  "reporter_sha256": "8161644cd026d83fdd157410419114d35758885ff4109d6a474ba37cd39b257f",
+  "post_push_ci": {
+    "verified_at": "2026-10-24T14:41:28.541719+00:00",
+    "repository": "zouradiant-dev/datapilot-pro",
+    "commit": "18271d7b5159dff7e01bb1e6edd3257f9fd78be4",
+    "run_id": 40096866653,
+    "workflow": "DataPilot checks",
+    "status": "completed",
+    "conclusion": "success",
+    "actions_url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/40096866653",
+    "run_attempt": 1,
+    "python_jobs": [
+      {
+        "python": "3.13",
+        "job_id": 120880848945,
+        "status": "success",
+        "passed": 709,
+        "skipped": 17,
+        "seconds": "1392.27",
+        "ruff_check": "passed",
+        "ruff_format": "262 files already formatted",
+        "logs_sha256": "50b222242d2fa0ffbdb45fd87b59428c7ca7350dd102659dd026f427a73f93ff"
+      },
+      {
+        "python": "3.11",
+        "job_id": 120880849144,
+        "status": "success",
+        "passed": 709,
+        "skipped": 17,
+        "seconds": "1668.26",
+        "ruff_check": "passed",
+        "ruff_format": "262 files already formatted",
+        "logs_sha256": "08c707482e9328eac33ea72263c6521c76d7209fa3a70982886e9953a1a7e58f"
+      }
+    ],
+    "verification_method": "GitHub REST actions/runs?head_sha + actions/runs/{id}/jobs; existing saved job logs for exact test totals",
+    "ci_boundary": "Real PostgreSQL/MCP + Fake/Mock; no new DeepSeek calls",
+    "paid_calls_this_verification": 0
+  },
+  "delivery_snapshot_note": "Original local metrics/checks and pre-push snapshot retained; post_push_ci is the verified delivery status."
 }

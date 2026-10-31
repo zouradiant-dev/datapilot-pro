@@ -1,0 +1,411 @@
+{
+  "schema_version": "qwen-lifecycle-engineering-results-1",
+  "verified_at": "2026-10-30T01:09:48.142779+00:00",
+  "head": "f8b122438d2c67ab26e618ecded72ecc18454015",
+  "branch": "p7-ci-verification-20261028",
+  "implementation": {
+    "freeze_id": "qwen-lifecycle-v1-77ceb2a7eaca",
+    "manifest_sha256": "776a2f11b9d3a28509391dd6c4c5eaa7f48e16354ef85b97f90f93b447fd2d4b",
+    "payload_sha256": "77ceb2a7eaca547c4945d24c770138d89041cfd62ea75ea37c72ba8816ccc5f2",
+    "runtime_source_sha256": "e9e252b1b834d5cc3ce2271ef00af4f0e437096d9d1e113c5c756172a1d1222c",
+    "files": 335
+  },
+  "source_unchanged_since_handoff": true,
+  "release_image": "sha256:420275aadc6a09eb3481791d4a83c0cc72268a6a6b7d0367e84842025ef3cd25",
+  "junit": {
+    "regression-py311-final2.xml": {
+      "tests": 992,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 19.821,
+      "passed": 992,
+      "path": "artifacts/p7/qwen-lifecycle-v1/regression-py311-final2.xml",
+      "sha256": "e7a086e8393287e1efccc2c25939aaccece2f76ccda70b3fdb05e3861c05fca2"
+    },
+    "regression-py313-final2.xml": {
+      "tests": 992,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 20.383,
+      "passed": 992,
+      "path": "artifacts/p7/qwen-lifecycle-v1/regression-py313-final2.xml",
+      "sha256": "4c86caa32ae1e4c9a4c018e9e200277f247ee6f7a3028e500cf3c7c8a5237533"
+    },
+    "qwen-win-r1.xml": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 276.812,
+      "passed": 17,
+      "path": "artifacts/p7/qwen-lifecycle-v1/qwen-win-r1.xml",
+      "sha256": "def81907730cd1b6fbb8b77a7fd0d0d0a22a85b8b211f584cc4930621a5a9ac7"
+    },
+    "qwen-capacity-r2.xml": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 26.079,
+      "passed": 1,
+      "path": "artifacts/p7/qwen-lifecycle-v1/qwen-capacity-r2.xml",
+      "sha256": "4912b864f56c1f237964df034c3864bd30926d4fc7dc17a8ed2807eac3ad9716"
+    },
+    "qwen-exit-r1.xml": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 32.899,
+      "passed": 2,
+      "path": "artifacts/p7/qwen-lifecycle-v1/qwen-exit-r1.xml",
+      "sha256": "21325972110f3c2fbfa097b987a8a9451011c9e66bce09c81513af683bad563d"
+    },
+    "pg-py311-r1.xml": {
+      "tests": 81,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 816.488,
+      "passed": 81,
+      "path": "artifacts/p7/qwen-lifecycle-v1/pg-py311-r1.xml",
+      "sha256": "dd8583613aa8fec3413ccb11d2686e626a45d27a28ef530c03a0ca356a1d0be4"
+    },
+    "linux-cpu/linux-cpu-r1.xml": {
+      "tests": 55,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 451.698,
+      "passed": 55,
+      "path": "artifacts/p7/qwen-lifecycle-v1/linux-cpu/linux-cpu-r1.xml",
+      "sha256": "8902d234c02efa192e2378651b728eca137bc9f16464415e8cdbf1707f6600e7"
+    },
+    "linux-gpu/linux-gpu.xml": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 95.115,
+      "passed": 2,
+      "path": "artifacts/p7/qwen-lifecycle-v1/linux-gpu/linux-gpu.xml",
+      "sha256": "77a7a6c6fdf447af58f086379c249fdaa7799d6f1d793d264ec9996327b36cfe"
+    },
+    "linux-cpu-final/linux-cpu-final.xml": {
+      "tests": 56,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 489.233,
+      "passed": 56,
+      "path": "artifacts/p7/qwen-lifecycle-v1/linux-cpu-final/linux-cpu-final.xml",
+      "sha256": "5519290efe1cfb079b0ed051f28b8664179c598a1498d1a361d8ce8c8f19d0d2"
+    },
+    "final-targeted-py311.xml": {
+      "tests": 55,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 4.688,
+      "passed": 55,
+      "path": "artifacts/p7/qwen-lifecycle-v1/final-targeted-py311.xml",
+      "sha256": "d633a2f4c85423c82e509a488a94cedc5cd757a7d8eb8cf96ce94bca33b72089"
+    },
+    "final-targeted-py313.xml": {
+      "tests": 55,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 4.507,
+      "passed": 55,
+      "path": "artifacts/p7/qwen-lifecycle-v1/final-targeted-py313.xml",
+      "sha256": "284ef25d00b29e64b530515ed5cada45bdbd0cf43f0bd578874c3c0a8dd2d6e2"
+    },
+    "qwen-host313-continue.xml": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 105.42,
+      "passed": 2,
+      "path": "artifacts/p7/qwen-lifecycle-v1/qwen-host313-continue.xml",
+      "sha256": "0d9541a246a36968280eecc1a9e6e94f9a37b5c6f1785feefcbb4bce2379f330"
+    },
+    "pg-py313-continue.xml": {
+      "tests": 81,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 805.508,
+      "passed": 81,
+      "path": "artifacts/p7/qwen-lifecycle-v1/pg-py313-continue.xml",
+      "sha256": "1d8b9b5d02b087d7b1cadf13d0118a0f9e2fbfecc80dd45415d97705cc1d7e11"
+    },
+    "linux-gpu-final/linux-gpu-final.xml": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 106.88,
+      "passed": 2,
+      "path": "artifacts/p7/qwen-lifecycle-v1/linux-gpu-final/linux-gpu-final.xml",
+      "sha256": "4cd5e193e1bee85478ed8857dd835dd403fa658b5ab490cf9e202f33bae01ca3"
+    }
+  },
+  "deployment_negatives": {
+    "corrupt_files": {
+      "mode": "corrupt_files",
+      "model_requests": 0,
+      "worker_dispatched": false,
+      "error_code": "EMBEDDING_NOT_READY",
+      "retryable": false,
+      "seconds": 5.757047591999992,
+      "ready": false,
+      "surviving_children": []
+    },
+    "cuda_absent": {
+      "mode": "cuda_absent",
+      "model_requests": 0,
+      "worker_dispatched": false,
+      "cuda_available": false,
+      "error_code": "EMBEDDING_NOT_READY",
+      "retryable": false,
+      "seconds": 10.77174182799996,
+      "ready": false,
+      "surviving_children": []
+    },
+    "manifest_drift": {
+      "mode": "manifest_drift",
+      "model_requests": 0,
+      "worker_dispatched": false,
+      "error_code": "EMBEDDING_NOT_READY",
+      "retryable": false,
+      "seconds": 0.009182194000004529,
+      "ready": false,
+      "surviving_children": []
+    },
+    "missing_files": {
+      "mode": "missing_files",
+      "model_requests": 0,
+      "worker_dispatched": false,
+      "error_code": "EMBEDDING_NOT_READY",
+      "retryable": false,
+      "seconds": 5.597500371000024,
+      "ready": false,
+      "surviving_children": []
+    }
+  },
+  "parent_exit": {
+    "parent-crash-before.json": {
+      "pid": 39,
+      "owned_pids": [
+        39
+      ],
+      "alive_after_3s": [
+        39
+      ],
+      "cleanup_passed": false
+    },
+    "parent-crash-after.json": {
+      "pid": 39,
+      "owned_pids": [
+        39
+      ],
+      "alive_after_3s": [],
+      "cleanup_passed": true
+    },
+    "gpu-parent-after-20261030.json": {
+      "pid": 39,
+      "owned_pids": [
+        39
+      ],
+      "alive_after_3s": [],
+      "cleanup_passed": true
+    }
+  },
+  "cleanup_before": [
+    {
+      "result": "TOOL_TIMEOUT",
+      "call_seconds": 10.015914999879897,
+      "close_error": "TOOL_ERROR",
+      "cleanup_seconds": 20.087878099875525,
+      "session_seconds": 31.497301700059325,
+      "cancel": false
+    },
+    {
+      "result": "cancelled",
+      "call_seconds": 0.20592830004170537,
+      "close_error": "TOOL_ERROR",
+      "cleanup_seconds": 29.93358449987136,
+      "session_seconds": 31.465457800077274,
+      "cancel": true
+    }
+  ],
+  "cleanup_after_windows": [
+    {
+      "mode": "encode_delay",
+      "cancel": true,
+      "outcome": "cancelled",
+      "call_seconds": 0.20149580016732216,
+      "backend": "injected delay in real MCP; not Qwen quality inference",
+      "cleanup_seconds": 0.2809920001309365,
+      "owner_events": [
+        {
+          "phase": "cleanup_armed_2s",
+          "pid": 19144,
+          "wall_time": 1793284869.2874777
+        }
+      ],
+      "session_seconds": 9.273305699927732
+    },
+    {
+      "mode": "encode_delay",
+      "cancel": false,
+      "outcome": "TOOL_TIMEOUT",
+      "call_seconds": 10.005178899969906,
+      "backend": "injected delay in real MCP; not Qwen quality inference",
+      "cleanup_seconds": 0.2676951000466943,
+      "owner_events": [
+        {
+          "phase": "cleanup_armed_2s",
+          "pid": 38908,
+          "wall_time": 1793284860.0212557
+        }
+      ],
+      "session_seconds": 19.784297700040042
+    },
+    {
+      "mode": "encode_gil",
+      "cancel": false,
+      "outcome": "TOOL_TIMEOUT",
+      "call_seconds": 10.003341499948874,
+      "backend": "injected delay in real MCP; not Qwen quality inference",
+      "cleanup_seconds": 2.0428282998036593,
+      "owner_events": [
+        {
+          "phase": "cleanup_armed_2s",
+          "pid": 49956,
+          "wall_time": 1793284888.3968978
+        },
+        {
+          "phase": "cleanup_deadline_terminated",
+          "pid": 49956,
+          "wall_time": 1793284890.4121494
+        }
+      ],
+      "session_seconds": 20.88638719986193
+    },
+    {
+      "mode": "init_delay",
+      "cancel": true,
+      "outcome": "cancelled",
+      "call_seconds": 0.20989910000935197,
+      "backend": "injected delay in real MCP; not Qwen quality inference",
+      "cleanup_seconds": 0.01579550001770258,
+      "owner_events": [
+        {
+          "phase": "cleanup_armed_2s",
+          "pid": 39524,
+          "wall_time": 1793284892.1713653
+        }
+      ],
+      "session_seconds": 1.7427823999896646
+    }
+  ],
+  "historical_seals": {
+    "artifacts/p7/embedding-ab-v1/result-seal.json": {
+      "sha256": "c4e4cf1fd3706d2d4bab5eb8cca2a85246f8237338b592173912c334f9b803c9",
+      "files": 77,
+      "valid": true
+    },
+    "artifacts/p7/three-policy-smoke-v1/live-20261029/result-seal.json": {
+      "sha256": "d6f86460a27ac4781cf2917afee28d4a79dda74f5f750dbb48aeafebe8ef17e7",
+      "files": 136,
+      "valid": true
+    },
+    "artifacts/p7/three-policy-scorer-v2/result-seal-final.json": {
+      "sha256": "8b63aca91235bee9dc9fb1506637c985a8b59e88ec7324f2e203cdc29e3d2f56",
+      "files": 29,
+      "valid": true
+    }
+  },
+  "phase1_snapshot": {
+    "files": 292,
+    "valid": true
+  },
+  "protected_product_namespaces_unchanged": true,
+  "model_api_calls": 0,
+  "production_default": "BGE 512 ONNX, unchanged",
+  "not_run": [
+    "remote_github_ci",
+    "paid_live",
+    "new_business_quality_benchmark",
+    "production_default_switch",
+    "gate3_fault_matrix",
+    "multi_host_capacity"
+  ],
+  "readiness": {
+    "tested_local_engineering": true,
+    "phase2c_quality_accepted": false,
+    "production_rollout_approved": false
+  },
+  "failure_history": [
+    {
+      "path": "artifacts/p7/qwen-lifecycle-v1/qwen-capacity-r1.xml",
+      "failed": 1,
+      "cause": "Test hit existing lock_timeout instead of targeted statement_timeout; production unchanged",
+      "later": "qwen-capacity-r2.xml"
+    },
+    {
+      "path": "artifacts/p7/qwen-lifecycle-v1/linux-cpu-perf.log",
+      "cause": "Trusted probe lacked fixed source PYTHONPATH",
+      "later": "linux-cpu-perf-r2.log"
+    },
+    {
+      "path": "artifacts/p7/qwen-lifecycle-v1/smoke-r1.log",
+      "cause": "Actual RAM below unchanged admission floor; model loads=0"
+    },
+    {
+      "path": "artifacts/p7/qwen-lifecycle-v1/smoke-r2.log",
+      "cause": "Actual RAM below unchanged admission floor; model loads=0"
+    },
+    {
+      "path": "artifacts/p7/qwen-lifecycle-v1/old-qwen-recovery.log",
+      "cause": "Concurrent model capacity safely denied",
+      "later": "old-qwen-recovery-r3.log"
+    },
+    {
+      "path": "artifacts/p7/qwen-lifecycle-v1/old-qwen-recovery-r2.log",
+      "cause": "Host settings mismatch safely denied",
+      "later": "old-qwen-recovery-r3.log"
+    },
+    {
+      "path": "artifacts/p7/qwen-lifecycle-v1/seal-build-attempt1.log",
+      "cause": "Windows cannot stat a Linux pytest temporary symlink",
+      "resolution": "Exclude pytest temporary directories/aliases from result packaging; originals retained, actual test outputs included"
+    }
+  ],
+  "version_applicability": {
+    "pre_linux_parent_binding": [
+      "regression-py311-final2.xml",
+      "regression-py313-final2.xml",
+      "qwen-win-r1.xml",
+      "qwen-capacity-r2.xml",
+      "qwen-exit-r1.xml",
+      "pg-py311-r1.xml",
+      "linux-cpu/linux-cpu-r1.xml",
+      "linux-gpu/linux-gpu.xml"
+    ],
+    "final_source": [
+      "linux-cpu-final/linux-cpu-final.xml",
+      "final-targeted-py311.xml",
+      "final-targeted-py313.xml",
+      "qwen-host313-continue.xml",
+      "pg-py313-continue.xml",
+      "linux-gpu-final/linux-gpu-final.xml"
+    ],
+    "reason": "Last change is the fixed Qwen Linux bootstrap parent-death binding; default BGE and Windows behavior unchanged. Earlier full regressions are not presented as fresh final-source executions."
+  }
+}

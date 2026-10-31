@@ -1,0 +1,224 @@
+{
+  "schema_version": "host-goal-requirement-repair-results-2",
+  "result": "PASS",
+  "created_at": "2026-10-30T03:31:37.669312+00:00",
+  "branch": "p7-ci-verification-20261028",
+  "head": "f8b122438d2c67ab26e618ecded72ecc18454015",
+  "tests": {
+    "before-py311": {
+      "tests": 32,
+      "failures": 14,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 18,
+      "seconds": 0.394
+    },
+    "unit-regression-py311": {
+      "tests": 201,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 200,
+      "seconds": 4.273
+    },
+    "unit-regression-py313": {
+      "tests": 201,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 200,
+      "seconds": 4.611
+    },
+    "ownership-pg311": {
+      "tests": 20,
+      "failures": 20,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "seconds": 20.892
+    },
+    "unit-final-py311": {
+      "tests": 201,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 201,
+      "seconds": 4.29
+    },
+    "unit-final-py313": {
+      "tests": 201,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 201,
+      "seconds": 4.186
+    },
+    "ownership-pg311-r2": {
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 20,
+      "seconds": 420.397
+    },
+    "ownership-pg313": {
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 6,
+      "seconds": 194.054
+    },
+    "compatibility-pg311": {
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 21,
+      "seconds": 295.448
+    },
+    "compatibility-pg313": {
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 21,
+      "seconds": 296.647
+    },
+    "qwen-negative-pg311": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 1,
+      "seconds": 69.002
+    }
+  },
+  "final_nonintegration_passed": 402,
+  "final_real_pg_mcp_passed": 69,
+  "py313_new_pg_deselected": 14,
+  "preregistered_parsing_cases": 30,
+  "preregistration_sha256": "64f1316bd83080b54258cb2e4c7dfd34b98f31b64d064659e38d1cc8cb28deff",
+  "final_implementation_manifest_sha256": "6d63aa709a1dcf6543bf5d5ce7316ccacec2b37a114c2f35b90c8246dfa9639c",
+  "source_and_test_sha256": {
+    "src/datapilot/orchestration/rag_completion.py": "fb3d3374a7410bb26e07a7d89a2787309594c3626f778ff8cd39a54854781457",
+    "tests/test_host_goal_requirements.py": "da76d06f317a8bc9c1620c1e2a4449b9b2e20fff3de717f5e5101e53689f674e",
+    "tests/test_host_goal_postgres.py": "946f5184ab650872adb415e86675a5e53a9fc53a7c8b7104e48ac34e0cfab470",
+    "tests/host_goal_probe.py": "ccccf50175f19be56c61970f3849aa986754fda7410b5672be96b44972624a9e",
+    "tests/fixtures/rag/host-goal-requirements-v2.json": "176d3e00fbe32de52d9e4a5dbfff9a86fed9ca2282a82b625dbf6d4905adae82"
+  },
+  "only_product_delta": [
+    "src/datapilot/orchestration/rag_completion.py"
+  ],
+  "requirement_policy": "host-goal-requirements-v2",
+  "receipt_protocol": "rag-submit-v1",
+  "retrieval_protocol": "retrieval-task-v1",
+  "index_and_embedding_policy_unchanged": true,
+  "legacy_rag_restore": "RECOVERY_IDENTITY; no silent reinterpretation, migration, reissue, artifact or budget changes",
+  "historical_integrity": {
+    "created_at": "2026-10-30T03:24:41.708088+00:00",
+    "old_results": [
+      {
+        "seal": "artifacts/p7/qwen-business-pilot-v1/result-seal.json",
+        "sha256": "80c990763d283edd53aeeaff6ae665458b3a6c8296b9c755174855664819e62d",
+        "verified_files": 239,
+        "mismatches": []
+      },
+      {
+        "seal": "artifacts/p7/qwen-lifecycle-v1/result-seal.json",
+        "sha256": "c8ff5a8d798470d349fe6fd0c1fca85f27a9e698cdbfcf9bc7270b48e2ac5e2b",
+        "verified_files": 181,
+        "mismatches": []
+      },
+      {
+        "seal": "artifacts/p7/embedding-ab-v1/result-seal.json",
+        "sha256": "c4e4cf1fd3706d2d4bab5eb8cca2a85246f8237338b592173912c334f9b803c9",
+        "verified_files": 77,
+        "mismatches": []
+      },
+      {
+        "seal": "artifacts/p7/three-policy-smoke-v1/live-20261029/result-seal.json",
+        "sha256": "d6f86460a27ac4781cf2917afee28d4a79dda74f5f750dbb48aeafebe8ef17e7",
+        "verified_files": 136,
+        "mismatches": []
+      },
+      {
+        "seal": "artifacts/p7/three-policy-scorer-v2/result-seal-final.json",
+        "sha256": "8b63aca91235bee9dc9fb1506637c985a8b59e88ec7324f2e203cdc29e3d2f56",
+        "verified_files": 29,
+        "mismatches": []
+      }
+    ],
+    "unchanged_parent_files": 334,
+    "only_intended_delta": [
+      "src/datapilot/orchestration/rag_completion.py"
+    ],
+    "historical_pilot_results": {
+      "bge": 14,
+      "qwen": 15,
+      "planned_each": 16
+    },
+    "old_databases_not_written": true,
+    "historical_database_full_row_reaudit": "not_run"
+  },
+  "database": {
+    "at": "2026-10-30T03:27:02.048680+00:00",
+    "new_database": "datapilot_test_host_goal_repair_v2_20261030",
+    "counts": {
+      "runs": 64,
+      "calls": 318,
+      "ledger": 64,
+      "artifacts": 100
+    },
+    "policy_counts": [
+      {
+        "policy": "host-goal-requirements-v2",
+        "count": 48
+      },
+      {
+        "policy": null,
+        "count": 16
+      }
+    ],
+    "call_status_counts": [
+      {
+        "kind": "model",
+        "status": "complete",
+        "count": 158
+      },
+      {
+        "kind": "tool",
+        "status": "complete",
+        "count": 156
+      },
+      {
+        "kind": "tool",
+        "status": "uncertain",
+        "count": 4
+      }
+    ],
+    "model_modes": [
+      "fake"
+    ],
+    "provider_requests": 0,
+    "notes": "Issued/uncertain rows intentionally retained by the passing original unknown-outcome fault tests; no automatic resend or zero settlement. Legacy v1 test records intentionally retained. Counts include all test setups and fault records, not business-quality task counts."
+  },
+  "paid_provider_requests": 0,
+  "full_pytest": "not_run",
+  "remote_ci": "not_run",
+  "linux_docker_revalidation": "not_run",
+  "historical_qc06_reexecution": "not_run",
+  "historical_pilot_scores_unchanged": {
+    "bge": "14/16",
+    "qwen": "15/16"
+  },
+  "default_bge_unchanged": true,
+  "new_dev_expansion": "not_run",
+  "commit_or_push": false,
+  "limits": [
+    "Finite Chinese/English grammar, not arbitrary-language semantic understanding",
+    "Legacy RAG Run cannot be resumed/re-published by new code without a separately reviewed compatibility decision",
+    "Expected fault records remain uncertain/corrupt in isolated test DB; never auto-clean or resend",
+    "Scripted decisions and local embeddings do not measure paid autonomous LLM quality"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "checked_at": "2026-10-25T07:05:06.806513+00:00",
+  "frozen_files_verified": 152,
+  "implementation_sha256": "0094ab595c62b2fadef192728399300855754a97455b19a35d4bb24ffc0ed18f",
+  "seals_verified": true,
+  "planned_cases": 60,
+  "runtime_configs": 54,
+  "profile": {
+    "model": "deepseek-flash",
+    "provider": "deepseek",
+    "base_url": "https://api.deepseek.com",
+    "thinking": "disabled",
+    "sdk_max_retries": 0,
+    "temperature": 0.0,
+    "max_output_tokens": 1200,
+    "key_configured": true,
+    "key_disclosed": false,
+    "model_requests_in_precheck": 0
+  },
+  "exclusions": {
+    "excluded_c_definitions_absent": 2,
+    "metric_999999_absent": true,
+    "dataset_999999_absent": true
+  },
+  "permit_sha256": "93ec7474b5c4ebf114bfd6100bff5194970e7e3727b4e0039ae9d2b105b238b1",
+  "price_snapshot_sha256": "021b487bb5aa69f95f34e5821ae837f6f8716d1f4b41f89c90769b75215107f0",
+  "provider_bill": null,
+  "status": "precheck_passed_pending_fresh_mcp_admission",
+  "authorization": {
+    "source": "direct user message this turn",
+    "runtime_configs": 54,
+    "max_provider_calls": 432,
+    "max_total_tokens": 972000,
+    "concurrency": 1,
+    "automatic_retries": 0,
+    "paid_live_authorized": true,
+    "gate3_authorized": false,
+    "commit_push_authorized": false
+  }
+}

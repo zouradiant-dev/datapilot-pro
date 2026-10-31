@@ -1,0 +1,567 @@
+{
+  "schema_version": "trusted-goal-scope-delivery-1",
+  "at": "2026-10-30T12:19:02.278534+00:00",
+  "status": "PASS_BOUNDED_ENGINEERING",
+  "gates": {
+    "A": "pass_on_registered_negative_tests",
+    "B": "pass_on_explicit_confirmed_host_contracts",
+    "C": "pass_on_new_and_legacy_identity_and_unknown_tests",
+    "D": "pass_on_selected_legacy_regressions"
+  },
+  "not_a_business_quality_benchmark": true,
+  "no_universal_language_guarantee": true,
+  "requirement_policy": "host-goal-requirements-v4",
+  "freeze_sha256": "dbba75bc460e840cf5c7331e6df6fbf10c467645e99eda44d5d143015efc57a8",
+  "goal_source_sha256": "6dc25f624ccdabc81b4951d6c6bd9e0a495271eb9c16b56499ac525952371cab",
+  "gold_revisions": {
+    "original": "13e5b9524009a7fba666cdaf05d9bb667345585d5e0efcc6075bf60d0b830703",
+    "active": "1aadce49418f6461e93ffd09ffe53565747817d965c86b6bd00418d22674ffb8",
+    "changes_retained": "semantic-fixture-revision.json"
+  },
+  "baseline": {
+    "pre_product_valid_v3_unit_baseline": {
+      "passed": 42,
+      "failed": 18
+    },
+    "initial_fixture_error": {
+      "failed": 60,
+      "reason": "test Target missing owner, no product assertion reached"
+    },
+    "corrected_data_retained_v3_projection": {
+      "matched": 42,
+      "mismatch": 18,
+      "executed_after_product_edits": true
+    }
+  },
+  "public_safety_cases": 60,
+  "public_status_gold_counts": {
+    "completed": 30,
+    "unavailable": 26,
+    "partial": 4
+  },
+  "classification_diagnostic": {
+    "correct": 48,
+    "n": 60,
+    "note": "Not a semantic parser repair; class differences remain, but cannot confer completion"
+  },
+  "tests": {
+    "before-py311": {
+      "tests": 60,
+      "failures": 60,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "path": "artifacts/p7/trusted-goal-scope-v4/before-py311.xml",
+      "sha256": "22e797ed561fddcc6e979a13aa516f45ad9a70ed2f046c3b260a7bc2f998c604"
+    },
+    "before-py311-r2": {
+      "tests": 60,
+      "failures": 18,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 42,
+      "path": "artifacts/p7/trusted-goal-scope-v4/before-py311-r2.xml",
+      "sha256": "11e365498e8ca8ecd7cfe5e3f893f9602a6e1164f6d0c91ad5ab32e038f42ec7"
+    },
+    "unit-final-r2-py311": {
+      "tests": 550,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 550,
+      "path": "artifacts/p7/trusted-goal-scope-v4/unit-final-r2-py311.xml",
+      "sha256": "7ec65280e192f5c169ee1352ee448280e849e17a582afa8e9cde94230b2d17e7"
+    },
+    "unit-final-r2-py313": {
+      "tests": 550,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 550,
+      "path": "artifacts/p7/trusted-goal-scope-v4/unit-final-r2-py313.xml",
+      "sha256": "368dd4b4b4d3ce9b07b29532a86a851cd8d27e46805245b7ace1f76b80034c48"
+    },
+    "scope-pg311": {
+      "tests": 5,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 4,
+      "path": "artifacts/p7/trusted-goal-scope-v4/scope-pg311.xml",
+      "sha256": "f4f966ee02d1e1f0d3680700c1885ea1516053ea2ecfa80ed04f25e1d72d40fb"
+    },
+    "scope-pg311-r2": {
+      "tests": 9,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 8,
+      "path": "artifacts/p7/trusted-goal-scope-v4/scope-pg311-r2.xml",
+      "sha256": "0915c9a8f8fc30f2c213657a96a0844274b1662fcb60093e853c7b5b19f45a82"
+    },
+    "scope-pg311-r3": {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 14,
+      "path": "artifacts/p7/trusted-goal-scope-v4/scope-pg311-r3.xml",
+      "sha256": "ab1ac262676628ada99cf973bcce0341f667075cc9840d199bcb4391d11fa24b"
+    },
+    "scope-pg313": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 4,
+      "path": "artifacts/p7/trusted-goal-scope-v4/scope-pg313.xml",
+      "sha256": "c442dd00a2dea249248fc74292def318ce9ecb3330ac99baf6fffbeaf2fed5eb"
+    },
+    "unit-frozen-py311": {
+      "tests": 552,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 552,
+      "path": "artifacts/p7/trusted-goal-scope-v4/unit-frozen-py311.xml",
+      "sha256": "19f9d68827eb3abfbf4df6d35c6336981d50193c5c23254142c6a2b162dd0be5"
+    },
+    "unit-frozen-py313": {
+      "tests": 552,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 552,
+      "path": "artifacts/p7/trusted-goal-scope-v4/unit-frozen-py313.xml",
+      "sha256": "42446c4b44b85c0d31e2661c6c9e05bec96ea70828fb6bd067b6f59c8a0f3556"
+    }
+  },
+  "postgres_py311_unique_passed": 26,
+  "postgres_py311_success_partition": [
+    4,
+    8,
+    14
+  ],
+  "postgres_py313_passed": 4,
+  "postgres_py313_deselected": 22,
+  "postgres_passed_executions": 30,
+  "postgres_py311_union": {
+    "tests.test_trusted_goal_scope_postgres::test_real_scoped_completion[bge-complete-completed]": "scope-pg311",
+    "tests.test_trusted_goal_scope_postgres::test_real_scoped_completion[bge-negative-completed]": "scope-pg311",
+    "tests.test_trusted_goal_scope_postgres::test_real_scoped_completion[bge-partial-partial]": "scope-pg311",
+    "tests.test_trusted_goal_scope_postgres::test_real_scoped_completion[bge-unknown-unavailable]": "scope-pg311",
+    "tests.test_trusted_goal_scope_postgres::test_real_scoped_completion[bge-exhaustive-unavailable]": "scope-pg311-r2",
+    "tests.test_trusted_goal_scope_postgres::test_no_confirmation_grants_authority[bge-owner]": "scope-pg311-r2",
+    "tests.test_trusted_goal_scope_postgres::test_no_confirmation_grants_authority[bge-version]": "scope-pg311-r2",
+    "tests.test_trusted_goal_scope_postgres::test_no_confirmation_grants_authority[bge-profile]": "scope-pg311-r2",
+    "tests.test_trusted_goal_scope_postgres::test_cross_process_attestation_or_v3_identity_refusal[bge-False]": "scope-pg311-r2",
+    "tests.test_trusted_goal_scope_postgres::test_cross_process_attestation_or_v3_identity_refusal[bge-True]": "scope-pg311-r2",
+    "tests.test_trusted_goal_scope_postgres::test_unknown_tool_never_reissued[bge]": "scope-pg311-r2",
+    "tests.test_trusted_goal_scope_postgres::test_report_rechecks_real_source_against_unknown_scope[bge]": "scope-pg311-r2",
+    "tests.test_trusted_goal_scope_postgres::test_verified_p3_does_not_cover_unconfirmed_document_scope[bge]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_real_scoped_completion[qwen-complete-completed]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_real_scoped_completion[qwen-negative-completed]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_real_scoped_completion[qwen-partial-partial]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_real_scoped_completion[qwen-unknown-unavailable]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_real_scoped_completion[qwen-exhaustive-unavailable]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_no_confirmation_grants_authority[qwen-owner]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_no_confirmation_grants_authority[qwen-version]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_no_confirmation_grants_authority[qwen-profile]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_cross_process_attestation_or_v3_identity_refusal[qwen-False]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_cross_process_attestation_or_v3_identity_refusal[qwen-True]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_unknown_tool_never_reissued[qwen]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_report_rechecks_real_source_against_unknown_scope[qwen]": "scope-pg311-r3",
+    "tests.test_trusted_goal_scope_postgres::test_verified_p3_does_not_cover_unconfirmed_document_scope[qwen]": "scope-pg311-r3"
+  },
+  "database_audit": {
+    "at": "2026-10-30T12:15:31.840916+00:00",
+    "database": "datapilot_test_trusted_goal_scope_v4_20261030",
+    "counts": {
+      "runs": 28,
+      "ledger": 28,
+      "calls": 175,
+      "artifacts": 51,
+      "events": 512
+    },
+    "artifact_hashes_verified": 51,
+    "call_status_counts": [
+      {
+        "kind": "model",
+        "status": "complete",
+        "n": 82
+      },
+      {
+        "kind": "tool",
+        "status": "complete",
+        "n": 90
+      },
+      {
+        "kind": "tool",
+        "status": "uncertain",
+        "n": 3
+      }
+    ],
+    "policy_versions": {
+      "host-goal-requirements-v4": 21,
+      "host-goal-requirements-v3": 3,
+      "sql-only": 4
+    },
+    "pending_model_budget_reservations": 0,
+    "p3": {
+      "evidence": {
+        "n": 8,
+        "all_hashes_and_dtos_valid": true
+      },
+      "verification_runs": {
+        "n": 8,
+        "all_hashes_and_dtos_valid": true
+      },
+      "verdicts": [
+        {
+          "verdict": "verified",
+          "n": 8
+        }
+      ]
+    },
+    "postgres": {
+      "server_version_num": "170011",
+      "vector": "0.8.6",
+      "migration": "0008"
+    },
+    "paid_provider_attempts": 0,
+    "model_modes": [
+      "fake"
+    ],
+    "expected_unknown_tool_test_rows": "BGE311,Qwen311,BGE313 injected cut points; states preserved, no reissue",
+    "old_databases_accessed": false
+  },
+  "historical_integrity": {
+    "at": "2026-10-30T12:13:08.746119+00:00",
+    "previous_record_unique_paths": 2222,
+    "verified_unique_paths_including_phase2c4": 3324,
+    "sets": [
+      {
+        "seal": "artifacts/p7/qwen-business-pilot-v1/result-seal.json",
+        "sha256": "80c990763d283edd53aeeaff6ae665458b3a6c8296b9c755174855664819e62d",
+        "checked": 239,
+        "preserved_source_deltas": []
+      },
+      {
+        "seal": "artifacts/p7/qwen-lifecycle-v1/result-seal.json",
+        "sha256": "c8ff5a8d798470d349fe6fd0c1fca85f27a9e698cdbfcf9bc7270b48e2ac5e2b",
+        "checked": 181,
+        "preserved_source_deltas": []
+      },
+      {
+        "seal": "artifacts/p7/embedding-ab-v1/result-seal.json",
+        "sha256": "c4e4cf1fd3706d2d4bab5eb8cca2a85246f8237338b592173912c334f9b803c9",
+        "checked": 77,
+        "preserved_source_deltas": []
+      },
+      {
+        "seal": "artifacts/p7/three-policy-smoke-v1/live-20261029/result-seal.json",
+        "sha256": "d6f86460a27ac4781cf2917afee28d4a79dda74f5f750dbb48aeafebe8ef17e7",
+        "checked": 136,
+        "preserved_source_deltas": []
+      },
+      {
+        "seal": "artifacts/p7/three-policy-scorer-v2/result-seal-final.json",
+        "sha256": "8b63aca91235bee9dc9fb1506637c985a8b59e88ec7324f2e203cdc29e3d2f56",
+        "checked": 29,
+        "preserved_source_deltas": []
+      },
+      {
+        "seal": "artifacts/p7/host-goal-repair-v2/result-seal.json",
+        "sha256": "6782c761253ba6dd898e8f53be8fe455f6e0a60d47b1cd87afdb63a65739f2eb",
+        "checked": 259,
+        "preserved_source_deltas": [
+          {
+            "path": "src/datapilot/orchestration/rag_completion.py",
+            "before": "artifacts/p7/host-goal-safety-v3/before/rag_completion.py"
+          },
+          {
+            "path": "tests/host_goal_probe.py",
+            "before": "artifacts/p7/host-goal-safety-v3/before/host_goal_probe.py"
+          },
+          {
+            "path": "tests/test_host_goal_postgres.py",
+            "before": "artifacts/p7/host-goal-safety-v3/before/test_host_goal_postgres.py"
+          },
+          {
+            "path": "tests/test_host_goal_requirements.py",
+            "before": "artifacts/p7/host-goal-safety-v3/before/test_host_goal_requirements.py"
+          }
+        ]
+      },
+      {
+        "seal": "artifacts/p7/qwen-expanded-v1/result-seal.json",
+        "sha256": "062f8d38e9a8e77d22f3be2a3ab3b59a78f0a669dc6cd3b47a9fedff4bf901a1",
+        "checked": 951,
+        "preserved_source_deltas": []
+      },
+      {
+        "seal": "artifacts/p7/host-goal-safety-v3/result-seal.json",
+        "sha256": "093df48512bc61bd1c3419985f06be2fd92be92d7d638cbaa4f7b8846cea2199",
+        "checked": 354,
+        "preserved_source_deltas": [
+          {
+            "path": "src/datapilot/orchestration/rag_completion.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/src/datapilot/orchestration/rag_completion.py"
+          },
+          {
+            "path": "tests/host_goal_probe.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/tests/host_goal_probe.py"
+          },
+          {
+            "path": "tests/test_host_goal_requirements.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/tests/test_host_goal_requirements.py"
+          },
+          {
+            "path": "tests/test_host_goal_safety_v3.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/tests/test_host_goal_safety_v3.py"
+          }
+        ]
+      },
+      {
+        "seal": "artifacts/p7/fresh-validation-v3-r2/result-seal.json",
+        "sha256": "bb109e4233e480cefc34d11168496467d1e586a1daaf187bc085c39e05fa8bd2",
+        "checked": 1562,
+        "preserved_source_deltas": [
+          {
+            "path": "src/datapilot/orchestration/coordinator.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/src/datapilot/orchestration/coordinator.py"
+          },
+          {
+            "path": "src/datapilot/orchestration/rag_completion.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/src/datapilot/orchestration/rag_completion.py"
+          },
+          {
+            "path": "src/datapilot/orchestration/tools.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/src/datapilot/orchestration/tools.py"
+          },
+          {
+            "path": "src/datapilot/persistence/inspection.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/src/datapilot/persistence/inspection.py"
+          },
+          {
+            "path": "src/datapilot/persistence/session.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/src/datapilot/persistence/session.py"
+          },
+          {
+            "path": "src/datapilot/reporting/contracts.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/src/datapilot/reporting/contracts.py"
+          },
+          {
+            "path": "src/datapilot/reporting/service.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/src/datapilot/reporting/service.py"
+          },
+          {
+            "path": "tests/host_goal_probe.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/tests/host_goal_probe.py"
+          },
+          {
+            "path": "tests/test_citation_policy.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/tests/test_citation_policy.py"
+          },
+          {
+            "path": "tests/test_document_fact_coverage.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/tests/test_document_fact_coverage.py"
+          },
+          {
+            "path": "tests/test_host_goal_requirements.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/tests/test_host_goal_requirements.py"
+          },
+          {
+            "path": "tests/test_host_goal_safety_v3.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/tests/test_host_goal_safety_v3.py"
+          },
+          {
+            "path": "tests/test_original_query_policy.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/tests/test_original_query_policy.py"
+          },
+          {
+            "path": "tests/test_partial_evidence_report.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/tests/test_partial_evidence_report.py"
+          },
+          {
+            "path": "tests/test_rag_completion.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/tests/test_rag_completion.py"
+          },
+          {
+            "path": "tests/test_report_causal_scope.py",
+            "before": "artifacts/p7/trusted-goal-scope-v4/before/tests/test_report_causal_scope.py"
+          }
+        ]
+      }
+    ],
+    "unexpected_mismatches": [],
+    "historical_databases_accessed_or_modified": false,
+    "phase2c4_stop_unchanged": true,
+    "old_results_not_rescored": true
+  },
+  "round_changes": [
+    {
+      "path": "src/datapilot/orchestration/coordinator.py",
+      "before_sha256": "9e540f28d8d9492cdb00194cf433290f1553502e98cf297d800ca25112b10627",
+      "after_sha256": "019a2b3fd02601c8dbc40a5c064d9ab50e3009769f2468dd38d547f3a6ce38e8",
+      "added_lines": 14,
+      "removed_lines": 0
+    },
+    {
+      "path": "src/datapilot/orchestration/rag_completion.py",
+      "before_sha256": "b1954ee196b65e72fd16e7969a3aa50d8ad2bd9ddb8e4432ca57372fcad29e83",
+      "after_sha256": "6dc25f624ccdabc81b4951d6c6bd9e0a495271eb9c16b56499ac525952371cab",
+      "added_lines": 34,
+      "removed_lines": 3
+    },
+    {
+      "path": "src/datapilot/orchestration/tools.py",
+      "before_sha256": "81ce4bd5ef54489b72d4e8a2e3bcc2de8fa995079d75ac3e4a36bec0048f9fb1",
+      "after_sha256": "86f828b704d24c8da3e9eeae64c705be2e999011619b7d3a352384744f31416d",
+      "added_lines": 6,
+      "removed_lines": 1
+    },
+    {
+      "path": "src/datapilot/persistence/inspection.py",
+      "before_sha256": "aec1b025de3356a9af7233b5eba60c4fb3bc691b4aed8eafd3971a53a843d0d7",
+      "after_sha256": "0d1dbdb054a7285e19940f9d936d836fc88793b5c8390618a73551b87ccff052",
+      "added_lines": 3,
+      "removed_lines": 1
+    },
+    {
+      "path": "src/datapilot/persistence/session.py",
+      "before_sha256": "1b85eac6892405ab7fb5bf0e81946d088fd12b184687dc981a39ff8534d368d8",
+      "after_sha256": "0788013b99e6d146558e05b19cfd7450815130f0c636013772f74df25792aa88",
+      "added_lines": 3,
+      "removed_lines": 1
+    },
+    {
+      "path": "src/datapilot/reporting/contracts.py",
+      "before_sha256": "55597b76b6927acc32723dc6995f53a45de7ad6a4be783a3f1e5609c896635a8",
+      "after_sha256": "850a224c82592825ed1ed23f6a8b8a844eba705c01987f7f570405f916abab0c",
+      "added_lines": 48,
+      "removed_lines": 0
+    },
+    {
+      "path": "src/datapilot/reporting/service.py",
+      "before_sha256": "54431f7fbc4c91ef8e5317f6880ee1ca9d768488230355cf12fb6978e56e404e",
+      "after_sha256": "69447e6ae963c8684e239cc5e8c885f7e54efcd65a885a2f3217a899659f4367",
+      "added_lines": 5,
+      "removed_lines": 1
+    },
+    {
+      "path": "tests/host_goal_probe.py",
+      "before_sha256": "4b4fedfa6ab3606279f3e19e4282ccbf9748d6eb1ebf984249e7ab051970251c",
+      "after_sha256": "0fd3c42be4d877373ac95176c65a8733dc97cf81649392abb07c1e75beab1828",
+      "added_lines": 15,
+      "removed_lines": 2
+    },
+    {
+      "path": "tests/test_citation_policy.py",
+      "before_sha256": "86c0759f86dee64988308eb51adf768b707a56b96d2b2ca2bb21ac0c1f5e2f77",
+      "after_sha256": "a7c1389d77aaacf785d39ec9eab4e45fdfa488d88752618c6306d2080ffae95c",
+      "added_lines": 10,
+      "removed_lines": 2
+    },
+    {
+      "path": "tests/test_document_fact_coverage.py",
+      "before_sha256": "b464c4b2d52c013f2dbbc6ba9cfda844109d0cd1b143a7efc9edd7679403c5ed",
+      "after_sha256": "bad8948726fa8832c74347d8d429bd28ece943c8ba8f5e21db1ac8ddc9098060",
+      "added_lines": 51,
+      "removed_lines": 3
+    },
+    {
+      "path": "tests/test_host_goal_requirements.py",
+      "before_sha256": "5f3202c4b37eca2496474d791c945179355892cb8e7e888ca0685c28bd2360cd",
+      "after_sha256": "6a29ffbe0700f524427d627564afc04a3e676f9782e3078d3244339cd8e46019",
+      "added_lines": 1,
+      "removed_lines": 1
+    },
+    {
+      "path": "tests/test_host_goal_safety_v3.py",
+      "before_sha256": "6f2a191a7a5cf28487a9cbdbca6520d66a1c2bbf4a6f65e6099f9701c5471b3d",
+      "after_sha256": "f5f3d81837329a14214c0851be4ba552cf8aa62d8bb778110df41910dc7e73b5",
+      "added_lines": 1,
+      "removed_lines": 1
+    },
+    {
+      "path": "tests/test_original_query_policy.py",
+      "before_sha256": "51342a0e7add8d5d3901e45536311c70a3155f5a69ed29b5ae608e32acea4400",
+      "after_sha256": "2c39e4d654deb18c749afc6264f7f4fdd2aa9aa4572876877148d9e080c0a43a",
+      "added_lines": 12,
+      "removed_lines": 0
+    },
+    {
+      "path": "tests/test_partial_evidence_report.py",
+      "before_sha256": "70b45082049710856703a92526476dcbc7f633b36a848e809bd47e00cea26b49",
+      "after_sha256": "538e092eb13f88357e6bd66706fdfc8bc08d906939eb119cc67bfa50f9bc5e2f",
+      "added_lines": 37,
+      "removed_lines": 2
+    },
+    {
+      "path": "tests/test_rag_completion.py",
+      "before_sha256": "2d1fbcab7a40aed15b280417214b8ae1e10f265baa89c6a46dade7ab0e07d01a",
+      "after_sha256": "d027f9758e5eaa64957002a0c062f92bfbad21a05456d9459e141f029ddf718f",
+      "added_lines": 35,
+      "removed_lines": 1
+    },
+    {
+      "path": "tests/test_report_causal_scope.py",
+      "before_sha256": "7c95f848d909e9779c9ff6a0e917bb98ccb40f25197dbf56fe711855e8b1dd64",
+      "after_sha256": "3421ac01d4b0b6479af522cb47b4bef2a7c80b2a1c446486bdd9ecb21c2c5b7c",
+      "added_lines": 2,
+      "removed_lines": 1
+    }
+  ],
+  "paid_provider_requests": 0,
+  "provider_token_usage": null,
+  "provider_cost": null,
+  "real_llm_quality": "not_run",
+  "default_embedding": "BGE unchanged",
+  "remaining_risks": [
+    "Trusted host must actually review equivalence to the full original question; hashes cannot prove arbitrary natural-language meaning.",
+    "Existing unconfirmed semantic RAG entry points fail closed; no Web approval UI or automatic attestation was added.",
+    "Current parser still misses novel ambiguity; no-attestation blocks completion independently.",
+    "Full pytest, remote CI, Linux/Docker revalidation, browser and Live not run in this stage.",
+    "Unknown tool outcomes from three deliberate fault cases remain, never reset/reissued."
+  ],
+  "next_independent_nonpaid_validation_ready": "yes for explicitly reviewed host contracts, with a new input/source/freeze and owner approval; not authorization to run",
+  "live_ready": false,
+  "old_phase2c4": {
+    "status": "BLOCKED",
+    "observed": 21,
+    "not_run": 179,
+    "validation_observed": 0,
+    "resumed": false
+  },
+  "commit_push": false,
+  "result_seal": "artifacts/p7/trusted-goal-scope-v4/result-seal.json",
+  "real_relevant_evidence_scope_counterexamples": 6,
+  "implementation_manifest": "artifacts/p7/trusted-goal-scope-v4/implementation-final-r2.json",
+  "static_checks": {
+    "ruff-check": {
+      "exit_code": 0,
+      "output": "All checks passed!"
+    },
+    "ruff-format": {
+      "exit_code": 0,
+      "output": "19 files already formatted"
+    },
+    "diff-check": {
+      "exit_code": 0,
+      "existing_line_endings_warnings": true
+    }
+  },
+  "final_unit_labels": [
+    "unit-frozen-py311",
+    "unit-frozen-py313"
+  ],
+  "final_source_product_files_unchanged_during_pg": true,
+  "test_format_ast_equivalence": {
+    "file": "tests\\test_trusted_goal_scope.py",
+    "before_sha256": "cb56bc4097efdf095b3ba32154228e3b0bbf0869e5f71a47d5f3e8287f7393a4",
+    "after_sha256": "d7b1985b18a62eb5a7551a54b6ddca532fa2bda8f285b9ff655b69b66e33065d",
+    "ast_unchanged": true,
+    "tests_not_repeated_for_format_only": true
+  }
+}

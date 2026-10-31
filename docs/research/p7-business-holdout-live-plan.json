@@ -1,0 +1,81 @@
+{
+  "schema_version": "p7-business-live-proposal-1",
+  "status": "not_authorized",
+  "paid_calls_allowed_now": 0,
+  "business_runs_allowed_now": 0,
+  "holdout_manifest": "docs/research/p7-independent-business-holdout.json",
+  "task_count": 60,
+  "lanes": {
+    "sql_only": 20,
+    "rag_only": 20,
+    "sql_rag": 20
+  },
+  "run_limits": {
+    "runs": 60,
+    "calls_per_run": 8,
+    "tokens_per_run": 18000,
+    "output_per_call": 1200,
+    "total_calls": 480,
+    "total_tokens": 1080000,
+    "concurrency": 1,
+    "thinking": "disabled",
+    "sdk_retries": 0,
+    "failed_run_automatic_paid_reruns": 0,
+    "unknown_outcome": "Stop campaign; original Journal conservative charge; reconcile before any action"
+  },
+  "entry": "Reviewed ReportScope to existing Durable/Gateway/LangGraph/MCP/P3/RAG/Report; three intent strategy or Chat-first semantic integration costs not included",
+  "pricing_snapshot": {
+    "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "verified_at": "2026-10-24T14:46:56.173650+00:00",
+    "model": "deepseek-flash",
+    "documented_version": "DeepSeek-V4.1-Flash-1017",
+    "unit": "USD per 1000000 tokens",
+    "off_peak": {
+      "input_hit": "0.003",
+      "input_miss": "0.15",
+      "output": "0.6"
+    },
+    "peak": {
+      "input_hit": "0.006",
+      "input_miss": "0.3",
+      "output": "1.2"
+    },
+    "billed_cost_known": false
+  },
+  "estimate_usd": {
+    "cache_assumption": "All input cache-miss; cache benefit not guaranteed",
+    "max_output_tokens": 576000,
+    "remaining_input_tokens": 504000,
+    "all_budget_consumed_off_peak": "0.4212",
+    "all_budget_consumed_peak": "0.8424",
+    "loose_all_tokens_at_highest_rate_off_peak": "0.648",
+    "loose_all_tokens_at_highest_rate_peak": "1.296",
+    "actual_bill": null,
+    "boundary": "Planning estimate, not an enforced monetary cap or provider bill; output limit, usage uncertainty, price/model aliases must be rechecked before authorization"
+  },
+  "preconditions": [
+    "Human review original synthetic source/definitions/Gold without candidate tuning",
+    "Explicitly provision a fresh isolated PG17+pgvector instance; do not reuse or mutate demo/production",
+    "Materialize exact sealed source/confirmation/Dataset/Semantic/Metric/Corpus/index pins with original trusted services and roles",
+    "Verify exact local embedding artifact hashes, vector reconstruction and source authorization; no holdout query tuning",
+    "Freeze concrete original-runtime runner and trusted P3/RAG evidence collector before first candidate; hash-only verify seal",
+    "Each task retains host review; unauthorized/unknown-version cases fail closed, cannot preapprove them",
+    "Copy only approved inputs and source assets to candidate closure; deny evaluator Gold and canary files",
+    "User explicitly authorizes endpoint, payload closure, all calls/tokens and budget; old intent authorization ended",
+    "Keep every failure/not_run in its registered denominator; no automatic paid replay or holdout-driven fixes"
+  ],
+  "all_gateway_calls_included": true,
+  "extra_intent_calls_included": false,
+  "gold_sent_to_provider": false,
+  "gate3_authorized": false,
+  "live_allowed": false,
+  "planned_model_profile": {
+    "provider": "deepseek",
+    "endpoint": "https://api.deepseek.com",
+    "model": "deepseek-flash",
+    "temperature": 0,
+    "thinking": "disabled",
+    "sdk_retries": 0,
+    "state": "proposal_to_freeze_before_authorized_execution"
+  }
+}

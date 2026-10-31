@@ -147,4 +147,18 @@ Gate 0 三路径已有真实单次 Smoke；本轮按用户最新收紧，仅完�
 
 用户随后单独授权进入 Gate 2，并明确批准 59 条意图 Holdout 的 LLM-only/Hybrid 一次有界 Live。按原冻结候选、原 Gold 与新冻结评测入口首次运行，Rule-only 46/59、LLM-only 58/59、Hybrid 57/59；实际 67 次/59,640 Token，失败保留，不看结果后调 Prompt/规则。详见 [Gate 2 交付与限制](p7-gate2.md)、[冻结授权](research/p7-gate2-plan.json)、[原收据核验](research/p7-gate2-validation.json)。
 
-这只完成 Gate 2 的意图候选评测。原 50 条业务目标是已观测 dev，业务执行/P3/RAG/报告的独立 Holdout 尚未准备、未运行，不能声称 Gate 2 整体通过。需要先封存独立业务/文档任务、源快照与 Gold，再申请相应模型执行预算；本次授权不含业务 Run，已结束。默认网站仍 Rule-only，不开展 Gate 3/后续阶段，不自动 Git 提交或推送。
+这只完成 Gate 2 的意图候选评测。提交 `18271d7` 的两版本 CI 已重新核实 Success；原推送前记录与指标保留。原 50 条业务目标是已观测 dev，不能复用作正式 Holdout。
+
+随后按独立授权完成 [业务 Holdout 准备](p7-business-holdout.md)：60 个新目标（SQL-only / RAG-only / SQL+RAG 各 20）、原始合成来源、独立 Gold 和预注册评分已封存。27 个数值目标经真实只读 PG/MCP 的 15 条字面量查询核对；Dataset/Metric/Corpus pin 仍为待审阅、待物化提案，真实业务候选执行 not_run，Gate 2 整体未验收。将来应在新隔离实例精确物化并冻结采集器，再单独批准 Live；本轮不更改已有数据库。默认网站仍 Rule-only，不开展 Gate 3/后续阶段，不自动 Git 提交或推送。
+
+首轮 [Gate 2B](p7-gate2b.md) 已在新建实例物化 13 个 Dataset 快照与 5 个索引；上段“待物化”为此前快照。该轮记录的 60 pending、7 条 Pin 不兼容及未完成执行/评分接线为历史状态，原记录保留。
+
+2026-10-25 的 [Gate 2B v2](p7-gate2b-v2.md) 按 [负责人准入决定](p7-gate2b-owner-admission.md) 结束重复人工审核流程，七条 Pin 通过五个精确子索引兼容；正式 Runner/Collector/Scorer 完成非付费验收。原有完整回归两版本各 741 passed、17 skipped，新增最终契约各 37 passed，公开三路径 Toy 3/3 通过真实 PG/MCP/RAG + Fake/脚本决策。原 Runtime、P3 Verifier、冻结意图候选、原 Gold 和 v1 Seal 不变，v2 保留父版本和 60 条分母。
+
+当前唯一业务定义准入待办为 [32 项 P3 精确批量确认](p7-p3-confirmation.md)，覆盖 34 条任务；故意未确认的 `bh2-060` 两项继续排除，不重复要求 Gold 签署/抽样。批准后才经原 Registry 登记并重新预检；此刻 `ready_for_live_authorization=false`。正式 60 条业务候选执行、DeepSeek 效果、Gate 3 均未运行，工程测试不能替代效果验收；不自动提交或推送。
+
+2026-10-25 后续状态：A/B 32 项已明确批准并登记，原未批准快照保留；现在被 [016/052 零收入结果表示缺陷](p7-zero-revenue-diagnosis.md) 阻断，Gate 2B 未通过。本轮仅只读诊断，不修改冻结实现、Gold 或业务定义，不重做审批、不启动 Live/Gate 3。
+
+2026-10-25 最新：已授权的 [NUMERIC 定点序列化最小修复](p7-numeric-serialization-fix.md) 已通过三个新 P3 定向结果及两版本各 262 项适用回归。旧 rejected、旧实现 SHA、v1/v2 Seal 均保留；新 implementation freeze 对应唯一 SQL Decimal 边界变化。Gate 2B ready_for_live_authorization=true、live_allowed=false，54 个 Runtime 配置尚未正式执行；不自动进入业务 Live 或 Gate 3。
+
+2026-10-25 后续独立授权：[正式业务 Live](p7-gate2b-live.md) 使用该 Freeze 首次执行，在 bh2-031 原预算预留失败后停止，28 个 Runtime + 3 个宿主拒绝，共观测 31/60；严格通过 25、未通过 6、not_run 29。实际 61 次调用 / 77,897 Token，估算 USD 0.009241476，非实际账单。SQL+RAG 无本次观测；RAG 冻结汇总的版本键不匹配单独披露，原分数不改。上段是授权前历史快照；当前完整 Gate 2B 未验收，不修改候选/Gold/评分器、不自动续跑或进入 Gate 3、不提交推送。

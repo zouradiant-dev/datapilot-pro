@@ -1,0 +1,481 @@
+{
+  "schema_version": "p7-three-policy-preparation-1",
+  "generated_at": "2026-10-29T08:04:36.888120+00:00",
+  "status": "ready_for_live_authorization_with_known_quality_failure",
+  "engineering_preflight_passed": true,
+  "quality_gate_passed": false,
+  "live_authorized": false,
+  "live_status": "not_run",
+  "gate3_status": "not_run",
+  "source_commit": "f8b122438d2c67ab26e618ecded72ecc18454015",
+  "source_is_uncommitted_exact_manifest": true,
+  "freeze": {
+    "freeze_id": "p7-three-policy-dev-v1-4e9651e1844f",
+    "live_authorized": false,
+    "manifest_path": "artifacts/p7/three-policy-smoke-v1/pack-v2/implementation.json",
+    "manifest_sha256": "c46f092849e2fdd98f1220244641a1b8a43942c8b36c34429913cd7b2d6a79ce"
+  },
+  "source_sha256": "4e9651e1844f6b1ff5f59633238d25262a70af1de497f1dd8c1ad2410b7a5d92",
+  "source_file_count": 284,
+  "protocol_kind": "public_nonblind_dev_not_new_holdout",
+  "denominators": {
+    "planned": 8,
+    "observed": 8,
+    "runtime": 7,
+    "host_denial": 1,
+    "not_run": 0,
+    "strict_correct": 7
+  },
+  "cases": [
+    {
+      "case_id": "tps-01",
+      "offline_matches": true,
+      "strict_correct": true,
+      "business_completion": "completed",
+      "expected_completion": "completed",
+      "numeric_correct": true,
+      "citations_authorized_and_relevant": true,
+      "fact_coverage_correct": true,
+      "supplements_correct": true,
+      "causal_safe": true,
+      "original_first_query": null,
+      "budget_known": true,
+      "model_calls": 1,
+      "tokens": 15,
+      "rag_worker_status": null,
+      "rag_receipt_verdict": null,
+      "critical": false,
+      "known_quality_limitation": false
+    },
+    {
+      "case_id": "tps-02",
+      "offline_matches": true,
+      "strict_correct": true,
+      "business_completion": "completed",
+      "expected_completion": "completed",
+      "numeric_correct": null,
+      "citations_authorized_and_relevant": true,
+      "fact_coverage_correct": true,
+      "supplements_correct": true,
+      "causal_safe": true,
+      "original_first_query": true,
+      "budget_known": true,
+      "model_calls": 3,
+      "tokens": 45,
+      "rag_worker_status": "succeeded",
+      "rag_receipt_verdict": "semantic_retrieval",
+      "critical": false,
+      "known_quality_limitation": false
+    },
+    {
+      "case_id": "tps-03",
+      "offline_matches": true,
+      "strict_correct": true,
+      "business_completion": "partial",
+      "expected_completion": "partial",
+      "numeric_correct": null,
+      "citations_authorized_and_relevant": true,
+      "fact_coverage_correct": true,
+      "supplements_correct": true,
+      "causal_safe": true,
+      "original_first_query": true,
+      "budget_known": true,
+      "model_calls": 3,
+      "tokens": 45,
+      "rag_worker_status": "succeeded",
+      "rag_receipt_verdict": "semantic_retrieval",
+      "critical": false,
+      "known_quality_limitation": false
+    },
+    {
+      "case_id": "tps-04",
+      "offline_matches": true,
+      "strict_correct": true,
+      "business_completion": "partial",
+      "expected_completion": "partial",
+      "numeric_correct": true,
+      "citations_authorized_and_relevant": true,
+      "fact_coverage_correct": true,
+      "supplements_correct": true,
+      "causal_safe": true,
+      "original_first_query": true,
+      "budget_known": true,
+      "model_calls": 3,
+      "tokens": 45,
+      "rag_worker_status": "succeeded",
+      "rag_receipt_verdict": "semantic_retrieval",
+      "critical": false,
+      "known_quality_limitation": false
+    },
+    {
+      "case_id": "tps-05",
+      "offline_matches": true,
+      "strict_correct": true,
+      "business_completion": "completed",
+      "expected_completion": "completed",
+      "numeric_correct": null,
+      "citations_authorized_and_relevant": true,
+      "fact_coverage_correct": true,
+      "supplements_correct": true,
+      "causal_safe": true,
+      "original_first_query": true,
+      "budget_known": true,
+      "model_calls": 3,
+      "tokens": 45,
+      "rag_worker_status": "succeeded",
+      "rag_receipt_verdict": "semantic_retrieval",
+      "critical": false,
+      "known_quality_limitation": false
+    },
+    {
+      "case_id": "tps-06",
+      "offline_matches": true,
+      "strict_correct": true,
+      "business_completion": "partial",
+      "expected_completion": "partial",
+      "numeric_correct": null,
+      "citations_authorized_and_relevant": true,
+      "fact_coverage_correct": true,
+      "supplements_correct": true,
+      "causal_safe": true,
+      "original_first_query": true,
+      "budget_known": true,
+      "model_calls": 3,
+      "tokens": 45,
+      "rag_worker_status": "succeeded",
+      "rag_receipt_verdict": "semantic_retrieval",
+      "critical": false,
+      "known_quality_limitation": false
+    },
+    {
+      "case_id": "tps-07",
+      "offline_matches": true,
+      "strict_correct": false,
+      "business_completion": "unavailable",
+      "expected_completion": "completed",
+      "numeric_correct": null,
+      "citations_authorized_and_relevant": true,
+      "fact_coverage_correct": true,
+      "supplements_correct": true,
+      "causal_safe": true,
+      "original_first_query": true,
+      "budget_known": true,
+      "model_calls": 3,
+      "tokens": 45,
+      "rag_worker_status": "unavailable",
+      "rag_receipt_verdict": "empty",
+      "critical": false,
+      "known_quality_limitation": true
+    },
+    {
+      "case_id": "tps-08",
+      "offline_matches": true,
+      "strict_correct": true,
+      "business_completion": "blocked",
+      "model_calls": 0,
+      "host_refusal": true,
+      "critical": false
+    }
+  ],
+  "offline_agreement": {
+    "agree": 8,
+    "denominator": 8
+  },
+  "adversarial_checks": [
+    {
+      "name": "wrong_case",
+      "rejected": true
+    },
+    {
+      "name": "wrong_owner_scope",
+      "rejected": true
+    },
+    {
+      "name": "unknown_external_result",
+      "rejected": true
+    },
+    {
+      "name": "unverified_p3",
+      "rejected": true
+    },
+    {
+      "name": "wrong_metric_version",
+      "rejected": true
+    },
+    {
+      "name": "unknown_usage",
+      "rejected": true,
+      "critical": true
+    },
+    {
+      "name": "forged_document_artifact",
+      "rejected": true
+    },
+    {
+      "name": "changed_quote",
+      "rejected": true
+    },
+    {
+      "name": "host_denial_with_model",
+      "rejected": true,
+      "critical": true
+    }
+  ],
+  "terminal_replays": [
+    {
+      "case_id": "tps-01",
+      "terminal_replay_unchanged": true
+    },
+    {
+      "case_id": "tps-02",
+      "terminal_replay_unchanged": true
+    },
+    {
+      "case_id": "tps-03",
+      "terminal_replay_unchanged": true
+    },
+    {
+      "case_id": "tps-04",
+      "terminal_replay_unchanged": true
+    },
+    {
+      "case_id": "tps-05",
+      "terminal_replay_unchanged": true
+    },
+    {
+      "case_id": "tps-06",
+      "terminal_replay_unchanged": true
+    },
+    {
+      "case_id": "tps-07",
+      "terminal_replay_unchanged": true
+    }
+  ],
+  "new_p3_evidence_ids": [
+    "2fae9f6a-0a2f-4b14-a396-595b29a54991",
+    "c0f05e5e-9ab6-4767-b6e2-835d50af7c58"
+  ],
+  "new_p3_verification_ids": [
+    "38c767a9-628f-4e2f-8c8f-654b6543d25c",
+    "78d9c3e1-ed3b-4287-aa97-bc3258f50e2b"
+  ],
+  "cost_usage": {
+    "provider_attempts": 0,
+    "provider_reported_tokens": null,
+    "cache_hit": null,
+    "cache_miss": null,
+    "actual_bill": "not_applicable_no_provider_calls",
+    "fake_model_decisions": 19,
+    "fake_reported_tokens": 285,
+    "tool_journal_rows": 21,
+    "campaign_seconds": 308.82800000021234,
+    "admission_ledger": {
+      "calls": 7,
+      "reported_tokens": 285,
+      "total_tokens": 285,
+      "usage_complete": true
+    },
+    "proposed_live_estimated_usd_cap": "0.108",
+    "estimate_is_invoice": false
+  },
+  "proposed_live": {
+    "automatic_retries": 0,
+    "calls_per_run": 8,
+    "campaign_seconds": 1800,
+    "campaign_tokens": 90000,
+    "cases": 8,
+    "concurrency": 1,
+    "estimated_usd_cap": "0.108",
+    "max_output_tokens": 1200,
+    "model_attempts": 56,
+    "run_seconds": 180,
+    "runtime_runs": 7,
+    "stop_policy": "ordinary_quality_continue_safety_budget_provider_unknown_stop",
+    "tokens_per_run": 18000,
+    "version": "three-policy-dev-1",
+    "worker_calls": 4
+  },
+  "tests": {
+    "python311_targeted": {
+      "passed": 44,
+      "deselected": 1,
+      "failed": 0
+    },
+    "python313_targeted": {
+      "passed": 44,
+      "deselected": 1,
+      "failed": 0
+    },
+    "python311_real_pg_preflight": {
+      "passed": 1,
+      "failed": 0
+    },
+    "python313_real_pg_this_round": "not_run",
+    "full_pytest_this_round": "not_run",
+    "browser_this_round": "not_run",
+    "remote_ci_this_round": "not_run",
+    "ruff": "passed",
+    "python_format": {
+      "passed": true,
+      "files": 260
+    },
+    "whole_repository_format": "3 pre-existing Markdown code blocks unformatted; unchanged",
+    "diff_check": "passed"
+  },
+  "preservation": {
+    "old_file_hashes_unchanged": 539,
+    "database": {
+      "existing_rows_unchanged": true,
+      "scope": "only datapilot_test_portable_311",
+      "tables": {
+        "saas.alembic_version": {
+          "before": 1,
+          "after": 1,
+          "old_rows_missing_or_changed": 0
+        },
+        "saas.customer_feedback": {
+          "before": 0,
+          "after": 0,
+          "old_rows_missing_or_changed": 0
+        },
+        "saas.customers": {
+          "before": 0,
+          "after": 0,
+          "old_rows_missing_or_changed": 0
+        },
+        "saas.invoices": {
+          "before": 0,
+          "after": 0,
+          "old_rows_missing_or_changed": 0
+        },
+        "saas.subscriptions": {
+          "before": 0,
+          "after": 0,
+          "old_rows_missing_or_changed": 0
+        },
+        "saas.usage_events": {
+          "before": 0,
+          "after": 0,
+          "old_rows_missing_or_changed": 0
+        },
+        "catalog.columns": {
+          "before": 10,
+          "after": 20,
+          "old_rows_missing_or_changed": 0
+        },
+        "catalog.datasets": {
+          "before": 2,
+          "after": 4,
+          "old_rows_missing_or_changed": 0
+        },
+        "catalog.evidence": {
+          "before": 4,
+          "after": 6,
+          "old_rows_missing_or_changed": 0
+        },
+        "catalog.metric_versions": {
+          "before": 2,
+          "after": 4,
+          "old_rows_missing_or_changed": 0
+        },
+        "catalog.semantic_versions": {
+          "before": 2,
+          "after": 4,
+          "old_rows_missing_or_changed": 0
+        },
+        "catalog.tables": {
+          "before": 2,
+          "after": 4,
+          "old_rows_missing_or_changed": 0
+        },
+        "catalog.verification_runs": {
+          "before": 4,
+          "after": 6,
+          "old_rows_missing_or_changed": 0
+        },
+        "catalog.versions": {
+          "before": 2,
+          "after": 4,
+          "old_rows_missing_or_changed": 0
+        },
+        "rag.chunks": {
+          "before": 36,
+          "after": 55,
+          "old_rows_missing_or_changed": 0
+        },
+        "rag.corpora": {
+          "before": 20,
+          "after": 35,
+          "old_rows_missing_or_changed": 0
+        },
+        "rag.indexes": {
+          "before": 20,
+          "after": 35,
+          "old_rows_missing_or_changed": 0
+        },
+        "rag.sources": {
+          "before": 36,
+          "after": 55,
+          "old_rows_missing_or_changed": 0
+        },
+        "checkpoints.checkpoint_blobs": {
+          "before": 1325,
+          "after": 1515,
+          "old_rows_missing_or_changed": 0
+        },
+        "checkpoints.checkpoint_migrations": {
+          "before": 10,
+          "after": 10,
+          "old_rows_missing_or_changed": 0
+        },
+        "checkpoints.checkpoint_writes": {
+          "before": 3214,
+          "after": 3691,
+          "old_rows_missing_or_changed": 0
+        },
+        "checkpoints.checkpoints": {
+          "before": 766,
+          "after": 879,
+          "old_rows_missing_or_changed": 0
+        },
+        "execution.artifacts": {
+          "before": 98,
+          "after": 113,
+          "old_rows_missing_or_changed": 0
+        },
+        "execution.calls": {
+          "before": 349,
+          "after": 389,
+          "old_rows_missing_or_changed": 0
+        },
+        "execution.events": {
+          "before": 1017,
+          "after": 1176,
+          "old_rows_missing_or_changed": 0
+        },
+        "execution.ledger": {
+          "before": 83,
+          "after": 91,
+          "old_rows_missing_or_changed": 0
+        },
+        "execution.runs": {
+          "before": 83,
+          "after": 91,
+          "old_rows_missing_or_changed": 0
+        }
+      }
+    },
+    "old_gold_scorer_seals_unchanged": true,
+    "demo_or_historical_evaluation_database_connected": false,
+    "seed_migration_volume_cleanup_permission_expansion": false
+  },
+  "limitations": [
+    "English short question stays Gold completed but actual unavailable: strict quality failure.",
+    "Fake drives tool decisions; it does not establish DeepSeek policy compliance or business success rate.",
+    "Public reused Dev fixtures are unblind and cannot become new sealed Holdout.",
+    "90k pool is original cap, not seven worst-case 18k runs; insufficient admission must stop.",
+    "Original terminal replay tested; no Gate3 fault injection or provider exactly-once claim.",
+    "No Chat-first/browser route tested in this round; the candidate enters the original Durable Runtime directly.",
+    "New Live requires fresh explicit authorization, official price recheck, exact pins, unused IDs and >=35min permit headroom."
+  ]
+}

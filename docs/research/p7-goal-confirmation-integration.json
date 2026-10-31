@@ -1,0 +1,315 @@
+{
+  "schema_version": "goal-confirmation-integration-1",
+  "at": "2026-10-31T06:34:16.006196+00:00",
+  "phase": "P7 Phase 2C.6",
+  "status": "PASS_BOUNDED_ENGINEERING",
+  "gates": {
+    "A_confirmation": "PASS_WITHIN_TESTED_SCOPE",
+    "B_usability": "PASS_WITHIN_TESTED_SCOPE",
+    "C_evidence": "PASS_WITHIN_TESTED_SCOPE",
+    "D_identity_recovery": "PASS_WITHIN_TESTED_SCOPE"
+  },
+  "branch": "p7-ci-verification-20261028",
+  "head": "f8b122438d2c67ab26e618ecded72ecc18454015",
+  "implementation": {
+    "manifest": "artifacts/p7/goal-confirmation-web-v1/implementation-web-final-r4.json",
+    "sha256": "a54bd133ff6c274618f37c98b329353b81fd886181930ee948176a25a85f340c",
+    "policy": "host-goal-requirements-v4",
+    "web_contract": "web-goal-contract-v1",
+    "files": {
+      "src/datapilot/web/app.py": "05720deff3b42c4ac5b3870609a18559713ce6bf2a59ccfb371fe09e5a297420",
+      "src/datapilot/web/chat.py": "85f45bf36a2d3943a57abe0bcc009cbd680aa6030f0677fd71fa8f961345571e",
+      "src/datapilot/web/chat_contracts.py": "9bc8e7b0c8897dbc6fc9bb17fb3564cf7f2244eb766bcf9cfd85cd475fdf6d33",
+      "src/datapilot/web/chat_routes.py": "fb910eae6e7a6db3fef5e8c4645262870b58fd0733090d187764bc8db088a5ba",
+      "src/datapilot/web/config.py": "cfc8e9d913b7f6d47930f9bf795a11ffe0adcdf46eae200c0defb8662ea582c5",
+      "src/datapilot/web/goal_confirmation.py": "990b467e2b0baa66e0617c353d5009318df73a3b4d7b35467d248b7cc8e21d42",
+      "src/datapilot/web/service.py": "4b768fc345f57510e335347ea0c35344efe7dd1d18791ceb55b568b370ac60ec",
+      "src/datapilot/web/store.py": "40d8d15a96fb805300c4ea373016508a918e8c25cbecc4418738cbebad199c1b",
+      "src/datapilot/web/ui_chat.py": "f9827b8cccf521225228dafb381713498f737fd6702f8d8d5c51e032a99c1456",
+      "src/datapilot/web/ui_components.py": "14e5d149ea6fc665de41245a8297819b4a4fa6ee174b783f2b2ba2825a4eeb59",
+      "src/datapilot/web/ui_management.py": "44b5f072663012b39b1b2368d9f9df3f81ef2e2891f88a6fe69c9d28c195cb02"
+    },
+    "other_product_sources_unchanged": 100
+  },
+  "database": {
+    "name": "datapilot_test_goal_confirmation_web_v1_20261031",
+    "postgres": 17,
+    "migration": "0008",
+    "seeded": false,
+    "historical_database_writes": false
+  },
+  "tests": {
+    "unit_311": {
+      "junit": "artifacts/p7/goal-confirmation-web-v1/unit-final-r4-311.xml",
+      "passed": 628,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 18
+    },
+    "unit_313": {
+      "junit": "artifacts/p7/goal-confirmation-web-v1/unit-final-r4-313.xml",
+      "passed": 628,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 18
+    },
+    "pg_311_unique_passed": 30,
+    "pg_311_passed_test_ids": [
+      "tests.test_chat_postgres::test_chat_causal_request_is_partial_and_does_not_invent_document_refs",
+      "tests.test_chat_postgres::test_chat_unknown_outcome_never_relaunches_or_releases_budget",
+      "tests.test_chat_postgres::test_chat_verified_report_followup_restart_and_read_only_history",
+      "tests.test_chat_postgres::test_committed_response_loss_and_concurrent_launch_only_one_run",
+      "tests.test_chat_postgres::test_conversation_idempotency_ttl_quota_and_web_privileges",
+      "tests.test_chat_postgres::test_csv_attachment_confirm_and_restricted_import_survive_history",
+      "tests.test_chat_postgres::test_message_hash_revocation_and_policy_change_fail_closed",
+      "tests.test_chat_postgres::test_message_integrity_owner_and_csrf_are_enforced",
+      "tests.test_chat_postgres::test_missing_mapping_cannot_launch_and_fake_approval_is_rejected",
+      "tests.test_rag_only_postgres::test_document_only_approval_concurrency_real_citations_and_restart",
+      "tests.test_rag_only_postgres::test_document_scope_revocation_blocks_execution_and_recovery[corpus]",
+      "tests.test_rag_only_postgres::test_document_scope_revocation_blocks_execution_and_recovery[dataset]",
+      "tests.test_rag_only_postgres::test_insufficient_retrieval_never_becomes_document_answer_completed[\\u6839\\u636e missing.md \\u6587\\u6863\\u8bf4\\u660e\\u5df2\\u4ed8\\u6b3e\\u8d26\\u5355\\u6536\\u5165\\u89c4\\u5219\\uff0c\\u5e76\\u5f15\\u7528\\u3002]",
+      "tests.test_rag_only_postgres::test_insufficient_retrieval_never_becomes_document_answer_completed[\\u6839\\u636e\\u6587\\u6863\\u8bf4\\u660e\\u81f3\\u5c11\\u4e24\\u4efd\\u6587\\u6863\\u660e\\u786e\\u8bb0\\u8f7d\\u7684\\u8d26\\u5355\\u6536\\u5165\\u89c4\\u5219\\uff0c\\u5e76\\u5f15\\u7528\\u3002]",
+      "tests.test_rag_only_postgres::test_unknown_or_wrong_corpus_version_and_empty_task_are_refused",
+      "tests.test_web_goal_confirmation_postgres::test_combined_sql_rag_p3_verified_and_identity_persists",
+      "tests.test_web_goal_confirmation_postgres::test_confirmation_ack_loss_concurrent_repeat_uses_one_run_and_one_event",
+      "tests.test_web_goal_confirmation_postgres::test_contract_is_pending_no_attestation_no_runtime_until_real_confirmation",
+      "tests.test_web_goal_confirmation_postgres::test_cross_conversation_confirmation_and_client_scope_forgery_are_rejected",
+      "tests.test_web_goal_confirmation_postgres::test_document_request_missing_corpus_requires_clarification_but_sql_still_completes",
+      "tests.test_web_goal_confirmation_postgres::test_edit_supersedes_and_retry_cannot_reuse_old_confirmation",
+      "tests.test_web_goal_confirmation_postgres::test_exhaustive_goal_cannot_be_self_approved_and_followup_has_no_inherited_proof",
+      "tests.test_web_goal_confirmation_postgres::test_expiry_and_changed_scope_fail_closed_before_confirmation",
+      "tests.test_web_goal_confirmation_postgres::test_fact_requirements_are_not_proofs_even_after_confirmation",
+      "tests.test_web_goal_confirmation_postgres::test_original_web_outbox_resumes_new_goal_across_processes",
+      "tests.test_web_goal_confirmation_postgres::test_real_rag_completed_restart_and_confirmation_withdrawal",
+      "tests.test_web_goal_confirmation_postgres::test_required_source_candidates_and_full_query_limit_cannot_shrink_goal",
+      "tests.test_web_goal_confirmation_postgres::test_revoked_dataset_does_not_publish_saved_contract_or_report",
+      "tests.test_web_goal_confirmation_postgres::test_unknown_outcome_is_not_replaced_by_new_contract_or_retried",
+      "tests.test_web_goal_confirmation_qwen_postgres::test_qwen_confirmation_original_worker_and_inspector"
+    ],
+    "pg_311_groups": [
+      {
+        "junit": "artifacts/p7/goal-confirmation-web-v1/pg-final-311.xml",
+        "passed": 10,
+        "failed": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "junit": "artifacts/p7/goal-confirmation-web-v1/pg-remaining-311.xml",
+        "passed": 3,
+        "failed": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "junit": "artifacts/p7/goal-confirmation-web-v1/pg-qwen-r2-311.xml",
+        "passed": 1,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "junit": "artifacts/p7/goal-confirmation-web-v1/pg-legacy-311.xml",
+        "passed": 15,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "junit": "artifacts/p7/goal-confirmation-web-v1/missing-doc-scope-after-311.xml",
+        "passed": 1,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "pg_313": {
+      "passed": 8,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "groups": [
+        {
+          "junit": "artifacts/p7/goal-confirmation-web-v1/pg-focus-313.xml",
+          "passed": 7,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "junit": "artifacts/p7/goal-confirmation-web-v1/missing-doc-scope-after-313.xml",
+          "passed": 1,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      ]
+    },
+    "models": "real local BGE and opt-in CUDA-FP16 Qwen; scripted/Fake model decisions",
+    "complete_repository_pytest": "NOT_RUN",
+    "static_checks": {
+      "ruff_check": "passed",
+      "ruff_format": "passed",
+      "json_openapi_markdown_refs": "passed",
+      "git_diff_check": "passed"
+    }
+  },
+  "browser": {
+    "type": "actual_browser_automated_test_user",
+    "conversation_id": "3c6eeeed-c725-423b-9e16-83cf726ac13c",
+    "run_id": "2a354627-f6ee-4667-9720-6c49a9a32a2f",
+    "original_query_entered_in_chat": true,
+    "pending_default_unchecked": true,
+    "scope_confirmation_and_execution_approval_separate": true,
+    "completed_before_restart": true,
+    "completed_after_actual_api_ui_restart": true,
+    "report_sha256_before_after": "f19a02dd84eb6b69373c5f809537b70c7cd46dd7c04952f04390af0bfde39f50",
+    "rejected_after_browser_withdrawal": true,
+    "revoked_report_http_code": "GOAL_REVOKED",
+    "scripted_worker_decisions": true,
+    "dispatcher_enabled_for_browser": false,
+    "paid_calls": 0,
+    "screenshots": "Native browser tool captures in conversation; no standalone screenshot exported",
+    "final_patch_note": "Browser clicks preceded final missing-document-scope gate; declared-document path unchanged; new gate revalidated in real HTTP/PG on both versions."
+  },
+  "history": {
+    "at": "2026-10-31T06:02:54.503222+00:00",
+    "phase2c5_seal_sha256": "342fd7c4cb9990827be5e1680538edebc61b83625a820667e7173837e24aaa0c",
+    "verified_prior_seal_files": 444,
+    "unchanged_prior_files": 434,
+    "expected_versioned_web_changes": [
+      "src/datapilot/web/app.py",
+      "src/datapilot/web/chat.py",
+      "src/datapilot/web/chat_contracts.py",
+      "src/datapilot/web/chat_routes.py",
+      "src/datapilot/web/config.py",
+      "src/datapilot/web/service.py",
+      "src/datapilot/web/store.py",
+      "src/datapilot/web/ui_chat.py",
+      "src/datapilot/web/ui_components.py",
+      "src/datapilot/web/ui_management.py"
+    ],
+    "unexpected_changes": [],
+    "product_changes_only_web": [
+      "src/datapilot/web/app.py",
+      "src/datapilot/web/chat.py",
+      "src/datapilot/web/chat_contracts.py",
+      "src/datapilot/web/chat_routes.py",
+      "src/datapilot/web/config.py",
+      "src/datapilot/web/service.py",
+      "src/datapilot/web/store.py",
+      "src/datapilot/web/ui_chat.py",
+      "src/datapilot/web/ui_components.py",
+      "src/datapilot/web/ui_management.py"
+    ],
+    "old_phase2c4_stop": {
+      "case": "fr002",
+      "arm": "qwen",
+      "reason": [
+        "unsupported_fact_or_citation",
+        "false_completed",
+        "unsupported_retrieval_goal_completed"
+      ],
+      "at": "2026-10-30T11:14:30.175374+00:00"
+    },
+    "historical_db_writes": false,
+    "new_db": "datapilot_test_goal_confirmation_web_v1_20261031"
+  },
+  "failure_history": {
+    "pg-diagnostic": {
+      "junit": "artifacts/p7/goal-confirmation-web-v1/pg-diagnostic.xml",
+      "passed": 8,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "pg-r2": {
+      "junit": "artifacts/p7/goal-confirmation-web-v1/pg-r2.xml",
+      "passed": 0,
+      "failed": 0,
+      "errors": 1,
+      "skipped": 0
+    },
+    "pg-r3": {
+      "junit": "artifacts/p7/goal-confirmation-web-v1/pg-r3.xml",
+      "passed": 8,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "pg-focused-r4": {
+      "junit": "artifacts/p7/goal-confirmation-web-v1/pg-focused-r4.xml",
+      "passed": 0,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "pg-final-311": {
+      "junit": "artifacts/p7/goal-confirmation-web-v1/pg-final-311.xml",
+      "passed": 10,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "pg-remaining-311": {
+      "junit": "artifacts/p7/goal-confirmation-web-v1/pg-remaining-311.xml",
+      "passed": 3,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "unit-ui-r2": {
+      "junit": "artifacts/p7/goal-confirmation-web-v1/unit-ui-r2.xml",
+      "passed": 3,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "missing-doc-scope-before": {
+      "junit": "artifacts/p7/goal-confirmation-web-v1/missing-doc-scope-before.xml",
+      "passed": 0,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "paid_api_calls": 0,
+  "provider_tokens": null,
+  "provider_cost": "not_applicable_no_paid_calls",
+  "git_commit_push": false,
+  "remote_ci": "NOT_RUN",
+  "default_embedding_changed": false,
+  "new_ddl_migration": false,
+  "next_quality_experiment_authorized": false,
+  "ready_for_independent_nonpaid_quality_design": true,
+  "limitations": [
+    "Authenticated user assertions are not a proof of arbitrary natural-language equivalence.",
+    "Automated test user decisions do not constitute real human Gold review or production approval.",
+    "Browser used original Outbox/execute_one with explicit scripted decisions, dispatcher disabled.",
+    "Web ingestion remains BGE; Qwen sources use the existing trusted opt-in CLI.",
+    "Full repository PostgreSQL regression, new Linux/Docker validation and paid Live not run.",
+    "Old unbound Web RAG runs fail RECOVERY_IDENTITY; no migration or history rewrite.",
+    "Explicit document mentions without a structured document scope may conservatively require clarification, including negated mentions; arbitrary implicit intent equivalence remains unproven."
+  ],
+  "modified_source_and_test_hashes": {
+    "src/datapilot/web/app.py": "05720deff3b42c4ac5b3870609a18559713ce6bf2a59ccfb371fe09e5a297420",
+    "src/datapilot/web/chat.py": "85f45bf36a2d3943a57abe0bcc009cbd680aa6030f0677fd71fa8f961345571e",
+    "src/datapilot/web/chat_contracts.py": "9bc8e7b0c8897dbc6fc9bb17fb3564cf7f2244eb766bcf9cfd85cd475fdf6d33",
+    "src/datapilot/web/chat_routes.py": "fb910eae6e7a6db3fef5e8c4645262870b58fd0733090d187764bc8db088a5ba",
+    "src/datapilot/web/config.py": "cfc8e9d913b7f6d47930f9bf795a11ffe0adcdf46eae200c0defb8662ea582c5",
+    "src/datapilot/web/goal_confirmation.py": "990b467e2b0baa66e0617c353d5009318df73a3b4d7b35467d248b7cc8e21d42",
+    "src/datapilot/web/service.py": "4b768fc345f57510e335347ea0c35344efe7dd1d18791ceb55b568b370ac60ec",
+    "src/datapilot/web/store.py": "40d8d15a96fb805300c4ea373016508a918e8c25cbecc4418738cbebad199c1b",
+    "src/datapilot/web/ui_chat.py": "f9827b8cccf521225228dafb381713498f737fd6702f8d8d5c51e032a99c1456",
+    "src/datapilot/web/ui_components.py": "14e5d149ea6fc665de41245a8297819b4a4fa6ee174b783f2b2ba2825a4eeb59",
+    "src/datapilot/web/ui_management.py": "44b5f072663012b39b1b2368d9f9df3f81ef2e2891f88a6fe69c9d28c195cb02",
+    "tests/test_web_goal_confirmation.py": "c353af1ab10d2ad9ec6c3bc3ab0946681419b7048cb7a54135d6a0e5085b78e0",
+    "tests/test_web_goal_confirmation_postgres.py": "fb4f26ad804ee44c7f12fe3acb2c912431c15fad113b7255e9c5b72b2f4e3d48",
+    "tests/test_web_goal_confirmation_qwen_postgres.py": "04554079e862127c634674c46510e3e734bca7c4f15becc71be2b7d8466c4aa2",
+    "tests/web_goal_recovery_probe.py": "5af0490bdbd1a277e5aefcdce27e7c521fb8e82bf40c365ba8efb5a3dbb9cd55",
+    "tests/test_chat_postgres.py": "b2e96214bf77a46fce8bb3af56c4caa85b451c080e8c7f139e3033f8c7142728",
+    "tests/test_rag_only_postgres.py": "d233041241396091cd43ae0b2aa910d1c8a26f5dbd6516c741f730c72933eef4",
+    "docs/adr/0019-web-goal-confirmation.md": "d23c67adde38a599609cb8b97e8c33162707771dd5c43b814c109164f6cdbdca"
+  },
+  "temporary_browser_services": "stopped; database/artifacts retained"
+}

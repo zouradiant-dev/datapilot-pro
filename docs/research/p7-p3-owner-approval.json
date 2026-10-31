@@ -1,0 +1,30 @@
+{
+  "protocol_version": "p3-exact-owner-approval-1",
+  "authority": "direct_user_message",
+  "approved_by_role": "project_owner",
+  "source_user_decision_ref": "Current chat user decision: 继续 DataPilot Pro P7 Gate 2B 的最后业务确认流程",
+  "observed_at": "2026-10-25T05:14:57.027848+00:00",
+  "platform_message_timestamp": null,
+  "request_sha256": "76c1e8d6ca861770e6e5c32cc9c67b7a1a2a0d1bdbebc17ae25796929ecf29c0",
+  "approved_groups": [
+    "A",
+    "B"
+  ],
+  "excluded_groups": [
+    "C"
+  ],
+  "approved_entries": 32,
+  "approved_semantics": 12,
+  "approved_metrics": 20,
+  "conditions": [
+    "Match exact materialized source, identity, version and hash before append",
+    "B acknowledges existing limitations only: no MRR, FX, fabricated history, deduplication or new computations",
+    "C remains absent; bh2-019 and bh2-048 missing versions remain absent",
+    "Targeted checks for bh2-016/052 zero coverage and bh2-047 effective month; stop affected conflicts"
+  ],
+  "paid_live_authorized": false,
+  "gate3_authorized": false,
+  "commit_push_authorized": false,
+  "independent_third_party_review_claimed": false,
+  "signature": null
+}

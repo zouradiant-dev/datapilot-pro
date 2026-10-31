@@ -1,0 +1,37 @@
+{
+  "publication": "whitelisted historical aggregate; raw observations remain local-only",
+  "original_local_only": "docs/research/p7-qwen3-phase2c2-expanded-quality.json",
+  "original_sha256": "b2788bb9ce7e7c392e8d3f9492781902689313f001d89a88ef489f0910c8675e",
+  "historical_values": {
+    "schema_version": "phase2c2-expanded-quality-delivery-1",
+    "at": "2026-10-30T06:06:12.428565+00:00",
+    "status": "BLOCKED",
+    "reason": "Pre-registered Gate A false completion triggered in ex074/Qwen; no new dispatch permitted",
+    "planned_cases": 100,
+    "planned_arm_observations": 200,
+    "observed_arm_observations": 75,
+    "not_run_arm_observations": 125,
+    "actual_runtimes": 73,
+    "complete_observed_pairs": 37,
+    "unique_observed_cases": 38,
+    "offline_scoring_equal": true
+  },
+  "omitted_keys": [
+    "boundaries",
+    "delivery",
+    "freeze",
+    "historical_integrity",
+    "independence",
+    "measurement_note",
+    "next_action",
+    "observed_preflight_refusals",
+    "planned_physical_bindings",
+    "planned_preflight_refusals",
+    "planned_runtime_observations",
+    "readonly_database_audit",
+    "results",
+    "stop",
+    "telemetry",
+    "tests"
+  ]
+}

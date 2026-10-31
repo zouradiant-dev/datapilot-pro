@@ -1,0 +1,326 @@
+{
+  "schema_version": "p7-engineering-demo-acceptance-1",
+  "at": "2026-10-31T15:00:01.950826+00:00",
+  "freeze_id": "p7-engineering-candidate-v1",
+  "engineering_demo_candidate": "ACCEPTED",
+  "independent_business_quality": "PENDING",
+  "deepseek_live_gate": "PENDING",
+  "independent_human_semantic_review": "NOT_VERIFIED",
+  "source_tree_sha256": "5a11a01af573c7ee456f2fac7946051f1ce829fe9eba2ba8624370f6c4d7f3a1",
+  "head": "f8b122438d2c67ab26e618ecded72ecc18454015",
+  "scope": "five new synthetic Runs and seven bounded engineering controls; scripted Worker, real infrastructure",
+  "default_embedding": "original BGE 512",
+  "provider_usage": {
+    "calls": 0,
+    "tokens": 0,
+    "cost_usd": 0,
+    "endpoint_contacted": false
+  },
+  "scripted_usage": {
+    "known_complete_model_calls": 10,
+    "known_mock_reported_tokens": 150,
+    "unknown_model_attempts": 1,
+    "unknown_conservative_accounting_tokens": 3375,
+    "total_accounting_calls": 11,
+    "total_accounting_tokens": 3525,
+    "not_provider_usage_or_cost_estimate": true
+  },
+  "not_run": [
+    "full pytest",
+    "new partial positive case",
+    "contract-edit browser scenario",
+    "Qwen resource retest",
+    "new quality AB",
+    "independent human semantics",
+    "DeepSeek Live",
+    "PG instance restart",
+    "new Linux/Docker/remote CI",
+    "Gate 3"
+  ],
+  "limitations": [
+    "four known finite-query over-rejections",
+    "legacy clarification date defaults",
+    "stale rendered UI requires refresh after revocation",
+    "24-hour original host TTL",
+    "private local setup prerequisite, not clean-machine one-click packaging",
+    "bounded observations do not establish global semantic safety or independent quality"
+  ],
+  "original_result_seal_sha256": "50f0c25699b7f51a4c70ba1d95f395873cf4765e95ba9e4014c48893728f80ec",
+  "cases": {
+    "sql": {
+      "run_id": "a14f5091-0908-48f7-920b-8fa51f0fbd03",
+      "status": "completed",
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "completed",
+        "required_goals": [
+          "metric_1"
+        ],
+        "verified_goals": [
+          "metric_1"
+        ],
+        "missing_evidence": {},
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "error": null,
+      "usage": {
+        "calls": 1,
+        "total_tokens": 15,
+        "reported_tokens": 15,
+        "usage_complete": true
+      },
+      "report_sha256": "059fc9a9dbb7cb4b54b2d93e483456107d24fcd413795a76dd3f6810e3970122",
+      "ledger_sha256": "35e1fccea052fefe54c2979f00b5eb537e19771684e11cef68cfd9b44288d40c",
+      "calls_sha256": "9f1678fab9c6e60491d746c30699245e1c9fb6428781db2f1267711c386a2204",
+      "manifest_sha256": "c457931ab84dba07ff8e3a261175968ed638991ddcbc9d744f1424004c95736a"
+    },
+    "rag": {
+      "run_id": "cb6f5a65-48a4-4c8e-a67f-af3ada81d274",
+      "status": "completed",
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "completed",
+        "required_goals": [
+          "documents"
+        ],
+        "verified_goals": [
+          "documents"
+        ],
+        "missing_evidence": {},
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "error": null,
+      "usage": {
+        "calls": 3,
+        "total_tokens": 45,
+        "reported_tokens": 45,
+        "usage_complete": true
+      },
+      "report_sha256": "8ed6965e51a1d5ef38117fce1d9655668872d92ab7afe72f47d1c7a8c7d2a09d",
+      "ledger_sha256": "872aab8db7c95dbae9e2d085e2a8121880a9c4fd45c14e82d6ec0785c1f18713",
+      "calls_sha256": "332057e30603b431de14f9098622636d9fc6e1673b1e24cffc44637893211f5e",
+      "manifest_sha256": "5e54d44c7197d32fcddb56f80ba788cfdbadf52e62dd9463186cba1f636ee831"
+    },
+    "combined": {
+      "run_id": "37768ae4-04e7-430a-a48e-f2ef2261c8aa",
+      "status": "completed",
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "completed",
+        "required_goals": [
+          "metric_1",
+          "documents"
+        ],
+        "verified_goals": [
+          "metric_1",
+          "documents"
+        ],
+        "missing_evidence": {},
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "error": null,
+      "usage": {
+        "calls": 3,
+        "total_tokens": 45,
+        "reported_tokens": 45,
+        "usage_complete": true
+      },
+      "report_sha256": "2af0b94505483de7e60de424a85b2eac874ae8bdaac4a9791e2a39cc57ff6918",
+      "ledger_sha256": "5435402ea095641f25c26a335ca046849c58adad61ca575c6cd8d5d3f6742fed",
+      "calls_sha256": "070fd98d172312a5e67f1e80ca12a650ddbabefeedff9dbb8d366bb0335056f4",
+      "manifest_sha256": "21b5f0c82ebec6519c816da999e9cf3d5ae8bbd7cf7ffa457debced3cd5d156c"
+    },
+    "insufficient": {
+      "run_id": "e5aa8869-8528-48b9-8a9c-374b1393c4ff",
+      "status": "unavailable",
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "unavailable",
+        "required_goals": [
+          "documents"
+        ],
+        "verified_goals": [],
+        "missing_evidence": {
+          "documents": [
+            "matching_document_or_metric_evidence_missing",
+            "required_document_source_missing",
+            "document_fact_unverified:future_refund"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": false
+      },
+      "error": null,
+      "usage": {
+        "calls": 3,
+        "total_tokens": 45,
+        "reported_tokens": 45,
+        "usage_complete": true
+      },
+      "report_sha256": "e077d0ebd15ff2dee6bec849c81081553f6df716c9e39dbb534cea15633cb070",
+      "ledger_sha256": "1c597ee238a672655ab8a85ca4afca5920a035016b452cf403d1eac53231f61b",
+      "calls_sha256": "61a6ff50990b41ff1a60cdf74d8cb73d02c2e4e49f25a8bacc4739c8ddeab63a",
+      "manifest_sha256": "d13431675d7d7858abf8a305bbb2990fde9e939952a29f50d9397288bd685ad8"
+    },
+    "unknown": {
+      "run_id": "484e2995-2cf4-487c-9d6b-74654e52975f",
+      "status": "blocked",
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "blocked",
+        "required_goals": [
+          "metric_1"
+        ],
+        "verified_goals": [],
+        "missing_evidence": {
+          "metric_1": [
+            "report_evidence_not_verified"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": false
+      },
+      "error": {
+        "code": "RECOVERY_UNCERTAIN",
+        "message": "外部调用结果未知；请人工对账，禁止自动重发",
+        "retryable": false,
+        "manual_action_required": true
+      },
+      "usage": {
+        "calls": 1,
+        "total_tokens": 3375,
+        "reported_tokens": 0,
+        "usage_complete": false
+      },
+      "report_sha256": null,
+      "ledger_sha256": "924438ef53c54cab796e04759a31f80f32882a8473c5677e0666022f5a7d2b7d",
+      "calls_sha256": "d8602c6cd0270df1c581804c8f66c6a569b496d7a0b3ac176f832b6f0db18fe5",
+      "manifest_sha256": "6fdfbecdb7aaf76139a086c2308dcb9c46892fff37543e46cbcb27e69dc41e30"
+    }
+  },
+  "p3_mcp_revalidation": {
+    "sql": {
+      "evidence_id": "94455a25-d4e2-4039-b2eb-eeeda30120dd",
+      "verification_id": "e6c9161a-c530-4edc-b4b5-c22ef37e8602",
+      "evidence_sha256": "e54faa1314e094cee778114affc6ba1500209dc8e964e1130c439c9c2e507b83",
+      "verification_sha256": "fa9ccd2bc25c852b26eee6b7ab7410a6cc3b47fa18b7b585ca8702e146a7962f",
+      "verdict": "verified",
+      "checks": [
+        {
+          "layer": "safety",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "shape",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "semantics",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "recomputation",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "references",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "coverage",
+          "status": "passed",
+          "codes": []
+        }
+      ]
+    },
+    "combined": {
+      "evidence_id": "cc959e8d-ef49-445c-9e78-0fe795013d77",
+      "verification_id": "1157e7ba-018b-4894-bdcc-d9498bb73806",
+      "evidence_sha256": "cde1c6219ae64a059917805eef848e389b2c17bdc86989337ce056d5cc75a46d",
+      "verification_sha256": "938b4f49d60965e5afce36dafdbdce8a2d87780934a35d9778734b687a3476ca",
+      "verdict": "verified",
+      "checks": [
+        {
+          "layer": "safety",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "shape",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "semantics",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "recomputation",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "references",
+          "status": "passed",
+          "codes": []
+        },
+        {
+          "layer": "coverage",
+          "status": "passed",
+          "codes": []
+        }
+      ]
+    }
+  },
+  "restart_status": "PASS",
+  "withdrawal": {
+    "status": "PASS",
+    "run_id": "cb6f5a65-48a4-4c8e-a67f-af3ada81d274",
+    "browser_goal_status": "rejected",
+    "report_http": 403,
+    "report_error": "GOAL_REVOKED",
+    "report_hidden_after_ui_refresh": true,
+    "original_inspector_artifacts_verified": true,
+    "preserved_report_sha256": "8ed6965e51a1d5ef38117fce1d9655668872d92ab7afe72f47d1c7a8c7d2a09d",
+    "report_unchanged": true,
+    "usage_unchanged": true,
+    "sql_report_and_p3_refs_unchanged": true,
+    "unknown_attempts_remain_one": true,
+    "provider_calls": 0,
+    "privileged_diagnostic_read_is_not_product_publication": true
+  },
+  "unknown": {
+    "run_id": "484e2995-2cf4-487c-9d6b-74654e52975f",
+    "fake_model_attempts": 1,
+    "provider_calls": 0,
+    "resume_http": 403,
+    "resume_error": "WEB_RESUME",
+    "runtime_error": "RECOVERY_UNCERTAIN",
+    "manual_action_required": true,
+    "unchanged": {
+      "calls_sha256": "d8602c6cd0270df1c581804c8f66c6a569b496d7a0b3ac176f832b6f0db18fe5",
+      "ledger_sha256": "924438ef53c54cab796e04759a31f80f32882a8473c5677e0666022f5a7d2b7d",
+      "statuses": [
+        "uncertain"
+      ]
+    },
+    "usage": {
+      "calls": 1,
+      "total_tokens": 3375,
+      "reported_tokens": 0,
+      "usage_complete": false
+    },
+    "unknown_cleared": false,
+    "external_call_reissued": false
+  },
+  "raw_evidence": "local-only; not bundled or uploaded"
+}

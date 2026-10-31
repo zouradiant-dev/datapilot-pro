@@ -1,3 +1,6 @@
 # Preserve deterministic fixture bytes across Windows and Unix checkouts.
 tests/fixtures/ingestion/*.csv text eol=lf
 tests/fixtures/ingestion/*.xlsx binary
+
+# Preserve the owner's intentional Markdown hard breaks without editing the plan.
+docs/codex-prompts-v2.5.md whitespace=-blank-at-eol

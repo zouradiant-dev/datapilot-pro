@@ -1,0 +1,847 @@
+{
+  "schema_version": "p7-language-support-boundary-1",
+  "recorded_at": "2026-10-28T14:35:06.054529+00:00",
+  "baseline_commit": "f8b122438d2c67ab26e618ecded72ecc18454015",
+  "scope": "Retrieval, source citation integrity and host-goal qualification only; no new language gating or production policy",
+  "experiment_kind": "public_synthetic_nonblind_dev_independent_from_formal_holdout",
+  "independent_business_task_count": null,
+  "notes": [
+    "12 query conditions reuse two positive topics and one missing-source topic; not 12 independent business tasks",
+    "The expanded English control and the short English failure are disclosed known Dev controls",
+    "All 8 documents are one chunk each: chunk and source metrics coincide in this sample"
+  ],
+  "parameters": {
+    "top_k": 5,
+    "min_score": 0.55,
+    "maximum_searches": 2,
+    "searches_per_case": 1,
+    "raw_rank_limit": 64,
+    "threshold_tuning": false
+  },
+  "input_freeze": {
+    "schema_version": "p7-language-boundary-input-freeze-1",
+    "created_at": "2026-10-28T14:28:13.419845+00:00",
+    "source_commit": "f8b122438d2c67ab26e618ecded72ecc18454015",
+    "paid_model_calls_authorized": 0,
+    "kind": "public_nonblind_dev_no_tuning",
+    "files": {
+      "scripts/language_boundary_probe.py": "3ab87cfde835f59927d9ffacb134d5f5d45c60807196b9bf53c3084e5226fccc",
+      "tests/test_rag_language_boundary.py": "7b299a86c2f756e242460daf011de270020961409c775231f1e1a5589b035887",
+      "tests/fixtures/rag/language-boundary.json": "1531eb220c155dd8025cce351ddd3c3bd09d20e9ff977c9ac7f711482421f54a"
+    },
+    "source_text_sha256": {
+      "zh": {
+        "export.md": "0090f355b52463cf3056ef503fc51bb3db0fcc0ba72fa9419d57b45ea992c493",
+        "roles.md": "ca7c1b2aa3a24a79b2490664390cf0e89b0d92430b22976f9b5d1cf221c9873d",
+        "quota.md": "a1e548226ba1b407582ceace0c970f9ed72d3b181b655b70ed6a86ec60525ee7",
+        "keys.md": "97b6dd7bee4f5600269dd8b277fc1c00b913ffa9448b6aa002e728677ca9a08a",
+        "maintenance.md": "206fb1fe71b5b081f3df8cd295ba15914672bc3a1becec90e0401a75feb6a512",
+        "tickets.md": "d1156b414747c39a4c3832a0881ae471fb03e022a7951003f4104baf85d2249f"
+      },
+      "en": {
+        "keys.md": "70a778a834a8f3bf2e1dc4bf92df36f464c5d5b5a622b7195a8091ff47da11d4",
+        "status.md": "19d7cd70763e72acbe3b7c3b30c7abfa1f7cfdea48781230aea45513e51850eb"
+      }
+    }
+  },
+  "environment": {
+    "postgres_version_num": 170011,
+    "pgvector": "0.8.6",
+    "reader": "datapilot_rag_reader",
+    "readonly": "on",
+    "test_identity_guard": "passed_all_13_designated_roles_and_same_explicit_test_database"
+  },
+  "results": {
+    "overall": {
+      "cases": 12,
+      "answerable": 10,
+      "negative": 2,
+      "full_source_coverage": 5,
+      "recall_at_k_macro": 0.5,
+      "mrr": 0.5,
+      "source_hits": 5,
+      "source_required": 10,
+      "wrong_empty": 5,
+      "negative_correct": 2,
+      "irrelevant_chunks": 0,
+      "returned_chunks": 5,
+      "quality_gate_passed": false
+    },
+    "language_pairs": {
+      "en->en": {
+        "cases": 5,
+        "answerable": 4,
+        "negative": 1,
+        "full_source_coverage": 3,
+        "recall_at_k_macro": 0.75,
+        "mrr": 0.75,
+        "source_hits": 3,
+        "source_required": 4,
+        "wrong_empty": 1,
+        "negative_correct": 1,
+        "irrelevant_chunks": 0,
+        "returned_chunks": 3
+      },
+      "en->zh": {
+        "cases": 2,
+        "answerable": 2,
+        "negative": 0,
+        "full_source_coverage": 0,
+        "recall_at_k_macro": 0.0,
+        "mrr": 0.0,
+        "source_hits": 0,
+        "source_required": 2,
+        "wrong_empty": 2,
+        "negative_correct": 0,
+        "irrelevant_chunks": 0,
+        "returned_chunks": 0
+      },
+      "zh->en": {
+        "cases": 2,
+        "answerable": 2,
+        "negative": 0,
+        "full_source_coverage": 0,
+        "recall_at_k_macro": 0.0,
+        "mrr": 0.0,
+        "source_hits": 0,
+        "source_required": 2,
+        "wrong_empty": 2,
+        "negative_correct": 0,
+        "irrelevant_chunks": 0,
+        "returned_chunks": 0
+      },
+      "zh->zh": {
+        "cases": 3,
+        "answerable": 2,
+        "negative": 1,
+        "full_source_coverage": 2,
+        "recall_at_k_macro": 1.0,
+        "mrr": 1.0,
+        "source_hits": 2,
+        "source_required": 2,
+        "wrong_empty": 0,
+        "negative_correct": 1,
+        "irrelevant_chunks": 0,
+        "returned_chunks": 2
+      }
+    },
+    "paired_matrix": {
+      "cases": 8,
+      "answerable": 8,
+      "negative": 0,
+      "full_source_coverage": 3,
+      "recall_at_k_macro": 0.375,
+      "mrr": 0.375,
+      "source_hits": 3,
+      "source_required": 8,
+      "wrong_empty": 5,
+      "negative_correct": 0,
+      "irrelevant_chunks": 0,
+      "returned_chunks": 3
+    },
+    "worker_completion": "not_run",
+    "business_completion": "not_run",
+    "paid_model_calls": 0
+  },
+  "precision_micro": {
+    "relevant_returned_chunks": 5,
+    "returned_chunks": 5,
+    "value": 1.0,
+    "empty_result_precision": null
+  },
+  "max_independent_cosine_error": 9.515587673369907e-08,
+  "mcp_searches": 12,
+  "scope_owner_denial_test_passed": true,
+  "cases": [
+    {
+      "id": "zh-zh-keys",
+      "query_language": "zh",
+      "document_language": "zh",
+      "topic": "keys",
+      "query": "API密钥应按什么顺序轮换？",
+      "kind": "paired_language_matrix",
+      "answerable": true,
+      "relevant_sources": [
+        "keys.md"
+      ],
+      "metrics": {
+        "returned_chunks": 1,
+        "returned_sources": 1,
+        "required_chunks": 1,
+        "required_sources": 1,
+        "relevant_chunks": 1,
+        "relevant_sources": 1,
+        "irrelevant_chunks": 0,
+        "recall_at_k": 1.0,
+        "precision_at_k": 1.0,
+        "source_coverage": 1.0,
+        "reciprocal_rank": 1.0,
+        "full_source_coverage": true,
+        "wrong_empty": false,
+        "negative_correct": null
+      },
+      "scope_sha256": "b6cf15f3a383a44ebf7a020db4613832947b68d164613e4f05a30557481302a6",
+      "manifest_sha256": "f41fac1ec5d2843f8a285f04702f1ceacb7557b917edfa3379e20eee331cb817",
+      "unavailable_reason": null,
+      "citations": [
+        {
+          "chunk_id": "677120aa07ac3fcddbed9fd20a49868d06d117bea7ed2a1f688f02b7bcf69f10",
+          "start": 0,
+          "end": 76,
+          "line_start": 1,
+          "line_end": 3,
+          "sha256": "97b6dd7bee4f5600269dd8b277fc1c00b913ffa9448b6aa002e728677ca9a08a",
+          "corpus_id": "f862c0eb-f7cd-4a6e-a9df-fe22b2bb8b6e",
+          "index_version": "f41fac1ec5d2843f8a285f04702f1ceacb7557b917edfa3379e20eee331cb817",
+          "source_id": "640495dda75b5814ba6c8b576c0210784bf6d8622772773bd56659e2256129a9",
+          "document_id": "7d38ae110665f466f320ea8038940361f2ca898c301b2a78b09648f5f9b95702",
+          "version": "97b6dd7bee4f5600269dd8b277fc1c00b913ffa9448b6aa002e728677ca9a08a",
+          "source_sha256": "97b6dd7bee4f5600269dd8b277fc1c00b913ffa9448b6aa002e728677ca9a08a",
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.6559494333252145,
+          "goal_sha256": "702e6380c1b4741372553ce094110a40266dfda0ccf2ffe48e519f929a12f768",
+          "goal_score": 0.6559494137763977,
+          "page": null
+        }
+      ],
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 66,
+        "elapsed_ms": 11.546000139787793,
+        "calls": 2
+      },
+      "best_relevant_rank_before_threshold": 1,
+      "best_relevant_score_before_threshold": 0.6559494333252145,
+      "goal_qualified_chunk_count": 1,
+      "failure_layer": null
+    },
+    {
+      "id": "zh-zh-status",
+      "query_language": "zh",
+      "document_language": "zh",
+      "topic": "status",
+      "query": "计划维护通知是否承诺恢复时限？",
+      "kind": "paired_language_matrix",
+      "answerable": true,
+      "relevant_sources": [
+        "maintenance.md"
+      ],
+      "metrics": {
+        "returned_chunks": 1,
+        "returned_sources": 1,
+        "required_chunks": 1,
+        "required_sources": 1,
+        "relevant_chunks": 1,
+        "relevant_sources": 1,
+        "irrelevant_chunks": 0,
+        "recall_at_k": 1.0,
+        "precision_at_k": 1.0,
+        "source_coverage": 1.0,
+        "reciprocal_rank": 1.0,
+        "full_source_coverage": true,
+        "wrong_empty": false,
+        "negative_correct": null
+      },
+      "scope_sha256": "b6cf15f3a383a44ebf7a020db4613832947b68d164613e4f05a30557481302a6",
+      "manifest_sha256": "f41fac1ec5d2843f8a285f04702f1ceacb7557b917edfa3379e20eee331cb817",
+      "unavailable_reason": null,
+      "citations": [
+        {
+          "chunk_id": "004856d8d968155539ed0d46a4d371fdea1f056a940ecda1142a491d4c847f93",
+          "start": 0,
+          "end": 89,
+          "line_start": 1,
+          "line_end": 3,
+          "sha256": "206fb1fe71b5b081f3df8cd295ba15914672bc3a1becec90e0401a75feb6a512",
+          "corpus_id": "f862c0eb-f7cd-4a6e-a9df-fe22b2bb8b6e",
+          "index_version": "f41fac1ec5d2843f8a285f04702f1ceacb7557b917edfa3379e20eee331cb817",
+          "source_id": "109cb066d229d0ac03908155d2f0686ac2fe4f650851c882f7a16073c4151fa5",
+          "document_id": "645bdc619e6c782e2ac8ce4b5a5abea4d10568c75749400bf861e8093e6b6d1c",
+          "version": "206fb1fe71b5b081f3df8cd295ba15914672bc3a1becec90e0401a75feb6a512",
+          "source_sha256": "206fb1fe71b5b081f3df8cd295ba15914672bc3a1becec90e0401a75feb6a512",
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.7364950838531632,
+          "goal_sha256": "fa0589fc45d1557607667dafa64a96ed9ead19aa8be409a8cf042ec584c6767b",
+          "goal_score": 0.7364950180053711,
+          "page": null
+        }
+      ],
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 72,
+        "elapsed_ms": 11.527599999681115,
+        "calls": 2
+      },
+      "best_relevant_rank_before_threshold": 1,
+      "best_relevant_score_before_threshold": 0.7364950838531632,
+      "goal_qualified_chunk_count": 1,
+      "failure_layer": null
+    },
+    {
+      "id": "en-en-keys",
+      "query_language": "en",
+      "document_language": "en",
+      "topic": "keys",
+      "query": "How should API keys be rotated?",
+      "kind": "paired_language_matrix",
+      "answerable": true,
+      "relevant_sources": [
+        "keys.md"
+      ],
+      "metrics": {
+        "returned_chunks": 0,
+        "returned_sources": 0,
+        "required_chunks": 1,
+        "required_sources": 1,
+        "relevant_chunks": 0,
+        "relevant_sources": 0,
+        "irrelevant_chunks": 0,
+        "recall_at_k": 0.0,
+        "precision_at_k": null,
+        "source_coverage": 0.0,
+        "reciprocal_rank": 0.0,
+        "full_source_coverage": false,
+        "wrong_empty": true,
+        "negative_correct": null
+      },
+      "scope_sha256": "65b8a0162d42bf2e4e627027da2d6adcc3e5b5cf75626cb37877052df29465bb",
+      "manifest_sha256": "c593cb831a341cedc2f3e31e8b52bb1b7169c15d18dee7b53d75327140816e40",
+      "unavailable_reason": "no_matches",
+      "citations": [],
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 64,
+        "elapsed_ms": 10.817999951541424,
+        "calls": 2
+      },
+      "best_relevant_rank_before_threshold": 1,
+      "best_relevant_score_before_threshold": 0.5200636541862387,
+      "goal_qualified_chunk_count": 0,
+      "failure_layer": "query_similarity_threshold"
+    },
+    {
+      "id": "en-en-status",
+      "query_language": "en",
+      "document_language": "en",
+      "topic": "status",
+      "query": "Does a planned maintenance notice guarantee a recovery time?",
+      "kind": "paired_language_matrix",
+      "answerable": true,
+      "relevant_sources": [
+        "status.md"
+      ],
+      "metrics": {
+        "returned_chunks": 1,
+        "returned_sources": 1,
+        "required_chunks": 1,
+        "required_sources": 1,
+        "relevant_chunks": 1,
+        "relevant_sources": 1,
+        "irrelevant_chunks": 0,
+        "recall_at_k": 1.0,
+        "precision_at_k": 1.0,
+        "source_coverage": 1.0,
+        "reciprocal_rank": 1.0,
+        "full_source_coverage": true,
+        "wrong_empty": false,
+        "negative_correct": null
+      },
+      "scope_sha256": "65b8a0162d42bf2e4e627027da2d6adcc3e5b5cf75626cb37877052df29465bb",
+      "manifest_sha256": "c593cb831a341cedc2f3e31e8b52bb1b7169c15d18dee7b53d75327140816e40",
+      "unavailable_reason": null,
+      "citations": [
+        {
+          "chunk_id": "adf8639e0327c7c92b2773d321fde7e0b82bd6dd8bdb9d812f351ab9cba4aeca",
+          "start": 0,
+          "end": 163,
+          "line_start": 1,
+          "line_end": 3,
+          "sha256": "19d7cd70763e72acbe3b7c3b30c7abfa1f7cfdea48781230aea45513e51850eb",
+          "corpus_id": "21fc420b-d91c-4487-ac72-66dfbb2ee082",
+          "index_version": "c593cb831a341cedc2f3e31e8b52bb1b7169c15d18dee7b53d75327140816e40",
+          "source_id": "30480a0d961739195e5696903a4f1ccaea295b9f696210b7a105fb3c9ccd07ab",
+          "document_id": "c20a9ebefd20edaa7348573a37cb75facc4451adac4a6a12e681e9842bb2470a",
+          "version": "19d7cd70763e72acbe3b7c3b30c7abfa1f7cfdea48781230aea45513e51850eb",
+          "source_sha256": "19d7cd70763e72acbe3b7c3b30c7abfa1f7cfdea48781230aea45513e51850eb",
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.7264969239379355,
+          "goal_sha256": "f3257966caf7d6fcbdea96ee19119f311f42b94d68ce9a1e72869c8307a34fc4",
+          "goal_score": 0.7264969348907471,
+          "page": null
+        }
+      ],
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 80,
+        "elapsed_ms": 12.232500012032688,
+        "calls": 2
+      },
+      "best_relevant_rank_before_threshold": 1,
+      "best_relevant_score_before_threshold": 0.7264969239379355,
+      "goal_qualified_chunk_count": 1,
+      "failure_layer": null
+    },
+    {
+      "id": "en-zh-keys",
+      "query_language": "en",
+      "document_language": "zh",
+      "topic": "keys",
+      "query": "How should API keys be rotated?",
+      "kind": "paired_language_matrix",
+      "answerable": true,
+      "relevant_sources": [
+        "keys.md"
+      ],
+      "metrics": {
+        "returned_chunks": 0,
+        "returned_sources": 0,
+        "required_chunks": 1,
+        "required_sources": 1,
+        "relevant_chunks": 0,
+        "relevant_sources": 0,
+        "irrelevant_chunks": 0,
+        "recall_at_k": 0.0,
+        "precision_at_k": null,
+        "source_coverage": 0.0,
+        "reciprocal_rank": 0.0,
+        "full_source_coverage": false,
+        "wrong_empty": true,
+        "negative_correct": null
+      },
+      "scope_sha256": "b6cf15f3a383a44ebf7a020db4613832947b68d164613e4f05a30557481302a6",
+      "manifest_sha256": "f41fac1ec5d2843f8a285f04702f1ceacb7557b917edfa3379e20eee331cb817",
+      "unavailable_reason": "no_matches",
+      "citations": [],
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 64,
+        "elapsed_ms": 11.530599906109273,
+        "calls": 2
+      },
+      "best_relevant_rank_before_threshold": 1,
+      "best_relevant_score_before_threshold": 0.3062184635530987,
+      "goal_qualified_chunk_count": 0,
+      "failure_layer": "query_similarity_threshold"
+    },
+    {
+      "id": "en-zh-status",
+      "query_language": "en",
+      "document_language": "zh",
+      "topic": "status",
+      "query": "Does a planned maintenance notice guarantee a recovery time?",
+      "kind": "paired_language_matrix",
+      "answerable": true,
+      "relevant_sources": [
+        "maintenance.md"
+      ],
+      "metrics": {
+        "returned_chunks": 0,
+        "returned_sources": 0,
+        "required_chunks": 1,
+        "required_sources": 1,
+        "relevant_chunks": 0,
+        "relevant_sources": 0,
+        "irrelevant_chunks": 0,
+        "recall_at_k": 0.0,
+        "precision_at_k": null,
+        "source_coverage": 0.0,
+        "reciprocal_rank": 0.0,
+        "full_source_coverage": false,
+        "wrong_empty": true,
+        "negative_correct": null
+      },
+      "scope_sha256": "b6cf15f3a383a44ebf7a020db4613832947b68d164613e4f05a30557481302a6",
+      "manifest_sha256": "f41fac1ec5d2843f8a285f04702f1ceacb7557b917edfa3379e20eee331cb817",
+      "unavailable_reason": "no_matches",
+      "citations": [],
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 80,
+        "elapsed_ms": 12.679100036621094,
+        "calls": 2
+      },
+      "best_relevant_rank_before_threshold": 1,
+      "best_relevant_score_before_threshold": 0.47496315538444067,
+      "goal_qualified_chunk_count": 0,
+      "failure_layer": "query_similarity_threshold"
+    },
+    {
+      "id": "zh-en-keys",
+      "query_language": "zh",
+      "document_language": "en",
+      "topic": "keys",
+      "query": "API密钥应按什么顺序轮换？",
+      "kind": "paired_language_matrix",
+      "answerable": true,
+      "relevant_sources": [
+        "keys.md"
+      ],
+      "metrics": {
+        "returned_chunks": 0,
+        "returned_sources": 0,
+        "required_chunks": 1,
+        "required_sources": 1,
+        "relevant_chunks": 0,
+        "relevant_sources": 0,
+        "irrelevant_chunks": 0,
+        "recall_at_k": 0.0,
+        "precision_at_k": null,
+        "source_coverage": 0.0,
+        "reciprocal_rank": 0.0,
+        "full_source_coverage": false,
+        "wrong_empty": true,
+        "negative_correct": null
+      },
+      "scope_sha256": "65b8a0162d42bf2e4e627027da2d6adcc3e5b5cf75626cb37877052df29465bb",
+      "manifest_sha256": "c593cb831a341cedc2f3e31e8b52bb1b7169c15d18dee7b53d75327140816e40",
+      "unavailable_reason": "no_matches",
+      "citations": [],
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 66,
+        "elapsed_ms": 11.12700009252876,
+        "calls": 2
+      },
+      "best_relevant_rank_before_threshold": 1,
+      "best_relevant_score_before_threshold": 0.4974752962589264,
+      "goal_qualified_chunk_count": 0,
+      "failure_layer": "query_similarity_threshold"
+    },
+    {
+      "id": "zh-en-status",
+      "query_language": "zh",
+      "document_language": "en",
+      "topic": "status",
+      "query": "计划维护通知是否承诺恢复时限？",
+      "kind": "paired_language_matrix",
+      "answerable": true,
+      "relevant_sources": [
+        "status.md"
+      ],
+      "metrics": {
+        "returned_chunks": 0,
+        "returned_sources": 0,
+        "required_chunks": 1,
+        "required_sources": 1,
+        "relevant_chunks": 0,
+        "relevant_sources": 0,
+        "irrelevant_chunks": 0,
+        "recall_at_k": 0.0,
+        "precision_at_k": null,
+        "source_coverage": 0.0,
+        "reciprocal_rank": 0.0,
+        "full_source_coverage": false,
+        "wrong_empty": true,
+        "negative_correct": null
+      },
+      "scope_sha256": "65b8a0162d42bf2e4e627027da2d6adcc3e5b5cf75626cb37877052df29465bb",
+      "manifest_sha256": "c593cb831a341cedc2f3e31e8b52bb1b7169c15d18dee7b53d75327140816e40",
+      "unavailable_reason": "no_matches",
+      "citations": [],
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 72,
+        "elapsed_ms": 22.427299874834716,
+        "calls": 2
+      },
+      "best_relevant_rank_before_threshold": 1,
+      "best_relevant_score_before_threshold": 0.5441082768569323,
+      "goal_qualified_chunk_count": 0,
+      "failure_layer": "query_similarity_threshold"
+    },
+    {
+      "id": "en-en-keys-expanded",
+      "query_language": "en",
+      "document_language": "en",
+      "topic": "keys",
+      "query": "How should an API key be rotated and where should secrets be kept?",
+      "kind": "previous_public_dev_wording_control",
+      "answerable": true,
+      "relevant_sources": [
+        "keys.md"
+      ],
+      "metrics": {
+        "returned_chunks": 1,
+        "returned_sources": 1,
+        "required_chunks": 1,
+        "required_sources": 1,
+        "relevant_chunks": 1,
+        "relevant_sources": 1,
+        "irrelevant_chunks": 0,
+        "recall_at_k": 1.0,
+        "precision_at_k": 1.0,
+        "source_coverage": 1.0,
+        "reciprocal_rank": 1.0,
+        "full_source_coverage": true,
+        "wrong_empty": false,
+        "negative_correct": null
+      },
+      "scope_sha256": "65b8a0162d42bf2e4e627027da2d6adcc3e5b5cf75626cb37877052df29465bb",
+      "manifest_sha256": "c593cb831a341cedc2f3e31e8b52bb1b7169c15d18dee7b53d75327140816e40",
+      "unavailable_reason": null,
+      "citations": [
+        {
+          "chunk_id": "aab19bbcd167fb12d981ac95e598f2e567c6a2a64e1833ceef87747ad2fe18c1",
+          "start": 0,
+          "end": 162,
+          "line_start": 1,
+          "line_end": 3,
+          "sha256": "70a778a834a8f3bf2e1dc4bf92df36f464c5d5b5a622b7195a8091ff47da11d4",
+          "corpus_id": "21fc420b-d91c-4487-ac72-66dfbb2ee082",
+          "index_version": "c593cb831a341cedc2f3e31e8b52bb1b7169c15d18dee7b53d75327140816e40",
+          "source_id": "90d68ca6d17f5d2b4f476bc6d123ace967ee4b252c5e61d581ffa302e18fcf9b",
+          "document_id": "e31b6f01dc77c3bed544c684e293f0fc9f966a1c7fa1d78710d89c7a3db22857",
+          "version": "70a778a834a8f3bf2e1dc4bf92df36f464c5d5b5a622b7195a8091ff47da11d4",
+          "source_sha256": "70a778a834a8f3bf2e1dc4bf92df36f464c5d5b5a622b7195a8091ff47da11d4",
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.6066529750823975,
+          "goal_sha256": "4a9b449c18825ec08028e02e8bc0c97257516ed80227d13f2d05679487806367",
+          "goal_score": 0.6066530346870422,
+          "page": null
+        }
+      ],
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 84,
+        "elapsed_ms": 11.816099868156016,
+        "calls": 2
+      },
+      "best_relevant_rank_before_threshold": 1,
+      "best_relevant_score_before_threshold": 0.6066529750823975,
+      "goal_qualified_chunk_count": 1,
+      "failure_layer": null
+    },
+    {
+      "id": "en-en-keys-procedure",
+      "query_language": "en",
+      "document_language": "en",
+      "topic": "keys",
+      "query": "What steps replace and revoke an API key, and where should secrets be stored?",
+      "kind": "predeclared_wording_control",
+      "answerable": true,
+      "relevant_sources": [
+        "keys.md"
+      ],
+      "metrics": {
+        "returned_chunks": 1,
+        "returned_sources": 1,
+        "required_chunks": 1,
+        "required_sources": 1,
+        "relevant_chunks": 1,
+        "relevant_sources": 1,
+        "irrelevant_chunks": 0,
+        "recall_at_k": 1.0,
+        "precision_at_k": 1.0,
+        "source_coverage": 1.0,
+        "reciprocal_rank": 1.0,
+        "full_source_coverage": true,
+        "wrong_empty": false,
+        "negative_correct": null
+      },
+      "scope_sha256": "65b8a0162d42bf2e4e627027da2d6adcc3e5b5cf75626cb37877052df29465bb",
+      "manifest_sha256": "c593cb831a341cedc2f3e31e8b52bb1b7169c15d18dee7b53d75327140816e40",
+      "unavailable_reason": null,
+      "citations": [
+        {
+          "chunk_id": "aab19bbcd167fb12d981ac95e598f2e567c6a2a64e1833ceef87747ad2fe18c1",
+          "start": 0,
+          "end": 162,
+          "line_start": 1,
+          "line_end": 3,
+          "sha256": "70a778a834a8f3bf2e1dc4bf92df36f464c5d5b5a622b7195a8091ff47da11d4",
+          "corpus_id": "21fc420b-d91c-4487-ac72-66dfbb2ee082",
+          "index_version": "c593cb831a341cedc2f3e31e8b52bb1b7169c15d18dee7b53d75327140816e40",
+          "source_id": "90d68ca6d17f5d2b4f476bc6d123ace967ee4b252c5e61d581ffa302e18fcf9b",
+          "document_id": "e31b6f01dc77c3bed544c684e293f0fc9f966a1c7fa1d78710d89c7a3db22857",
+          "version": "70a778a834a8f3bf2e1dc4bf92df36f464c5d5b5a622b7195a8091ff47da11d4",
+          "source_sha256": "70a778a834a8f3bf2e1dc4bf92df36f464c5d5b5a622b7195a8091ff47da11d4",
+          "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+          "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+          "retriever": "pg-cosine-exact-1",
+          "score": 0.6814515197709659,
+          "goal_sha256": "5049748869b4ddea6d9f38321daa49e624f2014f157ee38acba6ac0f08e56005",
+          "goal_score": 0.6814514398574829,
+          "page": null
+        }
+      ],
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 90,
+        "elapsed_ms": 13.743099989369512,
+        "calls": 2
+      },
+      "best_relevant_rank_before_threshold": 1,
+      "best_relevant_score_before_threshold": 0.6814515197709659,
+      "goal_qualified_chunk_count": 1,
+      "failure_layer": null
+    },
+    {
+      "id": "zh-zh-absent",
+      "query_language": "zh",
+      "document_language": "zh",
+      "topic": "missing-biometric",
+      "query": "产品是否支持人脸识别登录？",
+      "kind": "absent_source_negative",
+      "answerable": false,
+      "relevant_sources": [],
+      "metrics": {
+        "returned_chunks": 0,
+        "returned_sources": 0,
+        "required_chunks": 0,
+        "required_sources": 0,
+        "relevant_chunks": 0,
+        "relevant_sources": 0,
+        "irrelevant_chunks": 0,
+        "recall_at_k": null,
+        "precision_at_k": null,
+        "source_coverage": null,
+        "reciprocal_rank": null,
+        "full_source_coverage": null,
+        "wrong_empty": false,
+        "negative_correct": true
+      },
+      "scope_sha256": "b6cf15f3a383a44ebf7a020db4613832947b68d164613e4f05a30557481302a6",
+      "manifest_sha256": "f41fac1ec5d2843f8a285f04702f1ceacb7557b917edfa3379e20eee331cb817",
+      "unavailable_reason": "no_matches",
+      "citations": [],
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 68,
+        "elapsed_ms": 11.202300083823502,
+        "calls": 2
+      },
+      "best_relevant_rank_before_threshold": null,
+      "best_relevant_score_before_threshold": null,
+      "goal_qualified_chunk_count": 0,
+      "failure_layer": null
+    },
+    {
+      "id": "en-en-absent",
+      "query_language": "en",
+      "document_language": "en",
+      "topic": "missing-biometric",
+      "query": "Does the product support facial recognition sign-in?",
+      "kind": "absent_source_negative",
+      "answerable": false,
+      "relevant_sources": [],
+      "metrics": {
+        "returned_chunks": 0,
+        "returned_sources": 0,
+        "required_chunks": 0,
+        "required_sources": 0,
+        "relevant_chunks": 0,
+        "relevant_sources": 0,
+        "irrelevant_chunks": 0,
+        "recall_at_k": null,
+        "precision_at_k": null,
+        "source_coverage": null,
+        "reciprocal_rank": null,
+        "full_source_coverage": null,
+        "wrong_empty": false,
+        "negative_correct": true
+      },
+      "scope_sha256": "65b8a0162d42bf2e4e627027da2d6adcc3e5b5cf75626cb37877052df29465bb",
+      "manifest_sha256": "c593cb831a341cedc2f3e31e8b52bb1b7169c15d18dee7b53d75327140816e40",
+      "unavailable_reason": "no_matches",
+      "citations": [],
+      "embedding_usage": {
+        "mode": "local_onnx",
+        "tokens": 72,
+        "elapsed_ms": 11.247399961575866,
+        "calls": 2
+      },
+      "best_relevant_rank_before_threshold": null,
+      "best_relevant_score_before_threshold": null,
+      "goal_qualified_chunk_count": 0,
+      "failure_layer": null
+    }
+  ],
+  "tests": {
+    "unit-final-311.xml": {
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.686"
+    },
+    "unit-final-313.xml": {
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.831"
+    },
+    "postgres-311.xml": {
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "25.578"
+    }
+  },
+  "python313_real_pg_this_stage": "not_run",
+  "ruff": "passed",
+  "format_files_checked": 280,
+  "git_diff_check": "passed",
+  "integrity": {
+    "preexisting_file_hashes_unchanged": 537,
+    "new_source_freeze_unchanged": true,
+    "old_row_hashes_unchanged": true,
+    "new_rows": {
+      "corpora": 2,
+      "sources": 8,
+      "indexes": 2,
+      "chunks": 8
+    }
+  },
+  "production_code_changed": false,
+  "embedding_threshold_topk_budget_changed": false,
+  "old_holdout_gold_scorer_modified": false,
+  "worker_completion": "not_run",
+  "business_completion": "not_run",
+  "web_english_intent": "not_run",
+  "mixed_language_queries": "not_run",
+  "long_multichunk_documents": "not_run",
+  "paid_model_calls": 0,
+  "new_live_campaign": false,
+  "git_commit_push": false,
+  "stage3_entered": false,
+  "evidence_directory": "artifacts/p7/language-boundary-v1",
+  "suggested_documented_boundary": {
+    "zh_to_zh": "Observed working on two short-source positives; broader quality not established",
+    "en_to_en": "Experimental/best effort: paired matrix 1/2; wording controls add 2/2, one short question still fails",
+    "cross_language": "No reliable-support claim: each direction 0/2 positives in this sample",
+    "operational_handling": "Empty retrieval means no authorized fragment met retrieval requirements; do not infer that a source does not exist or silently change thresholds"
+  },
+  "embedding": {
+    "model": "BAAI/bge-small-zh-v1.5/Qdrant-onnx",
+    "revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+    "dimensions": 512,
+    "recipe": "cls-l2-query-prefix-1/ort-1.31.0/tokenizers-0.23.3",
+    "files": {
+      "model_optimized.onnx": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38",
+      "tokenizer.json": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+    },
+    "fixture": false
+  },
+  "chunker": {
+    "version": "unicode-window-1",
+    "chars": 192,
+    "overlap": 32
+  },
+  "source_snapshot_counts": {
+    "corpora": 2,
+    "documents": 8,
+    "chunks": 8
+  },
+  "production_default_top_k": 3,
+  "test_top_k_basis": "5 inherited from the Phase 3B diagnostic; production default 3 and permitted range 1..5 unchanged"
+}

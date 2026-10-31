@@ -1,0 +1,116 @@
+{
+  "schema_version": "p7-zero-revenue-diagnosis-1",
+  "checked_at": "2026-10-25T06:33:14.822679+00:00",
+  "client_timezone": "Asia/Shanghai",
+  "status": "blocked",
+  "ready_for_live_authorization": false,
+  "classification": "implementation_defect_numeric_serialization_fixed_point_parser_contract_mismatch",
+  "not_classified_as": [
+    "insufficient_Gold_zero_proof_under_approved_snapshot_policy",
+    "business_rule_disallowing_zero_revenue"
+  ],
+  "affected_cases": [
+    "bh2-016",
+    "bh2-052"
+  ],
+  "original_evidence_id": "4f1ccf99-901f-4e2c-abc0-d0054aa8094d",
+  "original_verification_id": "dcd34f1c-de7a-4fa3-b260-de4385eb85dd",
+  "original_verdict": "rejected",
+  "raw_result": "0E-20",
+  "proof_status": "computed",
+  "proof_value": {
+    "value": "0",
+    "unit": "CNY",
+    "numerator": null,
+    "denominator": null,
+    "window_days": 31
+  },
+  "original_reason_codes": {
+    "safety": [],
+    "shape": [
+      "result_invalid"
+    ],
+    "semantics": [],
+    "recomputation": [
+      "independent_result_mismatch"
+    ],
+    "references": [],
+    "coverage": [
+      "goal_not_covered"
+    ]
+  },
+  "confirmed_coverage": {
+    "start": "2023-01-01",
+    "end_exclusive": "2024-01-01",
+    "timezone": "UTC",
+    "amount_storage": "minor",
+    "authority": "explicit project-owner attestation; not proof of real-world source completeness",
+    "request_missing": [],
+    "evidence_missing": [],
+    "proof_missing": []
+  },
+  "control": {
+    "case_id": "bh2-047",
+    "original_evidence_id": "efa35865-eb40-44ff-be1a-f46bdc99f339",
+    "verdict": "verified",
+    "value": {
+      "value": "447.5600000000000000",
+      "unit": "CNY",
+      "numerator": null,
+      "denominator": null,
+      "window_days": 31
+    }
+  },
+  "metric_execution_reconstruction": "Original object not separately persisted; diagnostic DTO reconstructed from persisted Evidence and hash-identical current Context, without re-executing SQL",
+  "p3_registration": {
+    "approved_request_sha256": "76c1e8d6ca861770e6e5c32cc9c67b7a1a2a0d1bdbebc17ae25796929ecf29c0",
+    "registered": {
+      "semantic": 12,
+      "metric": 20
+    },
+    "excluded_C": "still absent in prior registration receipt",
+    "deliberately_missing_versions": "still absent in prior registration receipt",
+    "repeat_approval_required": false
+  },
+  "tests_this_turn": [
+    {
+      "python": "3.11",
+      "passed": 5,
+      "junit": "artifacts/p7/gate2b-v2/zero-diagnosis-py311.xml",
+      "sha256": "dec0c4ed03e5d5d4af1f14a78d31c118167839e84e957804b7aed2f8c9a6e941",
+      "meaning": "offline diagnosis reproduces current defect, not fixed business acceptance"
+    },
+    {
+      "python": "3.13",
+      "passed": 5,
+      "junit": "artifacts/p7/gate2b-v2/zero-diagnosis-py313.xml",
+      "sha256": "5e3d549f339fae185ba9105e441b63ea3576aef71da82c2c70f97f338a5c1763",
+      "meaning": "offline diagnosis reproduces current defect, not fixed business acceptance"
+    }
+  ],
+  "metric_executions_this_turn": 0,
+  "model_calls_this_turn": 0,
+  "database_writes_this_turn": 0,
+  "full_regression_this_turn": "not_run_by_instruction",
+  "prior_applicable_regression": {
+    "py311": "173 passed in 436.81s",
+    "py313": "173 passed in 446.40s",
+    "boundary": "previous turn; does not negate the directed P3 failure"
+  },
+  "frozen_implementation_file_count": 148,
+  "frozen_implementation_files_unchanged": true,
+  "execution_freeze_unchanged_sha256": "6de1b0097ffb36b62788d8489b871e53483acac63fd39df8889511b0b3545b50",
+  "gold_and_definitions_modified": false,
+  "verdict_rewritten": false,
+  "paid_live_authorized": false,
+  "formal_agent_live_runs": 0,
+  "next_action": "Separate scoped bounded NUMERIC result representation fix authorization; preserve strict parser/rules/Gold and old rejected records; use dev cases and new implementation freeze",
+  "implementation_fix_requires_new_freeze": true,
+  "private_evidence_refs": {
+    "artifacts/p7/gate2b-v2/p3-owner-confirmation/targeted-p3.json": "3fcc3461590ce1e494055abb962cb973903b9b62b4422acb7d8103d7f487a123",
+    "artifacts/p7/gate2b-v2/p3-owner-confirmation/directed-evidence-readback.json": "2d63882f0680cf649f0379933810313748b78b21a83e9abec3a1f29613889627",
+    "artifacts/p7/gate2b-v2/p3-owner-confirmation/directed-execution-projection.json": "63bb86b1391bf12971aad284dfb4c73f4e6806ebbb233eedb70595d0ae5fafed",
+    "artifacts/p7/gate2b-v2/p3-owner-confirmation/source-check-check.json": "16d539159e37fe62aecb614ff518086ed6e6e472ba067c386460bf50fa181a25",
+    "artifacts/p7/gate2b-v2/p3-owner-confirmation/exclusions-after.json": "c1b2756a4151e14ef7695b27ffa8a31bcaecc0c8baa3d6278fb44094fd8bf813"
+  }
+}

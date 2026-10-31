@@ -1,0 +1,2158 @@
+{
+  "schema_version": "qwen-migration-phase1-1",
+  "created_at": "2026-10-29T13:19:00.398254+00:00",
+  "scope": "local opt-in compatibility; no default switch, no paid API",
+  "baseline_head": "f8b122438d2c67ab26e618ecded72ecc18454015",
+  "baseline_default": {
+    "model": "BAAI/bge-small-zh-v1.5/Qdrant-onnx",
+    "revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+    "dimensions": 512,
+    "recipe": "cls-l2-query-prefix-1/ort-1.31.0/tokenizers-0.23.3",
+    "files": {
+      "model_optimized.onnx": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38",
+      "tokenizer.json": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+    },
+    "fixture": false
+  },
+  "preregistration": {
+    "fixture_sha256": "7dcb299a8493377cffda084d3f0845a5cab9da2938977c42a5d8ee10bfa0f9fd",
+    "counts": {
+      "calibration": 20,
+      "validation": 20
+    },
+    "before_inference": true,
+    "correction": "goal_mismatch labels the alternate topic as relevant to goal; no inference observed"
+  },
+  "safety_dev_sha256": "1fc45028912604a6b6b110f037d10c5cdf94a4811f57b236dde4df28d93b5966",
+  "profiles": {
+    "qwen3-cpu-v1": {
+      "model": {
+        "model": "Qwen/Qwen3-Embedding-0.6B",
+        "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+        "dimensions": 1024,
+        "recipe": "last-l2-saas-v1/fp32-cpu/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+        "files": {
+          "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+          "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+          "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+          "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+          "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+          "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        "fixture": false
+      },
+      "model_sha256": "d0b43228525175172085c18259a66093788b4aab41907c211de8445117124b08",
+      "policy": {
+        "model_sha256": "d0b43228525175172085c18259a66093788b4aab41907c211de8445117124b08",
+        "calibration_sha256": "9be20cb4b8cbffbe74a95a06d15d4bf7b6bad621a67972301decd7d98233fa2b",
+        "search_policy": "qwen3-cpu-v1/search-cosine-v1",
+        "search_threshold": 0.55,
+        "goal_policy": "qwen3-cpu-v1/host-goal-cosine-v1",
+        "goal_threshold": 0.55
+      },
+      "policy_sha256": "05687d05ef4df74a2f52066d4da70301852f9172b0215d2b05d5289cb769ce9d",
+      "indexes": {
+        "calibration": {
+          "zh": {
+            "index_version": "7d64e3d17f05606d50261d9a27f0e0d0d473b76554fe36c04a4dc7f6b5e23b9f",
+            "manifest": {
+              "target": {
+                "corpus_id": "cd600221-7dca-5727-bb78-b1a28ad06f8c",
+                "owner": "qwen-migration-dev",
+                "dataset_id": null,
+                "dataset_version": null
+              },
+              "model": {
+                "model": "Qwen/Qwen3-Embedding-0.6B",
+                "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+                "dimensions": 1024,
+                "recipe": "last-l2-saas-v1/fp32-cpu/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+                "files": {
+                  "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+                  "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+                  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+                  "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+                  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+                  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "fixture": false
+              },
+              "chunker": {
+                "version": "unicode-window-1",
+                "chars": 192,
+                "overlap": 32
+              },
+              "retriever": "pg-cosine-exact-1",
+              "sources": [
+                {
+                  "source_id": "06625832d597950d5df8842e9982193f857955b8a1cc01a4b4ad1aaa35e2d6eb",
+                  "document_id": "39418be86af6094da88c7006fbf36efd4521b1d79738245617e2c8df6e465946",
+                  "version": "cdcbd502bc4ff6a6284bd3d06cfb0c76a6fcdcf83058d5106def1af146aa24ce",
+                  "name": "pause-zh.md",
+                  "bytes": 93,
+                  "text_sha256": "cdcbd502bc4ff6a6284bd3d06cfb0c76a6fcdcf83058d5106def1af146aa24ce",
+                  "chunks": [
+                    {
+                      "chunk_id": "bd8914086f267566cd849c4b75451f24486ae43b2699df7ce5df177f81c6462d",
+                      "start": 0,
+                      "end": 31,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "cdcbd502bc4ff6a6284bd3d06cfb0c76a6fcdcf83058d5106def1af146aa24ce"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "9157b56e99ce8ac7b6ceb7cbc66442efd9f0947b55bacdde55a86307b3acb1e2",
+                  "document_id": "a6b1b35a67e4e6c460d984c46a2933a1c368d0bb71b04e11a0951e6230780562",
+                  "version": "d278cfa7948e868fbf1739b1c2c2ab7a26bfa8c4ac9f48a1a8d8169e8d6adac1",
+                  "name": "retention-zh.md",
+                  "bytes": 81,
+                  "text_sha256": "d278cfa7948e868fbf1739b1c2c2ab7a26bfa8c4ac9f48a1a8d8169e8d6adac1",
+                  "chunks": [
+                    {
+                      "chunk_id": "289b5c4eca112c7a9d7868b0309d24e64c1d6f244a8b44d30b9756ab6b041970",
+                      "start": 0,
+                      "end": 27,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "d278cfa7948e868fbf1739b1c2c2ab7a26bfa8c4ac9f48a1a8d8169e8d6adac1"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "9c04b5d14650a00099b951078e4a6c418ad2f21b2d79661abae13f5a2cb2a540",
+                  "document_id": "8d89de46127aab06292e4b2333a019ea8e337aeec049ed379bc8d2a8064a89a2",
+                  "version": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "name": "background-zh.md",
+                  "bytes": 93,
+                  "text_sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "chunks": [
+                    {
+                      "chunk_id": "7e622d7ea9daaa52a263d86ccd43ad5eed4a353948509e841f6e7b3ac47098ed",
+                      "start": 0,
+                      "end": 31,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "c2b93147cf7faffa2bfdbaaf8d72ad86a14ffcf309b372cc41ebe05412501d5a",
+                  "document_id": "f1436c4f44968b1bdcca7efc8465cf398207eeadaac7c52677641decf7598f62",
+                  "version": "0faf745bb0371687fbb7cdeb248e7b2f0736c114e9efe6c946fac0a5ecfecf08",
+                  "name": "transfer-zh.md",
+                  "bytes": 84,
+                  "text_sha256": "0faf745bb0371687fbb7cdeb248e7b2f0736c114e9efe6c946fac0a5ecfecf08",
+                  "chunks": [
+                    {
+                      "chunk_id": "fe5deaf9e98ec22dcae0d79d087ae9e4fa9b69933c36534a62a99cc8551b3e2c",
+                      "start": 0,
+                      "end": 28,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "0faf745bb0371687fbb7cdeb248e7b2f0736c114e9efe6c946fac0a5ecfecf08"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "d10dbc25d154911215c5dd6318f449c8b1933530d73f2e4fbd675ec6122f7a6b",
+                  "document_id": "a1aeb6be7b92a833404b456ddad6d67103575d7e934f410b8581d70b28bb0ca4",
+                  "version": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "name": "injection-zh.md",
+                  "bytes": 112,
+                  "text_sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "chunks": [
+                    {
+                      "chunk_id": "5443eff063a1815fa6df1535c9c9070ba34e1c4051fbf18797ca06184e36608c",
+                      "start": 0,
+                      "end": 74,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e"
+                    }
+                  ]
+                }
+              ],
+              "relevance_policy_sha256": "05687d05ef4df74a2f52066d4da70301852f9172b0215d2b05d5289cb769ce9d"
+            }
+          },
+          "en": {
+            "index_version": "4766c74463040198f3296a6f882af467171b6eac3d1b899c3e3d00efd3942474",
+            "manifest": {
+              "target": {
+                "corpus_id": "cd600221-7dca-5727-bb78-b1a28ad06f8c",
+                "owner": "qwen-migration-dev",
+                "dataset_id": null,
+                "dataset_version": null
+              },
+              "model": {
+                "model": "Qwen/Qwen3-Embedding-0.6B",
+                "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+                "dimensions": 1024,
+                "recipe": "last-l2-saas-v1/fp32-cpu/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+                "files": {
+                  "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+                  "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+                  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+                  "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+                  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+                  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "fixture": false
+              },
+              "chunker": {
+                "version": "unicode-window-1",
+                "chars": 192,
+                "overlap": 32
+              },
+              "retriever": "pg-cosine-exact-1",
+              "sources": [
+                {
+                  "source_id": "7ac00e8de6f191de2fa4f5c6dc4f1e1b66c2036c7eda668d00fb3551cbb2a8cd",
+                  "document_id": "76d93b28c8ccf02052c202705ac0a6784c87957b7bc6ffa8a8b2595cd14fc49a",
+                  "version": "e7020e235bee10ed2a2deff5f9950e410accbb5b0b409e9917d588be2f57900d",
+                  "name": "transfer-en.md",
+                  "bytes": 108,
+                  "text_sha256": "e7020e235bee10ed2a2deff5f9950e410accbb5b0b409e9917d588be2f57900d",
+                  "chunks": [
+                    {
+                      "chunk_id": "82205f0229bf50f66b138559f98a06c3b3a48e6b86e3fcf2a8bc1b3dc9b5854c",
+                      "start": 0,
+                      "end": 108,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "e7020e235bee10ed2a2deff5f9950e410accbb5b0b409e9917d588be2f57900d"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "96a49c3ca7f119f4e0194fad9549bb23f1703ead2fe4c9899820b1a67c591f2e",
+                  "document_id": "ee0259071e64e064072cc96f38dcf8b9ffb5c4880f8499625bbb8aae1a62dc44",
+                  "version": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "name": "irrelevant-en.md",
+                  "bytes": 85,
+                  "text_sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "chunks": [
+                    {
+                      "chunk_id": "a60418b5df6456f182a7aed96c3deb8a998277c413ec0d644e1e7ec4cf087f2d",
+                      "start": 0,
+                      "end": 85,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "be4260d4316993feb50d3353485a01c8d14483909c771478f5772abcd082c44f",
+                  "document_id": "fa2055904d9efcd670f83a13d4e4ee7f0637bba1c53986d1ea65acb84fcd01b6",
+                  "version": "a229d651ffaa418dce8e54e1fc1fca43d1dc06328d39b616ad9498105d46cc68",
+                  "name": "retention-en.md",
+                  "bytes": 106,
+                  "text_sha256": "a229d651ffaa418dce8e54e1fc1fca43d1dc06328d39b616ad9498105d46cc68",
+                  "chunks": [
+                    {
+                      "chunk_id": "3c4c01f52f92a314c1f255c37a11ce36c6b9643c35899396ff1ed335bfdca395",
+                      "start": 0,
+                      "end": 106,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "a229d651ffaa418dce8e54e1fc1fca43d1dc06328d39b616ad9498105d46cc68"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "f6cf17192cceb29396c47e94fbf15d130ccc1151694206f4359393afe76d2f59",
+                  "document_id": "2f4860c348300de7565b7549b47cfd7b7124d14703779eac6dd0ac5d6dea75ed",
+                  "version": "470c01f32ce07321ace91c9c6798507dbd0a87c5e4c120b5de93bfdd7829e2dd",
+                  "name": "pause-en.md",
+                  "bytes": 118,
+                  "text_sha256": "470c01f32ce07321ace91c9c6798507dbd0a87c5e4c120b5de93bfdd7829e2dd",
+                  "chunks": [
+                    {
+                      "chunk_id": "e4596943c94e8d8445fc4da82c4817408e01427e9e9a17b6cc539bc296ee9113",
+                      "start": 0,
+                      "end": 118,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "470c01f32ce07321ace91c9c6798507dbd0a87c5e4c120b5de93bfdd7829e2dd"
+                    }
+                  ]
+                }
+              ],
+              "relevance_policy_sha256": "05687d05ef4df74a2f52066d4da70301852f9172b0215d2b05d5289cb769ce9d"
+            }
+          },
+          "all": {
+            "index_version": "df8ce8ae72cc3739366b71f80113f8f8e03cc6bdd7542485e7b0ca02a4932f2d",
+            "manifest": {
+              "target": {
+                "corpus_id": "cd600221-7dca-5727-bb78-b1a28ad06f8c",
+                "owner": "qwen-migration-dev",
+                "dataset_id": null,
+                "dataset_version": null
+              },
+              "model": {
+                "model": "Qwen/Qwen3-Embedding-0.6B",
+                "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+                "dimensions": 1024,
+                "recipe": "last-l2-saas-v1/fp32-cpu/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+                "files": {
+                  "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+                  "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+                  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+                  "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+                  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+                  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "fixture": false
+              },
+              "chunker": {
+                "version": "unicode-window-1",
+                "chars": 192,
+                "overlap": 32
+              },
+              "retriever": "pg-cosine-exact-1",
+              "sources": [
+                {
+                  "source_id": "06625832d597950d5df8842e9982193f857955b8a1cc01a4b4ad1aaa35e2d6eb",
+                  "document_id": "39418be86af6094da88c7006fbf36efd4521b1d79738245617e2c8df6e465946",
+                  "version": "cdcbd502bc4ff6a6284bd3d06cfb0c76a6fcdcf83058d5106def1af146aa24ce",
+                  "name": "pause-zh.md",
+                  "bytes": 93,
+                  "text_sha256": "cdcbd502bc4ff6a6284bd3d06cfb0c76a6fcdcf83058d5106def1af146aa24ce",
+                  "chunks": [
+                    {
+                      "chunk_id": "bd8914086f267566cd849c4b75451f24486ae43b2699df7ce5df177f81c6462d",
+                      "start": 0,
+                      "end": 31,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "cdcbd502bc4ff6a6284bd3d06cfb0c76a6fcdcf83058d5106def1af146aa24ce"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "7ac00e8de6f191de2fa4f5c6dc4f1e1b66c2036c7eda668d00fb3551cbb2a8cd",
+                  "document_id": "76d93b28c8ccf02052c202705ac0a6784c87957b7bc6ffa8a8b2595cd14fc49a",
+                  "version": "e7020e235bee10ed2a2deff5f9950e410accbb5b0b409e9917d588be2f57900d",
+                  "name": "transfer-en.md",
+                  "bytes": 108,
+                  "text_sha256": "e7020e235bee10ed2a2deff5f9950e410accbb5b0b409e9917d588be2f57900d",
+                  "chunks": [
+                    {
+                      "chunk_id": "82205f0229bf50f66b138559f98a06c3b3a48e6b86e3fcf2a8bc1b3dc9b5854c",
+                      "start": 0,
+                      "end": 108,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "e7020e235bee10ed2a2deff5f9950e410accbb5b0b409e9917d588be2f57900d"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "9157b56e99ce8ac7b6ceb7cbc66442efd9f0947b55bacdde55a86307b3acb1e2",
+                  "document_id": "a6b1b35a67e4e6c460d984c46a2933a1c368d0bb71b04e11a0951e6230780562",
+                  "version": "d278cfa7948e868fbf1739b1c2c2ab7a26bfa8c4ac9f48a1a8d8169e8d6adac1",
+                  "name": "retention-zh.md",
+                  "bytes": 81,
+                  "text_sha256": "d278cfa7948e868fbf1739b1c2c2ab7a26bfa8c4ac9f48a1a8d8169e8d6adac1",
+                  "chunks": [
+                    {
+                      "chunk_id": "289b5c4eca112c7a9d7868b0309d24e64c1d6f244a8b44d30b9756ab6b041970",
+                      "start": 0,
+                      "end": 27,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "d278cfa7948e868fbf1739b1c2c2ab7a26bfa8c4ac9f48a1a8d8169e8d6adac1"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "96a49c3ca7f119f4e0194fad9549bb23f1703ead2fe4c9899820b1a67c591f2e",
+                  "document_id": "ee0259071e64e064072cc96f38dcf8b9ffb5c4880f8499625bbb8aae1a62dc44",
+                  "version": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "name": "irrelevant-en.md",
+                  "bytes": 85,
+                  "text_sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "chunks": [
+                    {
+                      "chunk_id": "a60418b5df6456f182a7aed96c3deb8a998277c413ec0d644e1e7ec4cf087f2d",
+                      "start": 0,
+                      "end": 85,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "9c04b5d14650a00099b951078e4a6c418ad2f21b2d79661abae13f5a2cb2a540",
+                  "document_id": "8d89de46127aab06292e4b2333a019ea8e337aeec049ed379bc8d2a8064a89a2",
+                  "version": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "name": "background-zh.md",
+                  "bytes": 93,
+                  "text_sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "chunks": [
+                    {
+                      "chunk_id": "7e622d7ea9daaa52a263d86ccd43ad5eed4a353948509e841f6e7b3ac47098ed",
+                      "start": 0,
+                      "end": 31,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "be4260d4316993feb50d3353485a01c8d14483909c771478f5772abcd082c44f",
+                  "document_id": "fa2055904d9efcd670f83a13d4e4ee7f0637bba1c53986d1ea65acb84fcd01b6",
+                  "version": "a229d651ffaa418dce8e54e1fc1fca43d1dc06328d39b616ad9498105d46cc68",
+                  "name": "retention-en.md",
+                  "bytes": 106,
+                  "text_sha256": "a229d651ffaa418dce8e54e1fc1fca43d1dc06328d39b616ad9498105d46cc68",
+                  "chunks": [
+                    {
+                      "chunk_id": "3c4c01f52f92a314c1f255c37a11ce36c6b9643c35899396ff1ed335bfdca395",
+                      "start": 0,
+                      "end": 106,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "a229d651ffaa418dce8e54e1fc1fca43d1dc06328d39b616ad9498105d46cc68"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "c2b93147cf7faffa2bfdbaaf8d72ad86a14ffcf309b372cc41ebe05412501d5a",
+                  "document_id": "f1436c4f44968b1bdcca7efc8465cf398207eeadaac7c52677641decf7598f62",
+                  "version": "0faf745bb0371687fbb7cdeb248e7b2f0736c114e9efe6c946fac0a5ecfecf08",
+                  "name": "transfer-zh.md",
+                  "bytes": 84,
+                  "text_sha256": "0faf745bb0371687fbb7cdeb248e7b2f0736c114e9efe6c946fac0a5ecfecf08",
+                  "chunks": [
+                    {
+                      "chunk_id": "fe5deaf9e98ec22dcae0d79d087ae9e4fa9b69933c36534a62a99cc8551b3e2c",
+                      "start": 0,
+                      "end": 28,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "0faf745bb0371687fbb7cdeb248e7b2f0736c114e9efe6c946fac0a5ecfecf08"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "d10dbc25d154911215c5dd6318f449c8b1933530d73f2e4fbd675ec6122f7a6b",
+                  "document_id": "a1aeb6be7b92a833404b456ddad6d67103575d7e934f410b8581d70b28bb0ca4",
+                  "version": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "name": "injection-zh.md",
+                  "bytes": 112,
+                  "text_sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "chunks": [
+                    {
+                      "chunk_id": "5443eff063a1815fa6df1535c9c9070ba34e1c4051fbf18797ca06184e36608c",
+                      "start": 0,
+                      "end": 74,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "f6cf17192cceb29396c47e94fbf15d130ccc1151694206f4359393afe76d2f59",
+                  "document_id": "2f4860c348300de7565b7549b47cfd7b7124d14703779eac6dd0ac5d6dea75ed",
+                  "version": "470c01f32ce07321ace91c9c6798507dbd0a87c5e4c120b5de93bfdd7829e2dd",
+                  "name": "pause-en.md",
+                  "bytes": 118,
+                  "text_sha256": "470c01f32ce07321ace91c9c6798507dbd0a87c5e4c120b5de93bfdd7829e2dd",
+                  "chunks": [
+                    {
+                      "chunk_id": "e4596943c94e8d8445fc4da82c4817408e01427e9e9a17b6cc539bc296ee9113",
+                      "start": 0,
+                      "end": 118,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "470c01f32ce07321ace91c9c6798507dbd0a87c5e4c120b5de93bfdd7829e2dd"
+                    }
+                  ]
+                }
+              ],
+              "relevance_policy_sha256": "05687d05ef4df74a2f52066d4da70301852f9172b0215d2b05d5289cb769ce9d"
+            }
+          }
+        },
+        "validation": {
+          "zh": {
+            "index_version": "a0dc565879442eee9bf13ab530ae7d5871e67bf7771cda0115e50bf9055fa7f4",
+            "manifest": {
+              "target": {
+                "corpus_id": "397f23c0-21d3-5a30-bf8c-c328d557c99f",
+                "owner": "qwen-migration-dev",
+                "dataset_id": null,
+                "dataset_version": null
+              },
+              "model": {
+                "model": "Qwen/Qwen3-Embedding-0.6B",
+                "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+                "dimensions": 1024,
+                "recipe": "last-l2-saas-v1/fp32-cpu/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+                "files": {
+                  "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+                  "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+                  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+                  "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+                  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+                  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "fixture": false
+              },
+              "chunker": {
+                "version": "unicode-window-1",
+                "chars": 192,
+                "overlap": 32
+              },
+              "retriever": "pg-cosine-exact-1",
+              "sources": [
+                {
+                  "source_id": "14fb11b798e4f77ce02c12a93cb45f201c62f0dce84ffa5d5519f48569ba6e24",
+                  "document_id": "c4a327676db697b169d52100c53b6b157293d70ef1322ffead3f7d082e6f0d41",
+                  "version": "6cb549d816aa633ba5e975411e57cb6673614f06f828cb1f064bf8bf474d0f09",
+                  "name": "reset-zh.md",
+                  "bytes": 105,
+                  "text_sha256": "6cb549d816aa633ba5e975411e57cb6673614f06f828cb1f064bf8bf474d0f09",
+                  "chunks": [
+                    {
+                      "chunk_id": "873c512523ed2fbd2b5eb9027cf313563d97a13f20ca0dfaf62492bde4d75c8b",
+                      "start": 0,
+                      "end": 35,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6cb549d816aa633ba5e975411e57cb6673614f06f828cb1f064bf8bf474d0f09"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "920d87503bdf3dbd90e9e640042717654e741fe6b1e642c44e7373e19d73b6ac",
+                  "document_id": "79ed3ccb1261645527d69ef9c1852bda43df338beb76f32e571e00bdd5c7a784",
+                  "version": "c766aed9ba012514a57b8d4fe122fe31d0a733cf9ab60ca610f22920f861e417",
+                  "name": "freeze-zh.md",
+                  "bytes": 114,
+                  "text_sha256": "c766aed9ba012514a57b8d4fe122fe31d0a733cf9ab60ca610f22920f861e417",
+                  "chunks": [
+                    {
+                      "chunk_id": "10b3624b5059510d1e5cc7ec3aa0325017d9f60c4148879f7a4f8341f5ac2026",
+                      "start": 0,
+                      "end": 38,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "c766aed9ba012514a57b8d4fe122fe31d0a733cf9ab60ca610f22920f861e417"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "b0f294b069cfb2777751d27bfbbc08967a20df88efde4b224614016b64b2c274",
+                  "document_id": "e96e25167cba0ebc053fa4bd3cb4cb611e568ec1b86e82c66d8c2fef396d8c0e",
+                  "version": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "name": "injection-zh.md",
+                  "bytes": 112,
+                  "text_sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "chunks": [
+                    {
+                      "chunk_id": "deb72d7e8ca7bd6f859564a72ebaf944ff11f6035ca0526b280002eadc284e8b",
+                      "start": 0,
+                      "end": 74,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "dcb531e651efdc8131ccd84f3ec9b0875c4c272ba32ae3e938e01c1e11039b20",
+                  "document_id": "73ce57542ae0ed10e028bf5fae63eb7c917086d5eb65e7f5d151156f4aeac47d",
+                  "version": "55ee8b74e569332457aa860825394982df87ce19472e7a962177bbbf37026022",
+                  "name": "export-zh.md",
+                  "bytes": 114,
+                  "text_sha256": "55ee8b74e569332457aa860825394982df87ce19472e7a962177bbbf37026022",
+                  "chunks": [
+                    {
+                      "chunk_id": "3e3674bf943f312307b14ba359794b1462bc56edfcd02cd781c8ac6d53d60e79",
+                      "start": 0,
+                      "end": 38,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "55ee8b74e569332457aa860825394982df87ce19472e7a962177bbbf37026022"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "f6dfdc2c4f00bc281a247c81140e2135efc50cc91041bdf81f85b0f009c7a5c2",
+                  "document_id": "5f3774ac01f221ba8d4dc5a9714fe71d32ef2bd3e05bb646ad9bc141db34ea29",
+                  "version": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "name": "background-zh.md",
+                  "bytes": 93,
+                  "text_sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "chunks": [
+                    {
+                      "chunk_id": "32f5304b4853869919e5ede2fb52153d4361058a62fa8122791bbf855e1df6b2",
+                      "start": 0,
+                      "end": 31,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068"
+                    }
+                  ]
+                }
+              ],
+              "relevance_policy_sha256": "05687d05ef4df74a2f52066d4da70301852f9172b0215d2b05d5289cb769ce9d"
+            }
+          },
+          "en": {
+            "index_version": "80f0068bf97329df84d3bfe64ca38a31960bf6bdfccc72dcf6a9ad9d0fa8a501",
+            "manifest": {
+              "target": {
+                "corpus_id": "397f23c0-21d3-5a30-bf8c-c328d557c99f",
+                "owner": "qwen-migration-dev",
+                "dataset_id": null,
+                "dataset_version": null
+              },
+              "model": {
+                "model": "Qwen/Qwen3-Embedding-0.6B",
+                "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+                "dimensions": 1024,
+                "recipe": "last-l2-saas-v1/fp32-cpu/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+                "files": {
+                  "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+                  "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+                  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+                  "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+                  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+                  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "fixture": false
+              },
+              "chunker": {
+                "version": "unicode-window-1",
+                "chars": 192,
+                "overlap": 32
+              },
+              "retriever": "pg-cosine-exact-1",
+              "sources": [
+                {
+                  "source_id": "024f4a00a92e23fa70f03c8918a602ffa105566f47374b745b902b9480128c58",
+                  "document_id": "9b63a11d69f7ee9732a6c07cd6be9bf19934b6a264e7c9bddfb77dd4303410b1",
+                  "version": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "name": "irrelevant-en.md",
+                  "bytes": 85,
+                  "text_sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "chunks": [
+                    {
+                      "chunk_id": "f1153d98dc20088de9c86e5104e6a21eb0cd88e5b89210b9c0804ab274060aa2",
+                      "start": 0,
+                      "end": 85,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "3aaaff42d9162b05edd615b31d10ff5b1a193599ee1439014776b18b7056dde2",
+                  "document_id": "f4409888af4ec3687f8ab333da6576446845e64eaa2f9c9cfa95e81167344865",
+                  "version": "69875ebf732d22121563473daf37f8d58e99219a1c2b54e9d47fb2f3a5ad80b7",
+                  "name": "freeze-en.md",
+                  "bytes": 135,
+                  "text_sha256": "69875ebf732d22121563473daf37f8d58e99219a1c2b54e9d47fb2f3a5ad80b7",
+                  "chunks": [
+                    {
+                      "chunk_id": "dcdde8ec11e321154b4d0c02d9e03cf81fa0d87790f45a582d986e42588af437",
+                      "start": 0,
+                      "end": 135,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "69875ebf732d22121563473daf37f8d58e99219a1c2b54e9d47fb2f3a5ad80b7"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "6fc64b63d02dc49d9a69e95753326669c6b9840627f88a6bbc9a9824fa586d10",
+                  "document_id": "e1e21dbb7f495c93f548c1f7ab319e6049296ff0d8da7c8b9e94f22ad944c0fb",
+                  "version": "b79059ab6190ed5c664204b32f366e83d2b76e89a0d0c14c8c65445f6845076b",
+                  "name": "reset-en.md",
+                  "bytes": 126,
+                  "text_sha256": "b79059ab6190ed5c664204b32f366e83d2b76e89a0d0c14c8c65445f6845076b",
+                  "chunks": [
+                    {
+                      "chunk_id": "d495123456bcad9ce834cf06a32582cec49c47fc430c43ecbc5d21722d756e03",
+                      "start": 0,
+                      "end": 126,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "b79059ab6190ed5c664204b32f366e83d2b76e89a0d0c14c8c65445f6845076b"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "9f2b6074b4a51187849c72a14065428c18896623cfdc06147c32b9314ac14ac1",
+                  "document_id": "75d62661be6dc7a868887c74464f346189df11d176fdff8d649bd17cee9be135",
+                  "version": "e35b95449c92d9a66c895c068b03863944e8f01e269a77f1a19365ad2ae0a255",
+                  "name": "export-en.md",
+                  "bytes": 154,
+                  "text_sha256": "e35b95449c92d9a66c895c068b03863944e8f01e269a77f1a19365ad2ae0a255",
+                  "chunks": [
+                    {
+                      "chunk_id": "8b09cf6c7d886f42fb21e92f9c5713e24338ae42078c279836a1a633b66f97d8",
+                      "start": 0,
+                      "end": 154,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "e35b95449c92d9a66c895c068b03863944e8f01e269a77f1a19365ad2ae0a255"
+                    }
+                  ]
+                }
+              ],
+              "relevance_policy_sha256": "05687d05ef4df74a2f52066d4da70301852f9172b0215d2b05d5289cb769ce9d"
+            }
+          },
+          "all": {
+            "index_version": "d17701851271e2b4353155fae5400140cead45bb1f2a4afb558f5db9806d424d",
+            "manifest": {
+              "target": {
+                "corpus_id": "397f23c0-21d3-5a30-bf8c-c328d557c99f",
+                "owner": "qwen-migration-dev",
+                "dataset_id": null,
+                "dataset_version": null
+              },
+              "model": {
+                "model": "Qwen/Qwen3-Embedding-0.6B",
+                "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+                "dimensions": 1024,
+                "recipe": "last-l2-saas-v1/fp32-cpu/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+                "files": {
+                  "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+                  "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+                  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+                  "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+                  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+                  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "fixture": false
+              },
+              "chunker": {
+                "version": "unicode-window-1",
+                "chars": 192,
+                "overlap": 32
+              },
+              "retriever": "pg-cosine-exact-1",
+              "sources": [
+                {
+                  "source_id": "024f4a00a92e23fa70f03c8918a602ffa105566f47374b745b902b9480128c58",
+                  "document_id": "9b63a11d69f7ee9732a6c07cd6be9bf19934b6a264e7c9bddfb77dd4303410b1",
+                  "version": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "name": "irrelevant-en.md",
+                  "bytes": 85,
+                  "text_sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "chunks": [
+                    {
+                      "chunk_id": "f1153d98dc20088de9c86e5104e6a21eb0cd88e5b89210b9c0804ab274060aa2",
+                      "start": 0,
+                      "end": 85,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "14fb11b798e4f77ce02c12a93cb45f201c62f0dce84ffa5d5519f48569ba6e24",
+                  "document_id": "c4a327676db697b169d52100c53b6b157293d70ef1322ffead3f7d082e6f0d41",
+                  "version": "6cb549d816aa633ba5e975411e57cb6673614f06f828cb1f064bf8bf474d0f09",
+                  "name": "reset-zh.md",
+                  "bytes": 105,
+                  "text_sha256": "6cb549d816aa633ba5e975411e57cb6673614f06f828cb1f064bf8bf474d0f09",
+                  "chunks": [
+                    {
+                      "chunk_id": "873c512523ed2fbd2b5eb9027cf313563d97a13f20ca0dfaf62492bde4d75c8b",
+                      "start": 0,
+                      "end": 35,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6cb549d816aa633ba5e975411e57cb6673614f06f828cb1f064bf8bf474d0f09"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "3aaaff42d9162b05edd615b31d10ff5b1a193599ee1439014776b18b7056dde2",
+                  "document_id": "f4409888af4ec3687f8ab333da6576446845e64eaa2f9c9cfa95e81167344865",
+                  "version": "69875ebf732d22121563473daf37f8d58e99219a1c2b54e9d47fb2f3a5ad80b7",
+                  "name": "freeze-en.md",
+                  "bytes": 135,
+                  "text_sha256": "69875ebf732d22121563473daf37f8d58e99219a1c2b54e9d47fb2f3a5ad80b7",
+                  "chunks": [
+                    {
+                      "chunk_id": "dcdde8ec11e321154b4d0c02d9e03cf81fa0d87790f45a582d986e42588af437",
+                      "start": 0,
+                      "end": 135,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "69875ebf732d22121563473daf37f8d58e99219a1c2b54e9d47fb2f3a5ad80b7"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "6fc64b63d02dc49d9a69e95753326669c6b9840627f88a6bbc9a9824fa586d10",
+                  "document_id": "e1e21dbb7f495c93f548c1f7ab319e6049296ff0d8da7c8b9e94f22ad944c0fb",
+                  "version": "b79059ab6190ed5c664204b32f366e83d2b76e89a0d0c14c8c65445f6845076b",
+                  "name": "reset-en.md",
+                  "bytes": 126,
+                  "text_sha256": "b79059ab6190ed5c664204b32f366e83d2b76e89a0d0c14c8c65445f6845076b",
+                  "chunks": [
+                    {
+                      "chunk_id": "d495123456bcad9ce834cf06a32582cec49c47fc430c43ecbc5d21722d756e03",
+                      "start": 0,
+                      "end": 126,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "b79059ab6190ed5c664204b32f366e83d2b76e89a0d0c14c8c65445f6845076b"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "920d87503bdf3dbd90e9e640042717654e741fe6b1e642c44e7373e19d73b6ac",
+                  "document_id": "79ed3ccb1261645527d69ef9c1852bda43df338beb76f32e571e00bdd5c7a784",
+                  "version": "c766aed9ba012514a57b8d4fe122fe31d0a733cf9ab60ca610f22920f861e417",
+                  "name": "freeze-zh.md",
+                  "bytes": 114,
+                  "text_sha256": "c766aed9ba012514a57b8d4fe122fe31d0a733cf9ab60ca610f22920f861e417",
+                  "chunks": [
+                    {
+                      "chunk_id": "10b3624b5059510d1e5cc7ec3aa0325017d9f60c4148879f7a4f8341f5ac2026",
+                      "start": 0,
+                      "end": 38,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "c766aed9ba012514a57b8d4fe122fe31d0a733cf9ab60ca610f22920f861e417"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "9f2b6074b4a51187849c72a14065428c18896623cfdc06147c32b9314ac14ac1",
+                  "document_id": "75d62661be6dc7a868887c74464f346189df11d176fdff8d649bd17cee9be135",
+                  "version": "e35b95449c92d9a66c895c068b03863944e8f01e269a77f1a19365ad2ae0a255",
+                  "name": "export-en.md",
+                  "bytes": 154,
+                  "text_sha256": "e35b95449c92d9a66c895c068b03863944e8f01e269a77f1a19365ad2ae0a255",
+                  "chunks": [
+                    {
+                      "chunk_id": "8b09cf6c7d886f42fb21e92f9c5713e24338ae42078c279836a1a633b66f97d8",
+                      "start": 0,
+                      "end": 154,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "e35b95449c92d9a66c895c068b03863944e8f01e269a77f1a19365ad2ae0a255"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "b0f294b069cfb2777751d27bfbbc08967a20df88efde4b224614016b64b2c274",
+                  "document_id": "e96e25167cba0ebc053fa4bd3cb4cb611e568ec1b86e82c66d8c2fef396d8c0e",
+                  "version": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "name": "injection-zh.md",
+                  "bytes": 112,
+                  "text_sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "chunks": [
+                    {
+                      "chunk_id": "deb72d7e8ca7bd6f859564a72ebaf944ff11f6035ca0526b280002eadc284e8b",
+                      "start": 0,
+                      "end": 74,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "dcb531e651efdc8131ccd84f3ec9b0875c4c272ba32ae3e938e01c1e11039b20",
+                  "document_id": "73ce57542ae0ed10e028bf5fae63eb7c917086d5eb65e7f5d151156f4aeac47d",
+                  "version": "55ee8b74e569332457aa860825394982df87ce19472e7a962177bbbf37026022",
+                  "name": "export-zh.md",
+                  "bytes": 114,
+                  "text_sha256": "55ee8b74e569332457aa860825394982df87ce19472e7a962177bbbf37026022",
+                  "chunks": [
+                    {
+                      "chunk_id": "3e3674bf943f312307b14ba359794b1462bc56edfcd02cd781c8ac6d53d60e79",
+                      "start": 0,
+                      "end": 38,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "55ee8b74e569332457aa860825394982df87ce19472e7a962177bbbf37026022"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "f6dfdc2c4f00bc281a247c81140e2135efc50cc91041bdf81f85b0f009c7a5c2",
+                  "document_id": "5f3774ac01f221ba8d4dc5a9714fe71d32ef2bd3e05bb646ad9bc141db34ea29",
+                  "version": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "name": "background-zh.md",
+                  "bytes": 93,
+                  "text_sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "chunks": [
+                    {
+                      "chunk_id": "32f5304b4853869919e5ede2fb52153d4361058a62fa8122791bbf855e1df6b2",
+                      "start": 0,
+                      "end": 31,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068"
+                    }
+                  ]
+                }
+              ],
+              "relevance_policy_sha256": "05687d05ef4df74a2f52066d4da70301852f9172b0215d2b05d5289cb769ce9d"
+            }
+          }
+        }
+      },
+      "validation": {
+        "queries": 20,
+        "recall_denominator": 17,
+        "source_recall_macro": 1.0,
+        "required_denominator": 17,
+        "required_coverage_macro": 0.9411764705882353,
+        "required_complete": 16,
+        "empty_gold_denominator": 3,
+        "empty_gold_false_retrievals": 0,
+        "irrelevant_sources_returned": 0,
+        "goal_mismatch_in_required_denominator": true,
+        "errors": []
+      },
+      "mcp_performance": {
+        "cold_query_ms": [
+          6950.0395997893065,
+          6778.452500002459,
+          7123.061600141227
+        ],
+        "warm_count": 17,
+        "warm_p50_ms": 266.40020008198917,
+        "warm_p95_ms": 473.94729987718165,
+        "timeout_seconds": 10
+      },
+      "encoding_performance": {
+        "profile": "qwen3-cpu-v1",
+        "individual_query_count": 40,
+        "p50_ms": 254.711449961178,
+        "p95_ms": 422.28799988515675,
+        "load_seconds": 9.58109310013242,
+        "warmup_seconds": 0.38898589997552335,
+        "peak_rss_bytes": 4148305920,
+        "gpu_allocated_peak_bytes": 0,
+        "gpu_reserved_peak_bytes": 0,
+        "cpu_threads": 2,
+        "batch_size": 1,
+        "concurrency": 1,
+        "other_applications_running": true,
+        "os_disk_cache_reset": false
+      },
+      "initial_calibration_process": {
+        "load_seconds_including_imports_hash": 7.9745712000876665,
+        "warmup_seconds": 0.492460299981758,
+        "paired_encoding_half_p50_ms": 222.4000749993138,
+        "paired_encoding_half_p95_ms": 304.0973499882966,
+        "peak_rss_bytes": 4149874688,
+        "cuda_peak_allocated_bytes": 0,
+        "cuda_peak_reserved_bytes": 0,
+        "device": "cpu",
+        "dtype": "torch.float32",
+        "cuda_version": "12.8",
+        "torch_version": "2.8.0+cu128",
+        "gpu": null
+      }
+    },
+    "qwen3-cuda-fp16-v1": {
+      "model": {
+        "model": "Qwen/Qwen3-Embedding-0.6B",
+        "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+        "dimensions": 1024,
+        "recipe": "last-l2-saas-v1/fp16-cuda/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+        "files": {
+          "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+          "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+          "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+          "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+          "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+          "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        "fixture": false
+      },
+      "model_sha256": "ee23679efa095218da6b46fa7add3ee37af659b2ac101242589933aa28005301",
+      "policy": {
+        "model_sha256": "ee23679efa095218da6b46fa7add3ee37af659b2ac101242589933aa28005301",
+        "calibration_sha256": "9be20cb4b8cbffbe74a95a06d15d4bf7b6bad621a67972301decd7d98233fa2b",
+        "search_policy": "qwen3-cuda-fp16-v1/search-cosine-v1",
+        "search_threshold": 0.55,
+        "goal_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_threshold": 0.55
+      },
+      "policy_sha256": "2abb359985b478a66336134d7ce8b33be4be35a00affe8d421632d79db77fa33",
+      "indexes": {
+        "calibration": {
+          "zh": {
+            "index_version": "e055b30ff3f7dac29ac2e0d065f94d820c5b4e02738f03c8f797bc1791c10c96",
+            "manifest": {
+              "target": {
+                "corpus_id": "7324793c-8a81-5e8b-b536-327d05fb26a4",
+                "owner": "qwen-migration-dev",
+                "dataset_id": null,
+                "dataset_version": null
+              },
+              "model": {
+                "model": "Qwen/Qwen3-Embedding-0.6B",
+                "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+                "dimensions": 1024,
+                "recipe": "last-l2-saas-v1/fp16-cuda/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+                "files": {
+                  "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+                  "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+                  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+                  "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+                  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+                  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "fixture": false
+              },
+              "chunker": {
+                "version": "unicode-window-1",
+                "chars": 192,
+                "overlap": 32
+              },
+              "retriever": "pg-cosine-exact-1",
+              "sources": [
+                {
+                  "source_id": "02e27832cbd4943d2c4a090b11d133c15ca3151043a84db09ba376c542d0a80c",
+                  "document_id": "0ff09bb30c92da241958045095d7f88f853241734ae64549c589a94ebe2eaddf",
+                  "version": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "name": "injection-zh.md",
+                  "bytes": 112,
+                  "text_sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "chunks": [
+                    {
+                      "chunk_id": "553ecaae8f1ceaa7f45baa984fbd8f8338ccedc57e8894e3bda59eaa01b58eaa",
+                      "start": 0,
+                      "end": 74,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "a3a6f44abee2bee4edfdbced43836520a106845de10e279a9b0ca0548764e545",
+                  "document_id": "831795b75e97177acd6ae494b8217ac58082be45c6e688e60356ce48648db621",
+                  "version": "d278cfa7948e868fbf1739b1c2c2ab7a26bfa8c4ac9f48a1a8d8169e8d6adac1",
+                  "name": "retention-zh.md",
+                  "bytes": 81,
+                  "text_sha256": "d278cfa7948e868fbf1739b1c2c2ab7a26bfa8c4ac9f48a1a8d8169e8d6adac1",
+                  "chunks": [
+                    {
+                      "chunk_id": "e09800f0ab4cf36e541a32354a3581c9e8bd5d362c054d99d52a646f54bba1d0",
+                      "start": 0,
+                      "end": 27,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "d278cfa7948e868fbf1739b1c2c2ab7a26bfa8c4ac9f48a1a8d8169e8d6adac1"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "b6757227000dc3d01f37c51b7eeace617e40f2a9dcc8c5a07bb0fcd51a2bca94",
+                  "document_id": "79925a19bbe7bb61374fc59713868441ad01f534a283566447902800bf3da018",
+                  "version": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "name": "background-zh.md",
+                  "bytes": 93,
+                  "text_sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "chunks": [
+                    {
+                      "chunk_id": "fdcf712a882244e974b19297fc5e33314ff371c3ac689c452773b7a133b18dd3",
+                      "start": 0,
+                      "end": 31,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "c089ae67c970f82b72e8fda46c040f0e1e17bc523663c66e49ecc3cfba025240",
+                  "document_id": "1607ee3785dfe2cc1c500410e550b2fed5a3b92174cfd24f6357867f0be18934",
+                  "version": "cdcbd502bc4ff6a6284bd3d06cfb0c76a6fcdcf83058d5106def1af146aa24ce",
+                  "name": "pause-zh.md",
+                  "bytes": 93,
+                  "text_sha256": "cdcbd502bc4ff6a6284bd3d06cfb0c76a6fcdcf83058d5106def1af146aa24ce",
+                  "chunks": [
+                    {
+                      "chunk_id": "1344985f1399bc4d1f13e8e3f5708a28ac757ed992cf79dc1680b32022ec95e9",
+                      "start": 0,
+                      "end": 31,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "cdcbd502bc4ff6a6284bd3d06cfb0c76a6fcdcf83058d5106def1af146aa24ce"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "e9b0056b9b8d065749b4edfa3b4f65cb10eaf7cd65a4e9ad3f2061b9fb0a4eaa",
+                  "document_id": "d052c9af51ae5cd91bdaac6954546260e87a6e611b8bf621b0d0b48bfdba6277",
+                  "version": "0faf745bb0371687fbb7cdeb248e7b2f0736c114e9efe6c946fac0a5ecfecf08",
+                  "name": "transfer-zh.md",
+                  "bytes": 84,
+                  "text_sha256": "0faf745bb0371687fbb7cdeb248e7b2f0736c114e9efe6c946fac0a5ecfecf08",
+                  "chunks": [
+                    {
+                      "chunk_id": "afb0504462133b395cd177edba8e8123aaacd947f3f801502822c2f074ad59b2",
+                      "start": 0,
+                      "end": 28,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "0faf745bb0371687fbb7cdeb248e7b2f0736c114e9efe6c946fac0a5ecfecf08"
+                    }
+                  ]
+                }
+              ],
+              "relevance_policy_sha256": "2abb359985b478a66336134d7ce8b33be4be35a00affe8d421632d79db77fa33"
+            }
+          },
+          "en": {
+            "index_version": "5859b593f53091c473a3257b15a3fc792a74bc5f08d0d2b559575045cf629580",
+            "manifest": {
+              "target": {
+                "corpus_id": "7324793c-8a81-5e8b-b536-327d05fb26a4",
+                "owner": "qwen-migration-dev",
+                "dataset_id": null,
+                "dataset_version": null
+              },
+              "model": {
+                "model": "Qwen/Qwen3-Embedding-0.6B",
+                "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+                "dimensions": 1024,
+                "recipe": "last-l2-saas-v1/fp16-cuda/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+                "files": {
+                  "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+                  "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+                  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+                  "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+                  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+                  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "fixture": false
+              },
+              "chunker": {
+                "version": "unicode-window-1",
+                "chars": 192,
+                "overlap": 32
+              },
+              "retriever": "pg-cosine-exact-1",
+              "sources": [
+                {
+                  "source_id": "2be48a1309208c39d6fe157e5edddb5896dad68afcf34d4bab57ad5a0573c9e2",
+                  "document_id": "42993ec2fa6eddb2ce2cd1066a3f6af8d346705754d288f85a2777003a4b2ae0",
+                  "version": "e7020e235bee10ed2a2deff5f9950e410accbb5b0b409e9917d588be2f57900d",
+                  "name": "transfer-en.md",
+                  "bytes": 108,
+                  "text_sha256": "e7020e235bee10ed2a2deff5f9950e410accbb5b0b409e9917d588be2f57900d",
+                  "chunks": [
+                    {
+                      "chunk_id": "fdb3fabeb3a16752f586742c7900615d0c3f6bec7637c335a99791f47ba5b726",
+                      "start": 0,
+                      "end": 108,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "e7020e235bee10ed2a2deff5f9950e410accbb5b0b409e9917d588be2f57900d"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "47d9c5b4669cff80b2ced3defcf1e81199703ff8bbbb837425577b27431ff499",
+                  "document_id": "4e1f5ea524a2e6c8d249858084de9e1612c71b5903ebbab6d1b4d4600d976858",
+                  "version": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "name": "irrelevant-en.md",
+                  "bytes": 85,
+                  "text_sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "chunks": [
+                    {
+                      "chunk_id": "983e2833de9eb41d9909e83ea6348051f118c1842c3b7a407d7ed02cc7eb5f39",
+                      "start": 0,
+                      "end": 85,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "956f2289a21bb59054cbceb871f4f9b9363eee5e9ab9a8d7847c4cd251ed4362",
+                  "document_id": "e23d549a2227f368c71c724e993daae89b90633b386748810d3fea32793246c2",
+                  "version": "a229d651ffaa418dce8e54e1fc1fca43d1dc06328d39b616ad9498105d46cc68",
+                  "name": "retention-en.md",
+                  "bytes": 106,
+                  "text_sha256": "a229d651ffaa418dce8e54e1fc1fca43d1dc06328d39b616ad9498105d46cc68",
+                  "chunks": [
+                    {
+                      "chunk_id": "756454654b7a703192f52d601c5b9a67e1e03f92c1e8787ec69bb41dfbff3ce1",
+                      "start": 0,
+                      "end": 106,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "a229d651ffaa418dce8e54e1fc1fca43d1dc06328d39b616ad9498105d46cc68"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "c20a306f0d4be962c5fd03518b007c7899ee7fcb915b2aedf5607f5c8f5fd526",
+                  "document_id": "55b6ed7ff2f7214f8aaf89fc7ffc464e0b811ba7dd116205ddf516f1be26c476",
+                  "version": "470c01f32ce07321ace91c9c6798507dbd0a87c5e4c120b5de93bfdd7829e2dd",
+                  "name": "pause-en.md",
+                  "bytes": 118,
+                  "text_sha256": "470c01f32ce07321ace91c9c6798507dbd0a87c5e4c120b5de93bfdd7829e2dd",
+                  "chunks": [
+                    {
+                      "chunk_id": "9aa34de4ac764f5f7c07d1d612a5197713d5a94512d2022c9143d67ff773dd13",
+                      "start": 0,
+                      "end": 118,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "470c01f32ce07321ace91c9c6798507dbd0a87c5e4c120b5de93bfdd7829e2dd"
+                    }
+                  ]
+                }
+              ],
+              "relevance_policy_sha256": "2abb359985b478a66336134d7ce8b33be4be35a00affe8d421632d79db77fa33"
+            }
+          },
+          "all": {
+            "index_version": "f978c436fb6ea717c9ae673a91687843a866d88ac4260ab055c117e90a15e564",
+            "manifest": {
+              "target": {
+                "corpus_id": "7324793c-8a81-5e8b-b536-327d05fb26a4",
+                "owner": "qwen-migration-dev",
+                "dataset_id": null,
+                "dataset_version": null
+              },
+              "model": {
+                "model": "Qwen/Qwen3-Embedding-0.6B",
+                "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+                "dimensions": 1024,
+                "recipe": "last-l2-saas-v1/fp16-cuda/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+                "files": {
+                  "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+                  "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+                  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+                  "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+                  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+                  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "fixture": false
+              },
+              "chunker": {
+                "version": "unicode-window-1",
+                "chars": 192,
+                "overlap": 32
+              },
+              "retriever": "pg-cosine-exact-1",
+              "sources": [
+                {
+                  "source_id": "02e27832cbd4943d2c4a090b11d133c15ca3151043a84db09ba376c542d0a80c",
+                  "document_id": "0ff09bb30c92da241958045095d7f88f853241734ae64549c589a94ebe2eaddf",
+                  "version": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "name": "injection-zh.md",
+                  "bytes": 112,
+                  "text_sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "chunks": [
+                    {
+                      "chunk_id": "553ecaae8f1ceaa7f45baa984fbd8f8338ccedc57e8894e3bda59eaa01b58eaa",
+                      "start": 0,
+                      "end": 74,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "2be48a1309208c39d6fe157e5edddb5896dad68afcf34d4bab57ad5a0573c9e2",
+                  "document_id": "42993ec2fa6eddb2ce2cd1066a3f6af8d346705754d288f85a2777003a4b2ae0",
+                  "version": "e7020e235bee10ed2a2deff5f9950e410accbb5b0b409e9917d588be2f57900d",
+                  "name": "transfer-en.md",
+                  "bytes": 108,
+                  "text_sha256": "e7020e235bee10ed2a2deff5f9950e410accbb5b0b409e9917d588be2f57900d",
+                  "chunks": [
+                    {
+                      "chunk_id": "fdb3fabeb3a16752f586742c7900615d0c3f6bec7637c335a99791f47ba5b726",
+                      "start": 0,
+                      "end": 108,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "e7020e235bee10ed2a2deff5f9950e410accbb5b0b409e9917d588be2f57900d"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "47d9c5b4669cff80b2ced3defcf1e81199703ff8bbbb837425577b27431ff499",
+                  "document_id": "4e1f5ea524a2e6c8d249858084de9e1612c71b5903ebbab6d1b4d4600d976858",
+                  "version": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "name": "irrelevant-en.md",
+                  "bytes": 85,
+                  "text_sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "chunks": [
+                    {
+                      "chunk_id": "983e2833de9eb41d9909e83ea6348051f118c1842c3b7a407d7ed02cc7eb5f39",
+                      "start": 0,
+                      "end": 85,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "956f2289a21bb59054cbceb871f4f9b9363eee5e9ab9a8d7847c4cd251ed4362",
+                  "document_id": "e23d549a2227f368c71c724e993daae89b90633b386748810d3fea32793246c2",
+                  "version": "a229d651ffaa418dce8e54e1fc1fca43d1dc06328d39b616ad9498105d46cc68",
+                  "name": "retention-en.md",
+                  "bytes": 106,
+                  "text_sha256": "a229d651ffaa418dce8e54e1fc1fca43d1dc06328d39b616ad9498105d46cc68",
+                  "chunks": [
+                    {
+                      "chunk_id": "756454654b7a703192f52d601c5b9a67e1e03f92c1e8787ec69bb41dfbff3ce1",
+                      "start": 0,
+                      "end": 106,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "a229d651ffaa418dce8e54e1fc1fca43d1dc06328d39b616ad9498105d46cc68"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "a3a6f44abee2bee4edfdbced43836520a106845de10e279a9b0ca0548764e545",
+                  "document_id": "831795b75e97177acd6ae494b8217ac58082be45c6e688e60356ce48648db621",
+                  "version": "d278cfa7948e868fbf1739b1c2c2ab7a26bfa8c4ac9f48a1a8d8169e8d6adac1",
+                  "name": "retention-zh.md",
+                  "bytes": 81,
+                  "text_sha256": "d278cfa7948e868fbf1739b1c2c2ab7a26bfa8c4ac9f48a1a8d8169e8d6adac1",
+                  "chunks": [
+                    {
+                      "chunk_id": "e09800f0ab4cf36e541a32354a3581c9e8bd5d362c054d99d52a646f54bba1d0",
+                      "start": 0,
+                      "end": 27,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "d278cfa7948e868fbf1739b1c2c2ab7a26bfa8c4ac9f48a1a8d8169e8d6adac1"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "b6757227000dc3d01f37c51b7eeace617e40f2a9dcc8c5a07bb0fcd51a2bca94",
+                  "document_id": "79925a19bbe7bb61374fc59713868441ad01f534a283566447902800bf3da018",
+                  "version": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "name": "background-zh.md",
+                  "bytes": 93,
+                  "text_sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "chunks": [
+                    {
+                      "chunk_id": "fdcf712a882244e974b19297fc5e33314ff371c3ac689c452773b7a133b18dd3",
+                      "start": 0,
+                      "end": 31,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "c089ae67c970f82b72e8fda46c040f0e1e17bc523663c66e49ecc3cfba025240",
+                  "document_id": "1607ee3785dfe2cc1c500410e550b2fed5a3b92174cfd24f6357867f0be18934",
+                  "version": "cdcbd502bc4ff6a6284bd3d06cfb0c76a6fcdcf83058d5106def1af146aa24ce",
+                  "name": "pause-zh.md",
+                  "bytes": 93,
+                  "text_sha256": "cdcbd502bc4ff6a6284bd3d06cfb0c76a6fcdcf83058d5106def1af146aa24ce",
+                  "chunks": [
+                    {
+                      "chunk_id": "1344985f1399bc4d1f13e8e3f5708a28ac757ed992cf79dc1680b32022ec95e9",
+                      "start": 0,
+                      "end": 31,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "cdcbd502bc4ff6a6284bd3d06cfb0c76a6fcdcf83058d5106def1af146aa24ce"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "c20a306f0d4be962c5fd03518b007c7899ee7fcb915b2aedf5607f5c8f5fd526",
+                  "document_id": "55b6ed7ff2f7214f8aaf89fc7ffc464e0b811ba7dd116205ddf516f1be26c476",
+                  "version": "470c01f32ce07321ace91c9c6798507dbd0a87c5e4c120b5de93bfdd7829e2dd",
+                  "name": "pause-en.md",
+                  "bytes": 118,
+                  "text_sha256": "470c01f32ce07321ace91c9c6798507dbd0a87c5e4c120b5de93bfdd7829e2dd",
+                  "chunks": [
+                    {
+                      "chunk_id": "9aa34de4ac764f5f7c07d1d612a5197713d5a94512d2022c9143d67ff773dd13",
+                      "start": 0,
+                      "end": 118,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "470c01f32ce07321ace91c9c6798507dbd0a87c5e4c120b5de93bfdd7829e2dd"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "e9b0056b9b8d065749b4edfa3b4f65cb10eaf7cd65a4e9ad3f2061b9fb0a4eaa",
+                  "document_id": "d052c9af51ae5cd91bdaac6954546260e87a6e611b8bf621b0d0b48bfdba6277",
+                  "version": "0faf745bb0371687fbb7cdeb248e7b2f0736c114e9efe6c946fac0a5ecfecf08",
+                  "name": "transfer-zh.md",
+                  "bytes": 84,
+                  "text_sha256": "0faf745bb0371687fbb7cdeb248e7b2f0736c114e9efe6c946fac0a5ecfecf08",
+                  "chunks": [
+                    {
+                      "chunk_id": "afb0504462133b395cd177edba8e8123aaacd947f3f801502822c2f074ad59b2",
+                      "start": 0,
+                      "end": 28,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "0faf745bb0371687fbb7cdeb248e7b2f0736c114e9efe6c946fac0a5ecfecf08"
+                    }
+                  ]
+                }
+              ],
+              "relevance_policy_sha256": "2abb359985b478a66336134d7ce8b33be4be35a00affe8d421632d79db77fa33"
+            }
+          }
+        },
+        "validation": {
+          "zh": {
+            "index_version": "007840f33548b62714c2aea3daef9cf4010bb823413e05cd0114fc2bfc6e563b",
+            "manifest": {
+              "target": {
+                "corpus_id": "2314390f-4123-5c73-a568-53355e8d49cc",
+                "owner": "qwen-migration-dev",
+                "dataset_id": null,
+                "dataset_version": null
+              },
+              "model": {
+                "model": "Qwen/Qwen3-Embedding-0.6B",
+                "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+                "dimensions": 1024,
+                "recipe": "last-l2-saas-v1/fp16-cuda/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+                "files": {
+                  "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+                  "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+                  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+                  "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+                  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+                  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "fixture": false
+              },
+              "chunker": {
+                "version": "unicode-window-1",
+                "chars": 192,
+                "overlap": 32
+              },
+              "retriever": "pg-cosine-exact-1",
+              "sources": [
+                {
+                  "source_id": "b0e7bf02cc5bfae54bc226d352435184973a0723de138e944792784a636b2056",
+                  "document_id": "68e85ec27a99aea3a23586b1dceef68177e6cbca7dac59f72c76248321138c44",
+                  "version": "c766aed9ba012514a57b8d4fe122fe31d0a733cf9ab60ca610f22920f861e417",
+                  "name": "freeze-zh.md",
+                  "bytes": 114,
+                  "text_sha256": "c766aed9ba012514a57b8d4fe122fe31d0a733cf9ab60ca610f22920f861e417",
+                  "chunks": [
+                    {
+                      "chunk_id": "4f89376c8d99fa00d685a54ac1b29f649db84437fa8df1e434ec6359033fe9a6",
+                      "start": 0,
+                      "end": 38,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "c766aed9ba012514a57b8d4fe122fe31d0a733cf9ab60ca610f22920f861e417"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "be8907e6971683495944af67219aa68ece828550d4fbebec3f76e119c685bc5a",
+                  "document_id": "1199ad934d482825a13b859bf1e8c64b1526edb1ba55a9b1aada88e1f8154334",
+                  "version": "55ee8b74e569332457aa860825394982df87ce19472e7a962177bbbf37026022",
+                  "name": "export-zh.md",
+                  "bytes": 114,
+                  "text_sha256": "55ee8b74e569332457aa860825394982df87ce19472e7a962177bbbf37026022",
+                  "chunks": [
+                    {
+                      "chunk_id": "162878547c734ff8cd4c160896f2f27b782434abadffccde32048100c09033d5",
+                      "start": 0,
+                      "end": 38,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "55ee8b74e569332457aa860825394982df87ce19472e7a962177bbbf37026022"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "d585f9301cf9918506576eacb91b7f81f8a6a94225374e2e2c5306bc293ee789",
+                  "document_id": "ee59119188ada9c9b2a7ecb9e5ed8e68d56effe74281e6b3ea7b0902ef2e6a42",
+                  "version": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "name": "background-zh.md",
+                  "bytes": 93,
+                  "text_sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "chunks": [
+                    {
+                      "chunk_id": "d5082ceae10b1a7a0b69e95f225c4a3bfaf236ac3a089860bef56bc621b7629b",
+                      "start": 0,
+                      "end": 31,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "e1d0b010c2edccfe96e80ec1e990d7e314da3faa92d2ac5295cf6f47084a567f",
+                  "document_id": "40bbacd64a9de673c9ab633cea989f4ba611e49656dfd0dfde1f944f5702926f",
+                  "version": "6cb549d816aa633ba5e975411e57cb6673614f06f828cb1f064bf8bf474d0f09",
+                  "name": "reset-zh.md",
+                  "bytes": 105,
+                  "text_sha256": "6cb549d816aa633ba5e975411e57cb6673614f06f828cb1f064bf8bf474d0f09",
+                  "chunks": [
+                    {
+                      "chunk_id": "eb49d0cbb97ac7c9ea50d94bd39d2ffef3b9c5b92d19100cf724034fa8bf0dac",
+                      "start": 0,
+                      "end": 35,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6cb549d816aa633ba5e975411e57cb6673614f06f828cb1f064bf8bf474d0f09"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "e55f2f5d1d125675054d7c75ac7d777f5c50bcb0cb3e2dfce04757bb594a9cfb",
+                  "document_id": "38ee98b8a0b2b3f6816322bfda45eb169a78b5f366dcf1a50d35c5b40935803b",
+                  "version": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "name": "injection-zh.md",
+                  "bytes": 112,
+                  "text_sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "chunks": [
+                    {
+                      "chunk_id": "e1ab4d171a3787ca44dafee88944c6e94f99d30b63ebe90105e6fdf5c6c1a97b",
+                      "start": 0,
+                      "end": 74,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e"
+                    }
+                  ]
+                }
+              ],
+              "relevance_policy_sha256": "2abb359985b478a66336134d7ce8b33be4be35a00affe8d421632d79db77fa33"
+            }
+          },
+          "en": {
+            "index_version": "e3576f8b961dbb67abe790076406bac70d9f2835e8fd4a927f1f1f57b7182cbd",
+            "manifest": {
+              "target": {
+                "corpus_id": "2314390f-4123-5c73-a568-53355e8d49cc",
+                "owner": "qwen-migration-dev",
+                "dataset_id": null,
+                "dataset_version": null
+              },
+              "model": {
+                "model": "Qwen/Qwen3-Embedding-0.6B",
+                "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+                "dimensions": 1024,
+                "recipe": "last-l2-saas-v1/fp16-cuda/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+                "files": {
+                  "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+                  "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+                  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+                  "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+                  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+                  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "fixture": false
+              },
+              "chunker": {
+                "version": "unicode-window-1",
+                "chars": 192,
+                "overlap": 32
+              },
+              "retriever": "pg-cosine-exact-1",
+              "sources": [
+                {
+                  "source_id": "0fa1ba1ab00fff6f5556d944c7b8c30371a3b8be28e622dc1c922ed7eda6dcf6",
+                  "document_id": "d03b51c6c03a42675f2549b81d63d30ae553ad5b3bfab0acb8d5ea87870f38f8",
+                  "version": "e35b95449c92d9a66c895c068b03863944e8f01e269a77f1a19365ad2ae0a255",
+                  "name": "export-en.md",
+                  "bytes": 154,
+                  "text_sha256": "e35b95449c92d9a66c895c068b03863944e8f01e269a77f1a19365ad2ae0a255",
+                  "chunks": [
+                    {
+                      "chunk_id": "a992a1c261ca8be4e72c3ccbbc73c084beeeea6fabe3fc29edb956685fbf3c73",
+                      "start": 0,
+                      "end": 154,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "e35b95449c92d9a66c895c068b03863944e8f01e269a77f1a19365ad2ae0a255"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "4697eb7a9d926e123d45ec95b6945e8b87e7cb6b5b6b87b08c6504b1f250f57d",
+                  "document_id": "0e137812d3ef9dc22b7d65786debf43b8b1d889947910bcde616550921e73deb",
+                  "version": "69875ebf732d22121563473daf37f8d58e99219a1c2b54e9d47fb2f3a5ad80b7",
+                  "name": "freeze-en.md",
+                  "bytes": 135,
+                  "text_sha256": "69875ebf732d22121563473daf37f8d58e99219a1c2b54e9d47fb2f3a5ad80b7",
+                  "chunks": [
+                    {
+                      "chunk_id": "57ac1b444ac497c271e113049f388c3f83191c7d5563aaae4d91fa674a33599c",
+                      "start": 0,
+                      "end": 135,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "69875ebf732d22121563473daf37f8d58e99219a1c2b54e9d47fb2f3a5ad80b7"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "531675eab2850393bfda83032a09339ae8f2681afcd924a1c2c523f125d3d1ca",
+                  "document_id": "7c1bf31c0838c1062db09072b2ff3a5cfb750a00993cc3390056da357da22ac2",
+                  "version": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "name": "irrelevant-en.md",
+                  "bytes": 85,
+                  "text_sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "chunks": [
+                    {
+                      "chunk_id": "d91dba619ea15601ce378c59baa3abd9478603a693af5f2580948f220c2a8c20",
+                      "start": 0,
+                      "end": 85,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "665c8b2c98e1c02c1a85da52c28fef31b184d5d6138c35e2774e346b367cfb42",
+                  "document_id": "cc5593d5ef43b32e997f1e57e34efc757e12d59ab5ffaff339e180916bd3e27a",
+                  "version": "b79059ab6190ed5c664204b32f366e83d2b76e89a0d0c14c8c65445f6845076b",
+                  "name": "reset-en.md",
+                  "bytes": 126,
+                  "text_sha256": "b79059ab6190ed5c664204b32f366e83d2b76e89a0d0c14c8c65445f6845076b",
+                  "chunks": [
+                    {
+                      "chunk_id": "af03b7cf95f09a3d4251679657b3f927f5f80faf56d0fc0153b6d0af7f9c3de9",
+                      "start": 0,
+                      "end": 126,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "b79059ab6190ed5c664204b32f366e83d2b76e89a0d0c14c8c65445f6845076b"
+                    }
+                  ]
+                }
+              ],
+              "relevance_policy_sha256": "2abb359985b478a66336134d7ce8b33be4be35a00affe8d421632d79db77fa33"
+            }
+          },
+          "all": {
+            "index_version": "7c2010134333a9784c9e911c85caf5788ddb300195425c42b054204f29700f69",
+            "manifest": {
+              "target": {
+                "corpus_id": "2314390f-4123-5c73-a568-53355e8d49cc",
+                "owner": "qwen-migration-dev",
+                "dataset_id": null,
+                "dataset_version": null
+              },
+              "model": {
+                "model": "Qwen/Qwen3-Embedding-0.6B",
+                "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+                "dimensions": 1024,
+                "recipe": "last-l2-saas-v1/fp16-cuda/torch2.8.0-cu128/transformers4.57.1/tok0.22.2",
+                "files": {
+                  "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+                  "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+                  "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+                  "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+                  "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+                  "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "fixture": false
+              },
+              "chunker": {
+                "version": "unicode-window-1",
+                "chars": 192,
+                "overlap": 32
+              },
+              "retriever": "pg-cosine-exact-1",
+              "sources": [
+                {
+                  "source_id": "0fa1ba1ab00fff6f5556d944c7b8c30371a3b8be28e622dc1c922ed7eda6dcf6",
+                  "document_id": "d03b51c6c03a42675f2549b81d63d30ae553ad5b3bfab0acb8d5ea87870f38f8",
+                  "version": "e35b95449c92d9a66c895c068b03863944e8f01e269a77f1a19365ad2ae0a255",
+                  "name": "export-en.md",
+                  "bytes": 154,
+                  "text_sha256": "e35b95449c92d9a66c895c068b03863944e8f01e269a77f1a19365ad2ae0a255",
+                  "chunks": [
+                    {
+                      "chunk_id": "a992a1c261ca8be4e72c3ccbbc73c084beeeea6fabe3fc29edb956685fbf3c73",
+                      "start": 0,
+                      "end": 154,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "e35b95449c92d9a66c895c068b03863944e8f01e269a77f1a19365ad2ae0a255"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "4697eb7a9d926e123d45ec95b6945e8b87e7cb6b5b6b87b08c6504b1f250f57d",
+                  "document_id": "0e137812d3ef9dc22b7d65786debf43b8b1d889947910bcde616550921e73deb",
+                  "version": "69875ebf732d22121563473daf37f8d58e99219a1c2b54e9d47fb2f3a5ad80b7",
+                  "name": "freeze-en.md",
+                  "bytes": 135,
+                  "text_sha256": "69875ebf732d22121563473daf37f8d58e99219a1c2b54e9d47fb2f3a5ad80b7",
+                  "chunks": [
+                    {
+                      "chunk_id": "57ac1b444ac497c271e113049f388c3f83191c7d5563aaae4d91fa674a33599c",
+                      "start": 0,
+                      "end": 135,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "69875ebf732d22121563473daf37f8d58e99219a1c2b54e9d47fb2f3a5ad80b7"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "531675eab2850393bfda83032a09339ae8f2681afcd924a1c2c523f125d3d1ca",
+                  "document_id": "7c1bf31c0838c1062db09072b2ff3a5cfb750a00993cc3390056da357da22ac2",
+                  "version": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "name": "irrelevant-en.md",
+                  "bytes": 85,
+                  "text_sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d",
+                  "chunks": [
+                    {
+                      "chunk_id": "d91dba619ea15601ce378c59baa3abd9478603a693af5f2580948f220c2a8c20",
+                      "start": 0,
+                      "end": 85,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "08aec5e53a99c5ed70695d8d4159cd9e32756697dbfbf82eed6dfdf26d37de0d"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "665c8b2c98e1c02c1a85da52c28fef31b184d5d6138c35e2774e346b367cfb42",
+                  "document_id": "cc5593d5ef43b32e997f1e57e34efc757e12d59ab5ffaff339e180916bd3e27a",
+                  "version": "b79059ab6190ed5c664204b32f366e83d2b76e89a0d0c14c8c65445f6845076b",
+                  "name": "reset-en.md",
+                  "bytes": 126,
+                  "text_sha256": "b79059ab6190ed5c664204b32f366e83d2b76e89a0d0c14c8c65445f6845076b",
+                  "chunks": [
+                    {
+                      "chunk_id": "af03b7cf95f09a3d4251679657b3f927f5f80faf56d0fc0153b6d0af7f9c3de9",
+                      "start": 0,
+                      "end": 126,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "b79059ab6190ed5c664204b32f366e83d2b76e89a0d0c14c8c65445f6845076b"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "b0e7bf02cc5bfae54bc226d352435184973a0723de138e944792784a636b2056",
+                  "document_id": "68e85ec27a99aea3a23586b1dceef68177e6cbca7dac59f72c76248321138c44",
+                  "version": "c766aed9ba012514a57b8d4fe122fe31d0a733cf9ab60ca610f22920f861e417",
+                  "name": "freeze-zh.md",
+                  "bytes": 114,
+                  "text_sha256": "c766aed9ba012514a57b8d4fe122fe31d0a733cf9ab60ca610f22920f861e417",
+                  "chunks": [
+                    {
+                      "chunk_id": "4f89376c8d99fa00d685a54ac1b29f649db84437fa8df1e434ec6359033fe9a6",
+                      "start": 0,
+                      "end": 38,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "c766aed9ba012514a57b8d4fe122fe31d0a733cf9ab60ca610f22920f861e417"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "be8907e6971683495944af67219aa68ece828550d4fbebec3f76e119c685bc5a",
+                  "document_id": "1199ad934d482825a13b859bf1e8c64b1526edb1ba55a9b1aada88e1f8154334",
+                  "version": "55ee8b74e569332457aa860825394982df87ce19472e7a962177bbbf37026022",
+                  "name": "export-zh.md",
+                  "bytes": 114,
+                  "text_sha256": "55ee8b74e569332457aa860825394982df87ce19472e7a962177bbbf37026022",
+                  "chunks": [
+                    {
+                      "chunk_id": "162878547c734ff8cd4c160896f2f27b782434abadffccde32048100c09033d5",
+                      "start": 0,
+                      "end": 38,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "55ee8b74e569332457aa860825394982df87ce19472e7a962177bbbf37026022"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "d585f9301cf9918506576eacb91b7f81f8a6a94225374e2e2c5306bc293ee789",
+                  "document_id": "ee59119188ada9c9b2a7ecb9e5ed8e68d56effe74281e6b3ea7b0902ef2e6a42",
+                  "version": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "name": "background-zh.md",
+                  "bytes": 93,
+                  "text_sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068",
+                  "chunks": [
+                    {
+                      "chunk_id": "d5082ceae10b1a7a0b69e95f225c4a3bfaf236ac3a089860bef56bc621b7629b",
+                      "start": 0,
+                      "end": 31,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6a72703999e875e9286f7f77d2cd4cee53951e82c78f71bc19d5708981cfb068"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "e1d0b010c2edccfe96e80ec1e990d7e314da3faa92d2ac5295cf6f47084a567f",
+                  "document_id": "40bbacd64a9de673c9ab633cea989f4ba611e49656dfd0dfde1f944f5702926f",
+                  "version": "6cb549d816aa633ba5e975411e57cb6673614f06f828cb1f064bf8bf474d0f09",
+                  "name": "reset-zh.md",
+                  "bytes": 105,
+                  "text_sha256": "6cb549d816aa633ba5e975411e57cb6673614f06f828cb1f064bf8bf474d0f09",
+                  "chunks": [
+                    {
+                      "chunk_id": "eb49d0cbb97ac7c9ea50d94bd39d2ffef3b9c5b92d19100cf724034fa8bf0dac",
+                      "start": 0,
+                      "end": 35,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6cb549d816aa633ba5e975411e57cb6673614f06f828cb1f064bf8bf474d0f09"
+                    }
+                  ]
+                },
+                {
+                  "source_id": "e55f2f5d1d125675054d7c75ac7d777f5c50bcb0cb3e2dfce04757bb594a9cfb",
+                  "document_id": "38ee98b8a0b2b3f6816322bfda45eb169a78b5f366dcf1a50d35c5b40935803b",
+                  "version": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "name": "injection-zh.md",
+                  "bytes": 112,
+                  "text_sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e",
+                  "chunks": [
+                    {
+                      "chunk_id": "e1ab4d171a3787ca44dafee88944c6e94f99d30b63ebe90105e6fdf5c6c1a97b",
+                      "start": 0,
+                      "end": 74,
+                      "line_start": 1,
+                      "line_end": 1,
+                      "sha256": "6befb26ca4ca97a0ddbdb7fc94c3d24d65d0f562d10e9cfeaec20caceab5782e"
+                    }
+                  ]
+                }
+              ],
+              "relevance_policy_sha256": "2abb359985b478a66336134d7ce8b33be4be35a00affe8d421632d79db77fa33"
+            }
+          }
+        }
+      },
+      "validation": {
+        "queries": 20,
+        "recall_denominator": 17,
+        "source_recall_macro": 1.0,
+        "required_denominator": 17,
+        "required_coverage_macro": 0.9411764705882353,
+        "required_complete": 16,
+        "empty_gold_denominator": 3,
+        "empty_gold_false_retrievals": 0,
+        "irrelevant_sources_returned": 0,
+        "goal_mismatch_in_required_denominator": true,
+        "errors": []
+      },
+      "mcp_performance": {
+        "cold_query_ms": [
+          7370.202000020072,
+          6991.316400002688,
+          7105.35839991644
+        ],
+        "warm_count": 17,
+        "warm_p50_ms": 54.574500070884824,
+        "warm_p95_ms": 84.88700003363192,
+        "timeout_seconds": 10
+      },
+      "encoding_performance": {
+        "profile": "qwen3-cuda-fp16-v1",
+        "individual_query_count": 40,
+        "p50_ms": 31.66524996049702,
+        "p95_ms": 54.65609999373555,
+        "load_seconds": 7.844706899952143,
+        "warmup_seconds": 0.454829900059849,
+        "peak_rss_bytes": 2973249536,
+        "gpu_allocated_peak_bytes": 1207702016,
+        "gpu_reserved_peak_bytes": 1222639616,
+        "cpu_threads": 2,
+        "batch_size": 1,
+        "concurrency": 1,
+        "other_applications_running": true,
+        "os_disk_cache_reset": false
+      },
+      "initial_calibration_process": {
+        "load_seconds_including_imports_hash": 34.146074699936435,
+        "warmup_seconds": 0.6353668998926878,
+        "paired_encoding_half_p50_ms": 28.344025020487607,
+        "paired_encoding_half_p95_ms": 39.840149926021695,
+        "peak_rss_bytes": 3006144512,
+        "cuda_peak_allocated_bytes": 1207710208,
+        "cuda_peak_reserved_bytes": 1222639616,
+        "device": "cuda",
+        "dtype": "torch.float16",
+        "cuda_version": "12.8",
+        "torch_version": "2.8.0+cu128",
+        "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU"
+      }
+    }
+  },
+  "tests": {
+    "frozen-nonintegration-311.xml": {
+      "tests": "972",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "16.653"
+    },
+    "frozen-nonintegration-313.xml": {
+      "tests": "972",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "18.297"
+    },
+    "qwen-postgres-311-r3.xml": {
+      "tests": "15",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "262.755"
+    },
+    "qwen-host-313.xml": {
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "61.111"
+    },
+    "baseline-pg-r2-311.xml": {
+      "tests": "77",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "748.576"
+    },
+    "baseline-pg-r2-313.xml": {
+      "tests": "77",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "747.869"
+    }
+  },
+  "legacy_restore": {
+    "run_id": "5a317b33-2219-4f80-9626-bc8c006f52ee",
+    "status": "succeeded",
+    "business_completion": "completed",
+    "report_sha256": "df983af3fb3c0d96c7a0d23c2b678ff6e4938406491056ed098d661c27733014",
+    "model": "BGE original 512",
+    "index_version": "ada19a75e6f8258e4327b37db0e32f753190fbd62f1f4a812cf162bc6972d0b3"
+  },
+  "security": {
+    "rag_reader": {
+      "SELECT": true,
+      "INSERT": false,
+      "UPDATE": false,
+      "DELETE": false,
+      "TRUNCATE": false
+    },
+    "reader_write_denials": [
+      "25006",
+      "25006",
+      "42501",
+      "42501"
+    ],
+    "rag_ingest": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": false,
+      "DELETE": false,
+      "TRUNCATE": false
+    },
+    "postgres": "17.11 (Debian 17.11-1.pgdg12+2)",
+    "pgvector": "0.8.6",
+    "dimensions": [
+      [
+        1024,
+        120
+      ]
+    ]
+  },
+  "historical_integrity": {
+    "artifacts/p7/embedding-ab-v1/result-seal.json": {
+      "files": 77,
+      "mismatches": [],
+      "seal_sha256": "c4e4cf1fd3706d2d4bab5eb8cca2a85246f8237338b592173912c334f9b803c9"
+    },
+    "artifacts/p7/three-policy-smoke-v1/live-20261029/result-seal.json": {
+      "files": 136,
+      "mismatches": [],
+      "seal_sha256": "d6f86460a27ac4781cf2917afee28d4a79dda74f5f750dbb48aeafebe8ef17e7"
+    },
+    "artifacts/p7/three-policy-scorer-v2/result-seal-final.json": {
+      "files": 29,
+      "mismatches": [],
+      "seal_sha256": "8b63aca91235bee9dc9fb1506637c985a8b59e88ec7324f2e203cdc29e3d2f56"
+    }
+  },
+  "existing_files_changed": [
+    "AGENTS.md",
+    "src/datapilot/orchestration/coordinator.py",
+    "src/datapilot/orchestration/rag_completion.py",
+    "src/datapilot/orchestration/tools.py",
+    "src/datapilot/persistence/inspection.py",
+    "src/datapilot/persistence/session.py",
+    "src/datapilot/rag/cli.py",
+    "src/datapilot/rag/contracts.py",
+    "src/datapilot/rag/mcp.py",
+    "src/datapilot/rag/models.py",
+    "src/datapilot/rag/storage.py",
+    "src/datapilot/reporting/service.py",
+    "src/datapilot/runtime/mcp_client.py"
+  ],
+  "paid_calls": 0,
+  "agent_decisions": "scripted/Fake; genuine local embeddings, PostgreSQL and MCP",
+  "production_migration_or_switch": false,
+  "remaining_gates": [
+    "cold_start_tail_and_10s_margin",
+    "slow_backend_cancel_shutdown",
+    "Linux_Docker_dependency_profile",
+    "separately_authorized_autonomous_Live_if_requested"
+  ],
+  "initial_failures": {
+    "qwen-postgres-311.xml": {
+      "tests": "11",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "129.660"
+    },
+    "qwen-postgres-311-final.xml": {
+      "tests": "14",
+      "failures": "2",
+      "errors": "0",
+      "skipped": "0",
+      "time": "201.466"
+    },
+    "baseline-pg-311.xml": {
+      "tests": "77",
+      "failures": "0",
+      "errors": "41",
+      "skipped": "0",
+      "time": "103.348"
+    }
+  },
+  "artifact_directory": "artifacts/p7/qwen3-migration-phase1",
+  "hard_negative_results": [
+    {
+      "scores": {
+        "current-rule-en.md": 0.819992661476141,
+        "withdrawn-en.md": 0.7276370200678134,
+        "warehouse-en.md": 0.6475815773010299
+      },
+      "business_completion": "completed",
+      "extra_required_completion": "partial",
+      "published_source_ids": [
+        "779cc43a842559382993ae3195be009fdb94fb27994bf289375b98964eb51368"
+      ],
+      "current_fact_source_gold_precision": 0.3333333333333333,
+      "non_supporting_sources_returned": 2,
+      "source_gold_definition": "Only the current operational rule supports the requested fact; topic similarity is not fact support."
+    }
+  ],
+  "transport_faults": [
+    {
+      "name": "test_real_mcp_delayed_model_timeout_and_cancellation_fail_closed[False]",
+      "test_seconds": 31.559
+    },
+    {
+      "name": "test_real_mcp_delayed_model_timeout_and_cancellation_fail_closed[True]",
+      "test_seconds": 31.643
+    }
+  ],
+  "transport_fault_observations": [
+    {
+      "cancel": false,
+      "outcome": "TOOL_TIMEOUT",
+      "call_seconds": 10.008936599828303,
+      "backend": "injected delay in real MCP; not Qwen quality inference",
+      "shutdown_error": "TOOL_ERROR"
+    },
+    {
+      "cancel": true,
+      "outcome": "cancelled",
+      "call_seconds": 0.21497079986147583,
+      "backend": "injected delay in real MCP; not Qwen quality inference",
+      "shutdown_error": "TOOL_ERROR"
+    }
+  ],
+  "goal_cache": {
+    "first_encode_calls": 2,
+    "second_encode_calls": 1,
+    "goal_scores_identical": true,
+    "same_session_model_cache": true,
+    "cross_run_resident_cache": false
+  },
+  "implementation_freeze": {
+    "freeze_id": "qwen-migration-p1-7ca65af73573",
+    "sha256": "7ca65af73573d5e6eb0913811c165ef839a9126352608d311d3463eaccdb6d84"
+  },
+  "hardware": {
+    "cpu": "Intel Core i9-14900HX",
+    "physical_cores": 24,
+    "logical_cpus": 32,
+    "configured_ram_gib": 16,
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "gpu_mib": 8151,
+    "driver": "582.05"
+  },
+  "base_uv_lock_sha256": "bc2ad9b153bd9cec30cf83d6081cee546175afc3d906b84cdeba88aecdbc848c",
+  "qwen_dependency_lock_sha256": "802f9cd37c658a1622fb32323f71f7f1378dc2730eade93917fe4202476e71d7",
+  "readiness": {
+    "phase1_engineering": true,
+    "production_default_switch": false,
+    "autonomous_Live_verified": false
+  },
+  "goal_candidate_validation": {
+    "cpu": {
+      "pairs": 60,
+      "tp": 19,
+      "fp": 0,
+      "fn": 0,
+      "tn": 41,
+      "conditional_on_prefilter_top_k": true
+    },
+    "cuda": {
+      "pairs": 60,
+      "tp": 19,
+      "fp": 0,
+      "fn": 0,
+      "tn": 41,
+      "conditional_on_prefilter_top_k": true
+    }
+  },
+  "deployment_notes": [
+    "Base health remains strict at migration head 0008; old 0007 databases are not silently upgraded.",
+    "Windows Python3.11 Qwen environment only; Python3.13 host verification does not attest a separate Qwen3.13 dependency install."
+  ]
+}

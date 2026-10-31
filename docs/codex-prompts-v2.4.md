@@ -318,6 +318,20 @@ H. 部署与契约：锁定此阶段必须的 FastAPI/Streamlit/Langfuse（确�
 
 【验收与停止】
 交付 docs/evaluation.md、docs/reliability-matrix.md、可复现 JSONL/summary、sealed holdout manifest、故障注入脚本、至少 5–10 个详细 bad cases 与独立的 PG 重启/供应商故障结果。每个结果给真实次数、分母、失败分布、成本来源与环境说明。已修复缺陷必须在 dev/新封存集验证，不污染 holdout；如某故障或 Live 未执行必须标明 not_run。达到明确验收后停止在 P7，等待用户独立授权下一阶段。
+
+【P7 补充：RAG 语义检索与完成判定专项评测】
+在原 P7 独立评测范围内，增加 RAG Retrieval Quality 与 Completion Quality 的单独评测，不改变 P6A 已实现的 Tool-based Completion、Stop Hook、Host Policy、Evidence Verifier 和 Durable Runtime 安全边界。
+要求：
+1. 建立独立 RAG Gold 集，覆盖同义改写、多文档、多跳检索、无关高相似度文档、证据不足、文档数量约束、历史背景文档、最新版本与全量检索要求。
+2. 分别统计 Recall@k、Precision@k、MRR、相关 Source 覆盖率、错误成功率、错误拒绝率、引用准确率和检索任务完成率。必须区分 Chunk 级与 Document/Source 级评测。
+3. 对 `bge-host-goal-cosine-v1` 的默认 0.55 阈值进行独立评测。允许在 dev 集上比较不同阈值，但不能使用 sealed holdout 调参，不能为提高通过率而降低安全要求。
+4. 评估宿主原始目标绑定、固定检索次数、模型自主查询改写、Tool-based Completion 和 Stop Hook 对实际检索质量、Token、延迟与完成率的影响。对照须控制模型、数据、预算和权限，区分消融与故障注入。
+5. 针对语义相关但缺少直接证据、多个片段来自同一 Source、分析时间窗口与文档时间范围不一致等情况设置反例。
+6. 严格区分 RAG Worker 检索完成、Evidence 验证通过以及最终业务结论正确，不得将三者合并为单一成功率。
+7. 所有改进建议以评测结果为依据。先报告 Bad Cases 和可能原因，再评估是否需要调整阈值、检索预算、召回策略或引入 Reranker；不得默认增加复杂组件。
+8. 真实 DeepSeek 评测必须独立授权并限制成本；Mock 不能替代真实模型质量评测。
+
+最终交付 RAG 专项评测报告、可复现指标、正反例、阈值对比、错误案例和下一轮优化建议。
 ```
 
 ---

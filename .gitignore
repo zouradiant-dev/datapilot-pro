@@ -14,3 +14,14 @@ artifacts/
 dist/
 *.egg-info/
 .docker-secrets/
+
+# Local immutable P7 evidence; public copies are indexed in docs/releases/.
+/docs/research/p7-engineering-freeze.md
+/docs/research/p7-demo-acceptance.md
+/docs/research/p7-post-freeze-backlog.md
+/docs/research/p7-goal-confirmation-quality-handoff.md
+/docs/research/p7-qwen3-lifecycle-handoff.md
+/docs/research/p7-qwen3-phase2c2-handoff.md
+/docs/research/p7-qwen3-phase2c-business-quality.json
+/docs/research/p7-qwen3-phase2c2-expanded-quality.json
+/docs/research/p7-qwen3-phase2c4-fresh-validation.json

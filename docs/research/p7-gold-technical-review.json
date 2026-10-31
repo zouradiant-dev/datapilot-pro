@@ -1,0 +1,180 @@
+{
+  "schema_version": "p7-gold-technical-review-summary-1",
+  "checked_at": "2026-10-25T03:12:08.514749+00:00",
+  "recorded_at": "2026-10-25T03:15:56.893716+00:00",
+  "review_kind": "Codex offline technical/source review, NOT independent human approval",
+  "counts": {
+    "cases": 60,
+    "technical_status": {
+      "needs_resolution": 9,
+      "consistent_under_proposed_policy": 50,
+      "mismatch": 1
+    },
+    "numeric_verified_goals_recomputed": 27,
+    "unavailable_metric_goals_reviewed": 10,
+    "rag_cases": 40,
+    "fact_occurrences": 48,
+    "document_snapshots_checked": 47,
+    "chunk_spans_checked": 47,
+    "failed_checks": 1
+  },
+  "human_pending": 60,
+  "human_approved": 0,
+  "status": "technical_review_completed_with_findings",
+  "gate2b_status": "blocked",
+  "ready_for_live_authorization": false,
+  "paid_calls": 0,
+  "candidate_runs": 0,
+  "retrieval_queries": 0,
+  "database_reads": 0,
+  "database_writes": 0,
+  "findings": [
+    {
+      "case_id": "bh2-001",
+      "technical_status": "needs_resolution",
+      "codes": [
+        "JOIN_REQUIREMENT_NOT_ASSERTED"
+      ]
+    },
+    {
+      "case_id": "bh2-030",
+      "technical_status": "needs_resolution",
+      "codes": [
+        "PARTIAL_DOCUMENT_PIN_UNSUPPORTED"
+      ]
+    },
+    {
+      "case_id": "bh2-033",
+      "technical_status": "needs_resolution",
+      "codes": [
+        "PARTIAL_DOCUMENT_PIN_UNSUPPORTED"
+      ]
+    },
+    {
+      "case_id": "bh2-035",
+      "technical_status": "needs_resolution",
+      "codes": [
+        "PARTIAL_DOCUMENT_PIN_UNSUPPORTED"
+      ]
+    },
+    {
+      "case_id": "bh2-038",
+      "technical_status": "needs_resolution",
+      "codes": [
+        "PARTIAL_DOCUMENT_PIN_UNSUPPORTED"
+      ]
+    },
+    {
+      "case_id": "bh2-040",
+      "technical_status": "needs_resolution",
+      "codes": [
+        "PARTIAL_DOCUMENT_PIN_UNSUPPORTED"
+      ]
+    },
+    {
+      "case_id": "bh2-048",
+      "technical_status": "mismatch",
+      "codes": [
+        "BLOCKED_CASE_HAS_UNCONDITIONAL_RETRIEVAL_GOLD"
+      ]
+    },
+    {
+      "case_id": "bh2-054",
+      "technical_status": "needs_resolution",
+      "codes": [
+        "PARTIAL_DOCUMENT_PIN_UNSUPPORTED"
+      ]
+    },
+    {
+      "case_id": "bh2-055",
+      "technical_status": "needs_resolution",
+      "codes": [
+        "CHART_UNIT_REQUIREMENT_NOT_ASSERTED"
+      ]
+    },
+    {
+      "case_id": "bh2-059",
+      "technical_status": "needs_resolution",
+      "codes": [
+        "PARTIAL_DOCUMENT_PIN_UNSUPPORTED"
+      ]
+    }
+  ],
+  "classification_check_mismatch": {
+    "case_id": "bh2-048",
+    "technical_check_count": 1,
+    "meaning": "Confirmation versus exact-scope denial and conditional retrieval Gold need adjudication; not an arithmetic or citation mismatch",
+    "gold_changed": false
+  },
+  "integrity": {
+    "sealed_files": 66,
+    "seal_sha256": "7af09ffe2320dfdad3535c55ed89e96124a7fd4bad0d66bc1cc898dbec464ecc",
+    "gold_sha256": "baacca4a8e3ab2f257b24ee0f67810f64533e8fae3966f5300e278463e78362d",
+    "oracle_proof_sha256": "d5d0b48c83a5e10643060558d126f3981090ad5c8ac0326e8bd2e8894a386928",
+    "gate2b_freeze_sha256": "891b9e83e7d064f9934aa8524b9b96bf570f6abdb7eddb4390a2379a2bab0b15",
+    "human_review_sha256": "29660e91363ade58c7918e43e97324533defb7da909b3e428d625e8255429145",
+    "human_approved": 0,
+    "human_pending": 60,
+    "production_files": 116,
+    "intent_files": 18
+  },
+  "private_review": {
+    "artifacts/p7/gate2b/private/gold-technical-review-20261025/review.py": "39c32d5e9e109d41210a0933917a4bb634e539905309f6c6b32fe8917c80d725",
+    "artifacts/p7/gate2b/private/gold-technical-review-20261025/test_review.py": "cc38d88a2b63b42fb10631954ee8efb517d226b0982b9fdd8ccae353b00b5ab3",
+    "artifacts/p7/gate2b/private/gold-technical-review-20261025/record_audit.py": "f39cfc06e328438df2aed2ba773256e97703cd4bf3d787f35000da3b48a4e277",
+    "artifacts/p7/gate2b/private/gold-technical-review-20261025/technical-review.json": "2ab5c907ccec43393d16fb9b87e42b9761bd041aaea5735652d0a9487799864b",
+    "artifacts/p7/gate2b/private/gold-technical-review-20261025/technical-review.html": "a3aa86e45cdb27d61d29bceda6f3a08beca33f95712cb5811460657d1a3c6865",
+    "artifacts/p7/gate2b/private/gold-technical-review-20261025/classification-adjudication.json": "0d8a1aa36ae76de5be776b14f319e6ca6ca89c4943a6cdba4721b98364a6385c"
+  },
+  "tests": [
+    {
+      "path": "artifacts/p7/gate2b/private/gold-technical-review-20261025/toy-tests-final-py311.xml",
+      "sha256": "2e1b8aef739600000efb20093b3ecc17b4a62a9c4cef699214ac318e6f1345c3",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.410"
+    },
+    {
+      "path": "artifacts/p7/gate2b/private/gold-technical-review-20261025/toy-tests-py313.xml",
+      "sha256": "a6da3c79ef5da01839b33d9d2a9b4c3a13dd080aea1a1e714697acf0e6f5f5cc",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.980"
+    },
+    {
+      "path": "artifacts/p7/gate2b/private/gold-technical-review-20261025/contracts-py311.xml",
+      "sha256": "90f3767ad373dd7c506ed4aed5520b44cbc357b754727877e5b60d4287e4c32c",
+      "tests": "32",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.632"
+    },
+    {
+      "path": "artifacts/p7/gate2b/private/gold-technical-review-20261025/contracts-py313.xml",
+      "sha256": "09e7e3b28a16ff5d2a42c8786bcfeb35a64e0d14cda860a73f802cc453a626ad",
+      "tests": "32",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.301"
+    }
+  ],
+  "remaining": [
+    "All 60 independent human decisions",
+    "P3 proposal confirmation",
+    "7 scope-compatible sealed inputs",
+    "JOIN/chart requirement coverage",
+    "blocked-case phase/refusal adjudication",
+    "formal Runner/full Scorer",
+    "new explicit paid Live authorization"
+  ],
+  "original_pg_proof": "Unchanged; not re-executed",
+  "full_pg_regression_this_round": "not_run: frozen production and helpers unchanged",
+  "formal_business_live": "not_run",
+  "git_commit_push": "not_run"
+}

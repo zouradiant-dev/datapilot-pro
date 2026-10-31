@@ -1,0 +1,142 @@
+{
+  "schema_version": "p7-gold-second-technical-review-1",
+  "received_at": "2026-10-25T03:28:11.928760+00:00",
+  "submitted_by": "user_in_current_chat",
+  "reviewer_identity": null,
+  "reviewed_at": null,
+  "document_kind": "second technical review and adjudication recommendations",
+  "source_filename": "p7_gold_remaining_review.md",
+  "source_sha256": "7cb505cc844d563281765eae4fb60bcad209aaa68f6dc6f1efbef337ea8a6b88",
+  "private_source_path": "artifacts/p7/gate2b/private/second-review-20261025-7cb505cc/user-supplied-review.md",
+  "cases_reviewed": 10,
+  "cases": [
+    {
+      "case_id": "bh2-001",
+      "review_scope": "second_technical_review",
+      "category": "requirement_coverage",
+      "proposal": "require_customer_linkage_and_invoice_grain_proof_not_join_keyword",
+      "decision": "recommendation_received_not_implemented",
+      "human_approval": "pending",
+      "reviewer_identity": null,
+      "reviewed_at": null
+    },
+    {
+      "case_id": "bh2-030",
+      "review_scope": "second_technical_review",
+      "category": "scope_compatibility",
+      "proposal": "exact_original_authorized_source_closure_in_new_versioned_inputs",
+      "decision": "recommendation_received_not_implemented",
+      "human_approval": "pending",
+      "reviewer_identity": null,
+      "reviewed_at": null
+    },
+    {
+      "case_id": "bh2-033",
+      "review_scope": "second_technical_review",
+      "category": "scope_compatibility",
+      "proposal": "exact_original_authorized_source_closure_in_new_versioned_inputs",
+      "decision": "recommendation_received_not_implemented",
+      "human_approval": "pending",
+      "reviewer_identity": null,
+      "reviewed_at": null
+    },
+    {
+      "case_id": "bh2-035",
+      "review_scope": "second_technical_review",
+      "category": "scope_compatibility",
+      "proposal": "exact_original_authorized_source_closure_in_new_versioned_inputs",
+      "decision": "recommendation_received_not_implemented",
+      "human_approval": "pending",
+      "reviewer_identity": null,
+      "reviewed_at": null
+    },
+    {
+      "case_id": "bh2-038",
+      "review_scope": "second_technical_review",
+      "category": "scope_compatibility",
+      "proposal": "exact_original_authorized_source_closure_in_new_versioned_inputs",
+      "decision": "recommendation_received_not_implemented",
+      "human_approval": "pending",
+      "reviewer_identity": null,
+      "reviewed_at": null
+    },
+    {
+      "case_id": "bh2-040",
+      "review_scope": "second_technical_review",
+      "category": "scope_compatibility",
+      "proposal": "exact_original_authorized_source_closure_in_new_versioned_inputs",
+      "decision": "recommendation_received_not_implemented",
+      "human_approval": "pending",
+      "reviewer_identity": null,
+      "reviewed_at": null
+    },
+    {
+      "case_id": "bh2-048",
+      "review_scope": "second_technical_review",
+      "category": "phase_adjudication",
+      "proposal": "preflight_block_no_execution_conditional_document_reference_only",
+      "decision": "recommendation_received_not_implemented",
+      "human_approval": "pending",
+      "reviewer_identity": null,
+      "reviewed_at": null
+    },
+    {
+      "case_id": "bh2-054",
+      "review_scope": "second_technical_review",
+      "category": "scope_compatibility",
+      "proposal": "exact_original_authorized_source_closure_in_new_versioned_inputs",
+      "decision": "recommendation_received_not_implemented",
+      "human_approval": "pending",
+      "reviewer_identity": null,
+      "reviewed_at": null
+    },
+    {
+      "case_id": "bh2-055",
+      "review_scope": "second_technical_review",
+      "category": "conditional_presentation",
+      "proposal": "unit_source_checks_if_chart_present_no_mandatory_chart_inferred",
+      "decision": "recommendation_received_not_implemented",
+      "human_approval": "pending",
+      "reviewer_identity": null,
+      "reviewed_at": null
+    },
+    {
+      "case_id": "bh2-059",
+      "review_scope": "second_technical_review",
+      "category": "scope_compatibility",
+      "proposal": "exact_original_authorized_source_closure_in_new_versioned_inputs",
+      "decision": "recommendation_received_not_implemented",
+      "human_approval": "pending",
+      "reviewer_identity": null,
+      "reviewed_at": null
+    }
+  ],
+  "all_gold_human_review": {
+    "pending": 60,
+    "approved": 0,
+    "source_explicitly_keeps_pending": true
+  },
+  "status": "technical_review_received_with_findings",
+  "gate2b_status": "blocked",
+  "ready_for_live_authorization": false,
+  "basis": [
+    "prior technical-review.html",
+    "prior p7-gold-technical-review.md",
+    "reported preflight results"
+  ],
+  "not_independently_reexecuted": [
+    "sealed inputs/pins/seal by incoming reviewer",
+    "new compatible subindex",
+    "original Report/SQL acceptance"
+  ],
+  "engineering_changes_authorized_by_this_record": false,
+  "paid_live_authorized": false,
+  "candidate_executions": 0,
+  "paid_calls": 0,
+  "database_operations": 0,
+  "gold_changed": false,
+  "human_review_package_changed": false,
+  "first_technical_review_changed": false,
+  "tests_this_update": "not_run: documentation and receipt only",
+  "source_validation": "byte-for-byte copied; ten unique case rows and explicit pending statement checked"
+}

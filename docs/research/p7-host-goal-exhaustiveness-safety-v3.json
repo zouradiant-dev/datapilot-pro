@@ -1,0 +1,2958 @@
+{
+  "schema_version": "host-goal-exhaustiveness-safety-delivery-3",
+  "status": "PASS",
+  "scope": "Bounded safety repair and regression, not independent quality/Live/production approval",
+  "at": "2026-10-30T09:49:16.793755+00:00",
+  "head": "f8b122438d2c67ab26e618ecded72ecc18454015",
+  "branch": "p7-ci-verification-20261028",
+  "requirement_policy": "host-goal-requirements-v3",
+  "product_changes": [
+    "src/datapilot/orchestration/rag_completion.py"
+  ],
+  "existing_test_changes": [
+    "tests/test_host_goal_requirements.py",
+    "tests/host_goal_probe.py",
+    "tests/test_host_goal_postgres.py"
+  ],
+  "new_test_files": [
+    "tests/test_host_goal_safety_v3.py",
+    "tests/test_host_goal_safety_postgres.py",
+    "tests/fixtures/rag/host-goal-requirements-v3.json",
+    "tests/fixtures/rag/host-goal-v2-identity.json"
+  ],
+  "new_fields": {
+    "requirement_class": "Host-only breadth classification, included in original Goal/Receipt/Manifest hash",
+    "unsupported_reason": "Existing field adds exhaustiveness_not_attested or goal_scope_unresolved; never an authorization"
+  },
+  "source_sha256": "b1954ee196b65e72fd16e7969a3aa50d8ad2bd9ddb8e4432ca57372fcad29e83",
+  "before_v2_source_sha256": "fb3d3374a7410bb26e07a7d89a2787309594c3626f778ff8cd39a54854781457",
+  "tested_initial_v3_source_sha256": "2bd91fa9302cab3a108edd47cde00cf7d6eacd2e578bb44ad138d48f50a87d43",
+  "implementation_manifest": "artifacts/p7/host-goal-safety-v3/implementation-delivery.json",
+  "implementation_manifest_sha256": "7d0270dc8668851c541a5a40c8855419bc021312e0223ace441e9f95505a5bf5",
+  "registered_gold_sha256": "666ee5e6849d0ebfc7e4895e5bde85fbecbca6c8a1a1a721a64ad1ae620ecb1a",
+  "preregistration_sha256": "aafe542d197e2157c78018be008a09336249fddc5d8206831954994f2788bcca",
+  "scoring_registration_sha256": "4e488b7dd09d5cd74afa053b8d86d5a0a47f28f7aea1a5f53d7bf0be7676dd6d",
+  "case_classes": {
+    "bounded_facts": 30,
+    "exhaustive_collection": 21,
+    "ambiguous_unresolved": 9
+  },
+  "case_results": [
+    {
+      "id": "o01",
+      "query": "谁是账单工作区的所有者？",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "bbf6087cbae2b5cde71cb2726071f3b87479447ef7ff165198170f5ea8aa08aa",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "o02",
+      "query": "请解释审计日志所有权规则。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "0e85b2cb46a4888985094276b1aba3bb3203611110b70cff669ab59bb3affd6f",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "o03",
+      "query": "Which owner approves a sandbox export?",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "bf1585700bcc78b10ff1480ffb278fff4985e5633573a235795d3e224aa95970",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "o04",
+      "query": "Explain document ownership transfer conditions.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "b43c08b2eb7f8080e8a81c055045f5f4d681e2490471fcc55ccd8c2bf5ec0890",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "o05",
+      "query": "所有权相关的审批要求是什么？",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "551285b7a32cd6660f99d9a3f01c8d31e0699673eae57d016cbd571361c6a9b4",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "o06",
+      "query": "文件所有者怎样确认访问级别？",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "3a0b3c0e1c123b59b76cee3e65e48efc320b9cd4ce32483f76252b7decd6f226",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "b01",
+      "query": "根据指定两份文档总结沙盒导出审批条件。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "45d2b7660a8a185619c0a8cfe7d1fb3f193223b8c1c1af9387dd491aaa1d2097",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "b02",
+      "query": "只说明当前已经确认的沙盒导出规则。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "2a9e564a9d387b7714a40bc53a7638f9e0c287e1fc76e7847b7e70ed5903be7c",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "b03",
+      "query": "总结这几个已授权 Source 中的已验证事实。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "6832871ef9451ea13b01a900ebbbdcdfd2f08594b07f7b9e1325b7dbfcfcdcc0",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "b04",
+      "query": "已确认的所有导出审批条件是什么？",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "d23146c8c64b30317c434781b9f8781ef52e951b83a657d3328fa06fa0ff7a89",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "b05",
+      "query": "列出全部已知事实并标注缺证据项。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "3604d625bf9eead6dc97ab55a0850bfb265eeab541775c51da8e2e1878a4a726",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "b06",
+      "query": "逐条列出已确认的三个审批条件。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "a0cde4d8cf00b3842f130e6082d2a047e95075c1746e9740d424f62f51df74ee",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "b07",
+      "query": "Explain all confirmed rules in the two pinned sources.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "91c37d576a3693f0c8ba5f8fb89495acc4c40149781e39438cdde64ec94cd8c2",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "b08",
+      "query": "Summarize every verified fact from source A and source B.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "38742999dfb5d3684367012bba875e8c80f7b8d5103f9378cea508e326c0ff1e",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "b09",
+      "query": "只说明授权文档已证实的全部费用规则。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "e87cc519fd07ef7919e234d54d3288e029708c96f909e346806fadc79b387a02",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "b10",
+      "query": "完整说明已确认的两项审批条件。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "3d3a89a6ed6085215be94885a3cc644c785f3a38af7e8479adb5449fb83c7101",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "n01",
+      "query": "不需要遍历整个知识库，只解释已确认的审批事实。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "c44af73db11f5e6b2ccc1101808081be5effea7f426b90799c110ec737de6ad8",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "n02",
+      "query": "不要扫描全部文件；只回答指定来源中的导出条件。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "954b98068135f61cdada4d0f83f218a61f0333e813d82a7f191660620005c30c",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "n03",
+      "query": "无需逐篇检查语料，只给出已验证的规则。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "a306701094bfaeff4ca32de55ae93b2fe5cc13f94caeb51d3f9bd5ffc7342655",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "n04",
+      "query": "不要求列出所有来源，而是总结指定两份文档中的条件。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "9ee8303b27f160005c0e05ad27b998ec1f4cabcb2494948cbbb3ba40f60aa3b4",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "n05",
+      "query": "禁止遍历整个语料库，按已确认事实作答。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "c859199e9bf6d559e59c0f1444ee4ebfd7a92d62fabeb2a7007c1b6bb170f559",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "n06",
+      "query": "Do not review every document; summarize confirmed export rules.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "050e1b4c094c8ff5ddd73af8fb8558a18024d899f512c8ed33d10ee2f9d8f6a2",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "n07",
+      "query": "No need to scan the entire corpus. Explain the two verified facts.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "9241dc9fedb04e4368f72ad5c838d223681adcb027e1359c471fd37169e9816e",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "n08",
+      "query": "You are not required to inspect all files; use the pinned facts.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "cdf7432bff40a6b5e62e512a61d013bd48d0922c434374b64e0f83b73b0cbb3e",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "n09",
+      "query": "无需证明没有遗漏任何文档，只说明已知审批条件。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "3fa27035913ad4133f9dac29a9c353f59a7f05d63e583e526d10792c16a74092",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "n10",
+      "query": "不要遍历所有文件；do not scan the entire corpus; 仅解释已确认事实。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "7a08c41b2d877cf63a778f51b3067449fe40cf0bbe48c5b8e06a1c7711bc67ab",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "e01",
+      "query": "逐篇检查这些导出文档，一篇也不能漏。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "5727f1d59943a922fe0e4d8a0d85a241c03a010bdba7f01e4a381ac4e529ade3",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e02",
+      "query": "检查每一个文件并证明没有遗漏。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "3b4909898b9c141fcc243798c2432997f9f8a9f678190b03cce07c43289a06fc",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e03",
+      "query": "遍历所有文档并列出导出条件。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "88a6b4850d634eae92ad8cd6bf9987322c0e26e2903f6b71ddcf1efcc4146f09",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e04",
+      "query": "扫描整个知识库，确认全部审批要求。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "2ca813f333335ca5fd69d6f7f5b5a3722de6a16521b1516e0e82d66cd2ac244e",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e05",
+      "query": "核对全部来源，确保无遗漏。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "627e0b51509f883448a03aec90f9084e2bd05d66d7ee02aae209b56f0da8251c",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e06",
+      "query": "逐份审阅这套资料，不漏一份。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "6b66a27e6611e1015c1d24ec81d43b3c448f194d1dca845d21f5128a18e80bbe",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e07",
+      "query": "逐个检查文档，核对导出审批。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "e5914fcd0fdd9c46d22740a85c6b1f4d8c7c5db92fe3f21ee4ded6de7359ccec",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e08",
+      "query": "Review every document without exception.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "178fd18b0fc813a83c994ec8d499b7afd0385d2027ebe5a17f056237eb44b5b6",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e09",
+      "query": "Verify that no relevant source was missed.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "e11c7e69a6c5a976dbc8655e67465862941c4e87002363b1146749f3bcadb420",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e10",
+      "query": "Scan the whole knowledge base before answering.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "89c166914d73280146de9ffd26c916b2ad76b74b75b0be679bcba839eccf24d9",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e11",
+      "query": "Check each file and prove there are no omissions.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "186b8caafcd8bc35421f6c3e54053810b31f44d02f0f240f016794f9f4d0baa8",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e12",
+      "query": "列出所有权相关的全部来源。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "e547f6d8fbc93b3559e6e63348066ed4002c16a4cd5fd9ef9b40018571c975f4",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e13",
+      "query": "Inspect the complete collection of documents.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "1b02941f30e7cfe1444169fc51c014c8e331141acc53866d0742549814ef10b5",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "e14",
+      "query": "审阅每份资料，任何一份都不得漏掉。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "b48b4865d8d90ad4b7ddff2d87af9e5baacd1847aca9c9477ef6546ea1479ae2",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "a01",
+      "query": "看一下全部相关内容。",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "ambiguous_unresolved",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "9a0e580008262fac7f118485cfd574f2e43007f489bab9d0999f3136cf16f4bb",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "goal_scope_unresolved"
+      }
+    },
+    {
+      "id": "a02",
+      "query": "尽量检查完整，再回答审批问题。",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "ambiguous_unresolved",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "8882235059c332e408d1349563711bf54350ec5cf00739fbace432c42040726c",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "goal_scope_unresolved"
+      }
+    },
+    {
+      "id": "a03",
+      "query": "检查所有应该检查的资料。",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "ambiguous_unresolved",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "43bb6c4ca788a19b4d53d0f5b5aebf036091e01636201a2446a30436ad7122a0",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "goal_scope_unresolved"
+      }
+    },
+    {
+      "id": "a04",
+      "query": "不要漏掉关键来源。",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "ambiguous_unresolved",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "d4e4f9a9a9ef124ab3b79aeda54ab31af15ff6a42da4b6f4978de0f53d5f1bb2",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "goal_scope_unresolved"
+      }
+    },
+    {
+      "id": "a05",
+      "query": "检查所有权相关的所有要求。",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "ambiguous_unresolved",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "fe2410b677caafe004898cc11f1c52c0ddf1485e80e372477b92c41f3bdd4e54",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "goal_scope_unresolved"
+      }
+    },
+    {
+      "id": "a06",
+      "query": "Check everything that should be checked.",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "ambiguous_unresolved",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "a5b77b6be578ff9f450241aba898398a7d213de7c2340c4709bc5185a311d1ca",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "goal_scope_unresolved"
+      }
+    },
+    {
+      "id": "a07",
+      "query": "Review all relevant information.",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "ambiguous_unresolved",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "20e48495d780a773890d760c35623e541e7bf09773b3546c9353d0f5788ffac7",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "goal_scope_unresolved"
+      }
+    },
+    {
+      "id": "a08",
+      "query": "Try to be comprehensive about the export checks.",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "ambiguous_unresolved",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "903bff38cdb73d2293cbb8d82b7b0de5d145ba39bf7d881f3c3446a28fac36de",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "goal_scope_unresolved"
+      }
+    },
+    {
+      "id": "d01",
+      "query": "不能不遍历全部导出文档。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "62592a42d27bb8216e7a64d5e61c6a94c143ed3b93a0766d2d0447301d0c66f1",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "d02",
+      "query": "并非不需要检查每一个文件。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "90ced3e8fc5ae798dc34ef5644f9218c8dfa1e49b634e45b3aea453226a37a20",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "d03",
+      "query": "不要只看一份，必须遍历整个语料库。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "e831a5bed0833c045050b877478237b8c53ae61dcc0ac64c829ef86d2d8694c6",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "d04",
+      "query": "不需要扫描所有来源，但仍须审阅每份文件。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "8d9c800c2c7248941f0684cf98fda74668fd00e7cc207df191c429680f2ee02f",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "d05",
+      "query": "Do not skip reviewing every document.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "810d79714b06561ae748f29780f41ceeda326ec146cef761047bbf613ea7a57b",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "d06",
+      "query": "It is not unnecessary to scan the entire corpus.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "0e6c5802c667d7bc3248c16ef8821ce5fc8d4fd1e66a755a679db8bb08f9526b",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "d07",
+      "query": "不要求输出每份原件，但必须核对全部文档。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "exhaustive_collection",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "cab8d4c28a2a725d3bfd4fa84fcbc3a3eaa80d8017b506d4127fbf42de29e6aa",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "exhaustiveness_not_attested"
+      }
+    },
+    {
+      "id": "d08",
+      "query": "不是说不用检查所有资料，范围还需要确认。",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "ambiguous_unresolved",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "d70a51fb3517e948e8d6dd362de628e775f3b4508d80254f0c70e88006fb5cc8",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": true,
+        "business_conclusions_verified": false,
+        "unsupported_reason": "goal_scope_unresolved"
+      }
+    },
+    {
+      "id": "s01",
+      "query": "逐条说明指定两份文档里的已确认规则。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "dc07dac489ce1aa12d980ef5cf26498710214ebb8132be2f106533b807263e43",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "s02",
+      "query": "List all verified facts; do not claim the corpus is exhaustive.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "6c65b2136d812da74cc0909e9d1019ec997ceca5f3fab53b53c0e1f5be1cab73",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "s03",
+      "query": "不要确认整个知识库已穷尽，只报告已证实的审批规则。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "226440ea4e4b9c447f89b221ae597cb20e5cd56b4a45593aa99970348cf763e6",
+        "required_terms": [],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    },
+    {
+      "id": "s04",
+      "query": "仅检索包含“所有文档”的文档片段，保留来源引用",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required",
+      "current_goal": {
+        "protocol": "retrieval-task-v1",
+        "requirement_policy": "host-goal-requirements-v3",
+        "requirement_class": "bounded_facts",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "minimum_goal_score": 0.55,
+        "question_sha256": "7574b78505d5635ddd9e107097f9e510f53cd52fdba56ea167006f81b2d2ddfc",
+        "required_terms": [
+          "所有文档"
+        ],
+        "minimum_sources": 1,
+        "unsupported_requirements": false,
+        "business_conclusions_verified": false
+      }
+    }
+  ],
+  "tests": {
+    "before-py311": {
+      "tests": 60,
+      "passed": 36,
+      "failed": 24,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.469,
+      "junit": "artifacts/p7/host-goal-safety-v3/before-py311.xml",
+      "sha256": "bc980c268e0de3aa56c9979fe15a42bfdec0f52896518992f2430f28f4d029f9"
+    },
+    "first-py311": {
+      "tests": 183,
+      "passed": 177,
+      "failed": 6,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 3.38,
+      "junit": "artifacts/p7/host-goal-safety-v3/first-py311.xml",
+      "sha256": "54311ebf22cab6e77c557e1538e660b5fb1d14bb9df84878152bb7d068bb5af0"
+    },
+    "extra-before": {
+      "tests": 6,
+      "passed": 0,
+      "failed": 6,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.293,
+      "junit": "artifacts/p7/host-goal-safety-v3/extra-before.xml",
+      "sha256": "5802998242174d5470af2dc95cc3da1ff7f9e27852a04416367b375ac96472fd"
+    },
+    "dev-r3-py311": {
+      "tests": 189,
+      "passed": 189,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 2.653,
+      "junit": "artifacts/p7/host-goal-safety-v3/dev-r3-py311.xml",
+      "sha256": "2bf3bfc089d62b8ef8464fb363111818ae454bce29538c99e7328bb8165e5fca"
+    },
+    "content-before": {
+      "tests": 4,
+      "passed": 1,
+      "failed": 3,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.34,
+      "junit": "artifacts/p7/host-goal-safety-v3/content-before.xml",
+      "sha256": "33b852adf56f1da9c56b02c581dd20b81fe9273ccb6522f3c1d25db8a2a5443c"
+    },
+    "unit-accept-py311": {
+      "tests": 405,
+      "passed": 405,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 6.431,
+      "junit": "artifacts/p7/host-goal-safety-v3/unit-accept-py311.xml",
+      "sha256": "03df6f0550a36a0e8b8146a126e4de0df53c71599e61745fb9dee1f647bdf4e1"
+    },
+    "unit-accept-py313": {
+      "tests": 405,
+      "passed": 405,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 6.631,
+      "junit": "artifacts/p7/host-goal-safety-v3/unit-accept-py313.xml",
+      "sha256": "b1223a1ecd64a9a550a79a35255d3c80f7157eb70aba64ba81e2af37ca8f8ced"
+    },
+    "safety-pg311": {
+      "tests": 15,
+      "passed": 14,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 151.595,
+      "junit": "artifacts/p7/host-goal-safety-v3/safety-pg311.xml",
+      "sha256": "199609c42f9304f2d781a1fc9772384ab0edb1d1d75097d2b3f2aabf907d4b47"
+    },
+    "safety-pg311-r2": {
+      "tests": 2,
+      "passed": 1,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 27.856,
+      "junit": "artifacts/p7/host-goal-safety-v3/safety-pg311-r2.xml",
+      "sha256": "25a7690b8fa972ed4b0e539c6fae37da59da41745a0bff4b259656252a50ab4f"
+    },
+    "safety-pg311-r3": {
+      "tests": 17,
+      "passed": 17,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 495.842,
+      "junit": "artifacts/p7/host-goal-safety-v3/safety-pg311-r3.xml",
+      "sha256": "5da9fbcc8b009f37108e5d39da4bd3061f5346117ad141fd28fdd4ba8917bf4b"
+    },
+    "safety-pg313": {
+      "tests": 12,
+      "passed": 12,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 346.194,
+      "junit": "artifacts/p7/host-goal-safety-v3/safety-pg313.xml",
+      "sha256": "385cc5fba45ef56ecbf1cbd30de68e2ae351d066df62a706afe320d15723943d"
+    },
+    "final-pg311": {
+      "tests": 6,
+      "passed": 6,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 187.52,
+      "junit": "artifacts/p7/host-goal-safety-v3/final-pg311.xml",
+      "sha256": "82683edb159d7f17f9e4aa909f7384c0033c71b21225742e48b8c65591d5214b"
+    },
+    "final-pg313": {
+      "tests": 6,
+      "passed": 6,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 210.46,
+      "junit": "artifacts/p7/host-goal-safety-v3/final-pg313.xml",
+      "sha256": "5f02617897fc304ca6968d8e43e25551f54fc5439ce7dd0fbc00e6ab4defd68c"
+    },
+    "compatibility-pg311": {
+      "tests": 6,
+      "passed": 6,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 85.195,
+      "junit": "artifacts/p7/host-goal-safety-v3/compatibility-pg311.xml",
+      "sha256": "9a8768129ef11e76da4fa891b0a43a6c768401e7c42ba7ae12b37df2a55e24aa"
+    },
+    "compatibility-pg313": {
+      "tests": 8,
+      "passed": 8,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 115.829,
+      "junit": "artifacts/p7/host-goal-safety-v3/compatibility-pg313.xml",
+      "sha256": "00cdf351582ad3590a70560464433ce7dd4f9d6dfd3553631fb6518136529205"
+    },
+    "report-boundary-pg311": {
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 33.8,
+      "junit": "artifacts/p7/host-goal-safety-v3/report-boundary-pg311.xml",
+      "sha256": "f0627cd97e11c5b9d77e9b72134488c10d2f086711215b9386ad7504ab682d84"
+    }
+  },
+  "real_pg_passing_executions": 72,
+  "real_pg_retained_test_glue_failures": 2,
+  "pg_count_note": "72 passing pytest executions include repeated recovery subsets; not 72 independent business questions/Runtimes. Earlier 32-case source and final one-word guard patch are distinguished; 66 queries x 2 goal policies unchanged, final affected paths re-tested. Deselect counts are not passes.",
+  "goal_equivalence": {
+    "at": "2026-10-30T09:28:24.289177+00:00",
+    "draft_product_sha256": "2bd91fa9302cab3a108edd47cde00cf7d6eacd2e578bb44ad138d48f50a87d43",
+    "final_product_sha256": "b1954ee196b65e72fd16e7969a3aa50d8ad2bd9ddb8e4432ca57372fcad29e83",
+    "prior_queries_checked": 66,
+    "checks": [
+      {
+        "question_sha256": "186b8caafcd8bc35421f6c3e54053810b31f44d02f0f240f016794f9f4d0baa8",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "186b8caafcd8bc35421f6c3e54053810b31f44d02f0f240f016794f9f4d0baa8",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "a5b77b6be578ff9f450241aba898398a7d213de7c2340c4709bc5185a311d1ca",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "a5b77b6be578ff9f450241aba898398a7d213de7c2340c4709bc5185a311d1ca",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "050e1b4c094c8ff5ddd73af8fb8558a18024d899f512c8ed33d10ee2f9d8f6a2",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "050e1b4c094c8ff5ddd73af8fb8558a18024d899f512c8ed33d10ee2f9d8f6a2",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "810d79714b06561ae748f29780f41ceeda326ec146cef761047bbf613ea7a57b",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "810d79714b06561ae748f29780f41ceeda326ec146cef761047bbf613ea7a57b",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "91c37d576a3693f0c8ba5f8fb89495acc4c40149781e39438cdde64ec94cd8c2",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "91c37d576a3693f0c8ba5f8fb89495acc4c40149781e39438cdde64ec94cd8c2",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "b43c08b2eb7f8080e8a81c055045f5f4d681e2490471fcc55ccd8c2bf5ec0890",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "b43c08b2eb7f8080e8a81c055045f5f4d681e2490471fcc55ccd8c2bf5ec0890",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "1b02941f30e7cfe1444169fc51c014c8e331141acc53866d0742549814ef10b5",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "1b02941f30e7cfe1444169fc51c014c8e331141acc53866d0742549814ef10b5",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "0e6c5802c667d7bc3248c16ef8821ce5fc8d4fd1e66a755a679db8bb08f9526b",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "0e6c5802c667d7bc3248c16ef8821ce5fc8d4fd1e66a755a679db8bb08f9526b",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "6c65b2136d812da74cc0909e9d1019ec997ceca5f3fab53b53c0e1f5be1cab73",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "6c65b2136d812da74cc0909e9d1019ec997ceca5f3fab53b53c0e1f5be1cab73",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "9241dc9fedb04e4368f72ad5c838d223681adcb027e1359c471fd37169e9816e",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "9241dc9fedb04e4368f72ad5c838d223681adcb027e1359c471fd37169e9816e",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "20e48495d780a773890d760c35623e541e7bf09773b3546c9353d0f5788ffac7",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "20e48495d780a773890d760c35623e541e7bf09773b3546c9353d0f5788ffac7",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "178fd18b0fc813a83c994ec8d499b7afd0385d2027ebe5a17f056237eb44b5b6",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "178fd18b0fc813a83c994ec8d499b7afd0385d2027ebe5a17f056237eb44b5b6",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "89c166914d73280146de9ffd26c916b2ad76b74b75b0be679bcba839eccf24d9",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "89c166914d73280146de9ffd26c916b2ad76b74b75b0be679bcba839eccf24d9",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "38742999dfb5d3684367012bba875e8c80f7b8d5103f9378cea508e326c0ff1e",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "38742999dfb5d3684367012bba875e8c80f7b8d5103f9378cea508e326c0ff1e",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "903bff38cdb73d2293cbb8d82b7b0de5d145ba39bf7d881f3c3446a28fac36de",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "903bff38cdb73d2293cbb8d82b7b0de5d145ba39bf7d881f3c3446a28fac36de",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "e11c7e69a6c5a976dbc8655e67465862941c4e87002363b1146749f3bcadb420",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "e11c7e69a6c5a976dbc8655e67465862941c4e87002363b1146749f3bcadb420",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "bf1585700bcc78b10ff1480ffb278fff4985e5633573a235795d3e224aa95970",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "bf1585700bcc78b10ff1480ffb278fff4985e5633573a235795d3e224aa95970",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "cdf7432bff40a6b5e62e512a61d013bd48d0922c434374b64e0f83b73b0cbb3e",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "cdf7432bff40a6b5e62e512a61d013bd48d0922c434374b64e0f83b73b0cbb3e",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "d70a51fb3517e948e8d6dd362de628e775f3b4508d80254f0c70e88006fb5cc8",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "d70a51fb3517e948e8d6dd362de628e775f3b4508d80254f0c70e88006fb5cc8",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "62592a42d27bb8216e7a64d5e61c6a94c143ed3b93a0766d2d0447301d0c66f1",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "62592a42d27bb8216e7a64d5e61c6a94c143ed3b93a0766d2d0447301d0c66f1",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "08e567cc0de2a35b903582f457825668bc9005bacd56d246f0cda3aa85ef4622",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "08e567cc0de2a35b903582f457825668bc9005bacd56d246f0cda3aa85ef4622",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "e831a5bed0833c045050b877478237b8c53ae61dcc0ac64c829ef86d2d8694c6",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "e831a5bed0833c045050b877478237b8c53ae61dcc0ac64c829ef86d2d8694c6",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "954b98068135f61cdada4d0f83f218a61f0333e813d82a7f191660620005c30c",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "954b98068135f61cdada4d0f83f218a61f0333e813d82a7f191660620005c30c",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "9ee8303b27f160005c0e05ad27b998ec1f4cabcb2494948cbbb3ba40f60aa3b4",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "9ee8303b27f160005c0e05ad27b998ec1f4cabcb2494948cbbb3ba40f60aa3b4",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "cab8d4c28a2a725d3bfd4fa84fcbc3a3eaa80d8017b506d4127fbf42de29e6aa",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "cab8d4c28a2a725d3bfd4fa84fcbc3a3eaa80d8017b506d4127fbf42de29e6aa",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "d4e4f9a9a9ef124ab3b79aeda54ab31af15ff6a42da4b6f4978de0f53d5f1bb2",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "d4e4f9a9a9ef124ab3b79aeda54ab31af15ff6a42da4b6f4978de0f53d5f1bb2",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "226440ea4e4b9c447f89b221ae597cb20e5cd56b4a45593aa99970348cf763e6",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "226440ea4e4b9c447f89b221ae597cb20e5cd56b4a45593aa99970348cf763e6",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "7a08c41b2d877cf63a778f51b3067449fe40cf0bbe48c5b8e06a1c7711bc67ab",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "7a08c41b2d877cf63a778f51b3067449fe40cf0bbe48c5b8e06a1c7711bc67ab",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "8d9c800c2c7248941f0684cf98fda74668fd00e7cc207df191c429680f2ee02f",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "8d9c800c2c7248941f0684cf98fda74668fd00e7cc207df191c429680f2ee02f",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "64128b5fa673b57ab72a49f91f425e412502f97c6c88e3de6db5cce5f984cca5",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "64128b5fa673b57ab72a49f91f425e412502f97c6c88e3de6db5cce5f984cca5",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "c44af73db11f5e6b2ccc1101808081be5effea7f426b90799c110ec737de6ad8",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "c44af73db11f5e6b2ccc1101808081be5effea7f426b90799c110ec737de6ad8",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "7574b78505d5635ddd9e107097f9e510f53cd52fdba56ea167006f81b2d2ddfc",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "7574b78505d5635ddd9e107097f9e510f53cd52fdba56ea167006f81b2d2ddfc",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "b5f763424061f2bb0c8cd19bf3379477a98a98d8e2108d6a1def2a841aeaa902",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "b5f763424061f2bb0c8cd19bf3379477a98a98d8e2108d6a1def2a841aeaa902",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "3604d625bf9eead6dc97ab55a0850bfb265eeab541775c51da8e2e1878a4a726",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "3604d625bf9eead6dc97ab55a0850bfb265eeab541775c51da8e2e1878a4a726",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "e547f6d8fbc93b3559e6e63348066ed4002c16a4cd5fd9ef9b40018571c975f4",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "e547f6d8fbc93b3559e6e63348066ed4002c16a4cd5fd9ef9b40018571c975f4",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "2a9e564a9d387b7714a40bc53a7638f9e0c287e1fc76e7847b7e70ed5903be7c",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "2a9e564a9d387b7714a40bc53a7638f9e0c287e1fc76e7847b7e70ed5903be7c",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "e87cc519fd07ef7919e234d54d3288e029708c96f909e346806fadc79b387a02",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "e87cc519fd07ef7919e234d54d3288e029708c96f909e346806fadc79b387a02",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "3d3a89a6ed6085215be94885a3cc644c785f3a38af7e8479adb5449fb83c7101",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "3d3a89a6ed6085215be94885a3cc644c785f3a38af7e8479adb5449fb83c7101",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "b48b4865d8d90ad4b7ddff2d87af9e5baacd1847aca9c9477ef6546ea1479ae2",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "b48b4865d8d90ad4b7ddff2d87af9e5baacd1847aca9c9477ef6546ea1479ae2",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "8882235059c332e408d1349563711bf54350ec5cf00739fbace432c42040726c",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "8882235059c332e408d1349563711bf54350ec5cf00739fbace432c42040726c",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "d23146c8c64b30317c434781b9f8781ef52e951b83a657d3328fa06fa0ff7a89",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "d23146c8c64b30317c434781b9f8781ef52e951b83a657d3328fa06fa0ff7a89",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "90ced3e8fc5ae798dc34ef5644f9218c8dfa1e49b634e45b3aea453226a37a20",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "90ced3e8fc5ae798dc34ef5644f9218c8dfa1e49b634e45b3aea453226a37a20",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "6832871ef9451ea13b01a900ebbbdcdfd2f08594b07f7b9e1325b7dbfcfcdcc0",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "6832871ef9451ea13b01a900ebbbdcdfd2f08594b07f7b9e1325b7dbfcfcdcc0",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "551285b7a32cd6660f99d9a3f01c8d31e0699673eae57d016cbd571361c6a9b4",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "551285b7a32cd6660f99d9a3f01c8d31e0699673eae57d016cbd571361c6a9b4",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "2ca813f333335ca5fd69d6f7f5b5a3722de6a16521b1516e0e82d66cd2ac244e",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "2ca813f333335ca5fd69d6f7f5b5a3722de6a16521b1516e0e82d66cd2ac244e",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "3a0b3c0e1c123b59b76cee3e65e48efc320b9cd4ce32483f76252b7decd6f226",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "3a0b3c0e1c123b59b76cee3e65e48efc320b9cd4ce32483f76252b7decd6f226",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "3fa27035913ad4133f9dac29a9c353f59a7f05d63e583e526d10792c16a74092",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "3fa27035913ad4133f9dac29a9c353f59a7f05d63e583e526d10792c16a74092",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "a306701094bfaeff4ca32de55ae93b2fe5cc13f94caeb51d3f9bd5ffc7342655",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "a306701094bfaeff4ca32de55ae93b2fe5cc13f94caeb51d3f9bd5ffc7342655",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "627e0b51509f883448a03aec90f9084e2bd05d66d7ee02aae209b56f0da8251c",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "627e0b51509f883448a03aec90f9084e2bd05d66d7ee02aae209b56f0da8251c",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "45d2b7660a8a185619c0a8cfe7d1fb3f193223b8c1c1af9387dd491aaa1d2097",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "45d2b7660a8a185619c0a8cfe7d1fb3f193223b8c1c1af9387dd491aaa1d2097",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "43bb6c4ca788a19b4d53d0f5b5aebf036091e01636201a2446a30436ad7122a0",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "43bb6c4ca788a19b4d53d0f5b5aebf036091e01636201a2446a30436ad7122a0",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "fe2410b677caafe004898cc11f1c52c0ddf1485e80e372477b92c41f3bdd4e54",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "fe2410b677caafe004898cc11f1c52c0ddf1485e80e372477b92c41f3bdd4e54",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "3b4909898b9c141fcc243798c2432997f9f8a9f678190b03cce07c43289a06fc",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "3b4909898b9c141fcc243798c2432997f9f8a9f678190b03cce07c43289a06fc",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "8f28c94e2046953727533f8e132f1d1a90dd3581336b6d218296a80a08224f7b",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "8f28c94e2046953727533f8e132f1d1a90dd3581336b6d218296a80a08224f7b",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "3bb75a614599570592ab41854961df93d7a190128171985ec4d572ed2bd409a9",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "3bb75a614599570592ab41854961df93d7a190128171985ec4d572ed2bd409a9",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "9a0e580008262fac7f118485cfd574f2e43007f489bab9d0999f3136cf16f4bb",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "9a0e580008262fac7f118485cfd574f2e43007f489bab9d0999f3136cf16f4bb",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "c859199e9bf6d559e59c0f1444ee4ebfd7a92d62fabeb2a7007c1b6bb170f559",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "c859199e9bf6d559e59c0f1444ee4ebfd7a92d62fabeb2a7007c1b6bb170f559",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "0e85b2cb46a4888985094276b1aba3bb3203611110b70cff669ab59bb3affd6f",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "0e85b2cb46a4888985094276b1aba3bb3203611110b70cff669ab59bb3affd6f",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "bbf6087cbae2b5cde71cb2726071f3b87479447ef7ff165198170f5ea8aa08aa",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "bbf6087cbae2b5cde71cb2726071f3b87479447ef7ff165198170f5ea8aa08aa",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "e5914fcd0fdd9c46d22740a85c6b1f4d8c7c5db92fe3f21ee4ded6de7359ccec",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "e5914fcd0fdd9c46d22740a85c6b1f4d8c7c5db92fe3f21ee4ded6de7359ccec",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "6b66a27e6611e1015c1d24ec81d43b3c448f194d1dca845d21f5128a18e80bbe",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "6b66a27e6611e1015c1d24ec81d43b3c448f194d1dca845d21f5128a18e80bbe",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "440dce954d4a783a8504345ff2f769c619c1bcd95f81ca3a6e9e657de62896f4",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "440dce954d4a783a8504345ff2f769c619c1bcd95f81ca3a6e9e657de62896f4",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "a0cde4d8cf00b3842f130e6082d2a047e95075c1746e9740d424f62f51df74ee",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "a0cde4d8cf00b3842f130e6082d2a047e95075c1746e9740d424f62f51df74ee",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "dc07dac489ce1aa12d980ef5cf26498710214ebb8132be2f106533b807263e43",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "dc07dac489ce1aa12d980ef5cf26498710214ebb8132be2f106533b807263e43",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "5727f1d59943a922fe0e4d8a0d85a241c03a010bdba7f01e4a381ac4e529ade3",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "5727f1d59943a922fe0e4d8a0d85a241c03a010bdba7f01e4a381ac4e529ade3",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "88a6b4850d634eae92ad8cd6bf9987322c0e26e2903f6b71ddcf1efcc4146f09",
+        "relevance_policy": "bge-host-goal-cosine-v1",
+        "goal_unchanged": true
+      },
+      {
+        "question_sha256": "88a6b4850d634eae92ad8cd6bf9987322c0e26e2903f6b71ddcf1efcc4146f09",
+        "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+        "goal_unchanged": true
+      }
+    ],
+    "mismatches": [],
+    "not_a_runtime_replay": true
+  },
+  "original_failures_diagnostic_only": {
+    "reason": "Preserve original embedding goal policy when comparing only requirement versions; no historical result/score changes",
+    "rows": [
+      {
+        "case": "ex073",
+        "arm": "bge",
+        "collection_sha256": "7d988ccc1236fbc331ab97924bd881d471d2be2847e87ff9418a2d2de4e34dd4",
+        "run_id": "95a9ca93-e919-5ca5-ad41-05a2ab909ba7",
+        "old_goal": {
+          "protocol": "retrieval-task-v1",
+          "required_terms": [],
+          "minimum_sources": 1,
+          "question_sha256": "4472a8f560d3c630827bad23af5d6281ef2f5aab4bc3d92c2209cfd5b19a3ce6",
+          "relevance_policy": "bge-host-goal-cosine-v1",
+          "minimum_goal_score": 0.55,
+          "requirement_policy": "host-goal-requirements-v2",
+          "unsupported_requirements": true,
+          "business_conclusions_verified": false
+        },
+        "old_business_completion": {
+          "schema_version": "business-completion-1",
+          "status": "unavailable",
+          "required_goals": [
+            "documents"
+          ],
+          "verified_goals": [],
+          "missing_evidence": {
+            "documents": [
+              "matching_document_or_metric_evidence_missing",
+              "required_document_source_missing",
+              "document_fact_unverified:rule"
+            ]
+          },
+          "unconfirmed_claims": [],
+          "limited_results_visible": false
+        },
+        "original_inspector_verified": true,
+        "new_goal_diagnostic_only": {
+          "protocol": "retrieval-task-v1",
+          "requirement_policy": "host-goal-requirements-v3",
+          "requirement_class": "bounded_facts",
+          "relevance_policy": "bge-host-goal-cosine-v1",
+          "minimum_goal_score": 0.55,
+          "question_sha256": "4472a8f560d3c630827bad23af5d6281ef2f5aab4bc3d92c2209cfd5b19a3ce6",
+          "required_terms": [],
+          "minimum_sources": 1,
+          "unsupported_requirements": false,
+          "business_conclusions_verified": false
+        },
+        "not_a_rescore_or_runtime": true
+      },
+      {
+        "case": "ex073",
+        "arm": "qwen",
+        "collection_sha256": "33e55031e20d67b48539e74f71d2e521cb3180a11f75343c9a6c305dfc140116",
+        "run_id": "52a2596e-ac02-5873-8df4-6c5a3131c886",
+        "old_goal": {
+          "protocol": "retrieval-task-v1",
+          "required_terms": [],
+          "minimum_sources": 1,
+          "question_sha256": "4472a8f560d3c630827bad23af5d6281ef2f5aab4bc3d92c2209cfd5b19a3ce6",
+          "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+          "minimum_goal_score": 0.55,
+          "requirement_policy": "host-goal-requirements-v2",
+          "unsupported_requirements": true,
+          "business_conclusions_verified": false
+        },
+        "old_business_completion": {
+          "schema_version": "business-completion-1",
+          "status": "unavailable",
+          "required_goals": [
+            "documents"
+          ],
+          "verified_goals": [],
+          "missing_evidence": {
+            "documents": [
+              "matching_document_or_metric_evidence_missing",
+              "required_document_source_missing",
+              "document_fact_unverified:rule"
+            ]
+          },
+          "unconfirmed_claims": [],
+          "limited_results_visible": false
+        },
+        "original_inspector_verified": true,
+        "new_goal_diagnostic_only": {
+          "protocol": "retrieval-task-v1",
+          "requirement_policy": "host-goal-requirements-v3",
+          "requirement_class": "bounded_facts",
+          "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+          "minimum_goal_score": 0.55,
+          "question_sha256": "4472a8f560d3c630827bad23af5d6281ef2f5aab4bc3d92c2209cfd5b19a3ce6",
+          "required_terms": [],
+          "minimum_sources": 1,
+          "unsupported_requirements": false,
+          "business_conclusions_verified": false
+        },
+        "not_a_rescore_or_runtime": true
+      },
+      {
+        "case": "ex074",
+        "arm": "qwen",
+        "collection_sha256": "c895dc861a267c64bdb4f056bc1e34abb1eda78acefad548bebf04581e24cd7d",
+        "run_id": "7464c7d3-8d29-51cf-8fd8-e3f3fb50e3e4",
+        "old_goal": {
+          "protocol": "retrieval-task-v1",
+          "required_terms": [],
+          "minimum_sources": 1,
+          "question_sha256": "f1d6bd438c51a63d844cf01266ca70c1988cd752fe5e6b4cebd235a635c194f1",
+          "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+          "minimum_goal_score": 0.55,
+          "requirement_policy": "host-goal-requirements-v2",
+          "unsupported_requirements": false,
+          "business_conclusions_verified": false
+        },
+        "old_business_completion": {
+          "schema_version": "business-completion-1",
+          "status": "completed",
+          "required_goals": [
+            "documents"
+          ],
+          "verified_goals": [
+            "documents"
+          ],
+          "missing_evidence": {},
+          "unconfirmed_claims": [],
+          "limited_results_visible": true
+        },
+        "original_inspector_verified": true,
+        "new_goal_diagnostic_only": {
+          "protocol": "retrieval-task-v1",
+          "requirement_policy": "host-goal-requirements-v3",
+          "requirement_class": "exhaustive_collection",
+          "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+          "minimum_goal_score": 0.55,
+          "question_sha256": "f1d6bd438c51a63d844cf01266ca70c1988cd752fe5e6b4cebd235a635c194f1",
+          "required_terms": [],
+          "minimum_sources": 1,
+          "unsupported_requirements": true,
+          "business_conclusions_verified": false,
+          "unsupported_reason": "exhaustiveness_not_attested"
+        },
+        "not_a_rescore_or_runtime": true
+      }
+    ]
+  },
+  "original_unknown_final_verification": {
+    "run_id": "2ff34784-91d0-49f9-8b7c-c73dbf6f1f14",
+    "original_inspector_unknown": true,
+    "report_published": false,
+    "direct_original_runtime_code": "RECOVERY_UNCERTAIN",
+    "no_call_added": true,
+    "ledger_preserved": true,
+    "artifacts_preserved": true,
+    "model_transport": "original NoModel; no model allowed",
+    "prior_diagnostic_correction": "Inspector returns a structured unknown result, not an exception; prior unexpected_success label was diagnostic glue only"
+  },
+  "database_audit": {
+    "at": "2026-10-30T09:46:41.487241+00:00",
+    "database": "datapilot_test_host_goal_safety_v3_20261030",
+    "server_version_num": "170011",
+    "vector_version": "0.8.6",
+    "migration": "0008",
+    "counts": {
+      "runs": 60,
+      "ledger": 60,
+      "calls": 356,
+      "artifacts": 105,
+      "events": 1082
+    },
+    "calls": [
+      {
+        "kind": "model",
+        "status": "complete",
+        "n": 179
+      },
+      {
+        "kind": "tool",
+        "status": "complete",
+        "n": 170
+      },
+      {
+        "kind": "tool",
+        "status": "uncertain",
+        "n": 7
+      }
+    ],
+    "model_modes": [
+      {
+        "mode": "fake",
+        "n": 60
+      }
+    ],
+    "requirement_versions": [
+      {
+        "policy": "host-goal-requirements-v2",
+        "n": 8
+      },
+      {
+        "policy": "host-goal-requirements-v3",
+        "n": 52
+      }
+    ],
+    "p3": [
+      {
+        "table": "evidence",
+        "count": 19,
+        "body_hashes_valid": true
+      },
+      {
+        "table": "verification_runs",
+        "count": 19,
+        "body_hashes_valid": true
+      }
+    ],
+    "p3_verdicts": [
+      {
+        "verdict": "unavailable",
+        "n": 2
+      },
+      {
+        "verdict": "verified",
+        "n": 17
+      }
+    ],
+    "artifact_exports_validated": 105,
+    "paid_provider_calls": 0,
+    "uncertain_are_preserved_fault_injection_records": true,
+    "audit_correction": "Initial read-only audit used unqualified alembic_version; corrected to existing saas.alembic_version; no database changes"
+  },
+  "historical_integrity": {
+    "at": "2026-10-30T09:46:44.148940+00:00",
+    "unique_paths": 1872,
+    "sets": [
+      {
+        "seal": "artifacts/p7/qwen-business-pilot-v1/result-seal.json",
+        "sha256": "80c990763d283edd53aeeaff6ae665458b3a6c8296b9c755174855664819e62d",
+        "checked": 239,
+        "authorized_current_source_deltas_preserved_in_before": [],
+        "unexpected_mismatches": []
+      },
+      {
+        "seal": "artifacts/p7/qwen-lifecycle-v1/result-seal.json",
+        "sha256": "c8ff5a8d798470d349fe6fd0c1fca85f27a9e698cdbfcf9bc7270b48e2ac5e2b",
+        "checked": 181,
+        "authorized_current_source_deltas_preserved_in_before": [],
+        "unexpected_mismatches": []
+      },
+      {
+        "seal": "artifacts/p7/embedding-ab-v1/result-seal.json",
+        "sha256": "c4e4cf1fd3706d2d4bab5eb8cca2a85246f8237338b592173912c334f9b803c9",
+        "checked": 77,
+        "authorized_current_source_deltas_preserved_in_before": [],
+        "unexpected_mismatches": []
+      },
+      {
+        "seal": "artifacts/p7/three-policy-smoke-v1/live-20261029/result-seal.json",
+        "sha256": "d6f86460a27ac4781cf2917afee28d4a79dda74f5f750dbb48aeafebe8ef17e7",
+        "checked": 136,
+        "authorized_current_source_deltas_preserved_in_before": [],
+        "unexpected_mismatches": []
+      },
+      {
+        "seal": "artifacts/p7/three-policy-scorer-v2/result-seal-final.json",
+        "sha256": "8b63aca91235bee9dc9fb1506637c985a8b59e88ec7324f2e203cdc29e3d2f56",
+        "checked": 29,
+        "authorized_current_source_deltas_preserved_in_before": [],
+        "unexpected_mismatches": []
+      },
+      {
+        "seal": "artifacts/p7/host-goal-repair-v2/result-seal.json",
+        "sha256": "6782c761253ba6dd898e8f53be8fe455f6e0a60d47b1cd87afdb63a65739f2eb",
+        "checked": 259,
+        "authorized_current_source_deltas_preserved_in_before": [
+          "src/datapilot/orchestration/rag_completion.py",
+          "tests/host_goal_probe.py",
+          "tests/test_host_goal_postgres.py",
+          "tests/test_host_goal_requirements.py"
+        ],
+        "unexpected_mismatches": []
+      },
+      {
+        "seal": "artifacts/p7/qwen-expanded-v1/result-seal.json",
+        "sha256": "062f8d38e9a8e77d22f3be2a3ab3b59a78f0a669dc6cd3b47a9fedff4bf901a1",
+        "checked": 951,
+        "authorized_current_source_deltas_preserved_in_before": [],
+        "unexpected_mismatches": []
+      }
+    ],
+    "old_seal_bytes_unchanged": true,
+    "old_database_reexecuted": false
+  },
+  "gates": {
+    "A_safety": "passed within registered/final tested boundary",
+    "B_bounded_usability": "passed ordinary ownership/confirmed facts/explicit negative breadth, subject to original evidence checks",
+    "C_identity_compatibility": "passed current v3 replay and v2 RECOVERY_IDENTITY; no historical migration"
+  },
+  "historical_phase2c2": {
+    "planned": 200,
+    "observed": 75,
+    "not_run": 125,
+    "actual_runtimes": 73,
+    "status": "BLOCKED unchanged",
+    "rescored_or_reexecuted": false,
+    "seal_sha256": "062f8d38e9a8e77d22f3be2a3ab3b59a78f0a669dc6cd3b47a9fedff4bf901a1"
+  },
+  "final_answers": {
+    "ex073_negation_fixed_in_new_tests": true,
+    "ex074_exhaustiveness_denied_in_new_tests": true,
+    "authentic_citation_not_goal_sufficiency": true,
+    "v2_v3_identity_isolated": true,
+    "new_post_repair_false_completed_observed": 0,
+    "independent_nonpaid_validation_ready": true,
+    "paid_live_authorized": false,
+    "production_switch_ready": false
+  },
+  "not_run": [
+    "Full pytest",
+    "Remote CI",
+    "DeepSeek/other paid provider",
+    "New independent quality A/B or continuation of 125 old observations",
+    "Linux/Docker/GPU performance re-benchmark",
+    "Unbounded corpus enumeration/proof engine",
+    "Broad multilingual/Unicode/complex nested scope blind validation"
+  ],
+  "remaining_risks": [
+    "Finite Chinese/English host grammar is not complete natural-language understanding; novel expressions need independent validation",
+    "Old RAG runs cannot resume/re-publish under v3 when Goal identity differs; no compatibility fallback or migration",
+    "Synthetic reviewed facts and scripted decisions are not autonomous real-model quality",
+    "Version/time/source count limitations remain independently fail-closed; bounded classification is not permission or completion"
+  ],
+  "failure_history": [
+    "Old v2 behavior 24 failed / 36 passed before repair",
+    "First v3 6 failed / 177 passed; confirmed fact exclusion corrected without changing Gold",
+    "Six additional negation/source-confirmation controls failed then passed",
+    "Content guard audit 3 failed / 1 passed; original v2 vocabulary restored; registered Gold unchanged",
+    "Expected hard exit 91 returned empty stdout; test parser fixed without suppressing unexpected exit codes",
+    "NUMERIC 637.4500000000000000 vs 637.45 compared as strings in new test; use exact Decimal, P3 unchanged",
+    "One command named a nonexistent test_report_scope.py; no tests ran",
+    "One-off fault audit CLI refused RECOVERY_IDENTITY; no bypass; original bound Settings+NoModel later RECOVERY_UNCERTAIN, no calls/budget added",
+    "Inspector structured unknown result was initially mislabeled by audit glue; retained and corrected in original-unknown-final-verification.json",
+    "Read-only audit initially used unqualified version table; corrected to saas.alembic_version, no database changes"
+  ],
+  "next_validation_plan": "Separately authorize new preregistered Dev/sealed validation of bounded/exhaustive/ambiguous, bilingual/nested/Unicode and SQL+RAG; freeze v3 source+definitions before observing; never continue stopped Phase2C2 or tune against its results",
+  "boundaries": {
+    "paid_requests": 0,
+    "default_bge_changed": false,
+    "thresholds_or_embedding_changed": false,
+    "p3_or_report_or_durable_core_changed": false,
+    "old_databases_written": false,
+    "old_gold_scorer_seals_changed": false,
+    "commit_push_deploy": false,
+    "gate3_started": false
+  },
+  "artifact_root": "artifacts/p7/host-goal-safety-v3",
+  "result_seal": "artifacts/p7/host-goal-safety-v3/result-seal.json",
+  "executed_commands": {
+    "unit-accept-py311": ".venv/Scripts/python.exe -m pytest tests/test_host_goal_safety_v3.py tests/test_host_goal_requirements.py tests/test_rag_completion.py tests/test_cross_source_report.py tests/test_report_causal_scope.py tests/test_original_query_policy.py tests/test_partial_evidence_report.py tests/test_citation_policy.py tests/test_qwen_migration.py tests/test_context_engineering.py -q -p no:cacheprovider --junitxml=artifacts/p7/host-goal-safety-v3/unit-accept-py311.xml",
+    "unit-accept-py313": ".venv-313/Scripts/python.exe -m pytest tests/test_host_goal_safety_v3.py tests/test_host_goal_requirements.py tests/test_rag_completion.py tests/test_cross_source_report.py tests/test_report_causal_scope.py tests/test_original_query_policy.py tests/test_partial_evidence_report.py tests/test_citation_policy.py tests/test_qwen_migration.py tests/test_context_engineering.py -q -p no:cacheprovider --junitxml=artifacts/p7/host-goal-safety-v3/unit-accept-py313.xml",
+    "safety-pg311": ".venv/Scripts/python.exe artifacts/p7/host-goal-safety-v3/pytest_run.py safety-pg311 tests/test_host_goal_safety_postgres.py --maxfail=1",
+    "safety-pg311-r2": ".venv/Scripts/python.exe artifacts/p7/host-goal-safety-v3/pytest_run.py safety-pg311-r2 tests/test_host_goal_safety_postgres.py -k 'qwen or unknown_tool_outcome or numeric_claims' --maxfail=1",
+    "safety-pg311-r3": ".venv/Scripts/python.exe artifacts/p7/host-goal-safety-v3/pytest_run.py safety-pg311-r3 tests/test_host_goal_safety_postgres.py -k 'qwen or numeric_claims' --maxfail=1",
+    "safety-pg313": ".venv-313/Scripts/python.exe artifacts/p7/host-goal-safety-v3/pytest_run.py safety-pg313 tests/test_host_goal_safety_postgres.py -k 'cross_process or unknown_tool_outcome or numeric_claims or negative or exhaustive' --maxfail=1",
+    "final-pg311": ".venv/Scripts/python.exe artifacts/p7/host-goal-safety-v3/pytest_run.py final-pg311 tests/test_host_goal_safety_postgres.py -k 'content or cross_process' --maxfail=1",
+    "final-pg313": ".venv-313/Scripts/python.exe artifacts/p7/host-goal-safety-v3/pytest_run.py final-pg313 tests/test_host_goal_safety_postgres.py -k 'content or cross_process' --maxfail=1",
+    "compatibility-pg311": ".venv/Scripts/python.exe artifacts/p7/host-goal-safety-v3/pytest_run.py compatibility-pg311 tests/test_qwen_business_pilot.py::test_existing_sql_only_control_without_changing_old_artifacts tests/test_citation_policy_postgres.py::test_real_policy_report_terminal_reuse_preserves_citations_p3_and_budget tests/test_citation_policy_postgres.py::test_real_supplement_only_and_forged_quotes_cannot_fill_required_sources tests/test_original_query_postgres.py::test_issued_unknown_search_cannot_be_replayed_under_original_query_policy tests/test_partial_evidence_postgres.py::test_partial_refs_restore_across_node_checkpoint --maxfail=1",
+    "compatibility-pg313": ".venv-313/Scripts/python.exe artifacts/p7/host-goal-safety-v3/pytest_run.py compatibility-pg313 tests/test_qwen_business_pilot.py::test_existing_sql_only_control_without_changing_old_artifacts tests/test_citation_policy_postgres.py::test_real_policy_report_terminal_reuse_preserves_citations_p3_and_budget tests/test_citation_policy_postgres.py::test_real_supplement_only_and_forged_quotes_cannot_fill_required_sources tests/test_original_query_postgres.py::test_issued_unknown_search_cannot_be_replayed_under_original_query_policy tests/test_partial_evidence_postgres.py::test_partial_refs_restore_across_node_checkpoint tests/test_host_goal_safety_postgres.py::test_report_independently_denies_exhaustiveness_despite_real_qualified_facts --maxfail=1",
+    "report-boundary-pg311": ".venv/Scripts/python.exe artifacts/p7/host-goal-safety-v3/pytest_run.py report-boundary-pg311 tests/test_host_goal_safety_postgres.py::test_report_independently_denies_exhaustiveness_despite_real_qualified_facts --maxfail=1"
+  }
+}

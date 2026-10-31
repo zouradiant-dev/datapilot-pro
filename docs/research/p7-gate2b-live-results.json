@@ -1,0 +1,533 @@
+{
+  "schema_version": "p7-gate2b-live-results-1",
+  "checked_at": "2026-10-25T07:41:27.532696+00:00",
+  "local_checked_at": "2026-10-25T15:41:27.532696+08:00",
+  "status": "stopped_budget_limit_partial_evaluation",
+  "gate2b_full_live_accepted": false,
+  "planned_cases": 60,
+  "observed_cases": 31,
+  "registered_runtime_runs": 28,
+  "host_rejections_observed": 3,
+  "strict_correct": 25,
+  "strict_incorrect": 6,
+  "not_run": 29,
+  "strict_correct_over_observed": 0.8064516129032258,
+  "correct_over_full_plan_coverage_lower_bound": 0.4166666666666667,
+  "interpretation": "Stopped ordered prefix; 25/60 is conservative plan coverage, not an unbiased full-corpus success estimate. SQL+RAG has no observations and no success rate.",
+  "lanes": [
+    {
+      "lane": "sql_only",
+      "planned": 20,
+      "observed": 20,
+      "not_run": 0,
+      "strict_correct": 18,
+      "strict_correct_over_planned": 0.9,
+      "strict_correct_over_observed": 0.9,
+      "reported_completed": 12,
+      "false_completed": 0,
+      "false_completion_rate_of_completed": 0.0,
+      "observed_expected_answerable": 12,
+      "false_refusals": 0,
+      "false_refusal_rate_of_expected_answerable": 0.0,
+      "published_metric_claims": 12,
+      "independent_gold_correct_published_metrics": 12,
+      "numeric_evidence_accuracy": 1.0,
+      "published_unique_citations": 0,
+      "gold_relevant_unique_citations": 0,
+      "gold_citation_relevance_accuracy": null,
+      "host_end_to_end_wall_ms": {
+        "n": 17,
+        "p50": 33160.48336029053,
+        "p95": 36884.05656814575
+      }
+    },
+    {
+      "lane": "rag_only",
+      "planned": 20,
+      "observed": 11,
+      "not_run": 9,
+      "strict_correct": 7,
+      "strict_correct_over_planned": 0.35,
+      "strict_correct_over_observed": 0.6363636363636364,
+      "reported_completed": 7,
+      "false_completed": 0,
+      "false_completion_rate_of_completed": 0.0,
+      "observed_expected_answerable": 10,
+      "false_refusals": 1,
+      "false_refusal_rate_of_expected_answerable": 0.1,
+      "published_metric_claims": 0,
+      "independent_gold_correct_published_metrics": 0,
+      "numeric_evidence_accuracy": null,
+      "published_unique_citations": 10,
+      "gold_relevant_unique_citations": 10,
+      "gold_citation_relevance_accuracy": 1.0,
+      "host_end_to_end_wall_ms": {
+        "n": 11,
+        "p50": 41223.83785247803,
+        "p95": 42635.16116142273
+      }
+    },
+    {
+      "lane": "sql_rag",
+      "planned": 20,
+      "observed": 0,
+      "not_run": 20,
+      "strict_correct": 0,
+      "strict_correct_over_planned": null,
+      "strict_correct_over_observed": null,
+      "reported_completed": 0,
+      "false_completed": 0,
+      "false_completion_rate_of_completed": null,
+      "observed_expected_answerable": 0,
+      "false_refusals": 0,
+      "false_refusal_rate_of_expected_answerable": null,
+      "published_metric_claims": 0,
+      "independent_gold_correct_published_metrics": 0,
+      "numeric_evidence_accuracy": null,
+      "published_unique_citations": 0,
+      "gold_relevant_unique_citations": 0,
+      "gold_citation_relevance_accuracy": null,
+      "host_end_to_end_wall_ms": {
+        "n": 0,
+        "p50": null,
+        "p95": null
+      }
+    }
+  ],
+  "provider_usage": {
+    "usage_kind": "provider_reported",
+    "model_calls": 61,
+    "unresolved_dispatches": 0,
+    "model_call_count_complete": true,
+    "known_tokens": {
+      "input_tokens": 71242,
+      "output_tokens": 6655,
+      "cache_read": 36992,
+      "cache_miss": 34250
+    },
+    "unknown_usage_calls": 0,
+    "provider_cache_complete": true,
+    "attempt_latency_ms": {
+      "n": 61,
+      "p50": 1201.4803060010308,
+      "p95": 1556.8317029992613
+    },
+    "estimated_usd": "0.009241476",
+    "actual_bill_usd": null,
+    "price_snapshot_hash": "d4cbe85938307a408e1882e1ce9fad06261e51c71b1b4b8d49d9bf5b50cb4db6"
+  },
+  "billing": {
+    "price_snapshot_sha256": "021b487bb5aa69f95f34e5821ae837f6f8716d1f4b41f89c90769b75215107f0",
+    "known_complete_call_estimate_usd": "0.009241476",
+    "calls_with_unknown_price_inputs": 0,
+    "estimated_total_usd": "0.009241476",
+    "actual_provider_bill_usd": null,
+    "fee_kind": "provider token-based off-peak estimate, not invoice"
+  },
+  "latency": {
+    "api_acceptance_latency": "not_measured_CLI_runner_not_HTTP_benchmark",
+    "model_attempt_ms": {
+      "n": 61,
+      "p50": 1201.4803060010308,
+      "p95": 1556.8317029992613
+    },
+    "host_start_to_signed_collection_ms": {
+      "n": 28,
+      "p50": 33436.062812805176,
+      "p95": 41955.252170562744,
+      "includes": "container/bootstrap, trusted host review, original Runtime, P3/RAG and Collector"
+    }
+  },
+  "frozen_scoring_quality": {
+    "numeric": {
+      "planned_goals": 27,
+      "observed_goals": 12,
+      "correct": 12,
+      "observed_rate": 1.0
+    },
+    "published_required_fact_coverage": {
+      "covered": 15,
+      "required_observed": 19
+    },
+    "rag": {
+      "planned_runtime_tasks": 37,
+      "observed_tasks": 11,
+      "worker_retrieval_complete": 0,
+      "strict_business_correct": 7,
+      "per_level_macro_per_query": {
+        "chunk": {
+          "queries": 16,
+          "recall_at_k": 0.65625,
+          "precision_at_k": 0.2916666666666667,
+          "mrr_at_k": 0.6875
+        },
+        "document": {
+          "queries": 16,
+          "recall_at_k": 0.65625,
+          "precision_at_k": 0.2916666666666667,
+          "mrr_at_k": 0.6875
+        },
+        "source": {
+          "queries": 16,
+          "recall_at_k": 0.65625,
+          "precision_at_k": 0.2916666666666667,
+          "mrr_at_k": 0.6875
+        }
+      }
+    },
+    "failures": {
+      "business_or_evidence_mismatch": 6
+    },
+    "status_counts": {
+      "unavailable": 7,
+      "completed": 19,
+      "blocked": 4,
+      "partial": 1
+    },
+    "business_completion_not_equated_to_retrieval": true
+  },
+  "rag_raw_contract_diagnostic": {
+    "observed_rag_tasks": 11,
+    "raw_retrieval_task_complete": 8,
+    "frozen_aggregate_retrieval_complete": 0,
+    "strict_scores_modified": false,
+    "meaning": "Version-prefixed result-key lookup inconsistency; diagnostic only, no retrospective score correction"
+  },
+  "stop": {
+    "case_id": "bh2-031",
+    "run_id": "8af538a1-9aa4-5212-a56b-f78207b6d1cc",
+    "reason": "BUDGET_EXCEEDED",
+    "known_model_calls": 4,
+    "known_provider_tokens": 6482,
+    "root_limit_calls": 8,
+    "root_limit_tokens": 18000,
+    "last_input_bytes": 11769,
+    "next_estimated_input_tokens": 11897,
+    "next_output_reservation": 1200,
+    "next_total_reservation": 13097,
+    "used_plus_requested_reservation": 19579,
+    "pending_reservations": 0,
+    "next_provider_request_issued": false,
+    "unknown_calls": 0,
+    "policy": "Frozen UTF8-bytes-plus-128 safety estimation; a reservation failure is not provider overbilling or global quota exhaustion"
+  },
+  "failed_cases": [
+    {
+      "case_id": "bh2-011",
+      "lane": "sql_only",
+      "run_id": "600a0729-1e89-58b2-8ec5-e4cf4b47cbfe",
+      "strict_correct": false,
+      "expected_business_completion": "unavailable",
+      "actual_business_completion": "unavailable",
+      "execution_stage": "runtime",
+      "failure_class": "business_or_evidence_mismatch",
+      "task_failures": [
+        {
+          "task_id": "1:metric_1",
+          "status": "unavailable",
+          "error": {
+            "code": "METRIC_EVIDENCE_UNAVAILABLE",
+            "message": "P3 did not verify this metric goal",
+            "retryable": false,
+            "category": "tool"
+          },
+          "missing_requirements": null,
+          "rag_completion": null
+        }
+      ],
+      "unconfirmed_claims": [],
+      "numeric": [
+        {
+          "goal_id": "metric_1",
+          "correct": true,
+          "expected": "unavailable"
+        }
+      ],
+      "required_fact_coverage": {
+        "covered": 0,
+        "required": 0
+      },
+      "host_total_wall_ms": 32672.27268218994,
+      "collection_sha256": "3d47b45503ace325c13aae906d2c95d4e93f10b75ed5101f849b9467464507f4"
+    },
+    {
+      "case_id": "bh2-017",
+      "lane": "sql_only",
+      "run_id": "b1da9885-5d84-58b9-b4d0-02ec989c8424",
+      "strict_correct": false,
+      "expected_business_completion": "unavailable",
+      "actual_business_completion": "unavailable",
+      "execution_stage": "runtime",
+      "failure_class": "business_or_evidence_mismatch",
+      "task_failures": [
+        {
+          "task_id": "1:metric_1",
+          "status": "unavailable",
+          "error": {
+            "code": "METRIC_EVIDENCE_UNAVAILABLE",
+            "message": "P3 did not verify this metric goal",
+            "retryable": false,
+            "category": "tool"
+          },
+          "missing_requirements": null,
+          "rag_completion": null
+        }
+      ],
+      "unconfirmed_claims": [],
+      "numeric": [
+        {
+          "goal_id": "metric_1",
+          "correct": true,
+          "expected": "unavailable"
+        }
+      ],
+      "required_fact_coverage": {
+        "covered": 0,
+        "required": 0
+      },
+      "host_total_wall_ms": 33972.75638580322,
+      "collection_sha256": "d0329ae2242d4d807e6a9f00bf2f6ff7896feb103978b0213d0e44e5702dd98b"
+    },
+    {
+      "case_id": "bh2-024",
+      "lane": "rag_only",
+      "run_id": "9511ac73-3c73-5fe8-94d7-a7748d63eae1",
+      "strict_correct": false,
+      "expected_business_completion": "completed",
+      "actual_business_completion": "partial",
+      "execution_stage": "runtime",
+      "failure_class": "business_or_evidence_mismatch",
+      "task_failures": [],
+      "unconfirmed_claims": [
+        "causal_conclusion_not_verified"
+      ],
+      "numeric": [],
+      "required_fact_coverage": {
+        "covered": 3,
+        "required": 3
+      },
+      "host_total_wall_ms": 41671.86379432678,
+      "collection_sha256": "e2ad6bf581901f2245938a29a3df0fb5a4f0929df79e5af635b336552100aee5"
+    },
+    {
+      "case_id": "bh2-026",
+      "lane": "rag_only",
+      "run_id": "513339be-c271-5b5b-868e-ffe63a9987cd",
+      "strict_correct": false,
+      "expected_business_completion": "completed",
+      "actual_business_completion": "unavailable",
+      "execution_stage": "runtime",
+      "failure_class": "business_or_evidence_mismatch",
+      "task_failures": [
+        {
+          "task_id": "1:documents",
+          "status": "unavailable",
+          "error": {
+            "code": "NO_RELEVANT_DOCUMENTS",
+            "message": "No retrieved evidence supports this task",
+            "retryable": false,
+            "category": "tool"
+          },
+          "missing_requirements": null,
+          "rag_completion": {
+            "protocol": "rag-submit-v1",
+            "call_id": "call_00_ojEK8NQGchISTLJUPSNr7016",
+            "submission": {
+              "artifact_ids": [
+                "6b97e8c704b4b722b74499c96147e88029aa89bdbfc22f419e32b3d6df61e48f",
+                "f67f10a34c032c78d888373cade9b6bfa3707e8a91e85311ab59d869bf1c018d"
+              ],
+              "outcome": "unavailable"
+            },
+            "verdict": "empty",
+            "goal_sha256": "b5276a8aa6ff7bdf57b9ef42d93f638315bb7a7a6f75c0e2b1dd47d00f4cb8df",
+            "model_response_sha256": "8ce9ad864a8650f3115dc1fee13c1bf53a4a478ff9d6d6d940372766bd7cbf3d",
+            "relevant_chunk_ids": [],
+            "business_conclusions_verified": false
+          }
+        }
+      ],
+      "unconfirmed_claims": [],
+      "numeric": [],
+      "required_fact_coverage": {
+        "covered": 0,
+        "required": 2
+      },
+      "host_total_wall_ms": 40909.60931777954,
+      "collection_sha256": "c6d5399ada720f903dd8f6ba31763c96b64240b61419f019ecdc04d12cd18163"
+    },
+    {
+      "case_id": "bh2-030",
+      "lane": "rag_only",
+      "run_id": "70850cae-7897-50ce-b2e7-7e05c93cd54b",
+      "strict_correct": false,
+      "expected_business_completion": "unavailable",
+      "actual_business_completion": "unavailable",
+      "execution_stage": "runtime",
+      "failure_class": "business_or_evidence_mismatch",
+      "task_failures": [
+        {
+          "task_id": "1:documents",
+          "status": "unavailable",
+          "error": {
+            "code": "NO_RELEVANT_DOCUMENTS",
+            "message": "No retrieved evidence supports this task",
+            "retryable": false,
+            "category": "tool"
+          },
+          "missing_requirements": null,
+          "rag_completion": {
+            "protocol": "rag-submit-v1",
+            "call_id": "call_00_niji5DkiXdYixaw5I0C12281",
+            "submission": {
+              "artifact_ids": [
+                "b363ad455b302f5dee159e53d6ca0598094a1be6a0f60c00bccdb70b7e47f571"
+              ],
+              "outcome": "unavailable"
+            },
+            "verdict": "empty",
+            "goal_sha256": "3817236eb4d6669d2eb493748547d3662aaced7420ffc2824628341fbd38bdcf",
+            "model_response_sha256": "744d43df4365486016b279de1943b60a742e794ff07160d35829d4a5a811220c",
+            "relevant_chunk_ids": [],
+            "business_conclusions_verified": false
+          }
+        }
+      ],
+      "unconfirmed_claims": [
+        "causal_conclusion_not_verified"
+      ],
+      "numeric": [],
+      "required_fact_coverage": {
+        "covered": 0,
+        "required": 0
+      },
+      "host_total_wall_ms": 39494.24481391907,
+      "collection_sha256": "130f06206bb468872f8cac684deff83127297bb60d4fc24606f43a7abe7f3db0"
+    },
+    {
+      "case_id": "bh2-031",
+      "lane": "rag_only",
+      "run_id": "8af538a1-9aa4-5212-a56b-f78207b6d1cc",
+      "strict_correct": false,
+      "expected_business_completion": "completed",
+      "actual_business_completion": "blocked",
+      "execution_stage": "runtime",
+      "failure_class": "business_or_evidence_mismatch",
+      "task_failures": [
+        {
+          "task_id": "1:documents",
+          "status": "failed",
+          "error": {
+            "code": "BUDGET_EXCEEDED",
+            "message": "Parent or child model budget exhausted",
+            "retryable": false,
+            "category": "budget"
+          },
+          "missing_requirements": null,
+          "rag_completion": null
+        }
+      ],
+      "unconfirmed_claims": [],
+      "numeric": [],
+      "required_fact_coverage": {
+        "covered": 0,
+        "required": 2
+      },
+      "host_total_wall_ms": 38509.50026512146,
+      "collection_sha256": "e038673399d493a50e925d7b7154da994d9f340a2fd336f7f19511ba38f2421d"
+    }
+  ],
+  "not_run_case_ids": [
+    "bh2-032",
+    "bh2-033",
+    "bh2-034",
+    "bh2-035",
+    "bh2-036",
+    "bh2-037",
+    "bh2-038",
+    "bh2-039",
+    "bh2-040",
+    "bh2-041",
+    "bh2-042",
+    "bh2-043",
+    "bh2-044",
+    "bh2-045",
+    "bh2-046",
+    "bh2-047",
+    "bh2-048",
+    "bh2-049",
+    "bh2-050",
+    "bh2-051",
+    "bh2-052",
+    "bh2-053",
+    "bh2-054",
+    "bh2-055",
+    "bh2-056",
+    "bh2-057",
+    "bh2-058",
+    "bh2-059",
+    "bh2-060"
+  ],
+  "ledger_global_audit": {
+    "registered_runs": 28,
+    "model_calls": 61,
+    "known_provider_tokens": 77897,
+    "conservative_budget_tokens": 77897,
+    "model_statuses": {
+      "complete": 61
+    },
+    "call_payload_hashes_valid": true,
+    "ledger_hashes_and_parent_child_shapes_valid": true,
+    "completed_settlements_match": true,
+    "within_authorized_global_limits": true
+  },
+  "p3_readback": {
+    "references": 17,
+    "hashes_and_verdicts_unchanged": true
+  },
+  "provider_profile": {
+    "requested": "deepseek-flash",
+    "responses": {
+      "deepseek-flash": 61
+    },
+    "thinking": "disabled",
+    "max_output_tokens": 1200,
+    "sdk_retries": 0,
+    "concurrent_runs": 1
+  },
+  "environment": {
+    "host_platform": "Windows-10-10.0.26100-SP0",
+    "host_python": "3.11.16",
+    "host_cpu_count": 32,
+    "candidate_image": "datapilot-pro-demo:local",
+    "postgres": "Existing guarded datapilot_p7b PG17+pgvector on 55440; no re-init, seed, grants or volume deletion",
+    "llm_boundary": "Live Planner/RAG decisions, deterministic original P3 numeric recipes/Verifier/Report; not a Chat-first intent/UI benchmark"
+  },
+  "implementation_freeze_sha256": "0094ab595c62b2fadef192728399300855754a97455b19a35d4bb24ffc0ed18f",
+  "permit_sha256": "93ec7474b5c4ebf114bfd6100bff5194970e7e3727b4e0039ae9d2b105b238b1",
+  "source_frozen_files_unchanged": 152,
+  "data_gold_seals_unchanged": true,
+  "human_control": {
+    "explicit_live_authorization_events": 1,
+    "review_starts_with_zero_model_calls": 28,
+    "scopes_approved_by_original_host_driver": "only exact frozen permit scopes"
+  },
+  "candidate_tuning": false,
+  "automatic_reruns": 0,
+  "resume_performed": false,
+  "new_ci_or_full_regression": "not_run_no_code_changes",
+  "gate3": "not_run",
+  "commit_push": "not_run",
+  "remaining_issues": [
+    "Original per-Run reservation rejected bh2-031, ordered campaign halted; 29 tasks not dispatched",
+    "Frozen RAG aggregate uses unprefixed result-key lookup; original score preserved and interpretability limited",
+    "Detailed refusal codes and completion-status mismatches remain strict failures; no aliases/Gold edits added"
+  ],
+  "provenance_paths": {
+    "core_scoring": "artifacts/p7/gate2b-v2/private/campaign-results/business-v2-958ee94411d6a6b4/summary.json",
+    "ledger": "artifacts/p7/gate2b-live/private-ledger-export.json",
+    "p3": "artifacts/p7/gate2b-live/private-p3-readback.json",
+    "reports": "artifacts/p7/gate2b-live/reports/",
+    "per_case": "artifacts/p7/gate2b-live/case-results.jsonl"
+  }
+}

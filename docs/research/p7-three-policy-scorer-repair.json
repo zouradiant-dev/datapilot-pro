@@ -1,0 +1,439 @@
+{
+  "schema_version": "p7-three-policy-scorer-repair-2",
+  "recorded_at": "2026-10-29T08:50:45.518852+00:00",
+  "status": "repaired_offline_verified",
+  "authorization": "Human selected 修复 Scorer and requested 进行修复; only scorer repair and offline re-evaluation",
+  "parent_implementation_manifest_sha256": "c46f092849e2fdd98f1220244641a1b8a43942c8b36c34429913cd7b2d6a79ce",
+  "scorer_only_freeze_sha256": "4570601cf8c8be452d5e6cadcf5e8b9c9e7f00bf11b489e84dc9a54079af0a9f",
+  "old_scorer_sha256": "3c8f4a0b6c305c23130950cd79cc6c2de6401738985cb33519766b3ac65cca3d",
+  "new_scorer_sha256": "c5b178d5011847f96260b3344cc763a36275cbed0d88605e5d294eb8bc6cdb7d",
+  "new_tests_sha256": "6a9f31423285eb6d73a47f6040d9bc15e3120750d21148796e503cb5d07d855e",
+  "offline_only": true,
+  "live_authorized": false,
+  "working_live_freeze_matches_old_manifest": false,
+  "change": "Guard the existing verdict projection against a validated nullable RAG completion receipt; no change to scoring thresholds or verification",
+  "files": {
+    "modified": [
+      "scripts/p7_policy_smoke.py"
+    ],
+    "added": [
+      "tests/test_policy_smoke_receipts.py",
+      "docs/p7-three-policy-scorer-repair.md",
+      "docs/research/p7-three-policy-scorer-repair.json"
+    ]
+  },
+  "before": {
+    "python311": {
+      "failed": 6,
+      "passed": 10
+    },
+    "real_original_score_reproduced": 6,
+    "original_type_error_reproduced": 1
+  },
+  "after": {
+    "python311": {
+      "passed": 124,
+      "failed": 0,
+      "integration_deselected": 1
+    },
+    "python313": {
+      "passed": 124,
+      "failed": 0,
+      "integration_deselected": 1
+    },
+    "new_tests": 16
+  },
+  "offline_comparison": {
+    "cases": [
+      {
+        "case_id": "tps-01",
+        "changed": false,
+        "v1": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "completed",
+            "case_id": "tps-01",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "completed",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": false,
+            "model_calls": 1,
+            "numeric_correct": true,
+            "original_first_query": null,
+            "rag_receipt_verdict": null,
+            "rag_worker_status": null,
+            "strict_correct": true,
+            "supplements_correct": true,
+            "tokens": 565
+          },
+          "status": "scored"
+        },
+        "v2": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "completed",
+            "case_id": "tps-01",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "completed",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": false,
+            "model_calls": 1,
+            "numeric_correct": true,
+            "original_first_query": null,
+            "rag_receipt_verdict": null,
+            "rag_worker_status": null,
+            "strict_correct": true,
+            "supplements_correct": true,
+            "tokens": 565
+          },
+          "status": "scored"
+        }
+      },
+      {
+        "case_id": "tps-02",
+        "changed": false,
+        "v1": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "completed",
+            "case_id": "tps-02",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "completed",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": false,
+            "model_calls": 4,
+            "numeric_correct": null,
+            "original_first_query": true,
+            "rag_receipt_verdict": "semantic_retrieval",
+            "rag_worker_status": "succeeded",
+            "strict_correct": true,
+            "supplements_correct": true,
+            "tokens": 7043
+          },
+          "status": "scored"
+        },
+        "v2": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "completed",
+            "case_id": "tps-02",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "completed",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": false,
+            "model_calls": 4,
+            "numeric_correct": null,
+            "original_first_query": true,
+            "rag_receipt_verdict": "semantic_retrieval",
+            "rag_worker_status": "succeeded",
+            "strict_correct": true,
+            "supplements_correct": true,
+            "tokens": 7043
+          },
+          "status": "scored"
+        }
+      },
+      {
+        "case_id": "tps-03",
+        "changed": false,
+        "v1": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "partial",
+            "case_id": "tps-03",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "partial",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": false,
+            "model_calls": 4,
+            "numeric_correct": null,
+            "original_first_query": true,
+            "rag_receipt_verdict": "semantic_retrieval",
+            "rag_worker_status": "succeeded",
+            "strict_correct": true,
+            "supplements_correct": true,
+            "tokens": 6038
+          },
+          "status": "scored"
+        },
+        "v2": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "partial",
+            "case_id": "tps-03",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "partial",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": false,
+            "model_calls": 4,
+            "numeric_correct": null,
+            "original_first_query": true,
+            "rag_receipt_verdict": "semantic_retrieval",
+            "rag_worker_status": "succeeded",
+            "strict_correct": true,
+            "supplements_correct": true,
+            "tokens": 6038
+          },
+          "status": "scored"
+        }
+      },
+      {
+        "case_id": "tps-04",
+        "changed": false,
+        "v1": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "partial",
+            "case_id": "tps-04",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "partial",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": false,
+            "model_calls": 4,
+            "numeric_correct": true,
+            "original_first_query": true,
+            "rag_receipt_verdict": "semantic_retrieval",
+            "rag_worker_status": "succeeded",
+            "strict_correct": true,
+            "supplements_correct": true,
+            "tokens": 6158
+          },
+          "status": "scored"
+        },
+        "v2": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "partial",
+            "case_id": "tps-04",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "partial",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": false,
+            "model_calls": 4,
+            "numeric_correct": true,
+            "original_first_query": true,
+            "rag_receipt_verdict": "semantic_retrieval",
+            "rag_worker_status": "succeeded",
+            "strict_correct": true,
+            "supplements_correct": true,
+            "tokens": 6158
+          },
+          "status": "scored"
+        }
+      },
+      {
+        "case_id": "tps-05",
+        "changed": false,
+        "v1": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "completed",
+            "case_id": "tps-05",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "completed",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": false,
+            "model_calls": 3,
+            "numeric_correct": null,
+            "original_first_query": true,
+            "rag_receipt_verdict": "semantic_retrieval",
+            "rag_worker_status": "succeeded",
+            "strict_correct": true,
+            "supplements_correct": true,
+            "tokens": 3784
+          },
+          "status": "scored"
+        },
+        "v2": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "completed",
+            "case_id": "tps-05",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "completed",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": false,
+            "model_calls": 3,
+            "numeric_correct": null,
+            "original_first_query": true,
+            "rag_receipt_verdict": "semantic_retrieval",
+            "rag_worker_status": "succeeded",
+            "strict_correct": true,
+            "supplements_correct": true,
+            "tokens": 3784
+          },
+          "status": "scored"
+        }
+      },
+      {
+        "case_id": "tps-06",
+        "changed": false,
+        "v1": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "partial",
+            "case_id": "tps-06",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "partial",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": false,
+            "model_calls": 4,
+            "numeric_correct": null,
+            "original_first_query": true,
+            "rag_receipt_verdict": "semantic_retrieval",
+            "rag_worker_status": "succeeded",
+            "strict_correct": true,
+            "supplements_correct": true,
+            "tokens": 6046
+          },
+          "status": "scored"
+        },
+        "v2": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "partial",
+            "case_id": "tps-06",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "partial",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": false,
+            "model_calls": 4,
+            "numeric_correct": null,
+            "original_first_query": true,
+            "rag_receipt_verdict": "semantic_retrieval",
+            "rag_worker_status": "succeeded",
+            "strict_correct": true,
+            "supplements_correct": true,
+            "tokens": 6046
+          },
+          "status": "scored"
+        }
+      },
+      {
+        "case_id": "tps-07",
+        "changed": true,
+        "v1": {
+          "message": "'NoneType' object is not subscriptable",
+          "status": "scorer_error",
+          "type": "TypeError"
+        },
+        "v2": {
+          "score": {
+            "budget_known": true,
+            "business_completion": "blocked",
+            "case_id": "tps-07",
+            "causal_safe": true,
+            "citations_authorized_and_relevant": true,
+            "critical": false,
+            "expected_completion": "completed",
+            "fact_coverage_correct": true,
+            "known_quality_limitation": true,
+            "model_calls": 5,
+            "numeric_correct": null,
+            "original_first_query": true,
+            "rag_receipt_verdict": null,
+            "rag_worker_status": "failed",
+            "strict_correct": false,
+            "supplements_correct": true,
+            "tokens": 7686
+          },
+          "status": "scored"
+        }
+      },
+      {
+        "case_id": "tps-08",
+        "changed": false,
+        "v1": {
+          "status": "not_run"
+        },
+        "v2": {
+          "status": "not_run"
+        }
+      }
+    ],
+    "database_or_mcp_access": false,
+    "freeze_sha256": "4570601cf8c8be452d5e6cadcf5e8b9c9e7f00bf11b489e84dc9a54079af0a9f",
+    "new_provider_calls": 0,
+    "not_run": 1,
+    "observed": 7,
+    "original_07_report_unchanged": "blocked",
+    "original_campaign_status_unchanged": "SMOKE_STOPPED_EVALUATOR",
+    "original_provider_calls": 25,
+    "original_six_scores_identical": true,
+    "original_tokens": 37320,
+    "planned": 8,
+    "scorer_version": "three-policy-offline-scorer-2",
+    "v1_error": 1,
+    "v1_scored": 6,
+    "v2_failed": 1,
+    "v2_passed": 6,
+    "v2_scored": 7
+  },
+  "cross_python_scores_identical": true,
+  "history": {
+    "protected_files": 713,
+    "unchanged_except_authorized_scorer": 712,
+    "original_result_seals_valid": true,
+    "original_six_scores_identical": true,
+    "original_report_tps07": "blocked",
+    "original_tps07_score_file_still_absent": true,
+    "tps08": "not_run",
+    "original_calls": 25,
+    "original_tokens": 37320,
+    "original_estimate_usd": "0.007696404",
+    "actual_bill": "not_reconciled",
+    "original_campaign": "SMOKE_STOPPED_EVALUATOR"
+  },
+  "new_execution": {
+    "provider_calls": 0,
+    "database_connections": 0,
+    "mcp_calls": 0,
+    "embedding_calls": 0,
+    "runtime_executions": 0,
+    "commit_push": false,
+    "gate3": false
+  },
+  "checks": {
+    "ruff": "passed",
+    "python_format_files": 261,
+    "diff_check": "passed",
+    "json_valid": true,
+    "markdown_local_links_valid": true
+  },
+  "not_run": [
+    "full_pytest",
+    "fresh_pg_mcp_integration",
+    "browser",
+    "remote_ci",
+    "live"
+  ],
+  "remaining": [
+    "English original-goal relevance and Worker turn exhaustion are unchanged",
+    "Original campaign remains stopped with one not_run case",
+    "Future Live requires a new complete implementation freeze and separate authorization"
+  ]
+}

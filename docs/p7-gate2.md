@@ -97,6 +97,12 @@ Gate 2 业务任务/模型预算尚未批准，当前不伪称整体 Gate 2 通�
 
 以上“未提交/未运行新 CI”为评测结束时的**推送前快照**。用户随后单独要求上传 Git；后续提交及其 CI 以该提交对应的 GitHub Actions 为准，不覆盖这里的原始测试、Live 指标或失败历史。
 
+### Post-push CI Verification / 意图收尾
+
+2026-10-24 22:41:28 +08:00 通过 GitHub REST 重新查询 push Run 和 jobs：提交 `18271d7b5159dff7e01bb1e6edd3257f9fd78be4`、Run `40096866653`、工作流 **DataPilot checks**，completed / success，attempt 1。Python 3.11、3.13 均 Success；对应原始 CI 日志各为 **709 passed、17 skipped**，Ruff 通过。见 [Actions](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/40096866653) 和 [结构化 post_push_ci](research/p7-gate2-validation.json)。这些是已提交版本的 PG/MCP + Fake/Mock 回归，不是新增 DeepSeek 实验，也不包含本轮尚未提交的准备工具。
+
+意图结果、Token、费用估算、三条增强路径错误拒绝、模板重用限制和推送前历史全部保留。此次收尾没有追加模型调用，网站仍为 Rule-only。下一步只完成 [独立业务 Holdout 准备](p7-business-holdout.md)：60 个新目标已封存，物化、人工审阅及业务 Live 仍未完成，Gate 2 整体仍未验收。
+
 在仍有原私密 PG 收据和封存文件的可信环境，可以只读重新汇总：
 
 ```powershell

@@ -1,0 +1,655 @@
+{
+  "schema_version": "p7-business-preparation-validation-1",
+  "checked_at": "2026-10-24T16:21:39.231788+00:00",
+  "head": "18271d7b5159dff7e01bb1e6edd3257f9fd78be4",
+  "branch": "main",
+  "status": "blocked",
+  "intent_ci": {
+    "verified_at": "2026-10-24T14:41:28.541719+00:00",
+    "repository": "zouradiant-dev/datapilot-pro",
+    "commit": "18271d7b5159dff7e01bb1e6edd3257f9fd78be4",
+    "run_id": 40096866653,
+    "workflow": "DataPilot checks",
+    "status": "completed",
+    "conclusion": "success",
+    "actions_url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/40096866653",
+    "run_attempt": 1,
+    "python_jobs": [
+      {
+        "python": "3.13",
+        "job_id": 120880848945,
+        "status": "success",
+        "passed": 709,
+        "skipped": 17,
+        "seconds": "1392.27",
+        "ruff_check": "passed",
+        "ruff_format": "262 files already formatted",
+        "logs_sha256": "50b222242d2fa0ffbdb45fd87b59428c7ca7350dd102659dd026f427a73f93ff"
+      },
+      {
+        "python": "3.11",
+        "job_id": 120880849144,
+        "status": "success",
+        "passed": 709,
+        "skipped": 17,
+        "seconds": "1668.26",
+        "ruff_check": "passed",
+        "ruff_format": "262 files already formatted",
+        "logs_sha256": "08c707482e9328eac33ea72263c6521c76d7209fa3a70982886e9953a1a7e58f"
+      }
+    ],
+    "verification_method": "GitHub REST actions/runs?head_sha + actions/runs/{id}/jobs; existing saved job logs for exact test totals",
+    "ci_boundary": "Real PostgreSQL/MCP + Fake/Mock; no new DeepSeek calls",
+    "paid_calls_this_verification": 0
+  },
+  "tests": [
+    {
+      "path": "artifacts/p7/business-holdout/nonpg-py311.xml",
+      "tests": "548",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "14.982"
+    },
+    {
+      "path": "artifacts/p7/business-holdout/nonpg-py313.xml",
+      "tests": "548",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "16.292"
+    },
+    {
+      "path": "artifacts/p7/business-holdout/contracts-final-py311.xml",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "2.784"
+    }
+  ],
+  "postgresql_preparation": {
+    "candidate_executions": 0,
+    "database_writes": 0,
+    "numeric_goals": 27,
+    "paid_calls": 0,
+    "physical_business_tables_read": 0,
+    "status": "passed",
+    "transport": "real_PG17_readonly_MCP_literal_CTEs",
+    "unique_queries": 15,
+    "join_reference_confirmed": true,
+    "business_agent_runs": 0,
+    "rag_queries": 0,
+    "embedding_inferences": 0,
+    "registry_writes": 0,
+    "queries_per_run": "15 unique SELECT via original read-only MCP; reused results check 27 numeric goals"
+  },
+  "freeze_checks": {
+    "production_dependency_migration_files": 116,
+    "intent_frozen_files": 18,
+    "all_raw_hashes_unchanged": true,
+    "protected_user_files": {
+      "docs/codex-prompts-v2.4.md": "e741a01457caf912968f02276b1894e5cd94803d5a0c12d79993c4fa1b42c74d",
+      "docs/codex-prompts-v2.5.md": "fe2289591503a58b98d39e83b9f63bbcb61951dc8dfc8e1f6e09faa048fa5189"
+    },
+    "intent_historical_metrics_unchanged": true
+  },
+  "sealed_integrity": {
+    "files_checked": 66,
+    "gold_decoded": false,
+    "live_allowed": false
+  },
+  "seal_sha256": "7af09ffe2320dfdad3535c55ed89e96124a7fd4bad0d66bc1cc898dbec464ecc",
+  "leakage": {
+    "old_input_records": 168,
+    "new_input_records": 60,
+    "exact_question_overlap": [],
+    "numeric_normalized_question_overlap": [],
+    "near_duplicate_warnings": [],
+    "source_byte_overlap": [],
+    "old_gold_used_for_candidate_tuning": false,
+    "independent_human_authorship": false
+  },
+  "ruff_check": "All checks passed!",
+  "ruff_format": "267 files already formatted",
+  "json_validated": [
+    "docs/research/p7-business-holdout-plan.json",
+    "docs/research/p7-business-holdout-live-plan.json",
+    "docs/research/p7-independent-business-holdout.json",
+    "docs/research/p7-gate2-validation.json"
+  ],
+  "markdown_local_links_checked": 89,
+  "markdown_broken_links": [],
+  "git_diff_check": "passed",
+  "private_artifacts_gitignored": true,
+  "live_business_evaluation": "not_run",
+  "p3_verified_quality": "not_run",
+  "vector_retrieval_quality": "not_run",
+  "gold_human_review": "pending",
+  "dataset_corpus_materialization": "pending_separate_fresh_instance",
+  "full_pg_regression": "not_run_this_round; would write existing test data; production unchanged",
+  "paid_calls": 0,
+  "committed": false,
+  "pushed": false,
+  "gate3_started": false,
+  "preparation_failure_logs": [
+    "artifacts/p7/business-holdout/prepare-v1.log",
+    "artifacts/p7/business-holdout/prepare-v2.log",
+    "artifacts/p7/business-holdout/prepare-v3.log"
+  ],
+  "post_seal_gold_decoded_for_scoring_or_tuning": false,
+  "scope": "Only docs + independent preparation scripts + toy contract tests; production recipes/Verifier/intent frozen",
+  "reproduce_hash_only": "Import scripts/p7_holdout_pack.py; verify_seal(Path(public_manifest[pack_path]), expected_seal_sha256=public_manifest[seal_sha256]); no Gold decode",
+  "private_exclusion_checks": {
+    "git_check_ignore": "4 named private paths matched artifacts/",
+    "tracked_artifact_files": 0,
+    "staged_files": 0,
+    "public_canary_leak": false,
+    "public_canary_files_checked": 15,
+    "failed_drafts_preserved": true
+  },
+  "source_inventory": {
+    "asset_paths": 60,
+    "distinct_asset_byte_hashes": 31,
+    "dataset_snapshots": 13,
+    "logical_datasets": 12,
+    "index_snapshots": 5,
+    "corpus_identities": 4
+  },
+  "generator_postseal_delta": "Only resolve author_spec/destination paths at entry; archived original exact SHA verified",
+  "historical_preparation_status": "sealed_not_live_ready",
+  "historical_preparation_checked_at": "2026-10-24T14:53:20.038374+00:00",
+  "historical_snapshot_note": "Original top-level counters/tests are the first preparation snapshot; gate2b contains the current engineering record. Gold quality/Live remains not_run.",
+  "gate2b": {
+    "status": "blocked",
+    "ready_for_live_authorization": false,
+    "human_review": {
+      "cases": 60,
+      "approved": 0,
+      "pending": 60,
+      "user_response": "尚无审核记录，保持 pending",
+      "review_package": "artifacts/p7/gate2b/private/human-review.html",
+      "independent_signature": "not_available"
+    },
+    "database": {
+      "container": "datapilot-p7b-postgres-1",
+      "port": 55440,
+      "database": "datapilot_p7b",
+      "server_version_num": "170011",
+      "pgvector": "0.8.6",
+      "new_instance_customers": 240,
+      "healthy": true
+    },
+    "materialization": {
+      "dataset_snapshots": 13,
+      "logical_datasets": 12,
+      "corpus_identities": 4,
+      "index_snapshots": 5,
+      "frozen_index_vectors": 47,
+      "source_index_hashes_match": true,
+      "all_holdout_metadata_pins_checked": true,
+      "holdout_semantic_metric_confirmations": 0,
+      "holdout_registry_receipt": "artifacts/p7/gate2b/holdout-registry-pending.json",
+      "local_onnx": "executed_original_pinned_model",
+      "vector_sha_norm_dimension": "47 passed",
+      "old_databases_written": false,
+      "holdout_tasks_executed": 0,
+      "holdout_retrieval_queries": 0,
+      "counter_note": "134 in initial validation is DB-wide including concurrent public fixtures; 47 in vector integrity is the frozen-index count. queries=0 denotes Holdout retrieval; one metadata SELECT occurred."
+    },
+    "input_checks": {
+      "checked": 60,
+      "task_executions": 0,
+      "rejected_metadata_contracts": [
+        {
+          "case_id": "bh2-018",
+          "input_environment_status": "rejected",
+          "code": "REPORT_SCOPE_INVALID",
+          "task_executed": false
+        },
+        {
+          "case_id": "bh2-020",
+          "input_environment_status": "rejected",
+          "code": "REPORT_SCOPE_INVALID",
+          "task_executed": false
+        },
+        {
+          "case_id": "bh2-030",
+          "input_environment_status": "rejected",
+          "code": "DOCUMENT_NOT_AUTHORIZED",
+          "task_executed": false
+        },
+        {
+          "case_id": "bh2-033",
+          "input_environment_status": "rejected",
+          "code": "DOCUMENT_NOT_AUTHORIZED",
+          "task_executed": false
+        },
+        {
+          "case_id": "bh2-034",
+          "input_environment_status": "rejected",
+          "code": "DOCUMENT_NOT_AUTHORIZED",
+          "task_executed": false
+        },
+        {
+          "case_id": "bh2-035",
+          "input_environment_status": "rejected",
+          "code": "DOCUMENT_NOT_AUTHORIZED",
+          "task_executed": false
+        },
+        {
+          "case_id": "bh2-038",
+          "input_environment_status": "rejected",
+          "code": "DOCUMENT_NOT_AUTHORIZED",
+          "task_executed": false
+        },
+        {
+          "case_id": "bh2-040",
+          "input_environment_status": "rejected",
+          "code": "DOCUMENT_NOT_AUTHORIZED",
+          "task_executed": false
+        },
+        {
+          "case_id": "bh2-048",
+          "input_environment_status": "rejected",
+          "code": "REPORT_SCOPE_INVALID",
+          "task_executed": false
+        },
+        {
+          "case_id": "bh2-054",
+          "input_environment_status": "rejected",
+          "code": "DOCUMENT_NOT_AUTHORIZED",
+          "task_executed": false
+        },
+        {
+          "case_id": "bh2-058",
+          "input_environment_status": "rejected",
+          "code": "DOCUMENT_NOT_AUTHORIZED",
+          "task_executed": false
+        },
+        {
+          "case_id": "bh2-059",
+          "input_environment_status": "rejected",
+          "code": "DOCUMENT_NOT_AUTHORIZED",
+          "task_executed": false
+        }
+      ],
+      "incompatible_subset_pin_cases": [
+        "bh2-030",
+        "bh2-033",
+        "bh2-035",
+        "bh2-038",
+        "bh2-040",
+        "bh2-054",
+        "bh2-059"
+      ],
+      "seal_rewritten": false,
+      "gold_substantive_error_established": false
+    },
+    "runtime_collector": {
+      "toy_chain": "passed: original run_durable -> approval -> real MCP/P3 -> Report -> separate inspect_run collector",
+      "separate_process_resume": "passed; same Run/report/P3 refs/hash/verdict/budget/call count",
+      "signature_checks": "passed",
+      "gold_file_isolation": "passed: actual non-root read-only container mount probe",
+      "formal_case_distribution": "not_run",
+      "live_campaign_driver": "not_completed; current CLI only Toy/Fake",
+      "scorer": "primitives_tested; refusal adjudication/ranked-query aggregation/full summary incomplete",
+      "toy_collection_to_scorer": "passed on actual original collector receipt against unrelated public Toy Gold, no formal Gold"
+    },
+    "tests": [
+      {
+        "junit": "artifacts/p7/gate2b/final2-nonpg-py311.xml",
+        "tests": "564",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "14.177",
+        "model": "Fake/Mock or none",
+        "real_provider": false
+      },
+      {
+        "junit": "artifacts/p7/gate2b/final2-nonpg-py313.xml",
+        "tests": "564",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "15.271",
+        "model": "Fake/Mock or none",
+        "real_provider": false
+      },
+      {
+        "junit": "artifacts/p7/gate2b/pg-py311.xml",
+        "tests": "76",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "904.906",
+        "model": "Fake/Mock or none",
+        "real_provider": false
+      },
+      {
+        "junit": "artifacts/p7/gate2b/pg-py313.xml",
+        "tests": "76",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "902.219",
+        "model": "Fake/Mock or none",
+        "real_provider": false
+      },
+      {
+        "junit": "artifacts/p7/gate2b/cross-source-py311.xml",
+        "tests": "16",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "219.406",
+        "model": "Fake/Mock or none",
+        "real_provider": false
+      },
+      {
+        "junit": "artifacts/p7/gate2b/cross-source-py313.xml",
+        "tests": "16",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "227.983",
+        "model": "Fake/Mock or none",
+        "real_provider": false
+      },
+      {
+        "junit": "artifacts/p7/gate2b/hash-counterexample-after.xml",
+        "tests": "16",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "2.270",
+        "model": "Fake/Mock or none",
+        "real_provider": false
+      }
+    ],
+    "test_count_boundary": "564 non-PG +76 PG +16 supplemental per Python; 16 new contracts included in non-PG. Not independent business task counts.",
+    "openapi": {
+      "checked_at": "2026-10-24T15:55:20.009200+00:00",
+      "openapi_equal": true,
+      "paths": 24,
+      "sha256": "44fd53c10bbd9c417711f057d1a12c232d39dc6a2d1ae76f689c0cf26d957f52",
+      "database_connected": false
+    },
+    "source_freeze": {
+      "production_files_unchanged": 116,
+      "intent_files_unchanged": 18,
+      "seal": {
+        "files_checked": 66,
+        "gold_decoded": false,
+        "live_allowed": false
+      },
+      "freeze_file": "docs/research/p7-gate2b-freeze.json",
+      "freeze_sha256": "891b9e83e7d064f9934aa8524b9b96bf570f6abdb7eddb4390a2379a2bab0b15",
+      "protected_plans_unchanged": true,
+      "revision": 2,
+      "superseded_freeze_sha256": "d49db2d1301760d7ef8dc38bb2f903139dd3c79333d3d754cd02a09a47636cc1"
+    },
+    "budget": "docs/research/p7-gate2b-budget.json",
+    "blocked_conditions": [
+      "60 independent human reviews pending",
+      "Holdout P3 definitions await human confirmation",
+      "7 original document subset pins incompatible with current MCP full-manifest contract",
+      "Formal Live campaign/asset distribution and complete scorer not ready"
+    ],
+    "model_requests_paid": 0,
+    "provider_input_output_cache_tokens": null,
+    "real_model_business_success_rate": null,
+    "git_commit_push": false,
+    "gate3_started": false,
+    "remaining_actions": [
+      "Independent review with identity/time/evidence for all60",
+      "Review scope incompatibilities; separately authorize compatible new sealed inputs/indexes, preserve old anchor",
+      "Confirm actual P3 definitions with original Registry after review",
+      "Finish and freeze formal runner/scorer on unrelated Toy; original runtime/security unchanged",
+      "Obtain new bounded explicit Live authorization before any provider requests"
+    ],
+    "final_checks": {
+      "json_valid": [
+        "docs/research/p7-business-holdout-preflight.json",
+        "docs/research/p7-gate2b-budget.json",
+        "docs/research/p7-gate2b-freeze.json",
+        "docs/research/p7-independent-business-holdout.json"
+      ],
+      "markdown_links_checked": 92,
+      "broken_links": [],
+      "new_public_canary_leaks": false,
+      "git_staged_files": 0,
+      "private_paths_ignored": 4,
+      "frozen_files_hashes": "passed",
+      "ruff_check": "passed",
+      "ruff_format": "274 files already formatted",
+      "git_diff_check": "passed",
+      "openapi_equal": true
+    },
+    "question_hash_integration_repair": {
+      "before": "1 failed",
+      "after": "16 contract cases passed; actual Toy scoring passed",
+      "history": "artifacts/p7/gate2b/hash-counterexample-before.xml",
+      "rule": "Same original canonical JSON digest as Runner; human-review raw UTF8 hash is separate",
+      "production_or_gold_changed": false
+    }
+  },
+  "gold_technical_review": {
+    "summary_path": "docs/research/p7-gold-technical-review.json",
+    "summary_sha256": "273737f0b4ac7e7e27c5c01ea0ff5f4ec70177e6a99e6cba8abd766ae40d317f",
+    "checked_at": "2026-10-25T03:12:08.514749+00:00",
+    "review_kind": "Codex offline technical/source review, NOT independent human approval",
+    "counts": {
+      "cases": 60,
+      "technical_status": {
+        "needs_resolution": 9,
+        "consistent_under_proposed_policy": 50,
+        "mismatch": 1
+      },
+      "numeric_verified_goals_recomputed": 27,
+      "unavailable_metric_goals_reviewed": 10,
+      "rag_cases": 40,
+      "fact_occurrences": 48,
+      "document_snapshots_checked": 47,
+      "chunk_spans_checked": 47,
+      "failed_checks": 1
+    },
+    "human_pending": 60,
+    "human_approved": 0,
+    "candidate_executions": 0,
+    "paid_calls": 0,
+    "status": "completed_with_findings",
+    "prior_gate2b_snapshot_preserved": true,
+    "ready_for_live_authorization": false
+  },
+  "gold_second_review": {
+    "summary_path": "docs/research/p7-gold-second-review.json",
+    "summary_sha256": "e65c6ede98363bdd345a548274179722a97d7a00fb630af0e772b145513b0a9b",
+    "source_sha256": "7cb505cc844d563281765eae4fb60bcad209aaa68f6dc6f1efbef337ea8a6b88",
+    "received_at": "2026-10-25T03:28:11.928760+00:00",
+    "cases_reviewed": 10,
+    "human_pending": 60,
+    "human_approved": 0,
+    "status": "technical_review_received_with_findings",
+    "ready_for_live_authorization": false,
+    "engineering_implementation": "not_started"
+  },
+  "current_status_record": "gate2b_live_stopped",
+  "previous_top_level_checked_at_is_historical": true,
+  "gate2b_v2": {
+    "checked_at": "2026-10-25T05:00:28.545660+00:00",
+    "status": "pending_exact_p3_owner_confirmation",
+    "engineering_nonpaid_acceptance": "passed",
+    "owner_gold_admission": "effective_no_repeated_sampling",
+    "owner_receipt": "docs/research/p7-owner-admission.json",
+    "historical_human_pending": 60,
+    "independent_human_signatures": 0,
+    "historical_pending_is_current_blocker": false,
+    "v1_seal_preserved": "7af09ffe2320dfdad3535c55ed89e96124a7fd4bad0d66bc1cc898dbec464ecc",
+    "v2_seal_sha256": "958ee94411d6a6b409483c5f494e09ec6792b0d2483762a201ad160d5b540e1a",
+    "gold_changed": false,
+    "seven_subset_pins": "resolved_five_exact_indexes_no_widening",
+    "planned_cases": 60,
+    "preflight_negative_cases": 6,
+    "pending_p3_tasks": 35,
+    "deduplicated_definition_entries": 34,
+    "confirmable_entries": 32,
+    "confirmable_semantic": 12,
+    "confirmable_metric": 20,
+    "confirmable_tasks": 34,
+    "intentional_missing_entries_excluded": 2,
+    "intentional_missing_cases": [
+      "bh2-060"
+    ],
+    "p3_confirmation_request": "artifacts/p7/gate2b-v2/private/p3-confirmation-request.json",
+    "p3_confirmation_request_sha256": "76c1e8d6ca861770e6e5c32cc9c67b7a1a2a0d1bdbebc17ae25796929ecf29c0",
+    "p3_owner_approval": null,
+    "holdout_registry_writes": 0,
+    "formal_business_runs": 0,
+    "formal_live": "not_run",
+    "paid_calls": 0,
+    "toy_actual_pg_mcp_rag_cases": 3,
+    "toy_model": "Fake/scripted decisions, not provider quality",
+    "tests": [
+      {
+        "tests": "758",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "17",
+        "time": "2360.880",
+        "path": "artifacts/p7/gate2b-v2/original-full-py311.xml",
+        "sha256": "12aa591405155b7cc4aa76ebcf4b876a13332010a034e2898a47863a065c9b15",
+        "python": "3.11"
+      },
+      {
+        "tests": "37",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "3.182",
+        "path": "artifacts/p7/gate2b-v2/final-extended-py311.xml",
+        "sha256": "16f7c566f34198b222d71250619ed5df72214de67f5ecfb548cf20450e456010",
+        "python": "3.11"
+      },
+      {
+        "tests": "758",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "17",
+        "time": "2418.940",
+        "path": "artifacts/p7/gate2b-v2/original-full-py313.xml",
+        "sha256": "28395a4ea9a493ee3ff06f4610b278dd184390fa5592dcf1bb38e74d11d444c7",
+        "python": "3.13"
+      },
+      {
+        "tests": "37",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "3.098",
+        "path": "artifacts/p7/gate2b-v2/final-extended-py313.xml",
+        "sha256": "62f27c73efcf6a2ad72cb262bb570e82877b3c0bf82165a465b427d68fec46c1",
+        "python": "3.13"
+      }
+    ],
+    "not_run": [
+      "paid DeepSeek business Holdout",
+      "Gate 3",
+      "new CI",
+      "old-instance-specific provider fault/intent Ledger integration"
+    ],
+    "ready_for_live_authorization": false,
+    "remaining_blockers": [
+      "Exact 32 A/B P3 definition approval, original Registry append, then fresh admission"
+    ],
+    "next_authorization_separate": "Paid Live needs a new explicit bounded permit after P3 admission; no old authorization reuse",
+    "validation_checks": {
+      "ruff_check": "passed",
+      "ruff_format_whole_workspace": "failed_preexisting_protected_v2.5_markdown_python_blocks",
+      "ruff_format_excluding_protected_v2.5": "passed_290_files",
+      "protected_v2.4_v2.5_unchanged": true,
+      "git_diff_check": "passed",
+      "json_format": "passed",
+      "local_markdown_links": "passed",
+      "public_credentials_canary_scan": "passed"
+    }
+  },
+  "gate2b_zero_revenue_diagnosis": {
+    "checked_at": "2026-10-25T06:33:14.822679+00:00",
+    "status": "blocked",
+    "ready_for_live_authorization": false,
+    "registered_semantics": 12,
+    "registered_metrics": 20,
+    "definition_approval": "completed_exact_A_B_32",
+    "repeat_approval_required": false,
+    "prior_admission": {
+      "planned": 60,
+      "ordinary_ready": 53,
+      "expected_preflight_rejections": 6,
+      "intentional_missing_negative_cases": 1
+    },
+    "remaining_blockers": [
+      "bh2-016/052 NUMERIC 0E-20 serialization/parser incompatibility; original verdict rejected"
+    ],
+    "diagnosis_path": "docs/research/p7-zero-revenue-diagnosis.json",
+    "diagnosis_sha256": "99737f6cafcb59536fcfcb68f105a9aa762a82e97bd37ab9c999040912632ba8",
+    "formal_live": "not_run"
+  },
+  "gate2b_numeric_serialization_fix": {
+    "checked_at": "2026-10-25T06:53:01.423702+00:00",
+    "status": "ready_for_live_authorization",
+    "ready_for_live_authorization": true,
+    "live_allowed": false,
+    "planned_tasks": 60,
+    "ordinary_runtime_ready": 53,
+    "expected_host_preflight_rejections": 6,
+    "intentional_missing_runtime_negative": 1,
+    "runtime_launches": 54,
+    "formal_agent_runs": 0,
+    "registered_semantics": 12,
+    "registered_metrics": 20,
+    "remaining_engineering_blockers": [],
+    "rejected_history_preserved": true,
+    "tests": [
+      {
+        "python": "3.11",
+        "passed": 262,
+        "deselected": 2,
+        "failures": 0,
+        "skipped": 0,
+        "seconds": "486.928",
+        "junit": "artifacts/p7/numeric-serialization-fix/regression-py311.xml",
+        "sha256": "e1c50e481549dc743dc3066d77c0e1abf9a7a822eb229f223e3c5ba7ba298d29"
+      },
+      {
+        "python": "3.13",
+        "passed": 262,
+        "deselected": 2,
+        "failures": 0,
+        "skipped": 0,
+        "seconds": "496.536",
+        "junit": "artifacts/p7/numeric-serialization-fix/regression-py313.xml",
+        "sha256": "8241017bfc78b84400f8e6f7ca9471300f6e0afe70e7bf9221e2c6ea1b8e9c34"
+      }
+    ],
+    "real_provider_calls": 0,
+    "gate3": "not_run",
+    "commit_push": "not_run",
+    "delivery": "docs/p7-numeric-serialization-fix.md",
+    "summary": "docs/research/p7-numeric-serialization-fix.json"
+  },
+  "gate2b_live_stopped": {
+    "checked_at": "2026-10-25T07:41:27.532696+00:00",
+    "status": "stopped_budget_limit_partial_evaluation",
+    "planned_cases": 60,
+    "observed_cases": 31,
+    "not_run": 29,
+    "full_live_accepted": false,
+    "stop_reason": "bh2-031 BUDGET_EXCEEDED; original frozen dispatch stop policy",
+    "results": "docs/research/p7-gate2b-live-results.json",
+    "results_sha256": "14963620e383a9f827c22030460f3def9b68e5d9c2b3c857c083b3603b8bf8fa",
+    "no_automatic_retry_or_continuation": true,
+    "code_or_gold_changed": false
+  }
+}

@@ -1,0 +1,535 @@
+{
+  "schema_version": "goal-confirmation-quality-delivery-1",
+  "phase": "P7 Phase 2C.7",
+  "at": "2026-10-31T10:43:52.139589+00:00",
+  "status": "BLOCKED_FOR_BUSINESS_AB",
+  "gates": {
+    "web_engineering": {
+      "status": "PASS",
+      "scope": "bounded final-source HTTP/browser controls; scripted test actors, not human semantic acceptance"
+    },
+    "goal_confirmation_quality": {
+      "status": "NOT_VERIFIED",
+      "technical_usability": "FAIL: 4/15 finite cases over-rejected",
+      "human_review": "NOT_VERIFIED"
+    },
+    "retrieval_evidence": {
+      "status": "BLOCKED",
+      "bge_engineering": "PASS for scoped completion and conservative unavailable",
+      "qwen_current_regression": "FAIL: EMBEDDING_RESOURCE_LIMIT; full Qwen confirmation chain not completed",
+      "independent_retrieval_quality": "NOT_RUN"
+    },
+    "business_quality": {
+      "status": "NOT_VERIFIED",
+      "formal_pilot": "NOT_RUN",
+      "observed": 0,
+      "conditional_slots": 40
+    },
+    "safety": {
+      "status": "PASS",
+      "scope": "only the exercised guard/identity/approval/withdrawal/unknown controls; no global semantic guarantee",
+      "unreviewed_attestation_in_24": 0,
+      "unreviewed_run_in_24": 0
+    }
+  },
+  "owner_reply": {
+    "source": "current user send_user_message_question_reply",
+    "text": "暂无，按 NOT_VERIFIED 记录",
+    "independent_human_review": "NOT_VERIFIED",
+    "not_an_independent_signature": true
+  },
+  "head": "f8b122438d2c67ab26e618ecded72ecc18454015",
+  "branch": "p7-ci-verification-20261028",
+  "freeze": {
+    "registration_path": "artifacts/p7/goal-confirmation-quality-v1/registration.json",
+    "registration_sha256": "4dbd037db8b46a7812dcc3c5789fbbd8204a4bc8fc5c4f8322f4a13301470460",
+    "parent_web_final_r4_sha256": "a54bd133ff6c274618f37c98b329353b81fd886181930ee948176a25a85f340c",
+    "product_source_tree_sha256": "5a11a01af573c7ee456f2fac7946051f1ce829fe9eba2ba8624370f6c4d7f3a1",
+    "product_changed_this_phase": false,
+    "gold_sha256": "5551abb1e821ef1ef4128e35a22f4bc6f6c5213c32823a417b5c3e030b67d6f0",
+    "scorer_v1_sha256": "8a7220cee430d1dae155847e1383d7ec9c8520dc84a5c5c5e9f1c67c7e9fad44",
+    "scorer_v2_final_sha256": "3255adda95735dab87fb24f9901feb1c219673259f95b156886a12667a6c609e",
+    "v2_scorer_post_collection_layout_repair": true,
+    "original_scorer_no_valid_case_scores": true
+  },
+  "contracts": {
+    "planned": 24,
+    "observed": 24,
+    "not_run": 0,
+    "score_kind": "declared fields/refusal shape only; generic refusal is NOT proof of prerequisite understanding",
+    "technical_contract_correct": {
+      "n": 20,
+      "d": 24
+    },
+    "original_text_byte_preservation": {
+      "n": 23,
+      "d": 23
+    },
+    "declared_fields_preservation": {
+      "n": 12,
+      "d": 12
+    },
+    "finite_candidate_not_refused": {
+      "n": 11,
+      "d": 15
+    },
+    "over_rejection": {
+      "n": 4,
+      "d": 15
+    },
+    "nonfinite_not_automatically_accepted": {
+      "n": 9,
+      "d": 9
+    },
+    "specific_prerequisite_warning": {
+      "n": 1,
+      "d": 9,
+      "ai_technical_only": true
+    },
+    "unreviewed_runs": 0,
+    "unreviewed_attestations": 0,
+    "incorrect_attestation_rate": {
+      "n": null,
+      "d": 0,
+      "status": "N/A; no 24-case confirmations attempted"
+    },
+    "semantic_equivalence": "NOT_VERIFIED",
+    "independent_human_review": "NOT_VERIFIED",
+    "formal_business_pilot": {
+      "conditional_slots": 40,
+      "registered_business_cases": 0,
+      "observed": 0,
+      "not_run_slots": 40,
+      "status": "NOT_RUN; human gate not met"
+    },
+    "offline_match": {
+      "n": 24,
+      "d": 24,
+      "independent_process": "Python 3.13",
+      "initial_process": "Python 3.11"
+    },
+    "http_system_seconds": {
+      "p50": 5.049441699986346,
+      "p95": 12.202340925007594,
+      "sum": 138.94916880037636,
+      "sample_size": 24,
+      "concurrency": 1,
+      "includes": "real HTTP/MCP metadata validation; no Worker inference",
+      "human_thinking": "NOT_MEASURED"
+    },
+    "actual_provider_calls": 0,
+    "actual_provider_tokens": 0,
+    "actual_provider_cost_usd": 0,
+    "local_embedding_tokens": "NOT_MEASURED; not provider tokens",
+    "score_identity": {
+      "registration_sha256": "4dbd037db8b46a7812dcc3c5789fbbd8204a4bc8fc5c4f8322f4a13301470460",
+      "scorer_v1_sha256": "8a7220cee430d1dae155847e1383d7ec9c8520dc84a5c5c5e9f1c67c7e9fad44",
+      "scorer_v2_final_sha256": "3255adda95735dab87fb24f9901feb1c219673259f95b156886a12667a6c609e",
+      "gold_sha256": "5551abb1e821ef1ef4128e35a22f4bc6f6c5213c32823a417b5c3e030b67d6f0",
+      "binding_seal_sha256": "b8e22053917ee0c225ca5578f5df95d79714af07af9e18a98596aa478ab531c2",
+      "initial_scores_sha256": "85240c9909b643bf9e96a417776d93faa1358392ebc2c5a5ab1444d2d777fbf9",
+      "offline_scores_sha256": "85240c9909b643bf9e96a417776d93faa1358392ebc2c5a5ab1444d2d777fbf9"
+    },
+    "bad_cases": [
+      {
+        "id": "gc7-008",
+        "warnings": [
+          "MRR 尚无已审查配方，不能通过选择账单收入替代；请修改问题。"
+        ]
+      },
+      {
+        "id": "gc7-011",
+        "warnings": [
+          "请明确选择一个受支持的业务指标；收入、MRR、客户流失与订阅流失口径不同。",
+          "请补充明确的年份/月或起止日期（结束不含）；选择卡片中的日期也可。"
+        ]
+      },
+      {
+        "id": "gc7-020",
+        "warnings": [
+          "原问题包含文档目标，请明确授权Corpus及用途；不能静默只执行指标部分。"
+        ]
+      },
+      {
+        "id": "gc7-021",
+        "warnings": [
+          "请明确选择一个受支持的业务指标；收入、MRR、客户流失与订阅流失口径不同。",
+          "请补充明确的年份/月或起止日期（结束不含）；选择卡片中的日期也可。"
+        ]
+      }
+    ]
+  },
+  "tests": {
+    "legacy313": {
+      "path": "artifacts/p7/goal-confirmation-quality-v1/legacy313.xml",
+      "sha256": "73c4f1baa19c69ed14b0cb469d4b2777cd9f36193a481efc3f945ce9cbe356a7",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 1
+    },
+    "pg-edit311": {
+      "path": "artifacts/p7/goal-confirmation-quality-v1/pg-edit311.xml",
+      "sha256": "cde67301826bd51b618739607d8f0a72cb12958d59bd9beae85015772f81a486",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 2
+    },
+    "pg311": {
+      "path": "artifacts/p7/goal-confirmation-quality-v1/pg311.xml",
+      "sha256": "9dff91e3ce1d85caba4f0bc90b7055c6f22ee1570843bea8a215909ab1b35252",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 6
+    },
+    "pg313": {
+      "path": "artifacts/p7/goal-confirmation-quality-v1/pg313.xml",
+      "sha256": "b50778055911650debab7b38b69abbb737006e264111f6f42fd3e84080a35750",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 2
+    },
+    "qwen311": {
+      "path": "artifacts/p7/goal-confirmation-quality-v1/qwen311.xml",
+      "sha256": "9ffedd18f9f7b996db9ab8d2965ddcdc177e451ffee7b110f43b3e1bf528c01a",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0
+    },
+    "scorerv2-311": {
+      "path": "artifacts/p7/goal-confirmation-quality-v1/scorerv2-311.xml",
+      "sha256": "a04d6046bd42edf00c5a5dd3a5f319442ddd08b39295c38d4ca08d5902befe94",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 5
+    },
+    "scorerv2-313": {
+      "path": "artifacts/p7/goal-confirmation-quality-v1/scorerv2-313.xml",
+      "sha256": "d865f971eca75f0fa973ca8d5255b5c382d67c30f716265ee1e5e5153d2f0977",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 5
+    },
+    "scorerv2-final311": {
+      "path": "artifacts/p7/goal-confirmation-quality-v1/scorerv2-final311.xml",
+      "sha256": "1e57b76cc720eb6d200e422eccaacdfb0421a8bce4a512498320aa19f0709c92",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 5
+    },
+    "target311": {
+      "path": "artifacts/p7/goal-confirmation-quality-v1/target311.xml",
+      "sha256": "32270ae0fc2628972f5ee00e68ec3191643c09223c23fdbdec07adaa1094201c",
+      "tests": 76,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 76
+    },
+    "target313": {
+      "path": "artifacts/p7/goal-confirmation-quality-v1/target313.xml",
+      "sha256": "18127d2e2306066c3661eb39b569dce2ac4baeb8fd3afd446fc96339b3243f89",
+      "tests": 76,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 76
+    },
+    "unit311-r2": {
+      "path": "artifacts/p7/goal-confirmation-quality-v1/unit311-r2.xml",
+      "sha256": "df57550677404039cdae4747be05ffb42d6cf9360d5b4c2d619b0b513a45e4c3",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 13
+    },
+    "unit311": {
+      "path": "artifacts/p7/goal-confirmation-quality-v1/unit311.xml",
+      "sha256": "db7e0b5d077dac8a6fe4fe86f0ec27475a9e019082d9d68b053cbbf0f79d7f46",
+      "tests": 13,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 12
+    }
+  },
+  "browser_restart": {
+    "actual_api_ui_restart": true,
+    "signed_collector_verified": true,
+    "identical_run_count": 3,
+    "independent_process_no_reexecution": true,
+    "runs": {
+      "108d3573-7a94-4042-ab62-fcc6d05f7edb": {
+        "status": "completed",
+        "report_sha256": "6ad33f54ab0b45ab716cf5c977f7a2bc2e03e732d53c5512f57c80cead8a3bf6",
+        "payload_sha256": "fac54b7929112d8e02924ca2c396d96aab8edc9e6481ba9e7a56419ec5695f07",
+        "trace_sha256": "c04722df66716010f207851fea863f4797b8cfffc15ed2a485a4e150fab43da5",
+        "usage": {
+          "calls": 1,
+          "total_tokens": 15,
+          "reported_tokens": 15,
+          "usage_complete": true
+        },
+        "goal_confirmation": null,
+        "facts": [
+          {
+            "goal_id": "metric_1",
+            "request": {
+              "goal_id": "metric_1",
+              "dataset_id": "456cf8a5-4a7c-530a-9d6a-d51d7184f49f",
+              "dataset_version": 1,
+              "semantic_version": 1,
+              "metric_id": "paid_invoice_revenue",
+              "metric_version": 1,
+              "window": {
+                "start": "2026-03-01",
+                "end_exclusive": "2026-04-01"
+              },
+              "as_of": null,
+              "intent": "measure"
+            },
+            "value": {
+              "value": "1229.0000000000000000",
+              "unit": "CNY",
+              "numerator": null,
+              "denominator": null,
+              "window_days": 31
+            },
+            "evidence_id": "250d36f5-10b0-4fab-afe7-d4c9c4d91afc",
+            "verification_id": "1cfa1e18-a257-40b0-811a-aacb3cb73733",
+            "source_sha256": "7b71bff20adffde310c24a13d51ebd4124311d072a723ee82a301d48c6daa415",
+            "semantic_sha256": "9ea6fc34059c8b9017996d865b312459e334d897cbd22c1d8175817fca0444bb",
+            "metric_sha256": "4546a191b4b57d081f2e4f0eb7bf65a500dd6ef3de56c25f84d124480b151c5b",
+            "evidence_sha256": "767cb5dd74a5a8744032afcc7a0732987e33dce5d3409f350f192876a4b283a3",
+            "verification_sha256": "8de15c9e0d43b61cb9596f2f03bf5b2b5d62af0bc936869788925099494f94c3",
+            "query_sha256": "9b33db585c39130c3a2a8798086a44604e4e58fee7f49769d3daf39e0d608f5b",
+            "result_sha256": "e5214966ad1df9a4a1e41acba1a0c0b7fcac340b47941de0a5af58c839fd6a1a",
+            "verified_at": "2026-10-31T10:23:42.585781Z",
+            "filters": {
+              "currency": "CNY",
+              "paid_values": [
+                "paid"
+              ],
+              "churn_values": [
+                "churned"
+              ],
+              "non_churn_end_values": [
+                "downgraded",
+                "plan_change"
+              ],
+              "feature": null
+            }
+          }
+        ],
+        "citations": []
+      },
+      "b688747d-bcdd-4197-908f-aa0fa2b0db78": {
+        "status": "completed",
+        "report_sha256": "19e5a98055d2cf74147ddb0f83b16e83c944068bb2843d680674c5799b7d373c",
+        "payload_sha256": "e2dbfb23191521de79549bb17add038b6aeb97739ab460b48d814cf87e398eb0",
+        "trace_sha256": "a44bc320559701dcce1721305139178a1cd9b43cad817ace1c0a00a3f32e0f73",
+        "usage": {
+          "calls": 3,
+          "total_tokens": 45,
+          "reported_tokens": 45,
+          "usage_complete": true
+        },
+        "goal_confirmation": {
+          "version": 1,
+          "event_id": "fedda2e4-1d29-41ee-a8a9-037a61e34af1",
+          "expires_at": "2026-11-01T10:11:07.661339+00:00",
+          "message_id": "00a6769b-6532-4b26-8a57-65907c61f4ef",
+          "confirmed_at": "2026-10-31T10:13:21.596710+00:00",
+          "contract_sha256": "e6ec5c65248edf95bb28912a180c44e02056aeaf3096c129c9d67d8b924f7dc4",
+          "conversation_id": "602eb146-7675-4ff6-93f1-5d7955fb002c",
+          "actor_session_hash": "661d2f16340912f0a0c17d1aa1645dff5c5aca8ce7d851ce7ac8fd6e99bb1c43"
+        },
+        "facts": [],
+        "citations": [
+          {
+            "artifact_id": "45abe47bda83a6b5532c026e4e90c5fd238ca5a71e4ef71cfc5b4d8e85c1e2e0",
+            "citation": {
+              "chunk_id": "3a28b9151d35b9b3c361dbc09a951fa17e01d53e27dbe0a69fcc906e369d3efb",
+              "start": 0,
+              "end": 60,
+              "line_start": 1,
+              "line_end": 1,
+              "sha256": "4be7609a8b3eff0177af51be46ae7448beeb290304eaf1c28be8817839e561fb",
+              "corpus_id": "7a0f913e-32f8-44b3-bcf4-faa3c91f2d1a",
+              "index_version": "83e2ab75abdc93540559748787b012a831119453c846311b305c40f66f3b26fc",
+              "source_id": "88bc30bb196256eb7dd4d53b862ecf69bae96f806117818d0e80aabd05c6501e",
+              "document_id": "1e7ff2ab842682a48addc03c7a786a43e7026edc4011bb25437d22f54d5a8546",
+              "version": "4be7609a8b3eff0177af51be46ae7448beeb290304eaf1c28be8817839e561fb",
+              "source_sha256": "4be7609a8b3eff0177af51be46ae7448beeb290304eaf1c28be8817839e561fb",
+              "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+              "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+              "retriever": "pg-cosine-exact-1",
+              "score": 0.6542465686798142,
+              "goal_sha256": "730c033ce728bf4030ae8e66262afa9752b1f6acfac98239f76767dbefc731e2",
+              "goal_score": 0.6542465686798096,
+              "page": null
+            }
+          }
+        ]
+      },
+      "1561392c-0f23-4039-ae9e-5a2075dd5eba": {
+        "status": "unavailable",
+        "report_sha256": "295ee3c73e31cdb5f6ccfdda8adb2ed61aa74cf63eef44dceffcd4247678029c",
+        "payload_sha256": "6ce5dbc5116440bc0ac5f30ccd0c8addabfcce68e6e8245a0edaabb47b719eee",
+        "trace_sha256": "8d568e2536f0a6717a119378c58346abc4469da6432b1d77943a053e86284c3a",
+        "usage": {
+          "calls": 3,
+          "total_tokens": 45,
+          "reported_tokens": 45,
+          "usage_complete": true
+        },
+        "goal_confirmation": {
+          "version": 3,
+          "event_id": "2d1df6a0-60fa-4772-9c7d-5d73cfb5022a",
+          "expires_at": "2026-11-01T09:52:56.432072+00:00",
+          "message_id": "ac066ef9-0c47-4ce8-9a13-1bb0806dcb77",
+          "confirmed_at": "2026-10-31T10:00:14.756096+00:00",
+          "contract_sha256": "1b9c703ee28453842f6b9743b29004678ddb9637484887813bc59c53f12d7b59",
+          "conversation_id": "95bf27f5-a4d6-4d3c-9863-124ad2993dc6",
+          "actor_session_hash": "352ce2eeb4f35f2811c37ddc838d2fafc01b3a9dbb020770293b110cf7870dd4"
+        },
+        "facts": [],
+        "citations": []
+      }
+    },
+    "provider_calls": 0,
+    "mock_model_calls": 7,
+    "mock_reported_tokens": 105
+  },
+  "withdrawal": {
+    "browser_withdrawal_status": "rejected",
+    "report_http_status": 403,
+    "report_error": "GOAL_REVOKED",
+    "original_inspector_artifact_hash_verified": true,
+    "raw_report_sha256": "0ebccb5d1a8e4bfda84efc156582ad666fb40d52a7004425eeac9c800057bc0b",
+    "public_report_projection_sha256": "19e5a98055d2cf74147ddb0f83b16e83c944068bb2843d680674c5799b7d373c",
+    "projection_matches_before_withdrawal": true,
+    "raw_ledger_usage_unchanged": true,
+    "unknown": false,
+    "sql_p3_report_and_refs_unchanged": true,
+    "sql_report_sha256": "6ad33f54ab0b45ab716cf5c977f7a2bc2e03e732d53c5512f57c80cead8a3bf6",
+    "diagnostic_host_read_not_publication": true,
+    "earlier_check_error": "Compared internal CrossSourceReport to public ReportView; corrected with existing report_view adapter; see withdrawal.log",
+    "paid_calls": 0
+  },
+  "browser": {
+    "automated_actor": true,
+    "independent_human_approval": false,
+    "api": "127.0.0.1:8027",
+    "ui": "127.0.0.1:8527",
+    "database": "datapilot_test_goal_confirmation_quality_v1_20261031",
+    "default_embedding": "BGE 512 unchanged",
+    "dispatcher": false,
+    "worker": "original execute_one / run_durable with ReportDecisions",
+    "source_final_verified": true,
+    "screenshots": "native CUA captures in conversation; no standalone exported image",
+    "first_chat_full_query_entered": true,
+    "pending_modification_superseded_old_version": true,
+    "confirmed_modification_guard": "existing real PG test pg-edit311 passed; browser modification was pending-contract control",
+    "pre_review_model_calls": 0,
+    "actual_restart_same_3_runs": true,
+    "revoked_report_http": 403,
+    "clarification_no_corpus_no_run": true,
+    "sql_only_no_rag_confirmation": true,
+    "actual_independent_business_observations": 0
+  },
+  "qwen_failure": {
+    "test": "test_qwen_confirmation_original_worker_and_inspector",
+    "junit": "artifacts/p7/goal-confirmation-quality-v1/qwen311.xml",
+    "available_ram_bytes": 3134971904,
+    "minimum_ram_bytes": 3221225472,
+    "observed_result": "403 EMBEDDING_RESOURCE_LIMIT",
+    "ingest_completed_before_failure": true,
+    "full_chain_passed": false,
+    "raw_ingest_log": "artifacts/tests/qwen-web-ebd251cb92904ffeadca9ef7d2ff1fe7/ingest.log",
+    "rerun": "NOT_RUN; no resource threshold reduction or automatic repeated loading",
+    "after_final_service_stop_available_ram_bytes": 4003704832,
+    "note": "later free RAM is not proof of a passed Qwen test"
+  },
+  "historical_integrity": {
+    "original_audit": "history-final.json",
+    "phase2c5_seal_sha256": "342fd7c4cb9990827be5e1680538edebc61b83625a820667e7173837e24aaa0c",
+    "resolved_prior_test_version_deltas": [
+      {
+        "path": "tests/host_goal_probe.py",
+        "current_sha256": "0fd3c42be4d877373ac95176c65a8733dc97cf81649392abb07c1e75beab1828",
+        "already_frozen_in": "Phase 2C.5 result-seal",
+        "not_changed_by_phase2c7": true
+      },
+      {
+        "path": "tests/test_host_goal_requirements.py",
+        "current_sha256": "6a29ffbe0700f524427d627564afc04a3e676f9782e3078d3244339cd8e46019",
+        "already_frozen_in": "Phase 2C.5 result-seal",
+        "not_changed_by_phase2c7": true
+      },
+      {
+        "path": "tests/test_host_goal_safety_v3.py",
+        "current_sha256": "f5f3d81837329a14214c0851be4ba552cf8aa62d8bb778110df41910dc7e73b5",
+        "already_frozen_in": "Phase 2C.5 result-seal",
+        "not_changed_by_phase2c7": true
+      }
+    ],
+    "remaining_unexplained": [],
+    "historical_unique_paths_verified": 2222,
+    "phase2c6_seal_files_verified": 99,
+    "no_new_product_changes": true
+  },
+  "not_run": [
+    "40 conditional formal business slots (20 cases not materialized or falsely registered)",
+    "independent human semantic equivalence review",
+    "new BGE/Qwen paired retrieval/report benefit",
+    "new DeepSeek Live",
+    "80-case validation",
+    "full pytest",
+    "new Linux/Docker/CI",
+    "new resource stress/latency benchmark",
+    "Gate 3"
+  ],
+  "remaining_risks": [
+    "4 finite-case over-rejections; byte/hash preservation does not establish semantic equivalence",
+    "8/9 nonfinite refusals give generic metric/date/scope errors rather than identifying the intended prerequisite",
+    "browser first finite wording was over-rejected and first executed RAG query had no_matches; additional positive control is not independent quality evidence",
+    "clarification date inputs displayed legacy 2025-10 defaults for an explicitly 2026-03 question; not submitted, no wrong metric executed",
+    "Qwen full current control blocked by RAM; prior passes cannot replace this result",
+    "study scorer v1 had real DTO-layout bug; v2 is a disclosed offline repair, not the initial preregistered scorer",
+    "isolated DB retains deliberate unknown-outcome test records and cancellation outbox evidence; do not clear or automatically replay them"
+  ],
+  "release_actions": {
+    "paid_calls": 0,
+    "provider_tokens": 0,
+    "provider_cost_usd": 0,
+    "git_commit_push": false,
+    "remote_ci": "NOT_RUN",
+    "default_bge_changed": false,
+    "historical_campaign_resumed": false,
+    "production_database_touched": false,
+    "temporary_api_ui": "stopped; all DB/artifacts retained"
+  },
+  "admission": {
+    "formal_20x2": false,
+    "new_80_validation": false,
+    "new_deepseek_live": false,
+    "larger_validation_reason": "independent semantic review NOT_VERIFIED, finite over-rejections and current Qwen resource failure remain"
+  }
+}

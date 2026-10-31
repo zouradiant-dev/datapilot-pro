@@ -1,8 +1,21 @@
 # DataPilot Pro 开发约束
 
+## P7 Qwen MCP Lifecycle 补充
+
+- Qwen 仍为显式 opt-in，默认 BGE 不变。`rag_session` 先校验固定解释器/依赖与授权索引，再经宿主专用 `prepare_embedding` 显式加载及预热；就绪上限 60 秒与单次 MCP 调用 10 秒分别计时，不允许 lazy Search 预热、静默 CPU 回退或自动重试。
+- 独立环境只能由固定 `.venv-qwen`、平台锁和显式 `qwen_runtime --install` 绑定，模型不能选择解释器、路径或初始化工具。子进程用 `-I` 和固定源码引导，只携带 RAG Reader；不得引入 Provider、管理员、Registry 或 Durable 写凭据。
+- 只复用原 stdio：同会话模型/Goal 缓存、同部署数据库一个 PG 容量锁、客户端最多两个待准入 Qwen 会话；资源不足失败关闭。该锁不是跨数据库/跨主机全局 GPU 调度器。退出/超时/取消只清理 OS 验证的自有子进程；Linux 绑定父进程退出信号，不改变 Journal/Checkpoint/unknown-outcome 或业务完成标准。
+- 证据与未通过项见 `docs/research/p7-qwen3-mcp-lifecycle-reliability.md`。远端 CI 与付费 Live 未授权，不把本地 CPU 验收写成 CUDA 或业务质量验收。
+
+## P7 Qwen Migration Phase 1 补充
+
+- ADR-017 与 `docs/research/p7-qwen3-embedding-migration-phase1.md` 记录显式实验 profile。默认仍为原 BGE 512/ONNX；Qwen 1024 的 CPU-FP32/CUDA-FP16 只由可信 RagScope 绑定，模型/精度/校准策略/IndexVersion 不得混用。
+- Qwen 复用同一 MCP/Verifier/恢复链，依赖单独锁定在 `.venv-qwen`，不得覆盖 BGE tokenizer、主 `uv.lock` 或旧缓存。0008 只增新表，不改历史迁移；本轮只对新隔离库执行，不能自动迁移生产或切换 Web 默认。
+- 本轮本地 Embedding + PG/MCP + 脚本模型的工程验收不代表 DeepSeek Live 或新的 Holdout 质量。保持10秒MCP与原取消/unknown边界，后续冷启动、跨平台和生产切换另行准入，不自动进入 Gate 3。
+
 ## 架构和范围
 
-- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/recovery.md、docs/cross-source-report.md、docs/product-demo.md、docs/chat-first-ui.md、docs/rag-only-web.md 与相关 ADR。P6C.1/Gate 0–1 为已有基线；用户本轮授权进入 P7 Gate 2，并另行批准一次有界意图 Holdout Live，见 docs/p7-gate2.md。只评测冻结候选，不用结果改 Prompt/规则；不开展 Gate 3 或 P8–P11，不自动提交/推送。保留已启动隔离工程实验的失败/收束记录，但不充作 P7 全部验收。生产公网多租户/RLS、KMS/自动清理和主动 Agent 不在本轮。
+- 先读 docs/architecture.md、docs/roadmap-v2.md、docs/recovery.md、docs/cross-source-report.md、docs/product-demo.md、docs/chat-first-ui.md、docs/rag-only-web.md 与相关 ADR。P6C.1/Gate 0–2 意图评测为已有基线；Gate 2B 按 docs/p7-gate2b-owner-admission.md 的负责人决定完成 v2 工程准入，本轮另获正式业务 Live 的直接授权。该次执行已安全中止，当前边界见 docs/p7-gate2b-live.md；不沿用剩余额度自动重跑。原独立人工/20 条抽样要求已被明确取代，历史 pending 保留且不再单独阻断；P3 定义/数据权限仍独立校验。不得修改冻结候选/Prompt/配方/Verifier/Gold/Scorer，不开展 Gate 3 或 P8–P11，不自动提交/推送，不将中止评测写成验收成功。
 - 按功能依赖与验收 Gate 推进，工作单元/工作日编号不是截止日期；旧七天计划已由 roadmap-v2 取代。SaaS 是唯一首发主业务，drycleaning 是独立可选 Phase F，不复制 Runtime/Harness/Worker。
 - Python 3.11+、src 布局、类型标注、Pydantic 2 严格契约、LangGraph StateGraph 编排。
 - Planner/Coordinator 路由；P4 Worker 只接收宿主生成的 TaskEnvelope，不读取整个 RunState。旧 SQLTask/SQLAgentResult 保留兼容投影，P3 MetricRequest 路径独立。Worker 有独立工具句柄/能力、消息与输出契约，不用不同 Prompt 冒充完整 Multi-Agent。
@@ -82,7 +95,21 @@
 - 原 50 条业务任务是已观测 dev，不能当独立业务 Holdout。当前 Agent 完成、P3 数值/Evidence、RAG 和业务 E2E 均 not_run，Gate 2 整体尚未验收。后续应先封存独立业务/文档 Gold 与可信数据版本，再单独批准相应 Live；不能拿意图正确率或旧 Fake 业务结果填这些分母。
 - 新的意图失败仅作 Bad Case 分析，不修改本次冻结候选、Gold 或阈值后重测；后续改进须新独立集，P11 不能复用已看过的这批 Holdout 调优。
 
+## P7 独立业务 Holdout 准备边界
+
+- docs/research/p7-independent-business-holdout.json 仅公开数量、版本提案和哈希；完整问题、Gold、来源和 canary 留在忽略的 artifacts/p7/business-holdout/sealed-business-final。封存后只能做完整性核验、复制批准的输入/来源；不得读取 Gold 调整候选。新集合也不是独立人员盲编，不能作无偏总体泛化承诺。
+- 首轮准备仅以只读 MCP 的 VALUES CTE 核对独立数值 Gold，该历史阶段没有物化/写入。后续 Gate 2B 已另行授权在新隔离实例物化来源；不将该历史限制误用为当前已完成物化的状态，也不给模型 Gold/确认/扩权入口。
+- Dataset/Corpus/index pin 已按隔离实例物化，Semantic/Metric 仍待明确确认；不得将 planned 口径冒充已登记。Gold 的 verified 表示期望判定，不是实际 P3 Verdict；真实 Evidence/Verification ID 只能由原服务执行后产生。正式结果采集器必须重读原 P3/RAG 引用，不能信任模型自报标志。
+- 当前未来 Live 方案在 docs/research/p7-gate2b-v2-live-plan.json，live_authorized=false；旧 p7-business-holdout-live-plan 为历史提案。Gold 流程决定已生效，剩余 P3 确认、原 Registry 登记/预检和独立 Live 授权须分别满足；旧意图授权余额不得挪用。不为已知空窗口等失败改 Gold/配方，也不从新集合中删除难题。
+- Gate 2B 的新容器为 datapilot-p7b-postgres-1、端口 55440、数据库 datapilot_p7b、独立 businessdata 卷；前轮只在该新实例执行原迁移和一次初始 Seed，本轮不重复，旧 Demo/历史 P7 不写入。13 个 Dataset/5 个原 index 已物化，但 P3 语义/指标定义仍待原 Registry 明确确认；项目负责人 Gold 审核接受不自动批准这些定义。原“尚无审核记录，保持 pending”和 60 pending 历史不改；当前审核流程决策已完成，不重复发起全量签署或 20 条抽样。
+- 原包中 7 条 Document 子集 pin 的不兼容记录保留；当前 v2 已通过五个精确子索引解决，不修改 MCP/阈值/原输入或 Gold、不扩大授权。保留 parent seal、10 条差异及版本映射，不静默改旧 anchor，不缩减 60 条分母。只有真实权限/版本/评分及其他工程 Gate 全通过后才准入。
+- v2 Runner 仅挂载原 src、该次输入/批准资产/固定模型；隐藏镜像内其他 fixtures，没有 Gold、Git、私有审核包、collector key 或 Docker socket。Collector 复用原 inspect_run/Run lease，可信宿主签署采集结果；Scorer 不向候选分发。非付费接线和闭合拒答评分已验证，见 docs/p7-gate2b-v2.md；真实业务 Live 仍 not_run，不混用 Toy/Fake 成绩。
+- P3 原 35 条待确认任务已去重为 34 项；负责人明确批准精确 A/B 32 项并已登记，C 两项仍禁止登记。随后明确授权只改 SQL Decimal 边界，见 docs/p7-numeric-serialization-fix.md：016/052/047 新定向验证与两版本各 262 项适用回归通过，旧 rejected 保留。新实现 freeze 记录唯一授权源码差异，Gold/定义/配方/Verifier 不改。当前 ready_for_live_authorization=true 但 live_allowed=false；不得沿用旧意图授权，不启动正式业务 Holdout/Gate 3，不提交推送。
+- 上述 not_run/待授权/待登记段落为工程准备历史快照。2026-10-25 新的直接 Live 授权已执行：原 Freeze 下 31/60 已观测、25 严格通过、6 未通过，29 not_run；bh2-031 预算预留失败触发原 Runner 停止，61 次真实调用全部已结算、没有 unknown。保留失败及六条宿主拒绝/故意缺定义负例；未运行案例不能冒称通过。RAG 结果键评分汇总缺陷只作诊断，冻结评分保持，不现场修复或重评分提高成绩。完整记录见 docs/p7-gate2b-live.md；本次许可不作为自动重跑、续跑、调预算或进入 Gate 3 的授权。
+
 ## 测试与交付
+
+- 2026-10-25 后续直接授权仅允许 Scorer 版本键修复和离线审计，见 docs/scorer-audit.md。Scorer v2 的 Freeze 仅用于离线评分；旧原件/Seal/v1 25/31 保留，新复评 26/31 不是新 Live。原冻结实现的工作副本仅 Scorer 一项变化，原 Campaign 不得重启或继续；不调用 DeepSeek、不改预算/ContextManager/Prompt/P3/Gold/Runner，不进入 Gate 3，不自动提交推送。其余产品缺陷只记录建议，未经后续授权不得实施。
 
 - 关键模块必须 pytest：先数据，再 AST，再模型/Worker/Graph，再 MCP 协议，再真实 PostgreSQL 集成。
 - Mock、真实 MCP 无 DB 测试、真实数据库+Fake 模型、真实模型 E2E 分开标记与报告。

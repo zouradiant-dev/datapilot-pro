@@ -1,0 +1,2122 @@
+{
+  "production_mcp_compatible": false,
+  "profiles": {
+    "bge-m3": {
+      "indexes": {
+        "calibration": {
+          "index_version": "1532cce572dd4ed1e1a9a9cb848c08e97a962822ececb8c68c36c4b1f376e597",
+          "manifest": {
+            "chunker": {
+              "chars": 192,
+              "overlap": 32,
+              "version": "unicode-window-1"
+            },
+            "corpus_id": "77c35a64-48aa-5186-8480-b71714e42344",
+            "model": {
+              "anonymous_official_download": true,
+              "dimensions": 1024,
+              "files": {
+                "1_Pooling/config.json": {
+                  "bytes": 191,
+                  "git_blob_sha1": "9bd85925f325e25246d94c4918dc02ab98f2a1b7",
+                  "sha256": "e54c164a07274f2eb45bb724f54a79d1efcc90c41573887cd9a29aeee0597352"
+                },
+                "README.md": {
+                  "bytes": 15822,
+                  "git_blob_sha1": "e5a320176edd6ee1cfb256e68ee5ac0004de9447",
+                  "sha256": "0b81ccf9134e5874d620a86e6905062ea999e779c34eb1a7e65eaeb7fe00e450"
+                },
+                "config.json": {
+                  "bytes": 687,
+                  "git_blob_sha1": "e6eda1c72da8f9dc30fdd9b69c73d35af3b7a7ad",
+                  "sha256": "26159e7ad065073448460117eb24b7a4572f6f4e78eadff65dc0a11c052449fa"
+                },
+                "modules.json": {
+                  "bytes": 349,
+                  "git_blob_sha1": "952a9b81c0bfd99800fabf352f69c7ccd46c5e43",
+                  "sha256": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf"
+                },
+                "pytorch_model.bin": {
+                  "bytes": 2271145830,
+                  "git_blob_sha1": "88e71f33b1af45aa960f3fbf6883edc6f014452a",
+                  "sha256": "b5e0ce3470abf5ef3831aa1bd5553b486803e83251590ab7ff35a117cf6aad38"
+                },
+                "sentencepiece.bpe.model": {
+                  "bytes": 5069051,
+                  "git_blob_sha1": "7a3f40a75f870bc1f21700cd414dc2acc431583c",
+                  "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865"
+                },
+                "special_tokens_map.json": {
+                  "bytes": 964,
+                  "git_blob_sha1": "b1879d702821e753ffe4245048eee415d54a9385",
+                  "sha256": "8c785abebea9ae3257b61681b4e6fd8365ceafde980c21970d001e834cf10835"
+                },
+                "tokenizer.json": {
+                  "bytes": 17098108,
+                  "git_blob_sha1": "c8fd8778874b9aa8bdafaa3bbd760f236d237dd6",
+                  "sha256": "21106b6d7dab2952c1d496fb21d5dc9db75c28ed361a05f5020bbba27810dd08"
+                },
+                "tokenizer_config.json": {
+                  "bytes": 444,
+                  "git_blob_sha1": "dc69ac559dcba2694012009aaa108c614541789a",
+                  "sha256": "a62b2b6784f990259fddef5f16388693a8043be4f69179e6a5257eeb3f9abac4"
+                }
+              },
+              "inference": {
+                "batch": 1,
+                "device": "cpu",
+                "max_tokens": 512,
+                "precision": "float32",
+                "recipe": "no instruction + CLS L2",
+                "threads": 2
+              },
+              "path": ".cache/embedding-ab/bge-m3/5617a9f61b028005a4858fdac845db406aefb181",
+              "pytorch_weights_only": true,
+              "repo": "BAAI/bge-m3",
+              "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+              "trust_remote_code": false
+            },
+            "owner": "p7-embedding-ab-20261029",
+            "plan_sha256": "b0093ac7c910342b728a84c21b2061585ace7e7f63b008c8af80cf341130db7a",
+            "schema_version": "embedding-ab-index-1",
+            "sources": [
+              {
+                "bytes": 68,
+                "chunks": [
+                  {
+                    "chunk_id": "ebcc296ce9289387c8310d26ef600c3919fb2b8feee939f2ed644de8ba565746",
+                    "end": 24,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "bab6d6436cc706cab631ab121906cfdb361df59d8fd4186846410675c657d5ce",
+                    "start": 0
+                  }
+                ],
+                "document_id": "e8c8222180c17883b8896eb285d77f7ad5984c3d08e54fae4c1fbcd044794858",
+                "name": "seat-zh.md",
+                "source_id": "6f0d2ac1f79049f8a8c411f3467c630a143be81587e12b9fa90ca18d4a8b7e3c",
+                "text_sha256": "bab6d6436cc706cab631ab121906cfdb361df59d8fd4186846410675c657d5ce",
+                "version": "bab6d6436cc706cab631ab121906cfdb361df59d8fd4186846410675c657d5ce"
+              },
+              {
+                "bytes": 82,
+                "chunks": [
+                  {
+                    "chunk_id": "635efe7b092ab2ab7708b3044d10b0620e58482f980421aa680f2ca8c8939129",
+                    "end": 82,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "3b0ae13943af825c90ddd4f36f6c7ebef5ee73886e0f1bcbdef31582b6575677",
+                    "start": 0
+                  }
+                ],
+                "document_id": "9b9b426279c5d4f64f223728f1a0567e0b4ee33102d3c067c48696c570ea1071",
+                "name": "seat-en.md",
+                "source_id": "30e3d248e49393e9ff4137c2621fe816ec28ec7d96914acca034221211dfb6b0",
+                "text_sha256": "3b0ae13943af825c90ddd4f36f6c7ebef5ee73886e0f1bcbdef31582b6575677",
+                "version": "3b0ae13943af825c90ddd4f36f6c7ebef5ee73886e0f1bcbdef31582b6575677"
+              },
+              {
+                "bytes": 42,
+                "chunks": [
+                  {
+                    "chunk_id": "0fd9d855a82fc0dd56d8075184b814b38a46dbeef39b54a4f7e5a08355f77e11",
+                    "end": 14,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "a4e1ec5396b8e4c964c94b763061c3df8857cf7b16588254b5b9f772beb888a5",
+                    "start": 0
+                  }
+                ],
+                "document_id": "ddbafe45af76c7ead17da2c1429f7a914692bb8459b756f3a494e69397a8da7c",
+                "name": "seat-approval-zh.md",
+                "source_id": "3a73dd7dd2aa6f642b776b105c85a947115a34a5cdc08daec1a1e36c5b45db5a",
+                "text_sha256": "a4e1ec5396b8e4c964c94b763061c3df8857cf7b16588254b5b9f772beb888a5",
+                "version": "a4e1ec5396b8e4c964c94b763061c3df8857cf7b16588254b5b9f772beb888a5"
+              },
+              {
+                "bytes": 51,
+                "chunks": [
+                  {
+                    "chunk_id": "ae121dbc2210da07dee4e6ea649e4d2ce27f1cd4fcd1d60e62b9ae84dde333ca",
+                    "end": 51,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "27a130e42cf6a55b887fbe54e133c7d5eb715011f7b60b2056e48ada16fd7b83",
+                    "start": 0
+                  }
+                ],
+                "document_id": "c563cdffd024b4b2514945bbf8f415a6eef78682662fac10d21892950bb0220a",
+                "name": "seat-approval-en.md",
+                "source_id": "14f89ec34d7a3448320fd40501ca31fa2d5a2c857a0c685ed4496fdefe31c96c",
+                "text_sha256": "27a130e42cf6a55b887fbe54e133c7d5eb715011f7b60b2056e48ada16fd7b83",
+                "version": "27a130e42cf6a55b887fbe54e133c7d5eb715011f7b60b2056e48ada16fd7b83"
+              },
+              {
+                "bytes": 58,
+                "chunks": [
+                  {
+                    "chunk_id": "0313ad6f86525237b4cfbbda70bed62b99b1f4b870998d9a77f9c58e4e3d9650",
+                    "end": 28,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "29091f99f76e640c0ceb319886dd7765cae9bc397886d68c9edda2896906fce5",
+                    "start": 0
+                  }
+                ],
+                "document_id": "ca0cbaaea815267f6b369e7c10cee6168f46817c4387d32edda99311384a635f",
+                "name": "audit-zh.md",
+                "source_id": "c030e4870cac2421a6a242a069daa6aaa4c9573ff6206ce9cfe2f88f27240a6d",
+                "text_sha256": "29091f99f76e640c0ceb319886dd7765cae9bc397886d68c9edda2896906fce5",
+                "version": "29091f99f76e640c0ceb319886dd7765cae9bc397886d68c9edda2896906fce5"
+              },
+              {
+                "bytes": 50,
+                "chunks": [
+                  {
+                    "chunk_id": "d50e18865d960863ace2db8f1448d88a733ec3fcc65b82468562fc9ada725899",
+                    "end": 50,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "a7e311f6a6a23952f620c036db8056fbb465958c16a4084ae075f9957a3b8662",
+                    "start": 0
+                  }
+                ],
+                "document_id": "8da5688b9ea94ed7d681fcb724c851fee977fcce5c57f0e79548696947c16524",
+                "name": "audit-en.md",
+                "source_id": "e2148cb10e763d46bf39b06d80781b98e4c45c94614e40c7fbf0f2911492cbe2",
+                "text_sha256": "a7e311f6a6a23952f620c036db8056fbb465958c16a4084ae075f9957a3b8662",
+                "version": "a7e311f6a6a23952f620c036db8056fbb465958c16a4084ae075f9957a3b8662"
+              },
+              {
+                "bytes": 51,
+                "chunks": [
+                  {
+                    "chunk_id": "e4f777dca5e6aa342b55d24e8d2c6a32916fc2a34195f1a9b688d656c42263d4",
+                    "end": 17,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "7d3187a2b6f888ec076ea4ebd4ec4302a34944f8d26b407a18f37cb202c541bc",
+                    "start": 0
+                  }
+                ],
+                "document_id": "005539bbee6aeed2aeaddc9b4218c571b33e64a44a5dd67c3307e79cb4133dc2",
+                "name": "reminder-zh.md",
+                "source_id": "73f3a9eb39403e454f85d4dc928ab63fb0e573429b2771ecbaa2ac2eac13b213",
+                "text_sha256": "7d3187a2b6f888ec076ea4ebd4ec4302a34944f8d26b407a18f37cb202c541bc",
+                "version": "7d3187a2b6f888ec076ea4ebd4ec4302a34944f8d26b407a18f37cb202c541bc"
+              },
+              {
+                "bytes": 70,
+                "chunks": [
+                  {
+                    "chunk_id": "a478698ec989740f5170e89a437fa23def7e7df9a19908cfd04330ab2ca4cba4",
+                    "end": 70,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "aefe9cddf18d0c77e488a69c6f10b9eebcaa4207e6fd878e850ea155a7d4a5c7",
+                    "start": 0
+                  }
+                ],
+                "document_id": "60d8c3428b0bbed244a46efb3bb2434590dcbb7102c8661e371d09bef6e97702",
+                "name": "reminder-en.md",
+                "source_id": "4888eca3e3ffd4e4f27d0774e03c48f20b1db53149dbbee27b51a3cff933a334",
+                "text_sha256": "aefe9cddf18d0c77e488a69c6f10b9eebcaa4207e6fd878e850ea155a7d4a5c7",
+                "version": "aefe9cddf18d0c77e488a69c6f10b9eebcaa4207e6fd878e850ea155a7d4a5c7"
+              },
+              {
+                "bytes": 72,
+                "chunks": [
+                  {
+                    "chunk_id": "abc0fbb46247da22dba3b5a36855cec4a28d483e06e3cefdfcbc195e79bf29bf",
+                    "end": 26,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "594d5d6d23db5a2a85850e4e73c173a001aeb33de5c55d8ada63170ca8483ba8",
+                    "start": 0
+                  }
+                ],
+                "document_id": "38459166da9570f0f66296fecc07dac7dff45130037a384d399f2fbd0b340840",
+                "name": "sso-zh.md",
+                "source_id": "782c9615eb363358488c779b1d46daa34e9933150ee04102fa14e1e7de9002dd",
+                "text_sha256": "594d5d6d23db5a2a85850e4e73c173a001aeb33de5c55d8ada63170ca8483ba8",
+                "version": "594d5d6d23db5a2a85850e4e73c173a001aeb33de5c55d8ada63170ca8483ba8"
+              },
+              {
+                "bytes": 77,
+                "chunks": [
+                  {
+                    "chunk_id": "a2481e38d39f414be0f056e883ef79b27cbcea196bb41694ee417a3ebccceb98",
+                    "end": 77,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "8bb54b2a5e21cb80787b6559ef241bee117df29d03dbff60e0014ac4b4e45469",
+                    "start": 0
+                  }
+                ],
+                "document_id": "cadcd5c95a642264c7f7faf3652a18acdd5c9e15c1cdc6acbb82d113302d0cbc",
+                "name": "sso-en.md",
+                "source_id": "d49c72460d0fa6a2ab5a8e35b0e82836bcc3f2837626d3c427b8e74d9b16dd47",
+                "text_sha256": "8bb54b2a5e21cb80787b6559ef241bee117df29d03dbff60e0014ac4b4e45469",
+                "version": "8bb54b2a5e21cb80787b6559ef241bee117df29d03dbff60e0014ac4b4e45469"
+              },
+              {
+                "bytes": 93,
+                "chunks": [
+                  {
+                    "chunk_id": "65501525a23add372d136516a16f44170000dddb5d0bce905c6099d97b15c548",
+                    "end": 31,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d",
+                    "start": 0
+                  }
+                ],
+                "document_id": "cdd411325077fb7c3385d425f7d0de26893684581cdfe4e1f3e49607671415fd",
+                "name": "distractor-zh.md",
+                "source_id": "b812f266ef5ab6557a5a0b660bc469fbf7dd775cb556747ed5a62559da82df32",
+                "text_sha256": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d",
+                "version": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d"
+              },
+              {
+                "bytes": 111,
+                "chunks": [
+                  {
+                    "chunk_id": "384221a53645e5b7105afa013370174cdd1e6c52f7a8114823ce3990b3cb8206",
+                    "end": 111,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933",
+                    "start": 0
+                  }
+                ],
+                "document_id": "05ad217f59ae5048d0cc897088d24c454dafdd3bf887588d397102f68b1bf201",
+                "name": "distractor-en.md",
+                "source_id": "c1c7d3b752ccc802fdb0556b2b4ddfadba71065986661a885d1e7dc74a07d6b2",
+                "text_sha256": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933",
+                "version": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933"
+              },
+              {
+                "bytes": 165,
+                "chunks": [
+                  {
+                    "chunk_id": "72dc2a637df9a0556c99ec8a1e539701d39b6850cfb063e414599611b77bd370",
+                    "end": 55,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601",
+                    "start": 0
+                  }
+                ],
+                "document_id": "29896e4680c133ec96e83a5148292f333f4cabcd0d2638141fbadeb534dabb6c",
+                "name": "injection-zh.md",
+                "source_id": "a7a1d0491fb7e5faa882832070850070a70336a76162a41f926b7adfb16b08c4",
+                "text_sha256": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601",
+                "version": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601"
+              },
+              {
+                "bytes": 121,
+                "chunks": [
+                  {
+                    "chunk_id": "5adbd27ead454724c22b67f86cf71034315dc7b3fa1ee7f494902e9f3ef988f4",
+                    "end": 121,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "9e0ca6e3a6f3f2c02702c8a29791b9746e9934ea00a0aef8e209853bf93fe091",
+                    "start": 0
+                  }
+                ],
+                "document_id": "7db86e9e1a0e397bffa221d76956f2c947d3905234acebb78f1fcb854f5e681f",
+                "name": "restricted-en.md",
+                "source_id": "64ebccd8a05aff3bff5c5e18f137f97f31eeb4b69bf9a3c2fd1fb96c33b83876",
+                "text_sha256": "9e0ca6e3a6f3f2c02702c8a29791b9746e9934ea00a0aef8e209853bf93fe091",
+                "version": "9e0ca6e3a6f3f2c02702c8a29791b9746e9934ea00a0aef8e209853bf93fe091"
+              }
+            ],
+            "split": "calibration"
+          }
+        },
+        "validation": {
+          "index_version": "db40bc0ba4a02fa8cf543c1b7faf09ad1a4dc3f05e9c30d150c2f46cb721a27c",
+          "manifest": {
+            "chunker": {
+              "chars": 192,
+              "overlap": 32,
+              "version": "unicode-window-1"
+            },
+            "corpus_id": "0e614f1a-b4b1-5000-a823-ec16da7e8b9e",
+            "model": {
+              "anonymous_official_download": true,
+              "dimensions": 1024,
+              "files": {
+                "1_Pooling/config.json": {
+                  "bytes": 191,
+                  "git_blob_sha1": "9bd85925f325e25246d94c4918dc02ab98f2a1b7",
+                  "sha256": "e54c164a07274f2eb45bb724f54a79d1efcc90c41573887cd9a29aeee0597352"
+                },
+                "README.md": {
+                  "bytes": 15822,
+                  "git_blob_sha1": "e5a320176edd6ee1cfb256e68ee5ac0004de9447",
+                  "sha256": "0b81ccf9134e5874d620a86e6905062ea999e779c34eb1a7e65eaeb7fe00e450"
+                },
+                "config.json": {
+                  "bytes": 687,
+                  "git_blob_sha1": "e6eda1c72da8f9dc30fdd9b69c73d35af3b7a7ad",
+                  "sha256": "26159e7ad065073448460117eb24b7a4572f6f4e78eadff65dc0a11c052449fa"
+                },
+                "modules.json": {
+                  "bytes": 349,
+                  "git_blob_sha1": "952a9b81c0bfd99800fabf352f69c7ccd46c5e43",
+                  "sha256": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf"
+                },
+                "pytorch_model.bin": {
+                  "bytes": 2271145830,
+                  "git_blob_sha1": "88e71f33b1af45aa960f3fbf6883edc6f014452a",
+                  "sha256": "b5e0ce3470abf5ef3831aa1bd5553b486803e83251590ab7ff35a117cf6aad38"
+                },
+                "sentencepiece.bpe.model": {
+                  "bytes": 5069051,
+                  "git_blob_sha1": "7a3f40a75f870bc1f21700cd414dc2acc431583c",
+                  "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865"
+                },
+                "special_tokens_map.json": {
+                  "bytes": 964,
+                  "git_blob_sha1": "b1879d702821e753ffe4245048eee415d54a9385",
+                  "sha256": "8c785abebea9ae3257b61681b4e6fd8365ceafde980c21970d001e834cf10835"
+                },
+                "tokenizer.json": {
+                  "bytes": 17098108,
+                  "git_blob_sha1": "c8fd8778874b9aa8bdafaa3bbd760f236d237dd6",
+                  "sha256": "21106b6d7dab2952c1d496fb21d5dc9db75c28ed361a05f5020bbba27810dd08"
+                },
+                "tokenizer_config.json": {
+                  "bytes": 444,
+                  "git_blob_sha1": "dc69ac559dcba2694012009aaa108c614541789a",
+                  "sha256": "a62b2b6784f990259fddef5f16388693a8043be4f69179e6a5257eeb3f9abac4"
+                }
+              },
+              "inference": {
+                "batch": 1,
+                "device": "cpu",
+                "max_tokens": 512,
+                "precision": "float32",
+                "recipe": "no instruction + CLS L2",
+                "threads": 2
+              },
+              "path": ".cache/embedding-ab/bge-m3/5617a9f61b028005a4858fdac845db406aefb181",
+              "pytorch_weights_only": true,
+              "repo": "BAAI/bge-m3",
+              "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+              "trust_remote_code": false
+            },
+            "owner": "p7-embedding-ab-20261029",
+            "plan_sha256": "b0093ac7c910342b728a84c21b2061585ace7e7f63b008c8af80cf341130db7a",
+            "schema_version": "embedding-ab-index-1",
+            "sources": [
+              {
+                "bytes": 57,
+                "chunks": [
+                  {
+                    "chunk_id": "607c889a27df2a4ee6bd2c060c3bf3ff6e0806cf7f1a955a943168309f851fb6",
+                    "end": 19,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "e1f90fd2063744f18186eaccd0b24d5080cfc9af87101861754b387dd8b6e9e6",
+                    "start": 0
+                  }
+                ],
+                "document_id": "bbbc7481f1fba2731e2493cb90b29e47420f2a5ae16be588955a469fa2a7259a",
+                "name": "trial-zh.md",
+                "source_id": "ff3003b43294c77a42ecadc8427157757799753afbe4ac7d6404158439b81dff",
+                "text_sha256": "e1f90fd2063744f18186eaccd0b24d5080cfc9af87101861754b387dd8b6e9e6",
+                "version": "e1f90fd2063744f18186eaccd0b24d5080cfc9af87101861754b387dd8b6e9e6"
+              },
+              {
+                "bytes": 70,
+                "chunks": [
+                  {
+                    "chunk_id": "a68d5b4d6b0e8da9cb7c259c11ceb925a955dfc71bd59007e9fdc389053fc131",
+                    "end": 70,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "a4224e0711d6cad2da2c5ada555226c93271026af7b87c32c744cf90d1d668d7",
+                    "start": 0
+                  }
+                ],
+                "document_id": "8ae98cab6ecfa96a51b33e1a616d0c7775e36f43d1cfdf698b63b35e5a8c490f",
+                "name": "trial-en.md",
+                "source_id": "9e57940563c1549c9998f7b84c9f059b459f5c0dbb248b6605c75d5bb7ab8618",
+                "text_sha256": "a4224e0711d6cad2da2c5ada555226c93271026af7b87c32c744cf90d1d668d7",
+                "version": "a4224e0711d6cad2da2c5ada555226c93271026af7b87c32c744cf90d1d668d7"
+              },
+              {
+                "bytes": 45,
+                "chunks": [
+                  {
+                    "chunk_id": "1a27c051c3ba3d51532c0a509d0e7f40686e17e5085e346acd03414f2379af14",
+                    "end": 15,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "53204bc7ce13acdfecda731a06e92efd117ab83b017a3aff4455a5dc22943eab",
+                    "start": 0
+                  }
+                ],
+                "document_id": "d35bfa2abdb768ac67ba926aed7f157043c2d9d00c98bb1e96398f2fd761c49e",
+                "name": "trial-approval-zh.md",
+                "source_id": "37c8bea045cf51b4064dc21792c66c5f3f7b7f1562811416d9ce538c7d9e22b7",
+                "text_sha256": "53204bc7ce13acdfecda731a06e92efd117ab83b017a3aff4455a5dc22943eab",
+                "version": "53204bc7ce13acdfecda731a06e92efd117ab83b017a3aff4455a5dc22943eab"
+              },
+              {
+                "bytes": 59,
+                "chunks": [
+                  {
+                    "chunk_id": "babbd510c648bec6ea962b787cada4e67eab2c8e0a5f2577f5eabf77fbc4350c",
+                    "end": 59,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "8b0ae8fe4b47edade9727e496b9544ce16ea5eacf9a96b647b9f4f8327fdddab",
+                    "start": 0
+                  }
+                ],
+                "document_id": "78a64732fd597584b318b30ec99fb0d053cd6e19504b3213627cb38dda40a7c5",
+                "name": "trial-approval-en.md",
+                "source_id": "10ff473e9f93f21b3a6a6d160b8e522bb35fc231d0d1515f447e2df62718fdf7",
+                "text_sha256": "8b0ae8fe4b47edade9727e496b9544ce16ea5eacf9a96b647b9f4f8327fdddab",
+                "version": "8b0ae8fe4b47edade9727e496b9544ce16ea5eacf9a96b647b9f4f8327fdddab"
+              },
+              {
+                "bytes": 66,
+                "chunks": [
+                  {
+                    "chunk_id": "fcfe4dc82b06933143d963526503079556c4b5b2aef592ebdd8305374aca92c1",
+                    "end": 22,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "a79ce6eff191b66a3e643d1ff1cadead80f319cbf2faf680eef09debc3eb839d",
+                    "start": 0
+                  }
+                ],
+                "document_id": "85ab7c3f2581575bcdc291eb66f520b617457ff6e47d2b13530df3b6a09107b1",
+                "name": "reseller-zh.md",
+                "source_id": "e117941d0b43e172ae8b6811fbe5ffee7e98f20179e2761f207d9506a0d100e4",
+                "text_sha256": "a79ce6eff191b66a3e643d1ff1cadead80f319cbf2faf680eef09debc3eb839d",
+                "version": "a79ce6eff191b66a3e643d1ff1cadead80f319cbf2faf680eef09debc3eb839d"
+              },
+              {
+                "bytes": 88,
+                "chunks": [
+                  {
+                    "chunk_id": "db078b2a0c6052998bb93a156ea7a0657de48acdf06e49156e4d4716292ae1b0",
+                    "end": 88,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "19c21403f9b7cb710e5a8e597a1cd66cfb105310415f79fcf945f0f38bdfd007",
+                    "start": 0
+                  }
+                ],
+                "document_id": "23c7f49cddb9123d7341ec112bedb034b8e8c1a3efc7531aab58dd42cd725798",
+                "name": "reseller-en.md",
+                "source_id": "d1039e265b3b425e4ab78db6b74133df29540e5c918cb976a467610fd2051405",
+                "text_sha256": "19c21403f9b7cb710e5a8e597a1cd66cfb105310415f79fcf945f0f38bdfd007",
+                "version": "19c21403f9b7cb710e5a8e597a1cd66cfb105310415f79fcf945f0f38bdfd007"
+              },
+              {
+                "bytes": 54,
+                "chunks": [
+                  {
+                    "chunk_id": "8517a5801d2a04cfdabc78cc02fba004db08f8b744ae3f4cb28773a35a20b3ee",
+                    "end": 18,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "4e14b25a4a13bb262553037c0cb6c2a353ec6ca2bee0a6c3f7f39efcb3da0b5a",
+                    "start": 0
+                  }
+                ],
+                "document_id": "cc64123a7d099d1ab1b015497f3848dbf3f63a33c47b87879e8c1b12bcf821e7",
+                "name": "restore-zh.md",
+                "source_id": "a66db764b19b2aec40e2a152aaf5a0d903e86a11532411d5c7d6f7a6b72896ca",
+                "text_sha256": "4e14b25a4a13bb262553037c0cb6c2a353ec6ca2bee0a6c3f7f39efcb3da0b5a",
+                "version": "4e14b25a4a13bb262553037c0cb6c2a353ec6ca2bee0a6c3f7f39efcb3da0b5a"
+              },
+              {
+                "bytes": 74,
+                "chunks": [
+                  {
+                    "chunk_id": "e5e062ac187730434d8fc3e18eae648e20ec2d65d65e67f276c78694a47467fd",
+                    "end": 74,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "6f587652f64fdeaccce00b6a669688ad56cc16fb93ce638f6c635e831e9e5626",
+                    "start": 0
+                  }
+                ],
+                "document_id": "7b4874543d74b83c2fcab5b6978c8688b8dc804c0dbbb4b679e148bffc030dac",
+                "name": "restore-en.md",
+                "source_id": "b462acb1a228b7a9c5200014957707417f2cb81b3b090dd9a0075a9c6a7fb71e",
+                "text_sha256": "6f587652f64fdeaccce00b6a669688ad56cc16fb93ce638f6c635e831e9e5626",
+                "version": "6f587652f64fdeaccce00b6a669688ad56cc16fb93ce638f6c635e831e9e5626"
+              },
+              {
+                "bytes": 72,
+                "chunks": [
+                  {
+                    "chunk_id": "e2e4e946c4530a0289f185a527a0f7a42727b018801255039def10760636cb04",
+                    "end": 24,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "988a14331eed43a369dd88658d185aa98601a991ad9bab41ae4dd56c9081f74d",
+                    "start": 0
+                  }
+                ],
+                "document_id": "3b1a2cdd6afecb011c19d4c862d8127d45ab5ed522a67443636c3fae2dc4186e",
+                "name": "address-zh.md",
+                "source_id": "546ad2c2447d730555b7e722138211a4b9fddfae61f325b92468d5c7a50e23b6",
+                "text_sha256": "988a14331eed43a369dd88658d185aa98601a991ad9bab41ae4dd56c9081f74d",
+                "version": "988a14331eed43a369dd88658d185aa98601a991ad9bab41ae4dd56c9081f74d"
+              },
+              {
+                "bytes": 93,
+                "chunks": [
+                  {
+                    "chunk_id": "c8d953d559fa1f89149ac437e2fb9924c0813ee640da849a309a9cc35c29f549",
+                    "end": 93,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "3dd523083b545a36834380f5baf1cf3458e7d50d31c8966bd7216eea6d793038",
+                    "start": 0
+                  }
+                ],
+                "document_id": "37054f5bbc1bb8bfb94da4fec5163d95de4d5828cf1907f2e0a808fc7e544b71",
+                "name": "address-en.md",
+                "source_id": "be016d8bc78c2ffc0af19864110370c5ffde0a38c6dce7ecf2ddfc19eccd8ae7",
+                "text_sha256": "3dd523083b545a36834380f5baf1cf3458e7d50d31c8966bd7216eea6d793038",
+                "version": "3dd523083b545a36834380f5baf1cf3458e7d50d31c8966bd7216eea6d793038"
+              },
+              {
+                "bytes": 93,
+                "chunks": [
+                  {
+                    "chunk_id": "5287f9864dab5e8cda3cb4651b0a200b0d69407231854bcd113e4b2ea98a86d0",
+                    "end": 31,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d",
+                    "start": 0
+                  }
+                ],
+                "document_id": "b430271bb9397ed60e4a1ab7ae1f468a4fe2cdeec144b75dec0d6faf9cf77c95",
+                "name": "distractor-zh.md",
+                "source_id": "802bcfb2b279f4555d0480faae8f2b8284b1c76d45532a676a05a5e4bfb23680",
+                "text_sha256": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d",
+                "version": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d"
+              },
+              {
+                "bytes": 111,
+                "chunks": [
+                  {
+                    "chunk_id": "6e8d4c994c22d8ee3669df96356031f179b7ae4bfac84dfe6df6ad7bcb89d611",
+                    "end": 111,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933",
+                    "start": 0
+                  }
+                ],
+                "document_id": "902526f932c0f21ad9f2d488d010bda010b972130438cec6b16ae5de1e76ecd7",
+                "name": "distractor-en.md",
+                "source_id": "59987fc9b7b22268fe7b5c2cec1d186bb8299e03ce7ce5b6cb75daf26b6d270a",
+                "text_sha256": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933",
+                "version": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933"
+              },
+              {
+                "bytes": 165,
+                "chunks": [
+                  {
+                    "chunk_id": "192a2674d8cd8f6a5d711eccfa9749a44fa72d9bcba14c816feed741663b8aae",
+                    "end": 55,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601",
+                    "start": 0
+                  }
+                ],
+                "document_id": "65752b5b511c8e14a4f7e72a145d1ae184c37a311247f4217ffb93fbf1def8a5",
+                "name": "injection-zh.md",
+                "source_id": "45f50717ad4f360e3f4079b2d4debdac355fafab536c9182ef02b28b6a321ef7",
+                "text_sha256": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601",
+                "version": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601"
+              },
+              {
+                "bytes": 121,
+                "chunks": [
+                  {
+                    "chunk_id": "5fbe9efa3b3c82dad3d7780619b3df995fe1b9ebb71698fc91dfdfc033d99039",
+                    "end": 121,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "f6a738e5264c6374e8fa53424c6ad86fd303ac3e499c1f500b8468df0ac8078b",
+                    "start": 0
+                  }
+                ],
+                "document_id": "1398e4f44850a48f3c11a1037d2d6d862802ce49484c3d28e705520f5cb9712b",
+                "name": "restricted-en.md",
+                "source_id": "86157d81eeb81137ab58b6f6de453b7739eda3ab1b5aebe9fef1bf0f4dac89e4",
+                "text_sha256": "f6a738e5264c6374e8fa53424c6ad86fd303ac3e499c1f500b8468df0ac8078b",
+                "version": "f6a738e5264c6374e8fa53424c6ad86fd303ac3e499c1f500b8468df0ac8078b"
+              }
+            ],
+            "split": "validation"
+          }
+        }
+      },
+      "manifest": {
+        "anonymous_official_download": true,
+        "dimensions": 1024,
+        "files": {
+          "1_Pooling/config.json": {
+            "bytes": 191,
+            "git_blob_sha1": "9bd85925f325e25246d94c4918dc02ab98f2a1b7",
+            "sha256": "e54c164a07274f2eb45bb724f54a79d1efcc90c41573887cd9a29aeee0597352"
+          },
+          "README.md": {
+            "bytes": 15822,
+            "git_blob_sha1": "e5a320176edd6ee1cfb256e68ee5ac0004de9447",
+            "sha256": "0b81ccf9134e5874d620a86e6905062ea999e779c34eb1a7e65eaeb7fe00e450"
+          },
+          "config.json": {
+            "bytes": 687,
+            "git_blob_sha1": "e6eda1c72da8f9dc30fdd9b69c73d35af3b7a7ad",
+            "sha256": "26159e7ad065073448460117eb24b7a4572f6f4e78eadff65dc0a11c052449fa"
+          },
+          "modules.json": {
+            "bytes": 349,
+            "git_blob_sha1": "952a9b81c0bfd99800fabf352f69c7ccd46c5e43",
+            "sha256": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf"
+          },
+          "pytorch_model.bin": {
+            "bytes": 2271145830,
+            "git_blob_sha1": "88e71f33b1af45aa960f3fbf6883edc6f014452a",
+            "sha256": "b5e0ce3470abf5ef3831aa1bd5553b486803e83251590ab7ff35a117cf6aad38"
+          },
+          "sentencepiece.bpe.model": {
+            "bytes": 5069051,
+            "git_blob_sha1": "7a3f40a75f870bc1f21700cd414dc2acc431583c",
+            "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865"
+          },
+          "special_tokens_map.json": {
+            "bytes": 964,
+            "git_blob_sha1": "b1879d702821e753ffe4245048eee415d54a9385",
+            "sha256": "8c785abebea9ae3257b61681b4e6fd8365ceafde980c21970d001e834cf10835"
+          },
+          "tokenizer.json": {
+            "bytes": 17098108,
+            "git_blob_sha1": "c8fd8778874b9aa8bdafaa3bbd760f236d237dd6",
+            "sha256": "21106b6d7dab2952c1d496fb21d5dc9db75c28ed361a05f5020bbba27810dd08"
+          },
+          "tokenizer_config.json": {
+            "bytes": 444,
+            "git_blob_sha1": "dc69ac559dcba2694012009aaa108c614541789a",
+            "sha256": "a62b2b6784f990259fddef5f16388693a8043be4f69179e6a5257eeb3f9abac4"
+          }
+        },
+        "inference": {
+          "batch": 1,
+          "device": "cpu",
+          "max_tokens": 512,
+          "precision": "float32",
+          "recipe": "no instruction + CLS L2",
+          "threads": 2
+        },
+        "path": ".cache/embedding-ab/bge-m3/5617a9f61b028005a4858fdac845db406aefb181",
+        "pytorch_weights_only": true,
+        "repo": "BAAI/bge-m3",
+        "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+        "trust_remote_code": false
+      },
+      "sha256": "f7fb0627a2a9878384d3ad92a1f9972e97a6b0c612ec5a4283a4ad14c5d304e8"
+    },
+    "bge-small": {
+      "indexes": {
+        "calibration": {
+          "index_version": "aaaf36cd7d44d5da647e58510b014e348c1f57d91c37e65adfffdebff1961dad",
+          "manifest": {
+            "chunker": {
+              "chars": 192,
+              "overlap": 32,
+              "version": "unicode-window-1"
+            },
+            "corpus_id": "77c35a64-48aa-5186-8480-b71714e42344",
+            "model": {
+              "dimensions": 512,
+              "files": {
+                "model_optimized.onnx": {
+                  "bytes": 94781076,
+                  "sha256": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38"
+                },
+                "tokenizer.json": {
+                  "bytes": 439125,
+                  "sha256": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+                }
+              },
+              "inference": {
+                "batch": 1,
+                "device": "cpu",
+                "max_tokens": 512,
+                "precision": "float32",
+                "recipe": "existing Chinese prefix + CLS L2",
+                "threads": 2
+              },
+              "repo": "Qdrant/bge-small-zh-v1.5",
+              "revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+              "specification": {
+                "dimensions": 512,
+                "files": {
+                  "model_optimized.onnx": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38",
+                  "tokenizer.json": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+                },
+                "fixture": false,
+                "model": "BAAI/bge-small-zh-v1.5/Qdrant-onnx",
+                "recipe": "cls-l2-query-prefix-1/ort-1.31.0/tokenizers-0.23.3",
+                "revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59"
+              }
+            },
+            "owner": "p7-embedding-ab-20261029",
+            "plan_sha256": "b0093ac7c910342b728a84c21b2061585ace7e7f63b008c8af80cf341130db7a",
+            "schema_version": "embedding-ab-index-1",
+            "sources": [
+              {
+                "bytes": 68,
+                "chunks": [
+                  {
+                    "chunk_id": "ebcc296ce9289387c8310d26ef600c3919fb2b8feee939f2ed644de8ba565746",
+                    "end": 24,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "bab6d6436cc706cab631ab121906cfdb361df59d8fd4186846410675c657d5ce",
+                    "start": 0
+                  }
+                ],
+                "document_id": "e8c8222180c17883b8896eb285d77f7ad5984c3d08e54fae4c1fbcd044794858",
+                "name": "seat-zh.md",
+                "source_id": "6f0d2ac1f79049f8a8c411f3467c630a143be81587e12b9fa90ca18d4a8b7e3c",
+                "text_sha256": "bab6d6436cc706cab631ab121906cfdb361df59d8fd4186846410675c657d5ce",
+                "version": "bab6d6436cc706cab631ab121906cfdb361df59d8fd4186846410675c657d5ce"
+              },
+              {
+                "bytes": 82,
+                "chunks": [
+                  {
+                    "chunk_id": "635efe7b092ab2ab7708b3044d10b0620e58482f980421aa680f2ca8c8939129",
+                    "end": 82,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "3b0ae13943af825c90ddd4f36f6c7ebef5ee73886e0f1bcbdef31582b6575677",
+                    "start": 0
+                  }
+                ],
+                "document_id": "9b9b426279c5d4f64f223728f1a0567e0b4ee33102d3c067c48696c570ea1071",
+                "name": "seat-en.md",
+                "source_id": "30e3d248e49393e9ff4137c2621fe816ec28ec7d96914acca034221211dfb6b0",
+                "text_sha256": "3b0ae13943af825c90ddd4f36f6c7ebef5ee73886e0f1bcbdef31582b6575677",
+                "version": "3b0ae13943af825c90ddd4f36f6c7ebef5ee73886e0f1bcbdef31582b6575677"
+              },
+              {
+                "bytes": 42,
+                "chunks": [
+                  {
+                    "chunk_id": "0fd9d855a82fc0dd56d8075184b814b38a46dbeef39b54a4f7e5a08355f77e11",
+                    "end": 14,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "a4e1ec5396b8e4c964c94b763061c3df8857cf7b16588254b5b9f772beb888a5",
+                    "start": 0
+                  }
+                ],
+                "document_id": "ddbafe45af76c7ead17da2c1429f7a914692bb8459b756f3a494e69397a8da7c",
+                "name": "seat-approval-zh.md",
+                "source_id": "3a73dd7dd2aa6f642b776b105c85a947115a34a5cdc08daec1a1e36c5b45db5a",
+                "text_sha256": "a4e1ec5396b8e4c964c94b763061c3df8857cf7b16588254b5b9f772beb888a5",
+                "version": "a4e1ec5396b8e4c964c94b763061c3df8857cf7b16588254b5b9f772beb888a5"
+              },
+              {
+                "bytes": 51,
+                "chunks": [
+                  {
+                    "chunk_id": "ae121dbc2210da07dee4e6ea649e4d2ce27f1cd4fcd1d60e62b9ae84dde333ca",
+                    "end": 51,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "27a130e42cf6a55b887fbe54e133c7d5eb715011f7b60b2056e48ada16fd7b83",
+                    "start": 0
+                  }
+                ],
+                "document_id": "c563cdffd024b4b2514945bbf8f415a6eef78682662fac10d21892950bb0220a",
+                "name": "seat-approval-en.md",
+                "source_id": "14f89ec34d7a3448320fd40501ca31fa2d5a2c857a0c685ed4496fdefe31c96c",
+                "text_sha256": "27a130e42cf6a55b887fbe54e133c7d5eb715011f7b60b2056e48ada16fd7b83",
+                "version": "27a130e42cf6a55b887fbe54e133c7d5eb715011f7b60b2056e48ada16fd7b83"
+              },
+              {
+                "bytes": 58,
+                "chunks": [
+                  {
+                    "chunk_id": "0313ad6f86525237b4cfbbda70bed62b99b1f4b870998d9a77f9c58e4e3d9650",
+                    "end": 28,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "29091f99f76e640c0ceb319886dd7765cae9bc397886d68c9edda2896906fce5",
+                    "start": 0
+                  }
+                ],
+                "document_id": "ca0cbaaea815267f6b369e7c10cee6168f46817c4387d32edda99311384a635f",
+                "name": "audit-zh.md",
+                "source_id": "c030e4870cac2421a6a242a069daa6aaa4c9573ff6206ce9cfe2f88f27240a6d",
+                "text_sha256": "29091f99f76e640c0ceb319886dd7765cae9bc397886d68c9edda2896906fce5",
+                "version": "29091f99f76e640c0ceb319886dd7765cae9bc397886d68c9edda2896906fce5"
+              },
+              {
+                "bytes": 50,
+                "chunks": [
+                  {
+                    "chunk_id": "d50e18865d960863ace2db8f1448d88a733ec3fcc65b82468562fc9ada725899",
+                    "end": 50,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "a7e311f6a6a23952f620c036db8056fbb465958c16a4084ae075f9957a3b8662",
+                    "start": 0
+                  }
+                ],
+                "document_id": "8da5688b9ea94ed7d681fcb724c851fee977fcce5c57f0e79548696947c16524",
+                "name": "audit-en.md",
+                "source_id": "e2148cb10e763d46bf39b06d80781b98e4c45c94614e40c7fbf0f2911492cbe2",
+                "text_sha256": "a7e311f6a6a23952f620c036db8056fbb465958c16a4084ae075f9957a3b8662",
+                "version": "a7e311f6a6a23952f620c036db8056fbb465958c16a4084ae075f9957a3b8662"
+              },
+              {
+                "bytes": 51,
+                "chunks": [
+                  {
+                    "chunk_id": "e4f777dca5e6aa342b55d24e8d2c6a32916fc2a34195f1a9b688d656c42263d4",
+                    "end": 17,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "7d3187a2b6f888ec076ea4ebd4ec4302a34944f8d26b407a18f37cb202c541bc",
+                    "start": 0
+                  }
+                ],
+                "document_id": "005539bbee6aeed2aeaddc9b4218c571b33e64a44a5dd67c3307e79cb4133dc2",
+                "name": "reminder-zh.md",
+                "source_id": "73f3a9eb39403e454f85d4dc928ab63fb0e573429b2771ecbaa2ac2eac13b213",
+                "text_sha256": "7d3187a2b6f888ec076ea4ebd4ec4302a34944f8d26b407a18f37cb202c541bc",
+                "version": "7d3187a2b6f888ec076ea4ebd4ec4302a34944f8d26b407a18f37cb202c541bc"
+              },
+              {
+                "bytes": 70,
+                "chunks": [
+                  {
+                    "chunk_id": "a478698ec989740f5170e89a437fa23def7e7df9a19908cfd04330ab2ca4cba4",
+                    "end": 70,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "aefe9cddf18d0c77e488a69c6f10b9eebcaa4207e6fd878e850ea155a7d4a5c7",
+                    "start": 0
+                  }
+                ],
+                "document_id": "60d8c3428b0bbed244a46efb3bb2434590dcbb7102c8661e371d09bef6e97702",
+                "name": "reminder-en.md",
+                "source_id": "4888eca3e3ffd4e4f27d0774e03c48f20b1db53149dbbee27b51a3cff933a334",
+                "text_sha256": "aefe9cddf18d0c77e488a69c6f10b9eebcaa4207e6fd878e850ea155a7d4a5c7",
+                "version": "aefe9cddf18d0c77e488a69c6f10b9eebcaa4207e6fd878e850ea155a7d4a5c7"
+              },
+              {
+                "bytes": 72,
+                "chunks": [
+                  {
+                    "chunk_id": "abc0fbb46247da22dba3b5a36855cec4a28d483e06e3cefdfcbc195e79bf29bf",
+                    "end": 26,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "594d5d6d23db5a2a85850e4e73c173a001aeb33de5c55d8ada63170ca8483ba8",
+                    "start": 0
+                  }
+                ],
+                "document_id": "38459166da9570f0f66296fecc07dac7dff45130037a384d399f2fbd0b340840",
+                "name": "sso-zh.md",
+                "source_id": "782c9615eb363358488c779b1d46daa34e9933150ee04102fa14e1e7de9002dd",
+                "text_sha256": "594d5d6d23db5a2a85850e4e73c173a001aeb33de5c55d8ada63170ca8483ba8",
+                "version": "594d5d6d23db5a2a85850e4e73c173a001aeb33de5c55d8ada63170ca8483ba8"
+              },
+              {
+                "bytes": 77,
+                "chunks": [
+                  {
+                    "chunk_id": "a2481e38d39f414be0f056e883ef79b27cbcea196bb41694ee417a3ebccceb98",
+                    "end": 77,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "8bb54b2a5e21cb80787b6559ef241bee117df29d03dbff60e0014ac4b4e45469",
+                    "start": 0
+                  }
+                ],
+                "document_id": "cadcd5c95a642264c7f7faf3652a18acdd5c9e15c1cdc6acbb82d113302d0cbc",
+                "name": "sso-en.md",
+                "source_id": "d49c72460d0fa6a2ab5a8e35b0e82836bcc3f2837626d3c427b8e74d9b16dd47",
+                "text_sha256": "8bb54b2a5e21cb80787b6559ef241bee117df29d03dbff60e0014ac4b4e45469",
+                "version": "8bb54b2a5e21cb80787b6559ef241bee117df29d03dbff60e0014ac4b4e45469"
+              },
+              {
+                "bytes": 93,
+                "chunks": [
+                  {
+                    "chunk_id": "65501525a23add372d136516a16f44170000dddb5d0bce905c6099d97b15c548",
+                    "end": 31,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d",
+                    "start": 0
+                  }
+                ],
+                "document_id": "cdd411325077fb7c3385d425f7d0de26893684581cdfe4e1f3e49607671415fd",
+                "name": "distractor-zh.md",
+                "source_id": "b812f266ef5ab6557a5a0b660bc469fbf7dd775cb556747ed5a62559da82df32",
+                "text_sha256": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d",
+                "version": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d"
+              },
+              {
+                "bytes": 111,
+                "chunks": [
+                  {
+                    "chunk_id": "384221a53645e5b7105afa013370174cdd1e6c52f7a8114823ce3990b3cb8206",
+                    "end": 111,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933",
+                    "start": 0
+                  }
+                ],
+                "document_id": "05ad217f59ae5048d0cc897088d24c454dafdd3bf887588d397102f68b1bf201",
+                "name": "distractor-en.md",
+                "source_id": "c1c7d3b752ccc802fdb0556b2b4ddfadba71065986661a885d1e7dc74a07d6b2",
+                "text_sha256": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933",
+                "version": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933"
+              },
+              {
+                "bytes": 165,
+                "chunks": [
+                  {
+                    "chunk_id": "72dc2a637df9a0556c99ec8a1e539701d39b6850cfb063e414599611b77bd370",
+                    "end": 55,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601",
+                    "start": 0
+                  }
+                ],
+                "document_id": "29896e4680c133ec96e83a5148292f333f4cabcd0d2638141fbadeb534dabb6c",
+                "name": "injection-zh.md",
+                "source_id": "a7a1d0491fb7e5faa882832070850070a70336a76162a41f926b7adfb16b08c4",
+                "text_sha256": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601",
+                "version": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601"
+              },
+              {
+                "bytes": 121,
+                "chunks": [
+                  {
+                    "chunk_id": "5adbd27ead454724c22b67f86cf71034315dc7b3fa1ee7f494902e9f3ef988f4",
+                    "end": 121,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "9e0ca6e3a6f3f2c02702c8a29791b9746e9934ea00a0aef8e209853bf93fe091",
+                    "start": 0
+                  }
+                ],
+                "document_id": "7db86e9e1a0e397bffa221d76956f2c947d3905234acebb78f1fcb854f5e681f",
+                "name": "restricted-en.md",
+                "source_id": "64ebccd8a05aff3bff5c5e18f137f97f31eeb4b69bf9a3c2fd1fb96c33b83876",
+                "text_sha256": "9e0ca6e3a6f3f2c02702c8a29791b9746e9934ea00a0aef8e209853bf93fe091",
+                "version": "9e0ca6e3a6f3f2c02702c8a29791b9746e9934ea00a0aef8e209853bf93fe091"
+              }
+            ],
+            "split": "calibration"
+          }
+        },
+        "validation": {
+          "index_version": "bc6274c14807b18a5b49b0cde6f337f0e25ef554c47bcb545ea484551849fb62",
+          "manifest": {
+            "chunker": {
+              "chars": 192,
+              "overlap": 32,
+              "version": "unicode-window-1"
+            },
+            "corpus_id": "0e614f1a-b4b1-5000-a823-ec16da7e8b9e",
+            "model": {
+              "dimensions": 512,
+              "files": {
+                "model_optimized.onnx": {
+                  "bytes": 94781076,
+                  "sha256": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38"
+                },
+                "tokenizer.json": {
+                  "bytes": 439125,
+                  "sha256": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+                }
+              },
+              "inference": {
+                "batch": 1,
+                "device": "cpu",
+                "max_tokens": 512,
+                "precision": "float32",
+                "recipe": "existing Chinese prefix + CLS L2",
+                "threads": 2
+              },
+              "repo": "Qdrant/bge-small-zh-v1.5",
+              "revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+              "specification": {
+                "dimensions": 512,
+                "files": {
+                  "model_optimized.onnx": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38",
+                  "tokenizer.json": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+                },
+                "fixture": false,
+                "model": "BAAI/bge-small-zh-v1.5/Qdrant-onnx",
+                "recipe": "cls-l2-query-prefix-1/ort-1.31.0/tokenizers-0.23.3",
+                "revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59"
+              }
+            },
+            "owner": "p7-embedding-ab-20261029",
+            "plan_sha256": "b0093ac7c910342b728a84c21b2061585ace7e7f63b008c8af80cf341130db7a",
+            "schema_version": "embedding-ab-index-1",
+            "sources": [
+              {
+                "bytes": 57,
+                "chunks": [
+                  {
+                    "chunk_id": "607c889a27df2a4ee6bd2c060c3bf3ff6e0806cf7f1a955a943168309f851fb6",
+                    "end": 19,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "e1f90fd2063744f18186eaccd0b24d5080cfc9af87101861754b387dd8b6e9e6",
+                    "start": 0
+                  }
+                ],
+                "document_id": "bbbc7481f1fba2731e2493cb90b29e47420f2a5ae16be588955a469fa2a7259a",
+                "name": "trial-zh.md",
+                "source_id": "ff3003b43294c77a42ecadc8427157757799753afbe4ac7d6404158439b81dff",
+                "text_sha256": "e1f90fd2063744f18186eaccd0b24d5080cfc9af87101861754b387dd8b6e9e6",
+                "version": "e1f90fd2063744f18186eaccd0b24d5080cfc9af87101861754b387dd8b6e9e6"
+              },
+              {
+                "bytes": 70,
+                "chunks": [
+                  {
+                    "chunk_id": "a68d5b4d6b0e8da9cb7c259c11ceb925a955dfc71bd59007e9fdc389053fc131",
+                    "end": 70,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "a4224e0711d6cad2da2c5ada555226c93271026af7b87c32c744cf90d1d668d7",
+                    "start": 0
+                  }
+                ],
+                "document_id": "8ae98cab6ecfa96a51b33e1a616d0c7775e36f43d1cfdf698b63b35e5a8c490f",
+                "name": "trial-en.md",
+                "source_id": "9e57940563c1549c9998f7b84c9f059b459f5c0dbb248b6605c75d5bb7ab8618",
+                "text_sha256": "a4224e0711d6cad2da2c5ada555226c93271026af7b87c32c744cf90d1d668d7",
+                "version": "a4224e0711d6cad2da2c5ada555226c93271026af7b87c32c744cf90d1d668d7"
+              },
+              {
+                "bytes": 45,
+                "chunks": [
+                  {
+                    "chunk_id": "1a27c051c3ba3d51532c0a509d0e7f40686e17e5085e346acd03414f2379af14",
+                    "end": 15,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "53204bc7ce13acdfecda731a06e92efd117ab83b017a3aff4455a5dc22943eab",
+                    "start": 0
+                  }
+                ],
+                "document_id": "d35bfa2abdb768ac67ba926aed7f157043c2d9d00c98bb1e96398f2fd761c49e",
+                "name": "trial-approval-zh.md",
+                "source_id": "37c8bea045cf51b4064dc21792c66c5f3f7b7f1562811416d9ce538c7d9e22b7",
+                "text_sha256": "53204bc7ce13acdfecda731a06e92efd117ab83b017a3aff4455a5dc22943eab",
+                "version": "53204bc7ce13acdfecda731a06e92efd117ab83b017a3aff4455a5dc22943eab"
+              },
+              {
+                "bytes": 59,
+                "chunks": [
+                  {
+                    "chunk_id": "babbd510c648bec6ea962b787cada4e67eab2c8e0a5f2577f5eabf77fbc4350c",
+                    "end": 59,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "8b0ae8fe4b47edade9727e496b9544ce16ea5eacf9a96b647b9f4f8327fdddab",
+                    "start": 0
+                  }
+                ],
+                "document_id": "78a64732fd597584b318b30ec99fb0d053cd6e19504b3213627cb38dda40a7c5",
+                "name": "trial-approval-en.md",
+                "source_id": "10ff473e9f93f21b3a6a6d160b8e522bb35fc231d0d1515f447e2df62718fdf7",
+                "text_sha256": "8b0ae8fe4b47edade9727e496b9544ce16ea5eacf9a96b647b9f4f8327fdddab",
+                "version": "8b0ae8fe4b47edade9727e496b9544ce16ea5eacf9a96b647b9f4f8327fdddab"
+              },
+              {
+                "bytes": 66,
+                "chunks": [
+                  {
+                    "chunk_id": "fcfe4dc82b06933143d963526503079556c4b5b2aef592ebdd8305374aca92c1",
+                    "end": 22,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "a79ce6eff191b66a3e643d1ff1cadead80f319cbf2faf680eef09debc3eb839d",
+                    "start": 0
+                  }
+                ],
+                "document_id": "85ab7c3f2581575bcdc291eb66f520b617457ff6e47d2b13530df3b6a09107b1",
+                "name": "reseller-zh.md",
+                "source_id": "e117941d0b43e172ae8b6811fbe5ffee7e98f20179e2761f207d9506a0d100e4",
+                "text_sha256": "a79ce6eff191b66a3e643d1ff1cadead80f319cbf2faf680eef09debc3eb839d",
+                "version": "a79ce6eff191b66a3e643d1ff1cadead80f319cbf2faf680eef09debc3eb839d"
+              },
+              {
+                "bytes": 88,
+                "chunks": [
+                  {
+                    "chunk_id": "db078b2a0c6052998bb93a156ea7a0657de48acdf06e49156e4d4716292ae1b0",
+                    "end": 88,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "19c21403f9b7cb710e5a8e597a1cd66cfb105310415f79fcf945f0f38bdfd007",
+                    "start": 0
+                  }
+                ],
+                "document_id": "23c7f49cddb9123d7341ec112bedb034b8e8c1a3efc7531aab58dd42cd725798",
+                "name": "reseller-en.md",
+                "source_id": "d1039e265b3b425e4ab78db6b74133df29540e5c918cb976a467610fd2051405",
+                "text_sha256": "19c21403f9b7cb710e5a8e597a1cd66cfb105310415f79fcf945f0f38bdfd007",
+                "version": "19c21403f9b7cb710e5a8e597a1cd66cfb105310415f79fcf945f0f38bdfd007"
+              },
+              {
+                "bytes": 54,
+                "chunks": [
+                  {
+                    "chunk_id": "8517a5801d2a04cfdabc78cc02fba004db08f8b744ae3f4cb28773a35a20b3ee",
+                    "end": 18,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "4e14b25a4a13bb262553037c0cb6c2a353ec6ca2bee0a6c3f7f39efcb3da0b5a",
+                    "start": 0
+                  }
+                ],
+                "document_id": "cc64123a7d099d1ab1b015497f3848dbf3f63a33c47b87879e8c1b12bcf821e7",
+                "name": "restore-zh.md",
+                "source_id": "a66db764b19b2aec40e2a152aaf5a0d903e86a11532411d5c7d6f7a6b72896ca",
+                "text_sha256": "4e14b25a4a13bb262553037c0cb6c2a353ec6ca2bee0a6c3f7f39efcb3da0b5a",
+                "version": "4e14b25a4a13bb262553037c0cb6c2a353ec6ca2bee0a6c3f7f39efcb3da0b5a"
+              },
+              {
+                "bytes": 74,
+                "chunks": [
+                  {
+                    "chunk_id": "e5e062ac187730434d8fc3e18eae648e20ec2d65d65e67f276c78694a47467fd",
+                    "end": 74,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "6f587652f64fdeaccce00b6a669688ad56cc16fb93ce638f6c635e831e9e5626",
+                    "start": 0
+                  }
+                ],
+                "document_id": "7b4874543d74b83c2fcab5b6978c8688b8dc804c0dbbb4b679e148bffc030dac",
+                "name": "restore-en.md",
+                "source_id": "b462acb1a228b7a9c5200014957707417f2cb81b3b090dd9a0075a9c6a7fb71e",
+                "text_sha256": "6f587652f64fdeaccce00b6a669688ad56cc16fb93ce638f6c635e831e9e5626",
+                "version": "6f587652f64fdeaccce00b6a669688ad56cc16fb93ce638f6c635e831e9e5626"
+              },
+              {
+                "bytes": 72,
+                "chunks": [
+                  {
+                    "chunk_id": "e2e4e946c4530a0289f185a527a0f7a42727b018801255039def10760636cb04",
+                    "end": 24,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "988a14331eed43a369dd88658d185aa98601a991ad9bab41ae4dd56c9081f74d",
+                    "start": 0
+                  }
+                ],
+                "document_id": "3b1a2cdd6afecb011c19d4c862d8127d45ab5ed522a67443636c3fae2dc4186e",
+                "name": "address-zh.md",
+                "source_id": "546ad2c2447d730555b7e722138211a4b9fddfae61f325b92468d5c7a50e23b6",
+                "text_sha256": "988a14331eed43a369dd88658d185aa98601a991ad9bab41ae4dd56c9081f74d",
+                "version": "988a14331eed43a369dd88658d185aa98601a991ad9bab41ae4dd56c9081f74d"
+              },
+              {
+                "bytes": 93,
+                "chunks": [
+                  {
+                    "chunk_id": "c8d953d559fa1f89149ac437e2fb9924c0813ee640da849a309a9cc35c29f549",
+                    "end": 93,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "3dd523083b545a36834380f5baf1cf3458e7d50d31c8966bd7216eea6d793038",
+                    "start": 0
+                  }
+                ],
+                "document_id": "37054f5bbc1bb8bfb94da4fec5163d95de4d5828cf1907f2e0a808fc7e544b71",
+                "name": "address-en.md",
+                "source_id": "be016d8bc78c2ffc0af19864110370c5ffde0a38c6dce7ecf2ddfc19eccd8ae7",
+                "text_sha256": "3dd523083b545a36834380f5baf1cf3458e7d50d31c8966bd7216eea6d793038",
+                "version": "3dd523083b545a36834380f5baf1cf3458e7d50d31c8966bd7216eea6d793038"
+              },
+              {
+                "bytes": 93,
+                "chunks": [
+                  {
+                    "chunk_id": "5287f9864dab5e8cda3cb4651b0a200b0d69407231854bcd113e4b2ea98a86d0",
+                    "end": 31,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d",
+                    "start": 0
+                  }
+                ],
+                "document_id": "b430271bb9397ed60e4a1ab7ae1f468a4fe2cdeec144b75dec0d6faf9cf77c95",
+                "name": "distractor-zh.md",
+                "source_id": "802bcfb2b279f4555d0480faae8f2b8284b1c76d45532a676a05a5e4bfb23680",
+                "text_sha256": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d",
+                "version": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d"
+              },
+              {
+                "bytes": 111,
+                "chunks": [
+                  {
+                    "chunk_id": "6e8d4c994c22d8ee3669df96356031f179b7ae4bfac84dfe6df6ad7bcb89d611",
+                    "end": 111,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933",
+                    "start": 0
+                  }
+                ],
+                "document_id": "902526f932c0f21ad9f2d488d010bda010b972130438cec6b16ae5de1e76ecd7",
+                "name": "distractor-en.md",
+                "source_id": "59987fc9b7b22268fe7b5c2cec1d186bb8299e03ce7ce5b6cb75daf26b6d270a",
+                "text_sha256": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933",
+                "version": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933"
+              },
+              {
+                "bytes": 165,
+                "chunks": [
+                  {
+                    "chunk_id": "192a2674d8cd8f6a5d711eccfa9749a44fa72d9bcba14c816feed741663b8aae",
+                    "end": 55,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601",
+                    "start": 0
+                  }
+                ],
+                "document_id": "65752b5b511c8e14a4f7e72a145d1ae184c37a311247f4217ffb93fbf1def8a5",
+                "name": "injection-zh.md",
+                "source_id": "45f50717ad4f360e3f4079b2d4debdac355fafab536c9182ef02b28b6a321ef7",
+                "text_sha256": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601",
+                "version": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601"
+              },
+              {
+                "bytes": 121,
+                "chunks": [
+                  {
+                    "chunk_id": "5fbe9efa3b3c82dad3d7780619b3df995fe1b9ebb71698fc91dfdfc033d99039",
+                    "end": 121,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "f6a738e5264c6374e8fa53424c6ad86fd303ac3e499c1f500b8468df0ac8078b",
+                    "start": 0
+                  }
+                ],
+                "document_id": "1398e4f44850a48f3c11a1037d2d6d862802ce49484c3d28e705520f5cb9712b",
+                "name": "restricted-en.md",
+                "source_id": "86157d81eeb81137ab58b6f6de453b7739eda3ab1b5aebe9fef1bf0f4dac89e4",
+                "text_sha256": "f6a738e5264c6374e8fa53424c6ad86fd303ac3e499c1f500b8468df0ac8078b",
+                "version": "f6a738e5264c6374e8fa53424c6ad86fd303ac3e499c1f500b8468df0ac8078b"
+              }
+            ],
+            "split": "validation"
+          }
+        }
+      },
+      "manifest": {
+        "dimensions": 512,
+        "files": {
+          "model_optimized.onnx": {
+            "bytes": 94781076,
+            "sha256": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38"
+          },
+          "tokenizer.json": {
+            "bytes": 439125,
+            "sha256": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+          }
+        },
+        "inference": {
+          "batch": 1,
+          "device": "cpu",
+          "max_tokens": 512,
+          "precision": "float32",
+          "recipe": "existing Chinese prefix + CLS L2",
+          "threads": 2
+        },
+        "repo": "Qdrant/bge-small-zh-v1.5",
+        "revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+        "specification": {
+          "dimensions": 512,
+          "files": {
+            "model_optimized.onnx": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38",
+            "tokenizer.json": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+          },
+          "fixture": false,
+          "model": "BAAI/bge-small-zh-v1.5/Qdrant-onnx",
+          "recipe": "cls-l2-query-prefix-1/ort-1.31.0/tokenizers-0.23.3",
+          "revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59"
+        }
+      },
+      "sha256": "70311465b1d4080edd02781dc9f681b6986b58cf2cf2a4fad9c2af9f23b54e22"
+    },
+    "qwen3": {
+      "indexes": {
+        "calibration": {
+          "index_version": "8824281d4132b19716f08153becc566af3251b9eb0bd652cf42f75dace1c4359",
+          "manifest": {
+            "chunker": {
+              "chars": 192,
+              "overlap": 32,
+              "version": "unicode-window-1"
+            },
+            "corpus_id": "77c35a64-48aa-5186-8480-b71714e42344",
+            "model": {
+              "anonymous_official_download": true,
+              "dimensions": 1024,
+              "files": {
+                "1_Pooling/config.json": {
+                  "bytes": 313,
+                  "git_blob_sha1": "b6291baabbc39f9792d6759883a47d7d5bd0fbcf",
+                  "sha256": "37bf193fa101f19101bfad9c31d3eb0f786e247b7b1e5cb7f007d730eed1ddbd"
+                },
+                "README.md": {
+                  "bytes": 17237,
+                  "git_blob_sha1": "00a82ea60dfb1d8aed899c16e2b4f12673cd2f79",
+                  "sha256": "c34d9b7e5a267ad3fdd13227a253686bc90844ff4744a2a6a86c7c905e3d06f3"
+                },
+                "config.json": {
+                  "bytes": 727,
+                  "git_blob_sha1": "cef2749ee93607b8f9a58ec72f4f6bfaf874e71d",
+                  "sha256": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9"
+                },
+                "merges.txt": {
+                  "bytes": 1671853,
+                  "git_blob_sha1": "31349551d90c7606f325fe0f11bbb8bd5fa0d7c7",
+                  "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "model.safetensors": {
+                  "bytes": 1191586416,
+                  "git_blob_sha1": "9116264a405846ebfe4e95556b63b1ca07c892a0",
+                  "sha256": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd"
+                },
+                "modules.json": {
+                  "bytes": 349,
+                  "git_blob_sha1": "952a9b81c0bfd99800fabf352f69c7ccd46c5e43",
+                  "sha256": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf"
+                },
+                "tokenizer.json": {
+                  "bytes": 11423705,
+                  "git_blob_sha1": "18a4abbf4a408dc534006a455544dcc195f356d2",
+                  "sha256": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a"
+                },
+                "tokenizer_config.json": {
+                  "bytes": 9706,
+                  "git_blob_sha1": "7345216a0785dc7086e8c245b2a9d3896ce2b756",
+                  "sha256": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0"
+                },
+                "vocab.json": {
+                  "bytes": 2776833,
+                  "git_blob_sha1": "4783fe10ac3adce15ac8f358ef5462739852c569",
+                  "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+                }
+              },
+              "inference": {
+                "batch": 1,
+                "device": "cpu",
+                "max_tokens": 512,
+                "precision": "float32",
+                "recipe": "Instruct: Given a SaaS operations question, retrieve relevant passages that answer the question.\\nQuery: <query>; last non-padding token L2",
+                "threads": 2
+              },
+              "path": ".cache/embedding-ab/qwen3/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+              "pytorch_weights_only": true,
+              "repo": "Qwen/Qwen3-Embedding-0.6B",
+              "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+              "trust_remote_code": false
+            },
+            "owner": "p7-embedding-ab-20261029",
+            "plan_sha256": "b0093ac7c910342b728a84c21b2061585ace7e7f63b008c8af80cf341130db7a",
+            "schema_version": "embedding-ab-index-1",
+            "sources": [
+              {
+                "bytes": 68,
+                "chunks": [
+                  {
+                    "chunk_id": "ebcc296ce9289387c8310d26ef600c3919fb2b8feee939f2ed644de8ba565746",
+                    "end": 24,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "bab6d6436cc706cab631ab121906cfdb361df59d8fd4186846410675c657d5ce",
+                    "start": 0
+                  }
+                ],
+                "document_id": "e8c8222180c17883b8896eb285d77f7ad5984c3d08e54fae4c1fbcd044794858",
+                "name": "seat-zh.md",
+                "source_id": "6f0d2ac1f79049f8a8c411f3467c630a143be81587e12b9fa90ca18d4a8b7e3c",
+                "text_sha256": "bab6d6436cc706cab631ab121906cfdb361df59d8fd4186846410675c657d5ce",
+                "version": "bab6d6436cc706cab631ab121906cfdb361df59d8fd4186846410675c657d5ce"
+              },
+              {
+                "bytes": 82,
+                "chunks": [
+                  {
+                    "chunk_id": "635efe7b092ab2ab7708b3044d10b0620e58482f980421aa680f2ca8c8939129",
+                    "end": 82,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "3b0ae13943af825c90ddd4f36f6c7ebef5ee73886e0f1bcbdef31582b6575677",
+                    "start": 0
+                  }
+                ],
+                "document_id": "9b9b426279c5d4f64f223728f1a0567e0b4ee33102d3c067c48696c570ea1071",
+                "name": "seat-en.md",
+                "source_id": "30e3d248e49393e9ff4137c2621fe816ec28ec7d96914acca034221211dfb6b0",
+                "text_sha256": "3b0ae13943af825c90ddd4f36f6c7ebef5ee73886e0f1bcbdef31582b6575677",
+                "version": "3b0ae13943af825c90ddd4f36f6c7ebef5ee73886e0f1bcbdef31582b6575677"
+              },
+              {
+                "bytes": 42,
+                "chunks": [
+                  {
+                    "chunk_id": "0fd9d855a82fc0dd56d8075184b814b38a46dbeef39b54a4f7e5a08355f77e11",
+                    "end": 14,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "a4e1ec5396b8e4c964c94b763061c3df8857cf7b16588254b5b9f772beb888a5",
+                    "start": 0
+                  }
+                ],
+                "document_id": "ddbafe45af76c7ead17da2c1429f7a914692bb8459b756f3a494e69397a8da7c",
+                "name": "seat-approval-zh.md",
+                "source_id": "3a73dd7dd2aa6f642b776b105c85a947115a34a5cdc08daec1a1e36c5b45db5a",
+                "text_sha256": "a4e1ec5396b8e4c964c94b763061c3df8857cf7b16588254b5b9f772beb888a5",
+                "version": "a4e1ec5396b8e4c964c94b763061c3df8857cf7b16588254b5b9f772beb888a5"
+              },
+              {
+                "bytes": 51,
+                "chunks": [
+                  {
+                    "chunk_id": "ae121dbc2210da07dee4e6ea649e4d2ce27f1cd4fcd1d60e62b9ae84dde333ca",
+                    "end": 51,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "27a130e42cf6a55b887fbe54e133c7d5eb715011f7b60b2056e48ada16fd7b83",
+                    "start": 0
+                  }
+                ],
+                "document_id": "c563cdffd024b4b2514945bbf8f415a6eef78682662fac10d21892950bb0220a",
+                "name": "seat-approval-en.md",
+                "source_id": "14f89ec34d7a3448320fd40501ca31fa2d5a2c857a0c685ed4496fdefe31c96c",
+                "text_sha256": "27a130e42cf6a55b887fbe54e133c7d5eb715011f7b60b2056e48ada16fd7b83",
+                "version": "27a130e42cf6a55b887fbe54e133c7d5eb715011f7b60b2056e48ada16fd7b83"
+              },
+              {
+                "bytes": 58,
+                "chunks": [
+                  {
+                    "chunk_id": "0313ad6f86525237b4cfbbda70bed62b99b1f4b870998d9a77f9c58e4e3d9650",
+                    "end": 28,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "29091f99f76e640c0ceb319886dd7765cae9bc397886d68c9edda2896906fce5",
+                    "start": 0
+                  }
+                ],
+                "document_id": "ca0cbaaea815267f6b369e7c10cee6168f46817c4387d32edda99311384a635f",
+                "name": "audit-zh.md",
+                "source_id": "c030e4870cac2421a6a242a069daa6aaa4c9573ff6206ce9cfe2f88f27240a6d",
+                "text_sha256": "29091f99f76e640c0ceb319886dd7765cae9bc397886d68c9edda2896906fce5",
+                "version": "29091f99f76e640c0ceb319886dd7765cae9bc397886d68c9edda2896906fce5"
+              },
+              {
+                "bytes": 50,
+                "chunks": [
+                  {
+                    "chunk_id": "d50e18865d960863ace2db8f1448d88a733ec3fcc65b82468562fc9ada725899",
+                    "end": 50,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "a7e311f6a6a23952f620c036db8056fbb465958c16a4084ae075f9957a3b8662",
+                    "start": 0
+                  }
+                ],
+                "document_id": "8da5688b9ea94ed7d681fcb724c851fee977fcce5c57f0e79548696947c16524",
+                "name": "audit-en.md",
+                "source_id": "e2148cb10e763d46bf39b06d80781b98e4c45c94614e40c7fbf0f2911492cbe2",
+                "text_sha256": "a7e311f6a6a23952f620c036db8056fbb465958c16a4084ae075f9957a3b8662",
+                "version": "a7e311f6a6a23952f620c036db8056fbb465958c16a4084ae075f9957a3b8662"
+              },
+              {
+                "bytes": 51,
+                "chunks": [
+                  {
+                    "chunk_id": "e4f777dca5e6aa342b55d24e8d2c6a32916fc2a34195f1a9b688d656c42263d4",
+                    "end": 17,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "7d3187a2b6f888ec076ea4ebd4ec4302a34944f8d26b407a18f37cb202c541bc",
+                    "start": 0
+                  }
+                ],
+                "document_id": "005539bbee6aeed2aeaddc9b4218c571b33e64a44a5dd67c3307e79cb4133dc2",
+                "name": "reminder-zh.md",
+                "source_id": "73f3a9eb39403e454f85d4dc928ab63fb0e573429b2771ecbaa2ac2eac13b213",
+                "text_sha256": "7d3187a2b6f888ec076ea4ebd4ec4302a34944f8d26b407a18f37cb202c541bc",
+                "version": "7d3187a2b6f888ec076ea4ebd4ec4302a34944f8d26b407a18f37cb202c541bc"
+              },
+              {
+                "bytes": 70,
+                "chunks": [
+                  {
+                    "chunk_id": "a478698ec989740f5170e89a437fa23def7e7df9a19908cfd04330ab2ca4cba4",
+                    "end": 70,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "aefe9cddf18d0c77e488a69c6f10b9eebcaa4207e6fd878e850ea155a7d4a5c7",
+                    "start": 0
+                  }
+                ],
+                "document_id": "60d8c3428b0bbed244a46efb3bb2434590dcbb7102c8661e371d09bef6e97702",
+                "name": "reminder-en.md",
+                "source_id": "4888eca3e3ffd4e4f27d0774e03c48f20b1db53149dbbee27b51a3cff933a334",
+                "text_sha256": "aefe9cddf18d0c77e488a69c6f10b9eebcaa4207e6fd878e850ea155a7d4a5c7",
+                "version": "aefe9cddf18d0c77e488a69c6f10b9eebcaa4207e6fd878e850ea155a7d4a5c7"
+              },
+              {
+                "bytes": 72,
+                "chunks": [
+                  {
+                    "chunk_id": "abc0fbb46247da22dba3b5a36855cec4a28d483e06e3cefdfcbc195e79bf29bf",
+                    "end": 26,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "594d5d6d23db5a2a85850e4e73c173a001aeb33de5c55d8ada63170ca8483ba8",
+                    "start": 0
+                  }
+                ],
+                "document_id": "38459166da9570f0f66296fecc07dac7dff45130037a384d399f2fbd0b340840",
+                "name": "sso-zh.md",
+                "source_id": "782c9615eb363358488c779b1d46daa34e9933150ee04102fa14e1e7de9002dd",
+                "text_sha256": "594d5d6d23db5a2a85850e4e73c173a001aeb33de5c55d8ada63170ca8483ba8",
+                "version": "594d5d6d23db5a2a85850e4e73c173a001aeb33de5c55d8ada63170ca8483ba8"
+              },
+              {
+                "bytes": 77,
+                "chunks": [
+                  {
+                    "chunk_id": "a2481e38d39f414be0f056e883ef79b27cbcea196bb41694ee417a3ebccceb98",
+                    "end": 77,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "8bb54b2a5e21cb80787b6559ef241bee117df29d03dbff60e0014ac4b4e45469",
+                    "start": 0
+                  }
+                ],
+                "document_id": "cadcd5c95a642264c7f7faf3652a18acdd5c9e15c1cdc6acbb82d113302d0cbc",
+                "name": "sso-en.md",
+                "source_id": "d49c72460d0fa6a2ab5a8e35b0e82836bcc3f2837626d3c427b8e74d9b16dd47",
+                "text_sha256": "8bb54b2a5e21cb80787b6559ef241bee117df29d03dbff60e0014ac4b4e45469",
+                "version": "8bb54b2a5e21cb80787b6559ef241bee117df29d03dbff60e0014ac4b4e45469"
+              },
+              {
+                "bytes": 93,
+                "chunks": [
+                  {
+                    "chunk_id": "65501525a23add372d136516a16f44170000dddb5d0bce905c6099d97b15c548",
+                    "end": 31,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d",
+                    "start": 0
+                  }
+                ],
+                "document_id": "cdd411325077fb7c3385d425f7d0de26893684581cdfe4e1f3e49607671415fd",
+                "name": "distractor-zh.md",
+                "source_id": "b812f266ef5ab6557a5a0b660bc469fbf7dd775cb556747ed5a62559da82df32",
+                "text_sha256": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d",
+                "version": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d"
+              },
+              {
+                "bytes": 111,
+                "chunks": [
+                  {
+                    "chunk_id": "384221a53645e5b7105afa013370174cdd1e6c52f7a8114823ce3990b3cb8206",
+                    "end": 111,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933",
+                    "start": 0
+                  }
+                ],
+                "document_id": "05ad217f59ae5048d0cc897088d24c454dafdd3bf887588d397102f68b1bf201",
+                "name": "distractor-en.md",
+                "source_id": "c1c7d3b752ccc802fdb0556b2b4ddfadba71065986661a885d1e7dc74a07d6b2",
+                "text_sha256": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933",
+                "version": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933"
+              },
+              {
+                "bytes": 165,
+                "chunks": [
+                  {
+                    "chunk_id": "72dc2a637df9a0556c99ec8a1e539701d39b6850cfb063e414599611b77bd370",
+                    "end": 55,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601",
+                    "start": 0
+                  }
+                ],
+                "document_id": "29896e4680c133ec96e83a5148292f333f4cabcd0d2638141fbadeb534dabb6c",
+                "name": "injection-zh.md",
+                "source_id": "a7a1d0491fb7e5faa882832070850070a70336a76162a41f926b7adfb16b08c4",
+                "text_sha256": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601",
+                "version": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601"
+              },
+              {
+                "bytes": 121,
+                "chunks": [
+                  {
+                    "chunk_id": "5adbd27ead454724c22b67f86cf71034315dc7b3fa1ee7f494902e9f3ef988f4",
+                    "end": 121,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "9e0ca6e3a6f3f2c02702c8a29791b9746e9934ea00a0aef8e209853bf93fe091",
+                    "start": 0
+                  }
+                ],
+                "document_id": "7db86e9e1a0e397bffa221d76956f2c947d3905234acebb78f1fcb854f5e681f",
+                "name": "restricted-en.md",
+                "source_id": "64ebccd8a05aff3bff5c5e18f137f97f31eeb4b69bf9a3c2fd1fb96c33b83876",
+                "text_sha256": "9e0ca6e3a6f3f2c02702c8a29791b9746e9934ea00a0aef8e209853bf93fe091",
+                "version": "9e0ca6e3a6f3f2c02702c8a29791b9746e9934ea00a0aef8e209853bf93fe091"
+              }
+            ],
+            "split": "calibration"
+          }
+        },
+        "validation": {
+          "index_version": "c68c4bfe8d2c51a75cf78cf286faebffcc5f50a2f2bf897a91c25a3d5107028d",
+          "manifest": {
+            "chunker": {
+              "chars": 192,
+              "overlap": 32,
+              "version": "unicode-window-1"
+            },
+            "corpus_id": "0e614f1a-b4b1-5000-a823-ec16da7e8b9e",
+            "model": {
+              "anonymous_official_download": true,
+              "dimensions": 1024,
+              "files": {
+                "1_Pooling/config.json": {
+                  "bytes": 313,
+                  "git_blob_sha1": "b6291baabbc39f9792d6759883a47d7d5bd0fbcf",
+                  "sha256": "37bf193fa101f19101bfad9c31d3eb0f786e247b7b1e5cb7f007d730eed1ddbd"
+                },
+                "README.md": {
+                  "bytes": 17237,
+                  "git_blob_sha1": "00a82ea60dfb1d8aed899c16e2b4f12673cd2f79",
+                  "sha256": "c34d9b7e5a267ad3fdd13227a253686bc90844ff4744a2a6a86c7c905e3d06f3"
+                },
+                "config.json": {
+                  "bytes": 727,
+                  "git_blob_sha1": "cef2749ee93607b8f9a58ec72f4f6bfaf874e71d",
+                  "sha256": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9"
+                },
+                "merges.txt": {
+                  "bytes": 1671853,
+                  "git_blob_sha1": "31349551d90c7606f325fe0f11bbb8bd5fa0d7c7",
+                  "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+                },
+                "model.safetensors": {
+                  "bytes": 1191586416,
+                  "git_blob_sha1": "9116264a405846ebfe4e95556b63b1ca07c892a0",
+                  "sha256": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd"
+                },
+                "modules.json": {
+                  "bytes": 349,
+                  "git_blob_sha1": "952a9b81c0bfd99800fabf352f69c7ccd46c5e43",
+                  "sha256": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf"
+                },
+                "tokenizer.json": {
+                  "bytes": 11423705,
+                  "git_blob_sha1": "18a4abbf4a408dc534006a455544dcc195f356d2",
+                  "sha256": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a"
+                },
+                "tokenizer_config.json": {
+                  "bytes": 9706,
+                  "git_blob_sha1": "7345216a0785dc7086e8c245b2a9d3896ce2b756",
+                  "sha256": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0"
+                },
+                "vocab.json": {
+                  "bytes": 2776833,
+                  "git_blob_sha1": "4783fe10ac3adce15ac8f358ef5462739852c569",
+                  "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+                }
+              },
+              "inference": {
+                "batch": 1,
+                "device": "cpu",
+                "max_tokens": 512,
+                "precision": "float32",
+                "recipe": "Instruct: Given a SaaS operations question, retrieve relevant passages that answer the question.\\nQuery: <query>; last non-padding token L2",
+                "threads": 2
+              },
+              "path": ".cache/embedding-ab/qwen3/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+              "pytorch_weights_only": true,
+              "repo": "Qwen/Qwen3-Embedding-0.6B",
+              "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+              "trust_remote_code": false
+            },
+            "owner": "p7-embedding-ab-20261029",
+            "plan_sha256": "b0093ac7c910342b728a84c21b2061585ace7e7f63b008c8af80cf341130db7a",
+            "schema_version": "embedding-ab-index-1",
+            "sources": [
+              {
+                "bytes": 57,
+                "chunks": [
+                  {
+                    "chunk_id": "607c889a27df2a4ee6bd2c060c3bf3ff6e0806cf7f1a955a943168309f851fb6",
+                    "end": 19,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "e1f90fd2063744f18186eaccd0b24d5080cfc9af87101861754b387dd8b6e9e6",
+                    "start": 0
+                  }
+                ],
+                "document_id": "bbbc7481f1fba2731e2493cb90b29e47420f2a5ae16be588955a469fa2a7259a",
+                "name": "trial-zh.md",
+                "source_id": "ff3003b43294c77a42ecadc8427157757799753afbe4ac7d6404158439b81dff",
+                "text_sha256": "e1f90fd2063744f18186eaccd0b24d5080cfc9af87101861754b387dd8b6e9e6",
+                "version": "e1f90fd2063744f18186eaccd0b24d5080cfc9af87101861754b387dd8b6e9e6"
+              },
+              {
+                "bytes": 70,
+                "chunks": [
+                  {
+                    "chunk_id": "a68d5b4d6b0e8da9cb7c259c11ceb925a955dfc71bd59007e9fdc389053fc131",
+                    "end": 70,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "a4224e0711d6cad2da2c5ada555226c93271026af7b87c32c744cf90d1d668d7",
+                    "start": 0
+                  }
+                ],
+                "document_id": "8ae98cab6ecfa96a51b33e1a616d0c7775e36f43d1cfdf698b63b35e5a8c490f",
+                "name": "trial-en.md",
+                "source_id": "9e57940563c1549c9998f7b84c9f059b459f5c0dbb248b6605c75d5bb7ab8618",
+                "text_sha256": "a4224e0711d6cad2da2c5ada555226c93271026af7b87c32c744cf90d1d668d7",
+                "version": "a4224e0711d6cad2da2c5ada555226c93271026af7b87c32c744cf90d1d668d7"
+              },
+              {
+                "bytes": 45,
+                "chunks": [
+                  {
+                    "chunk_id": "1a27c051c3ba3d51532c0a509d0e7f40686e17e5085e346acd03414f2379af14",
+                    "end": 15,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "53204bc7ce13acdfecda731a06e92efd117ab83b017a3aff4455a5dc22943eab",
+                    "start": 0
+                  }
+                ],
+                "document_id": "d35bfa2abdb768ac67ba926aed7f157043c2d9d00c98bb1e96398f2fd761c49e",
+                "name": "trial-approval-zh.md",
+                "source_id": "37c8bea045cf51b4064dc21792c66c5f3f7b7f1562811416d9ce538c7d9e22b7",
+                "text_sha256": "53204bc7ce13acdfecda731a06e92efd117ab83b017a3aff4455a5dc22943eab",
+                "version": "53204bc7ce13acdfecda731a06e92efd117ab83b017a3aff4455a5dc22943eab"
+              },
+              {
+                "bytes": 59,
+                "chunks": [
+                  {
+                    "chunk_id": "babbd510c648bec6ea962b787cada4e67eab2c8e0a5f2577f5eabf77fbc4350c",
+                    "end": 59,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "8b0ae8fe4b47edade9727e496b9544ce16ea5eacf9a96b647b9f4f8327fdddab",
+                    "start": 0
+                  }
+                ],
+                "document_id": "78a64732fd597584b318b30ec99fb0d053cd6e19504b3213627cb38dda40a7c5",
+                "name": "trial-approval-en.md",
+                "source_id": "10ff473e9f93f21b3a6a6d160b8e522bb35fc231d0d1515f447e2df62718fdf7",
+                "text_sha256": "8b0ae8fe4b47edade9727e496b9544ce16ea5eacf9a96b647b9f4f8327fdddab",
+                "version": "8b0ae8fe4b47edade9727e496b9544ce16ea5eacf9a96b647b9f4f8327fdddab"
+              },
+              {
+                "bytes": 66,
+                "chunks": [
+                  {
+                    "chunk_id": "fcfe4dc82b06933143d963526503079556c4b5b2aef592ebdd8305374aca92c1",
+                    "end": 22,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "a79ce6eff191b66a3e643d1ff1cadead80f319cbf2faf680eef09debc3eb839d",
+                    "start": 0
+                  }
+                ],
+                "document_id": "85ab7c3f2581575bcdc291eb66f520b617457ff6e47d2b13530df3b6a09107b1",
+                "name": "reseller-zh.md",
+                "source_id": "e117941d0b43e172ae8b6811fbe5ffee7e98f20179e2761f207d9506a0d100e4",
+                "text_sha256": "a79ce6eff191b66a3e643d1ff1cadead80f319cbf2faf680eef09debc3eb839d",
+                "version": "a79ce6eff191b66a3e643d1ff1cadead80f319cbf2faf680eef09debc3eb839d"
+              },
+              {
+                "bytes": 88,
+                "chunks": [
+                  {
+                    "chunk_id": "db078b2a0c6052998bb93a156ea7a0657de48acdf06e49156e4d4716292ae1b0",
+                    "end": 88,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "19c21403f9b7cb710e5a8e597a1cd66cfb105310415f79fcf945f0f38bdfd007",
+                    "start": 0
+                  }
+                ],
+                "document_id": "23c7f49cddb9123d7341ec112bedb034b8e8c1a3efc7531aab58dd42cd725798",
+                "name": "reseller-en.md",
+                "source_id": "d1039e265b3b425e4ab78db6b74133df29540e5c918cb976a467610fd2051405",
+                "text_sha256": "19c21403f9b7cb710e5a8e597a1cd66cfb105310415f79fcf945f0f38bdfd007",
+                "version": "19c21403f9b7cb710e5a8e597a1cd66cfb105310415f79fcf945f0f38bdfd007"
+              },
+              {
+                "bytes": 54,
+                "chunks": [
+                  {
+                    "chunk_id": "8517a5801d2a04cfdabc78cc02fba004db08f8b744ae3f4cb28773a35a20b3ee",
+                    "end": 18,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "4e14b25a4a13bb262553037c0cb6c2a353ec6ca2bee0a6c3f7f39efcb3da0b5a",
+                    "start": 0
+                  }
+                ],
+                "document_id": "cc64123a7d099d1ab1b015497f3848dbf3f63a33c47b87879e8c1b12bcf821e7",
+                "name": "restore-zh.md",
+                "source_id": "a66db764b19b2aec40e2a152aaf5a0d903e86a11532411d5c7d6f7a6b72896ca",
+                "text_sha256": "4e14b25a4a13bb262553037c0cb6c2a353ec6ca2bee0a6c3f7f39efcb3da0b5a",
+                "version": "4e14b25a4a13bb262553037c0cb6c2a353ec6ca2bee0a6c3f7f39efcb3da0b5a"
+              },
+              {
+                "bytes": 74,
+                "chunks": [
+                  {
+                    "chunk_id": "e5e062ac187730434d8fc3e18eae648e20ec2d65d65e67f276c78694a47467fd",
+                    "end": 74,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "6f587652f64fdeaccce00b6a669688ad56cc16fb93ce638f6c635e831e9e5626",
+                    "start": 0
+                  }
+                ],
+                "document_id": "7b4874543d74b83c2fcab5b6978c8688b8dc804c0dbbb4b679e148bffc030dac",
+                "name": "restore-en.md",
+                "source_id": "b462acb1a228b7a9c5200014957707417f2cb81b3b090dd9a0075a9c6a7fb71e",
+                "text_sha256": "6f587652f64fdeaccce00b6a669688ad56cc16fb93ce638f6c635e831e9e5626",
+                "version": "6f587652f64fdeaccce00b6a669688ad56cc16fb93ce638f6c635e831e9e5626"
+              },
+              {
+                "bytes": 72,
+                "chunks": [
+                  {
+                    "chunk_id": "e2e4e946c4530a0289f185a527a0f7a42727b018801255039def10760636cb04",
+                    "end": 24,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "988a14331eed43a369dd88658d185aa98601a991ad9bab41ae4dd56c9081f74d",
+                    "start": 0
+                  }
+                ],
+                "document_id": "3b1a2cdd6afecb011c19d4c862d8127d45ab5ed522a67443636c3fae2dc4186e",
+                "name": "address-zh.md",
+                "source_id": "546ad2c2447d730555b7e722138211a4b9fddfae61f325b92468d5c7a50e23b6",
+                "text_sha256": "988a14331eed43a369dd88658d185aa98601a991ad9bab41ae4dd56c9081f74d",
+                "version": "988a14331eed43a369dd88658d185aa98601a991ad9bab41ae4dd56c9081f74d"
+              },
+              {
+                "bytes": 93,
+                "chunks": [
+                  {
+                    "chunk_id": "c8d953d559fa1f89149ac437e2fb9924c0813ee640da849a309a9cc35c29f549",
+                    "end": 93,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "3dd523083b545a36834380f5baf1cf3458e7d50d31c8966bd7216eea6d793038",
+                    "start": 0
+                  }
+                ],
+                "document_id": "37054f5bbc1bb8bfb94da4fec5163d95de4d5828cf1907f2e0a808fc7e544b71",
+                "name": "address-en.md",
+                "source_id": "be016d8bc78c2ffc0af19864110370c5ffde0a38c6dce7ecf2ddfc19eccd8ae7",
+                "text_sha256": "3dd523083b545a36834380f5baf1cf3458e7d50d31c8966bd7216eea6d793038",
+                "version": "3dd523083b545a36834380f5baf1cf3458e7d50d31c8966bd7216eea6d793038"
+              },
+              {
+                "bytes": 93,
+                "chunks": [
+                  {
+                    "chunk_id": "5287f9864dab5e8cda3cb4651b0a200b0d69407231854bcd113e4b2ea98a86d0",
+                    "end": 31,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d",
+                    "start": 0
+                  }
+                ],
+                "document_id": "b430271bb9397ed60e4a1ab7ae1f468a4fe2cdeec144b75dec0d6faf9cf77c95",
+                "name": "distractor-zh.md",
+                "source_id": "802bcfb2b279f4555d0480faae8f2b8284b1c76d45532a676a05a5e4bfb23680",
+                "text_sha256": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d",
+                "version": "8c5389d640bdb7f3cde87453634e4c1a6250b6d69103ae28e4b85c9b1718076d"
+              },
+              {
+                "bytes": 111,
+                "chunks": [
+                  {
+                    "chunk_id": "6e8d4c994c22d8ee3669df96356031f179b7ae4bfac84dfe6df6ad7bcb89d611",
+                    "end": 111,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933",
+                    "start": 0
+                  }
+                ],
+                "document_id": "902526f932c0f21ad9f2d488d010bda010b972130438cec6b16ae5de1e76ecd7",
+                "name": "distractor-en.md",
+                "source_id": "59987fc9b7b22268fe7b5c2cec1d186bb8299e03ce7ce5b6cb75daf26b6d270a",
+                "text_sha256": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933",
+                "version": "5e6cc0a0955d2081db3e1483a6e5a5bbe2cc54326a0d2a08b8559321c5c0b933"
+              },
+              {
+                "bytes": 165,
+                "chunks": [
+                  {
+                    "chunk_id": "192a2674d8cd8f6a5d711eccfa9749a44fa72d9bcba14c816feed741663b8aae",
+                    "end": 55,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601",
+                    "start": 0
+                  }
+                ],
+                "document_id": "65752b5b511c8e14a4f7e72a145d1ae184c37a311247f4217ffb93fbf1def8a5",
+                "name": "injection-zh.md",
+                "source_id": "45f50717ad4f360e3f4079b2d4debdac355fafab536c9182ef02b28b6a321ef7",
+                "text_sha256": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601",
+                "version": "88e1fcc7840950690e2fb23480a58f29a7d7ea46062fee11a3d760a69e09f601"
+              },
+              {
+                "bytes": 121,
+                "chunks": [
+                  {
+                    "chunk_id": "5fbe9efa3b3c82dad3d7780619b3df995fe1b9ebb71698fc91dfdfc033d99039",
+                    "end": 121,
+                    "line_end": 1,
+                    "line_start": 1,
+                    "sha256": "f6a738e5264c6374e8fa53424c6ad86fd303ac3e499c1f500b8468df0ac8078b",
+                    "start": 0
+                  }
+                ],
+                "document_id": "1398e4f44850a48f3c11a1037d2d6d862802ce49484c3d28e705520f5cb9712b",
+                "name": "restricted-en.md",
+                "source_id": "86157d81eeb81137ab58b6f6de453b7739eda3ab1b5aebe9fef1bf0f4dac89e4",
+                "text_sha256": "f6a738e5264c6374e8fa53424c6ad86fd303ac3e499c1f500b8468df0ac8078b",
+                "version": "f6a738e5264c6374e8fa53424c6ad86fd303ac3e499c1f500b8468df0ac8078b"
+              }
+            ],
+            "split": "validation"
+          }
+        }
+      },
+      "manifest": {
+        "anonymous_official_download": true,
+        "dimensions": 1024,
+        "files": {
+          "1_Pooling/config.json": {
+            "bytes": 313,
+            "git_blob_sha1": "b6291baabbc39f9792d6759883a47d7d5bd0fbcf",
+            "sha256": "37bf193fa101f19101bfad9c31d3eb0f786e247b7b1e5cb7f007d730eed1ddbd"
+          },
+          "README.md": {
+            "bytes": 17237,
+            "git_blob_sha1": "00a82ea60dfb1d8aed899c16e2b4f12673cd2f79",
+            "sha256": "c34d9b7e5a267ad3fdd13227a253686bc90844ff4744a2a6a86c7c905e3d06f3"
+          },
+          "config.json": {
+            "bytes": 727,
+            "git_blob_sha1": "cef2749ee93607b8f9a58ec72f4f6bfaf874e71d",
+            "sha256": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9"
+          },
+          "merges.txt": {
+            "bytes": 1671853,
+            "git_blob_sha1": "31349551d90c7606f325fe0f11bbb8bd5fa0d7c7",
+            "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+          },
+          "model.safetensors": {
+            "bytes": 1191586416,
+            "git_blob_sha1": "9116264a405846ebfe4e95556b63b1ca07c892a0",
+            "sha256": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd"
+          },
+          "modules.json": {
+            "bytes": 349,
+            "git_blob_sha1": "952a9b81c0bfd99800fabf352f69c7ccd46c5e43",
+            "sha256": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf"
+          },
+          "tokenizer.json": {
+            "bytes": 11423705,
+            "git_blob_sha1": "18a4abbf4a408dc534006a455544dcc195f356d2",
+            "sha256": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a"
+          },
+          "tokenizer_config.json": {
+            "bytes": 9706,
+            "git_blob_sha1": "7345216a0785dc7086e8c245b2a9d3896ce2b756",
+            "sha256": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0"
+          },
+          "vocab.json": {
+            "bytes": 2776833,
+            "git_blob_sha1": "4783fe10ac3adce15ac8f358ef5462739852c569",
+            "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+          }
+        },
+        "inference": {
+          "batch": 1,
+          "device": "cpu",
+          "max_tokens": 512,
+          "precision": "float32",
+          "recipe": "Instruct: Given a SaaS operations question, retrieve relevant passages that answer the question.\\nQuery: <query>; last non-padding token L2",
+          "threads": 2
+        },
+        "path": ".cache/embedding-ab/qwen3/97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+        "pytorch_weights_only": true,
+        "repo": "Qwen/Qwen3-Embedding-0.6B",
+        "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+        "trust_remote_code": false
+      },
+      "sha256": "72feb215c10fbf270bd68d9f1d3ae0df9c1f56043ff648431f7c6b8345d367bc"
+    }
+  },
+  "research_only": true,
+  "schema_version": "embedding-ab-public-manifests-1"
+}

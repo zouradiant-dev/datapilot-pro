@@ -1,0 +1,104 @@
+{
+  "schema_version": "p7-gate2b-budget-1",
+  "checked_at": "2026-10-24T16:01:44.727801+00:00",
+  "status": "not_authorized",
+  "real_provider_requests": 0,
+  "provider_profile_offline_check": {
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "endpoint": "https://api.deepseek.com",
+    "key_configured": true,
+    "key_disclosed": false,
+    "thinking": "disabled_by_original_profile",
+    "sdk_retries": 0,
+    "provider_http_capability_test": "not_run"
+  },
+  "pricing_snapshot": {
+    "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "verified_at": "2026-10-24T14:46:56.173650+00:00",
+    "model": "deepseek-flash",
+    "documented_version": "DeepSeek-V4.1-Flash-1017",
+    "unit": "USD per 1000000 tokens",
+    "off_peak": {
+      "input_hit": "0.003",
+      "input_miss": "0.15",
+      "output": "0.6"
+    },
+    "peak": {
+      "input_hit": "0.006",
+      "input_miss": "0.3",
+      "output": "1.2"
+    },
+    "billed_cost_known": false
+  },
+  "pricing_rechecked_this_gate2b": true,
+  "rates_changed": false,
+  "all_gateway_calls_included": true,
+  "lanes": {
+    "sql_only": {
+      "runs": 20,
+      "calls_upper_bound": 160,
+      "tokens_upper_bound": 360000,
+      "estimated_full_budget_cache_miss_usd": {
+        "off_peak": "0.1404",
+        "peak": "0.2808"
+      }
+    },
+    "rag_only": {
+      "runs": 20,
+      "calls_upper_bound": 160,
+      "tokens_upper_bound": 360000,
+      "estimated_full_budget_cache_miss_usd": {
+        "off_peak": "0.1404",
+        "peak": "0.2808"
+      }
+    },
+    "sql_rag": {
+      "runs": 20,
+      "calls_upper_bound": 160,
+      "tokens_upper_bound": 360000,
+      "estimated_full_budget_cache_miss_usd": {
+        "off_peak": "0.1404",
+        "peak": "0.2808"
+      }
+    }
+  },
+  "combined_envelope": {
+    "runs": 60,
+    "calls_per_run": 8,
+    "tokens_per_run": 18000,
+    "output_per_call": 1200,
+    "total_calls": 480,
+    "total_tokens": 1080000,
+    "concurrency": 1,
+    "thinking": "disabled",
+    "sdk_retries": 0,
+    "failed_run_automatic_paid_reruns": 0,
+    "unknown_outcome": "Stop campaign; original Journal conservative charge; reconcile before any action"
+  },
+  "combined_estimate_usd": {
+    "cache_assumption": "All input cache-miss; cache benefit not guaranteed",
+    "max_output_tokens": 576000,
+    "remaining_input_tokens": 504000,
+    "all_budget_consumed_off_peak": "0.4212",
+    "all_budget_consumed_peak": "0.8424",
+    "loose_all_tokens_at_highest_rate_off_peak": "0.648",
+    "loose_all_tokens_at_highest_rate_peak": "1.296",
+    "actual_bill": null,
+    "boundary": "Planning estimate, not an enforced monetary cap or provider bill; output limit, usage uncertainty, price/model aliases must be rechecked before authorization"
+  },
+  "actual_bill": null,
+  "stop_on": [
+    "scope/source/version/hash mismatch",
+    "budget exhaustion",
+    "unknown or issued call",
+    "collector signature failure",
+    "original verifier rejection"
+  ],
+  "retry_owner": "Original Gateway/Journal/Worker ownership unchanged; no automatic paid retry",
+  "unknown_outcome": "RECOVERY_UNCERTAIN; conservative ledger; manual reconciliation, never assume not sent",
+  "rollback": "Keep isolated records/volume and stop; no delete/reseed or restoring withdrawn grants",
+  "live_authorization_required": true,
+  "old_authorizations_reusable": false,
+  "isolated_network_note": "Current candidate network is internal with no external route; authorized Live network/campaign launch is not wired or approved"
+}

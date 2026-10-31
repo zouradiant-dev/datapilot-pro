@@ -1,0 +1,54 @@
+{
+  "all_live_p3_journal_artifact_checkpoint_ledger_rows_unchanged": true,
+  "approvals": 0,
+  "changed_existing_files": [],
+  "checked_at": "2026-10-28T04:51:42.345302+00:00",
+  "commit_push": false,
+  "evaluator_freeze_sha256": "08869ca7f1f605eb97c3165b7928d915c71c77804a772f97ce064cc6510f3220",
+  "evaluator_id": "p7-scorer-v4-d4bf6aa23fe0",
+  "final_contract_regressions": {
+    "python311": 109,
+    "python313": 109
+  },
+  "fresh_inspect_run": "expired: not bypassed; prior signed NoModel receipts plus current PG/Saver SELECT witness used",
+  "gate3_started": false,
+  "gold_scorer_v3_protocol_unchanged": true,
+  "model_calls_before_after": [
+    81,
+    81
+  ],
+  "model_calls_this_phase": 0,
+  "model_tokens_before_after": [
+    116059,
+    116059
+  ],
+  "new_dev_database_additions": {
+    "rag.chunks": 3,
+    "rag.corpora": 1,
+    "rag.indexes": 1,
+    "rag.sources": 3
+  },
+  "not_run": 31,
+  "observed": 29,
+  "old_campaign_status": "BENCHMARK INVALID — FREEZE / EVALUATION INTEGRITY",
+  "old_rows_changed_or_deleted": {},
+  "old_v3_result_seal_sha256": "062044d3ad1b93ce85ec5b9457398d93a88d31ac8c4fb164ed59f1a216cc568a",
+  "old_v3_seal_files_verified": 375,
+  "planned": 60,
+  "preexisting_database_rows": 69574,
+  "product_src_unchanged": true,
+  "protected_existing_files": 933,
+  "rag_audit_status": "RAG AUDIT COMPLETE",
+  "real_pg_regressions": {
+    "python311": 3,
+    "python313": 3
+  },
+  "release_hardening": "Known failed searches count against quota; old draft and red counterexample retained",
+  "runtime_invocations": 0,
+  "schema_version": "p7-scorer-v4-integrity-1",
+  "scorer_v4_status": "SCORER V4 PASSED",
+  "ttl_extensions": 0,
+  "unknown_calls": 0,
+  "v3_strict": 20,
+  "v4_diagnostic_strict": 20
+}

@@ -1,0 +1,677 @@
+{
+  "schema_version": "p7-committed-source-mapping-1",
+  "product_commit": "a37fb43e2487d6df8d4b10267749b726d60ae9e7",
+  "historical_head": "f8b122438d2c67ab26e618ecded72ecc18454015",
+  "frozen_raw_worktree_source_tree_sha256": "5a11a01af573c7ee456f2fac7946051f1ce829fe9eba2ba8624370f6c4d7f3a1",
+  "committed_blob_source_tree_sha256": "5d0884dc22d6868a83ba9745c5a5c5de861a080f4c1736f4bdf19f95eb9ae5de",
+  "eol_policy": "Existing Git normalization retained; all normalized contents exactly equal. Restore each file EOL in an independent export only to reproduce raw Windows freeze bytes.",
+  "historical_freeze_not_rewritten": true,
+  "files": [
+    {
+      "path": "src/datapilot/__init__.py",
+      "frozen_worktree_sha256": "f8f2ff1b042653d3022b3e778796eb7910456b27a509f40b7504bbd90c13784e",
+      "committed_blob_sha256": "f8f2ff1b042653d3022b3e778796eb7910456b27a509f40b7504bbd90c13784e",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/agents/__init__.py",
+      "frozen_worktree_sha256": "9937274c647ca03d8286e43b31bb7106843a6631532a44ee354529b7d14af8c7",
+      "committed_blob_sha256": "9937274c647ca03d8286e43b31bb7106843a6631532a44ee354529b7d14af8c7",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/agents/sql.py",
+      "frozen_worktree_sha256": "978826d024d99b3785178bc7cf5b3975c85d47714e382d250fb0d0ca19600d4d",
+      "committed_blob_sha256": "978826d024d99b3785178bc7cf5b3975c85d47714e382d250fb0d0ca19600d4d",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/agents/supervisor.py",
+      "frozen_worktree_sha256": "9ba744439d5edac3e9576a795fa3c6da2987424c850fffd2c26f7b5b7598d8a7",
+      "committed_blob_sha256": "cab9c8c20df2780356ea1f35e3385903214440cc59a7755f9d1999ab3267a050",
+      "frozen_eol": "CRLF"
+    },
+    {
+      "path": "src/datapilot/cli.py",
+      "frozen_worktree_sha256": "9e1eb877e2ce443f053bc92cae850272057240957c5668b5c5089614fcf376f8",
+      "committed_blob_sha256": "9e1eb877e2ce443f053bc92cae850272057240957c5668b5c5089614fcf376f8",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/config.py",
+      "frozen_worktree_sha256": "c9fe5b671ae771f93593be8addedc84a383008e4906791a88be9b03361909b70",
+      "committed_blob_sha256": "c9fe5b671ae771f93593be8addedc84a383008e4906791a88be9b03361909b70",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/contracts.py",
+      "frozen_worktree_sha256": "de83f400b002b4f01b28fae351e2693617c57cd88bf58512108fc5831a48fe64",
+      "committed_blob_sha256": "de83f400b002b4f01b28fae351e2693617c57cd88bf58512108fc5831a48fe64",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/data/__init__.py",
+      "frozen_worktree_sha256": "0a3a4777da834cf433dc5e93edb1b7c84378d7b2a24105cee37dfc70c2b78b6a",
+      "committed_blob_sha256": "0a3a4777da834cf433dc5e93edb1b7c84378d7b2a24105cee37dfc70c2b78b6a",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/data/generator.py",
+      "frozen_worktree_sha256": "88cbfeec8d08c5288e647f45f2e3f68e5c3c16b47558b6ea8b3ac726ec40bf96",
+      "committed_blob_sha256": "88cbfeec8d08c5288e647f45f2e3f68e5c3c16b47558b6ea8b3ac726ec40bf96",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/data/semantic_demo.py",
+      "frozen_worktree_sha256": "747b25d79dabb01cc99b3d40edabf5695999905510519da807f9b58505e2db5b",
+      "committed_blob_sha256": "747b25d79dabb01cc99b3d40edabf5695999905510519da807f9b58505e2db5b",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/datasets/__init__.py",
+      "frozen_worktree_sha256": "7323c26e1890fe6a161adf67b869bbb4ec4a5bbab9eb2630dd17f09e0696ed10",
+      "committed_blob_sha256": "7323c26e1890fe6a161adf67b869bbb4ec4a5bbab9eb2630dd17f09e0696ed10",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/datasets/cli.py",
+      "frozen_worktree_sha256": "77c304cf02a5effeb86871c52c80858778fa8ac06596ba430edd291f2a2a40af",
+      "committed_blob_sha256": "77c304cf02a5effeb86871c52c80858778fa8ac06596ba430edd291f2a2a40af",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/datasets/contracts.py",
+      "frozen_worktree_sha256": "3a9a3fdd00036e82d100507339daac2f85b47da35f475a697718c4eeed9d6aab",
+      "committed_blob_sha256": "3a9a3fdd00036e82d100507339daac2f85b47da35f475a697718c4eeed9d6aab",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/datasets/repository.py",
+      "frozen_worktree_sha256": "7ccd6034887ea93c2ef515f73ee7e1d7c61cdbec37a32e0e65c4b84f2ef4023e",
+      "committed_blob_sha256": "7ccd6034887ea93c2ef515f73ee7e1d7c61cdbec37a32e0e65c4b84f2ef4023e",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/db/__init__.py",
+      "frozen_worktree_sha256": "50064e5e21a863f062aafe9df24726d430412925945d33d1997d12848fc9823c",
+      "committed_blob_sha256": "50064e5e21a863f062aafe9df24726d430412925945d33d1997d12848fc9823c",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/db/catalog.py",
+      "frozen_worktree_sha256": "ce0c956965572682d2db73f9c66c03c50659e29b418570f0ef39e57613827627",
+      "committed_blob_sha256": "ce0c956965572682d2db73f9c66c03c50659e29b418570f0ef39e57613827627",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/db/health.py",
+      "frozen_worktree_sha256": "efd3ff3e3bad77a2cacd94abe4895ecd8f6b86628a3a9079c395595332723cd6",
+      "committed_blob_sha256": "efd3ff3e3bad77a2cacd94abe4895ecd8f6b86628a3a9079c395595332723cd6",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/db/management.py",
+      "frozen_worktree_sha256": "8dffc51c65df6892be0090553a0cda4d6b4c0b03bd17040f759b96ff4a57a02f",
+      "committed_blob_sha256": "8dffc51c65df6892be0090553a0cda4d6b4c0b03bd17040f759b96ff4a57a02f",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/db/schema.py",
+      "frozen_worktree_sha256": "248e1e5e0d77a26354d5e9726d01a5b0225d0d70a619f684ea661e6a9b391935",
+      "committed_blob_sha256": "248e1e5e0d77a26354d5e9726d01a5b0225d0d70a619f684ea661e6a9b391935",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/db/semantic_schema.py",
+      "frozen_worktree_sha256": "7e2c1ffdbbd9126f78faaa1c48f194f740cc1f8da579947351a12e89793b2f5d",
+      "committed_blob_sha256": "7e2c1ffdbbd9126f78faaa1c48f194f740cc1f8da579947351a12e89793b2f5d",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/evaluation.py",
+      "frozen_worktree_sha256": "4ef0662c6165d1167532f9f0883e55a02366294687a6dcc1387a14eb30b4cce6",
+      "committed_blob_sha256": "4ef0662c6165d1167532f9f0883e55a02366294687a6dcc1387a14eb30b4cce6",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/graph.py",
+      "frozen_worktree_sha256": "56785c355de1d06dd2df5faad41afdf889c23fa7545621c4f46112ea94ab0f47",
+      "committed_blob_sha256": "56785c355de1d06dd2df5faad41afdf889c23fa7545621c4f46112ea94ab0f47",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/harness/__init__.py",
+      "frozen_worktree_sha256": "e4513ad6246fec3b6a855675307fe19911e24ab439728b8724b4e53e436eee61",
+      "committed_blob_sha256": "e4513ad6246fec3b6a855675307fe19911e24ab439728b8724b4e53e436eee61",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/harness/budget.py",
+      "frozen_worktree_sha256": "aad1cc93e0e920408e754fd85132d180362b03113d8e3bc1d0760e2fcdb9df3a",
+      "committed_blob_sha256": "aad1cc93e0e920408e754fd85132d180362b03113d8e3bc1d0760e2fcdb9df3a",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/harness/context.py",
+      "frozen_worktree_sha256": "95c12ed8d81af5eb407fd7fb930251de9a7c5119d8c330ebf7b0a38dca67b935",
+      "committed_blob_sha256": "95c12ed8d81af5eb407fd7fb930251de9a7c5119d8c330ebf7b0a38dca67b935",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/harness/metric_verification.py",
+      "frozen_worktree_sha256": "6a76c9f49e0e99e46da6527d6f4f4f62d61c5d6090aa589b5da7d25eb907d841",
+      "committed_blob_sha256": "6a76c9f49e0e99e46da6527d6f4f4f62d61c5d6090aa589b5da7d25eb907d841",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/harness/verification.py",
+      "frozen_worktree_sha256": "8ddeb2aa8475263754c2c0267ab8c10568b69a5b61aceca77a61b3f9c3071607",
+      "committed_blob_sha256": "8ddeb2aa8475263754c2c0267ab8c10568b69a5b61aceca77a61b3f9c3071607",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/ingestion/__init__.py",
+      "frozen_worktree_sha256": "0e8bdca9d0b632726bc07bd3d4faaa09ea5a6f8c23237239ce08fc160baace2e",
+      "committed_blob_sha256": "0e8bdca9d0b632726bc07bd3d4faaa09ea5a6f8c23237239ce08fc160baace2e",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/ingestion/cli.py",
+      "frozen_worktree_sha256": "0ab48c082d7bde5793b096429eba92c77ecfa9d779e4cf71234e526d51b3a6a2",
+      "committed_blob_sha256": "0ab48c082d7bde5793b096429eba92c77ecfa9d779e4cf71234e526d51b3a6a2",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/ingestion/common.py",
+      "frozen_worktree_sha256": "f960d697960b242894b0aef5457e92121d634fbbce7c5167d7b31b9104314047",
+      "committed_blob_sha256": "f960d697960b242894b0aef5457e92121d634fbbce7c5167d7b31b9104314047",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/ingestion/confirmation.py",
+      "frozen_worktree_sha256": "458a79ec1e88d763a39a230c91354e2e8d4604a4eb23f8e882af63a76f1ec96a",
+      "committed_blob_sha256": "458a79ec1e88d763a39a230c91354e2e8d4604a4eb23f8e882af63a76f1ec96a",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/ingestion/contracts.py",
+      "frozen_worktree_sha256": "bfefb55bc7792cfff7e1d5e26203344d14cc628347db7176e22131fa7e95df6c",
+      "committed_blob_sha256": "bfefb55bc7792cfff7e1d5e26203344d14cc628347db7176e22131fa7e95df6c",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/ingestion/parser.py",
+      "frozen_worktree_sha256": "ee9be4c179ea7cb48b9aa3753be08c709dad3ac7a337409acdbeb32648762e98",
+      "committed_blob_sha256": "ee9be4c179ea7cb48b9aa3753be08c709dad3ac7a337409acdbeb32648762e98",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/ingestion/profiling.py",
+      "frozen_worktree_sha256": "57713feacf5f6d5b3004bde71c9b7637c3309ea2ce59d05a54d7e1470a5a1bed",
+      "committed_blob_sha256": "57713feacf5f6d5b3004bde71c9b7637c3309ea2ce59d05a54d7e1470a5a1bed",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/ingestion/service.py",
+      "frozen_worktree_sha256": "e16f0f265d1734e3a3ad00a8c28bccdf575fa6cb2229233b9e96d000606b644e",
+      "committed_blob_sha256": "e16f0f265d1734e3a3ad00a8c28bccdf575fa6cb2229233b9e96d000606b644e",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/ingestion/types.py",
+      "frozen_worktree_sha256": "65433d36861db8722d3d4cc829c7ca6ff73c4ffa0afe0fc658149733da574b18",
+      "committed_blob_sha256": "65433d36861db8722d3d4cc829c7ca6ff73c4ffa0afe0fc658149733da574b18",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/ingestion/xlsx.py",
+      "frozen_worktree_sha256": "2b2a69a90a6b5bd1f472c51ab4e360e61d2c217fc1ab7092d0d15376c78d919a",
+      "committed_blob_sha256": "2b2a69a90a6b5bd1f472c51ab4e360e61d2c217fc1ab7092d0d15376c78d919a",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/llm/__init__.py",
+      "frozen_worktree_sha256": "5a86aee5fed38f6a61862bb06c4f65bfb495ea406aff96acfbc18d90417b3d63",
+      "committed_blob_sha256": "5a86aee5fed38f6a61862bb06c4f65bfb495ea406aff96acfbc18d90417b3d63",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/llm/client.py",
+      "frozen_worktree_sha256": "4945779fe9e6cdc683e0adabb21498f7b88c4deea00aba2a2d03faf0483e207f",
+      "committed_blob_sha256": "4945779fe9e6cdc683e0adabb21498f7b88c4deea00aba2a2d03faf0483e207f",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/llm/fake.py",
+      "frozen_worktree_sha256": "e90fcd168c4eb4b179cc23fbaf2fce79628a15cfff901eb4e442261b760c9039",
+      "committed_blob_sha256": "e90fcd168c4eb4b179cc23fbaf2fce79628a15cfff901eb4e442261b760c9039",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/llm/provider.py",
+      "frozen_worktree_sha256": "b3b89b0ab08dd4c3b78df209ce6dd32c3e15a4b03a1f3b608c524b1911d1254c",
+      "committed_blob_sha256": "b3b89b0ab08dd4c3b78df209ce6dd32c3e15a4b03a1f3b608c524b1911d1254c",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/orchestration/__init__.py",
+      "frozen_worktree_sha256": "33e7d162280bc460d0fdecdcd58a8d20da840c2ded9099bd355594fa1115d821",
+      "committed_blob_sha256": "33e7d162280bc460d0fdecdcd58a8d20da840c2ded9099bd355594fa1115d821",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/orchestration/budget.py",
+      "frozen_worktree_sha256": "25ebefd1ce292833ab7ef65f7d3b07ed095182f26ca444dc0c87856f77abe588",
+      "committed_blob_sha256": "25ebefd1ce292833ab7ef65f7d3b07ed095182f26ca444dc0c87856f77abe588",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/orchestration/completion.py",
+      "frozen_worktree_sha256": "c94b90d3715394441f5fe2ea237c3dd0911621636b22b6f11c5af2d897f76648",
+      "committed_blob_sha256": "c94b90d3715394441f5fe2ea237c3dd0911621636b22b6f11c5af2d897f76648",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/orchestration/context.py",
+      "frozen_worktree_sha256": "8b221d3f1782cd4ec4d4dfaeb32d354c1bd6d767dc023cbae862dc16b8d4219b",
+      "committed_blob_sha256": "8b221d3f1782cd4ec4d4dfaeb32d354c1bd6d767dc023cbae862dc16b8d4219b",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/orchestration/context_contracts.py",
+      "frozen_worktree_sha256": "b918b2fc3901ce681b71133d5d34dbca4f095779fdb6fc1abc77dca5bccaf389",
+      "committed_blob_sha256": "b918b2fc3901ce681b71133d5d34dbca4f095779fdb6fc1abc77dca5bccaf389",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/orchestration/contracts.py",
+      "frozen_worktree_sha256": "7cc2b2ae3c12ea26b3434829e1d3894118d4b31700a658281f65bf3d981484cf",
+      "committed_blob_sha256": "7cc2b2ae3c12ea26b3434829e1d3894118d4b31700a658281f65bf3d981484cf",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/orchestration/coordinator.py",
+      "frozen_worktree_sha256": "019a2b3fd02601c8dbc40a5c064d9ab50e3009769f2468dd38d547f3a6ce38e8",
+      "committed_blob_sha256": "90f0b9c7ffbfe84e33bcb5182068146c9c15dbfc501f692cd1d25820995f0218",
+      "frozen_eol": "CRLF"
+    },
+    {
+      "path": "src/datapilot/orchestration/loop.py",
+      "frozen_worktree_sha256": "2d6c3d6ac7b79ea84f8ee7a747c66172ffd42ef469edda73937686218c36b510",
+      "committed_blob_sha256": "2d6c3d6ac7b79ea84f8ee7a747c66172ffd42ef469edda73937686218c36b510",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/orchestration/memory.py",
+      "frozen_worktree_sha256": "cd9cc76015156200e0be29ffc9cd9bdca3dd05ac015a68226904163a4eac9c7b",
+      "committed_blob_sha256": "cd9cc76015156200e0be29ffc9cd9bdca3dd05ac015a68226904163a4eac9c7b",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/orchestration/model.py",
+      "frozen_worktree_sha256": "0a75b8f073767ca9b7a1342869da28875be92239f5b21fa18c1368a08fdb30fb",
+      "committed_blob_sha256": "0a75b8f073767ca9b7a1342869da28875be92239f5b21fa18c1368a08fdb30fb",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/orchestration/rag_completion.py",
+      "frozen_worktree_sha256": "6dc25f624ccdabc81b4951d6c6bd9e0a495271eb9c16b56499ac525952371cab",
+      "committed_blob_sha256": "6dc25f624ccdabc81b4951d6c6bd9e0a495271eb9c16b56499ac525952371cab",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/orchestration/runtime.py",
+      "frozen_worktree_sha256": "f7c1293f38cd97bdf3d248a905165aec22aa9f564bada4d859845eece20268b7",
+      "committed_blob_sha256": "f7c1293f38cd97bdf3d248a905165aec22aa9f564bada4d859845eece20268b7",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/orchestration/tools.py",
+      "frozen_worktree_sha256": "86f828b704d24c8da3e9eeae64c705be2e999011619b7d3a352384744f31416d",
+      "committed_blob_sha256": "86f828b704d24c8da3e9eeae64c705be2e999011619b7d3a352384744f31416d",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/persistence/__init__.py",
+      "frozen_worktree_sha256": "66abf10b539393d79cc98c184facee6e5bf00130e7b16274df9a7969f58a442c",
+      "committed_blob_sha256": "66abf10b539393d79cc98c184facee6e5bf00130e7b16274df9a7969f58a442c",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/persistence/backend.py",
+      "frozen_worktree_sha256": "80fbfdef668e09f72da96d2fc0662d2f53f5cb7d225c7399f0a39fa0b31bb72f",
+      "committed_blob_sha256": "80fbfdef668e09f72da96d2fc0662d2f53f5cb7d225c7399f0a39fa0b31bb72f",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/persistence/inspection.py",
+      "frozen_worktree_sha256": "0d1dbdb054a7285e19940f9d936d836fc88793b5c8390618a73551b87ccff052",
+      "committed_blob_sha256": "0d1dbdb054a7285e19940f9d936d836fc88793b5c8390618a73551b87ccff052",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/persistence/journal.py",
+      "frozen_worktree_sha256": "4f0a6956b4b1355121769e1537fd25d710200d0180ba4a5aea54e77e1cf0f20f",
+      "committed_blob_sha256": "4f0a6956b4b1355121769e1537fd25d710200d0180ba4a5aea54e77e1cf0f20f",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/persistence/management.py",
+      "frozen_worktree_sha256": "491214cbd85e05fe96ce0dbe88e60af8dd58205fb7bc8edebc456dddcc2fffc1",
+      "committed_blob_sha256": "491214cbd85e05fe96ce0dbe88e60af8dd58205fb7bc8edebc456dddcc2fffc1",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/persistence/retention.py",
+      "frozen_worktree_sha256": "b5865691c779cbe6fb029f8eca6280853c8d3a291c9a7da423886f77d00b5efb",
+      "committed_blob_sha256": "b5865691c779cbe6fb029f8eca6280853c8d3a291c9a7da423886f77d00b5efb",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/persistence/session.py",
+      "frozen_worktree_sha256": "0788013b99e6d146558e05b19cfd7450815130f0c636013772f74df25792aa88",
+      "committed_blob_sha256": "0788013b99e6d146558e05b19cfd7450815130f0c636013772f74df25792aa88",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/rag/__init__.py",
+      "frozen_worktree_sha256": "25c0f80c47ec5e069b6c49e89b964db2dc696fd485f5e665d0b426da96b546e8",
+      "committed_blob_sha256": "25c0f80c47ec5e069b6c49e89b964db2dc696fd485f5e665d0b426da96b546e8",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/rag/cli.py",
+      "frozen_worktree_sha256": "aba1fd585f7aa7e947087894bf3ae70420f924a0b9f8ccd97ededdc81344687b",
+      "committed_blob_sha256": "aba1fd585f7aa7e947087894bf3ae70420f924a0b9f8ccd97ededdc81344687b",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/rag/contracts.py",
+      "frozen_worktree_sha256": "416ae25f179ff1e2c559a6ffefd4754b22eb301dccb10fc2a02101c0d802282f",
+      "committed_blob_sha256": "416ae25f179ff1e2c559a6ffefd4754b22eb301dccb10fc2a02101c0d802282f",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/rag/lifecycle.py",
+      "frozen_worktree_sha256": "8148d4eafe7e17ed01f4cc59196ceda95b2776d6389b9745e95ba3ae3c7cf461",
+      "committed_blob_sha256": "8148d4eafe7e17ed01f4cc59196ceda95b2776d6389b9745e95ba3ae3c7cf461",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/rag/mcp.py",
+      "frozen_worktree_sha256": "410ae076a52357a170ce650cbcfc4699033785dbaa28140cbd05ea6044416006",
+      "committed_blob_sha256": "410ae076a52357a170ce650cbcfc4699033785dbaa28140cbd05ea6044416006",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/rag/models.py",
+      "frozen_worktree_sha256": "9442de6eac44426a6846d5cf9436f5f1a59489f984dc457a4e0c4ce77550b3d6",
+      "committed_blob_sha256": "9442de6eac44426a6846d5cf9436f5f1a59489f984dc457a4e0c4ce77550b3d6",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/rag/parsing.py",
+      "frozen_worktree_sha256": "b9700c61bec61e0398ef7599a6d1727b799de2848010c016a2f1b6a650629eec",
+      "committed_blob_sha256": "b9700c61bec61e0398ef7599a6d1727b799de2848010c016a2f1b6a650629eec",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/rag/qwen.py",
+      "frozen_worktree_sha256": "9e2423ec4c4566f395df424a7692c1580e6b6ffb28e62cdabf807b0d8c893cc9",
+      "committed_blob_sha256": "9e2423ec4c4566f395df424a7692c1580e6b6ffb28e62cdabf807b0d8c893cc9",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/rag/qwen_runtime.py",
+      "frozen_worktree_sha256": "6331be08c2454bec8c2d91e0e83a338a3d76077805288968b49267dea7f4a100",
+      "committed_blob_sha256": "6331be08c2454bec8c2d91e0e83a338a3d76077805288968b49267dea7f4a100",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/rag/storage.py",
+      "frozen_worktree_sha256": "026e9a311d05d4dd82d8b0e1d133a65f0a6bf5e4580b4fb613c504537dab8af9",
+      "committed_blob_sha256": "026e9a311d05d4dd82d8b0e1d133a65f0a6bf5e4580b4fb613c504537dab8af9",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/reporting/__init__.py",
+      "frozen_worktree_sha256": "802606b5132ad3fdf0ea0fa77eb04425c33a99990a145a7401e38692a7e93729",
+      "committed_blob_sha256": "802606b5132ad3fdf0ea0fa77eb04425c33a99990a145a7401e38692a7e93729",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/reporting/adapter.py",
+      "frozen_worktree_sha256": "1a45c19d39255d59e54885f480daec7cdbcffccfff24d196ea5ffba0a1caeb86",
+      "committed_blob_sha256": "1a45c19d39255d59e54885f480daec7cdbcffccfff24d196ea5ffba0a1caeb86",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/reporting/contracts.py",
+      "frozen_worktree_sha256": "850a224c82592825ed1ed23f6a8b8a844eba705c01987f7f570405f916abab0c",
+      "committed_blob_sha256": "850a224c82592825ed1ed23f6a8b8a844eba705c01987f7f570405f916abab0c",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/reporting/service.py",
+      "frozen_worktree_sha256": "69447e6ae963c8684e239cc5e8c885f7e54efcd65a885a2f3217a899659f4367",
+      "committed_blob_sha256": "69447e6ae963c8684e239cc5e8c885f7e54efcd65a885a2f3217a899659f4367",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/runtime/__init__.py",
+      "frozen_worktree_sha256": "5fad38d64b28c13488d281a583fd368928d47104bd5cd8d51b012271ec1ba60e",
+      "committed_blob_sha256": "5fad38d64b28c13488d281a583fd368928d47104bd5cd8d51b012271ec1ba60e",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/runtime/mcp_client.py",
+      "frozen_worktree_sha256": "7a78c49e5a82ac14ce277d9183d9e9864e9988bbb20c7a2e27b192c64a970955",
+      "committed_blob_sha256": "7a78c49e5a82ac14ce277d9183d9e9864e9988bbb20c7a2e27b192c64a970955",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/runtime/mcp_server.py",
+      "frozen_worktree_sha256": "6bf4e6e3f24a59ec7b6afdc88aafc47eaacffa6036acc27ca00b626294de1c09",
+      "committed_blob_sha256": "6bf4e6e3f24a59ec7b6afdc88aafc47eaacffa6036acc27ca00b626294de1c09",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/runtime/owned_process.py",
+      "frozen_worktree_sha256": "4227a9bd467a10be6d2b1e100021dffadb488614d44c4d8d76681ae0f58796ba",
+      "committed_blob_sha256": "4227a9bd467a10be6d2b1e100021dffadb488614d44c4d8d76681ae0f58796ba",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/semantics/__init__.py",
+      "frozen_worktree_sha256": "313f858a760a79b160e0af8ac94251c018e72616def7b195fcf9d3202c2f56d3",
+      "committed_blob_sha256": "313f858a760a79b160e0af8ac94251c018e72616def7b195fcf9d3202c2f56d3",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/semantics/cli.py",
+      "frozen_worktree_sha256": "08a80ed164e486b0436f15ff42c6bcab466050c811b4aeb3e76edc09b1c1a83b",
+      "committed_blob_sha256": "08a80ed164e486b0436f15ff42c6bcab466050c811b4aeb3e76edc09b1c1a83b",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/semantics/contracts.py",
+      "frozen_worktree_sha256": "25c98372dcd234436f348ad82f7e8c564cba390991dddbc2f1e5a1e9b0945af6",
+      "committed_blob_sha256": "25c98372dcd234436f348ad82f7e8c564cba390991dddbc2f1e5a1e9b0945af6",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/semantics/recipes.py",
+      "frozen_worktree_sha256": "8f51086ae57e0dcea0b6056e1b60d0d58de2fbd7e65d723ec8ac41d2c8f86b96",
+      "committed_blob_sha256": "8f51086ae57e0dcea0b6056e1b60d0d58de2fbd7e65d723ec8ac41d2c8f86b96",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/semantics/recompute.py",
+      "frozen_worktree_sha256": "92a464b354fdd9e0e02421fa9eb0b122886573956c4d8317a8b0e08f2cde2935",
+      "committed_blob_sha256": "92a464b354fdd9e0e02421fa9eb0b122886573956c4d8317a8b0e08f2cde2935",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/semantics/registry.py",
+      "frozen_worktree_sha256": "3d309e05261af7a20879240d732da34f81fef16bb99f4ae28b947b39596225ba",
+      "committed_blob_sha256": "3d309e05261af7a20879240d732da34f81fef16bb99f4ae28b947b39596225ba",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/semantics/repository.py",
+      "frozen_worktree_sha256": "2fafba5e10b128ba2483d0f053f3eeb1c54e3c8ba54ef978dadf0b9036d4d974",
+      "committed_blob_sha256": "2fafba5e10b128ba2483d0f053f3eeb1c54e3c8ba54ef978dadf0b9036d4d974",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/semantics/service.py",
+      "frozen_worktree_sha256": "6c3d3c1dab3fcf0a744b461234e7c14a333b2da940fc0873245e32b1868eeeac",
+      "committed_blob_sha256": "6c3d3c1dab3fcf0a744b461234e7c14a333b2da940fc0873245e32b1868eeeac",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/state.py",
+      "frozen_worktree_sha256": "bf9734be6e5e7299b693a499db03db8631ae20107f2873abaf1da1e7bd94e6ab",
+      "committed_blob_sha256": "bf9734be6e5e7299b693a499db03db8631ae20107f2873abaf1da1e7bd94e6ab",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/tools/__init__.py",
+      "frozen_worktree_sha256": "8cef07acd7addeca09f2c1411a422af05a3f46c1f915d2d7dac0c2e9360175af",
+      "committed_blob_sha256": "8cef07acd7addeca09f2c1411a422af05a3f46c1f915d2d7dac0c2e9360175af",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/tools/sql.py",
+      "frozen_worktree_sha256": "9dcb80eb3259fa3fc6529024ea7b139ebae1457dfce25b5110f867c168c7442b",
+      "committed_blob_sha256": "9dcb80eb3259fa3fc6529024ea7b139ebae1457dfce25b5110f867c168c7442b",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/__init__.py",
+      "frozen_worktree_sha256": "4a7b44ee89e78a1e9f4e54de45927776344f7cf77119c070f86c3f661b8c6610",
+      "committed_blob_sha256": "4a7b44ee89e78a1e9f4e54de45927776344f7cf77119c070f86c3f661b8c6610",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/app.py",
+      "frozen_worktree_sha256": "05720deff3b42c4ac5b3870609a18559713ce6bf2a59ccfb371fe09e5a297420",
+      "committed_blob_sha256": "0a198e59475e002a3b867069a68b3f7dee609caabe3acedda18dcd00f7f2a45e",
+      "frozen_eol": "CRLF"
+    },
+    {
+      "path": "src/datapilot/web/body_limit.py",
+      "frozen_worktree_sha256": "84980187c7bd90cd30760e9474b0ddd69af2f46c3d0d899f2ebed725938acc9d",
+      "committed_blob_sha256": "84980187c7bd90cd30760e9474b0ddd69af2f46c3d0d899f2ebed725938acc9d",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/chat.py",
+      "frozen_worktree_sha256": "85f45bf36a2d3943a57abe0bcc009cbd680aa6030f0677fd71fa8f961345571e",
+      "committed_blob_sha256": "85f45bf36a2d3943a57abe0bcc009cbd680aa6030f0677fd71fa8f961345571e",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/chat_contracts.py",
+      "frozen_worktree_sha256": "9bc8e7b0c8897dbc6fc9bb17fb3564cf7f2244eb766bcf9cfd85cd475fdf6d33",
+      "committed_blob_sha256": "9bc8e7b0c8897dbc6fc9bb17fb3564cf7f2244eb766bcf9cfd85cd475fdf6d33",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/chat_routes.py",
+      "frozen_worktree_sha256": "fb910eae6e7a6db3fef5e8c4645262870b58fd0733090d187764bc8db088a5ba",
+      "committed_blob_sha256": "fb910eae6e7a6db3fef5e8c4645262870b58fd0733090d187764bc8db088a5ba",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/cli.py",
+      "frozen_worktree_sha256": "825240fcda8bd3917e68ad3622974a0eeddc70edf5ecf95492b38a06dd85ce2e",
+      "committed_blob_sha256": "825240fcda8bd3917e68ad3622974a0eeddc70edf5ecf95492b38a06dd85ce2e",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/client.py",
+      "frozen_worktree_sha256": "3a64c84a3c8ef6400c4d2bcfc820921af0bcb26fbaa71693cbfe12b38c1930dc",
+      "committed_blob_sha256": "3a64c84a3c8ef6400c4d2bcfc820921af0bcb26fbaa71693cbfe12b38c1930dc",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/config.py",
+      "frozen_worktree_sha256": "cfc8e9d913b7f6d47930f9bf795a11ffe0adcdf46eae200c0defb8662ea582c5",
+      "committed_blob_sha256": "cfc8e9d913b7f6d47930f9bf795a11ffe0adcdf46eae200c0defb8662ea582c5",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/contracts.py",
+      "frozen_worktree_sha256": "c95faba2b24ded539eaa1f71aeb91d2b087eba64896cbf3ba463b4864870e1cb",
+      "committed_blob_sha256": "a8da95d4a3e8d29ec7560e60688def4d01453e9698b9c384bf19369d275a935d",
+      "frozen_eol": "CRLF"
+    },
+    {
+      "path": "src/datapilot/web/goal_confirmation.py",
+      "frozen_worktree_sha256": "990b467e2b0baa66e0617c353d5009318df73a3b4d7b35467d248b7cc8e21d42",
+      "committed_blob_sha256": "990b467e2b0baa66e0617c353d5009318df73a3b4d7b35467d248b7cc8e21d42",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/intent.py",
+      "frozen_worktree_sha256": "7e6dfbc4f549f372f4a61d200590b919780821707d46ef9baef76227fce73f92",
+      "committed_blob_sha256": "7e6dfbc4f549f372f4a61d200590b919780821707d46ef9baef76227fce73f92",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/semantic_intent.py",
+      "frozen_worktree_sha256": "69f50309f35eb41b22650c20bccee8cb4fc581549c1bc26e7457305a54a8da68",
+      "committed_blob_sha256": "715eb25baf799295d4ce4f5622c362275693ae4cff126c0e91842519e26775f5",
+      "frozen_eol": "CRLF"
+    },
+    {
+      "path": "src/datapilot/web/service.py",
+      "frozen_worktree_sha256": "4b768fc345f57510e335347ea0c35344efe7dd1d18791ceb55b568b370ac60ec",
+      "committed_blob_sha256": "abb82d59a0dd4642a8fd840ce7e73c4ad87d9d27a94c4ad25392c0ba9833a3a4",
+      "frozen_eol": "CRLF"
+    },
+    {
+      "path": "src/datapilot/web/store.py",
+      "frozen_worktree_sha256": "40d8d15a96fb805300c4ea373016508a918e8c25cbecc4418738cbebad199c1b",
+      "committed_blob_sha256": "d2e7575e3764591deaa5f4030e06d6f853f820136c392f33a981437b4a41a20d",
+      "frozen_eol": "CRLF"
+    },
+    {
+      "path": "src/datapilot/web/telemetry.py",
+      "frozen_worktree_sha256": "738ea473a6ae772b33e86b421d964e212cf99288b59de32d507f3facf4b921b2",
+      "committed_blob_sha256": "6e4ee8b0288db33cfee8620e36350559031474ca219611bb98757ed01bea7311",
+      "frozen_eol": "CRLF"
+    },
+    {
+      "path": "src/datapilot/web/ui.py",
+      "frozen_worktree_sha256": "201231fd484348262e6a24138bbfe59dd7eb3d105565e64ee9c7cff55baceb38",
+      "committed_blob_sha256": "201231fd484348262e6a24138bbfe59dd7eb3d105565e64ee9c7cff55baceb38",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/ui_chat.py",
+      "frozen_worktree_sha256": "f9827b8cccf521225228dafb381713498f737fd6702f8d8d5c51e032a99c1456",
+      "committed_blob_sha256": "f9827b8cccf521225228dafb381713498f737fd6702f8d8d5c51e032a99c1456",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/ui_components.py",
+      "frozen_worktree_sha256": "14e5d149ea6fc665de41245a8297819b4a4fa6ee174b783f2b2ba2825a4eeb59",
+      "committed_blob_sha256": "14e5d149ea6fc665de41245a8297819b4a4fa6ee174b783f2b2ba2825a4eeb59",
+      "frozen_eol": "LF"
+    },
+    {
+      "path": "src/datapilot/web/ui_management.py",
+      "frozen_worktree_sha256": "44b5f072663012b39b1b2368d9f9df3f81ef2e2891f88a6fe69c9d28c195cb02",
+      "committed_blob_sha256": "277a7096eca88c9d06f5a16099363638983f4ea7ee050672cc035e7c335c034c",
+      "frozen_eol": "CRLF"
+    },
+    {
+      "path": "src/datapilot/web/worker.py",
+      "frozen_worktree_sha256": "5c722dbdab2cca497a0b050ac0f911291f9733a6ce8d8a093143168dbdc80beb",
+      "committed_blob_sha256": "35196e05eccbf4f043e31c3d30cbb4ef2bdbad30e39d43abb3a204afc8898ff1",
+      "frozen_eol": "CRLF"
+    }
+  ]
+}

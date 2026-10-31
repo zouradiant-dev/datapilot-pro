@@ -1,0 +1,85 @@
+{
+  "originals_not_modified": true,
+  "derivatives": [
+    {
+      "original": "docs/research/p7-engineering-freeze.md",
+      "sha256": "3fd940f6bbed7dc98821eebc850433f1f1e6db2f05d887ea49aefc0aef1917b7",
+      "public_copy": "docs/releases/p7-engineering-candidate-v1/frozen/p7-engineering-freeze.md",
+      "changes": [
+        "local path redaction",
+        "local-only link labeling"
+      ]
+    },
+    {
+      "original": "docs/research/p7-demo-acceptance.md",
+      "sha256": "5632b544c3a36dd81208fd43af7bf22ee74dc5f53ec851eee4cf9bea832644e4",
+      "public_copy": "docs/releases/p7-engineering-candidate-v1/frozen/p7-demo-acceptance.md",
+      "changes": [
+        "local path redaction",
+        "local-only link labeling"
+      ]
+    },
+    {
+      "original": "docs/research/p7-post-freeze-backlog.md",
+      "sha256": "af738b1d5e2ebd72d780779d6b567407b52728c41b02ad13e631a64b884095ba",
+      "public_copy": "docs/releases/p7-engineering-candidate-v1/frozen/p7-post-freeze-backlog.md",
+      "changes": [
+        "local path redaction",
+        "local-only link labeling"
+      ]
+    },
+    {
+      "original": "docs/research/p7-goal-confirmation-quality-handoff.md",
+      "sha256": "da2bfc30e29d4c20655401ec4194464b0f0b8f9a949ace0b8dd7d9db581f85b7",
+      "public_copy": "docs/releases/p7-engineering-candidate-v1/frozen/p7-goal-confirmation-quality-handoff.md",
+      "changes": [
+        "local path redaction",
+        "local-only link labeling"
+      ]
+    },
+    {
+      "original": "docs/research/p7-qwen3-lifecycle-handoff.md",
+      "sha256": "0720e9d368bb04a4c05d2d958e72f04223ede5399abb48f702b8c4bd50cc1514",
+      "public_copy": "docs/releases/p7-engineering-candidate-v1/frozen/p7-qwen3-lifecycle-handoff.md",
+      "changes": [
+        "local path redaction",
+        "local-only link labeling"
+      ]
+    },
+    {
+      "original": "docs/research/p7-qwen3-phase2c2-handoff.md",
+      "sha256": "b24f1e1034c3494ec6e140a3021205d3c470dec9870a7e457824ab46949ccccf",
+      "public_copy": "docs/releases/p7-engineering-candidate-v1/frozen/p7-qwen3-phase2c2-handoff.md",
+      "changes": [
+        "local path redaction",
+        "local-only link labeling"
+      ]
+    },
+    {
+      "original": "docs/research/p7-qwen3-phase2c-business-quality.json",
+      "sha256": "ca6117c7447952b5047844fa3fbba47c610f9dde30218b526dff9420cfd2fea1",
+      "public_copy": "docs/releases/p7-engineering-candidate-v1/p7-qwen3-phase2c-business-quality.summary.json",
+      "changes": [
+        "aggregate-only; no raw Run/Gold/Trace"
+      ]
+    },
+    {
+      "original": "docs/research/p7-qwen3-phase2c2-expanded-quality.json",
+      "sha256": "b2788bb9ce7e7c392e8d3f9492781902689313f001d89a88ef489f0910c8675e",
+      "public_copy": "docs/releases/p7-engineering-candidate-v1/p7-qwen3-phase2c2-expanded-quality.summary.json",
+      "changes": [
+        "aggregate-only; no raw Run/Gold/Trace"
+      ]
+    },
+    {
+      "original": "docs/research/p7-qwen3-phase2c4-fresh-validation.json",
+      "sha256": "dd35ff8048fa4b714ef15ec52e2158f8cc4003fbc07f591b4acbc1f0882b3bcf",
+      "public_copy": "docs/releases/p7-engineering-candidate-v1/p7-qwen3-phase2c4-fresh-validation.summary.json",
+      "changes": [
+        "aggregate-only; no raw Run/Gold/Trace"
+      ]
+    }
+  ],
+  "source_tree_sha256": "5a11a01af573c7ee456f2fac7946051f1ce829fe9eba2ba8624370f6c4d7f3a1",
+  "engineering_result_seal_sha256": "50f0c25699b7f51a4c70ba1d95f395873cf4765e95ba9e4014c48893728f80ec"
+}

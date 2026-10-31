@@ -1,0 +1,194 @@
+{
+  "publication": "whitelisted historical aggregate; raw observations remain local-only",
+  "original_local_only": "docs/research/p7-qwen3-phase2c-business-quality.json",
+  "original_sha256": "ca6117c7447952b5047844fa3fbba47c610f9dde30218b526dff9420cfd2fea1",
+  "historical_values": {
+    "schema_version": "phase2c-business-quality-results-1",
+    "created_at": "2026-10-30T02:34:55.310687+00:00",
+    "conclusion": "Within this fixed scripted 16-case Pilot, Qwen adds one strictly correct report; not a Live or population-level conclusion",
+    "summary": {
+      "arms": {
+        "bge": {
+          "planned": 16,
+          "observed": 16,
+          "not_run": 0,
+          "strict_correct": 14,
+          "strict_correct_over_planned": 0.875,
+          "status_counts": {
+            "completed": 9,
+            "unavailable": 4,
+            "partial": 2,
+            "blocked": 1
+          },
+          "source_recall_at_3": 0.8666666666666667,
+          "source_precision_nonempty": 0.8589743589743589,
+          "required_coverage": 0.8666666666666667,
+          "all_required": 13,
+          "retrieval_applicable_observed": 15,
+          "fact_coverage": 0.7,
+          "irrelevant_sources": 4,
+          "citation_count": 16,
+          "correct_citation_count": 16,
+          "worker_complete": 13,
+          "false_completion": 0,
+          "unsupported_claims": 0,
+          "safety_violations": 0,
+          "infrastructure_failures": 0,
+          "provider_calls": 0,
+          "categories": {
+            "cross_language": {
+              "planned": 2,
+              "strict_correct": 0,
+              "required_coverage": 0.0,
+              "fact_coverage": 0.0
+            },
+            "en": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 1.0
+            },
+            "insufficient": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 0.25
+            },
+            "multi_required": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 1.0
+            },
+            "safety": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 0.0
+            },
+            "sql_rag": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 1.0
+            },
+            "stale_distractor": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 1.0
+            },
+            "zh": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 1.0
+            }
+          }
+        },
+        "qwen": {
+          "planned": 16,
+          "observed": 16,
+          "not_run": 0,
+          "strict_correct": 15,
+          "strict_correct_over_planned": 0.9375,
+          "status_counts": {
+            "completed": 10,
+            "unavailable": 3,
+            "partial": 2,
+            "blocked": 1
+          },
+          "source_recall_at_3": 1.0,
+          "source_precision_nonempty": 0.9,
+          "required_coverage": 1.0,
+          "all_required": 15,
+          "retrieval_applicable_observed": 15,
+          "fact_coverage": 0.7666666666666667,
+          "irrelevant_sources": 3,
+          "citation_count": 18,
+          "correct_citation_count": 18,
+          "worker_complete": 14,
+          "false_completion": 0,
+          "unsupported_claims": 0,
+          "safety_violations": 0,
+          "infrastructure_failures": 0,
+          "provider_calls": 0,
+          "categories": {
+            "cross_language": {
+              "planned": 2,
+              "strict_correct": 1,
+              "required_coverage": 1.0,
+              "fact_coverage": 0.5
+            },
+            "en": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 1.0
+            },
+            "insufficient": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 0.25
+            },
+            "multi_required": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 1.0
+            },
+            "safety": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 0.0
+            },
+            "sql_rag": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 1.0
+            },
+            "stale_distractor": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 1.0
+            },
+            "zh": {
+              "planned": 2,
+              "strict_correct": 2,
+              "required_coverage": 1.0,
+              "fact_coverage": 1.0
+            }
+          }
+        }
+      },
+      "gates": {
+        "A_safety": true,
+        "B_evidence": true,
+        "C_report": true
+      },
+      "offline_differences": [],
+      "registration_sha256": "d26ce5c3b864f0bd4f1efffe56ac8cec181457ad31a2d537813ed128dc43f618",
+      "bindings_sha256": "4788da22edf6de1d47e76679b9199cf00fecaaf99f2e6316785e9dc3a0674de4",
+      "paid_api_calls": 0,
+      "live_quality": "not_run",
+      "safety_or_infrastructure_stop": false
+    },
+    "new_product_changes": [],
+    "default_embedding_switched": false
+  },
+  "omitted_keys": [
+    "detailed_metrics",
+    "future_live_proposal",
+    "identities",
+    "integrity",
+    "metric_registry_identity",
+    "model_specs",
+    "new_database",
+    "pairs",
+    "tests"
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "schema_version": "phase2c-future-live-proposal-1",
+  "created_at": "2026-10-30T02:20:46.889465+00:00",
+  "authorized": false,
+  "executed": false,
+  "prerequisites": [
+    "Pilot safety Gate A passed",
+    "Independent new Holdout/Gold frozen before retrieval",
+    "Full implementation/evaluator/model/data/permission identities frozen",
+    "Current provider price and one-time owner permit rechecked"
+  ],
+  "cases": {
+    "new_independent_business": 12,
+    "rag_only": 6,
+    "sql_rag": 6,
+    "paired_profiles": [
+      "bge-original-512",
+      "qwen3-cuda-fp16-v1-1024"
+    ],
+    "paired_runtime": 24,
+    "separate_new_sql_controls": 4,
+    "total_runtime_max": 28,
+    "not_reused": [
+      "this Pilot",
+      "old Holdout",
+      "previous Smoke"
+    ]
+  },
+  "provider": {
+    "model_api_id": "deepseek-flash",
+    "thinking": "disabled",
+    "temperature": 0,
+    "max_output_tokens": 1200,
+    "timeout_seconds": 30,
+    "sdk_retries": 0,
+    "outer_retries": 0,
+    "actual_provider_model_id": "Record response; do not invent a finer backend identity"
+  },
+  "bounds": {
+    "root_calls_per_run": 8,
+    "child_calls": 4,
+    "tokens_per_run": 18000,
+    "model_attempts_total": 224,
+    "token_accounting_total": 504000,
+    "concurrency": 1,
+    "worker_turns": 4,
+    "searches_per_worker": 2,
+    "top_k": 3,
+    "campaign_seconds": 7200
+  },
+  "price": {
+    "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "public_page_read_date": "2026-10-30",
+    "units": "USD per million provider tokens",
+    "peak": {
+      "input_cache_hit": 0.006,
+      "input_cache_miss": 0.3,
+      "output": 1.2
+    },
+    "off_peak": {
+      "input_cache_hit": 0.003,
+      "input_cache_miss": 0.15,
+      "output": 0.6
+    },
+    "conservative_all_tokens_at_peak_output_upper_estimate_usd": "0.6048",
+    "illustrative_28_runs_4000_uncached_input_plus_1000_output_each_peak_usd": "0.0672",
+    "expected_actual_cost": "unknown; illustrative scenario is not a forecast from Fake usage",
+    "actual_invoice": "not_run",
+    "recheck_before_authorization": true
+  },
+  "evaluation": {
+    "independently_frozen_gold": true,
+    "separate_metrics": [
+      "retrieval",
+      "goal eligibility",
+      "Worker completion",
+      "fact/citation validity",
+      "P3 numeric/unit",
+      "BusinessCompletion",
+      "provider token/cache/cost",
+      "startup/search/inspection latency"
+    ],
+    "ordinary_quality_failure": "retain and continue without rerun",
+    "safety_or_infrastructure_failure": "stop new dispatch; preserve planned denominator"
+  },
+  "stop": [
+    "scope/version/hash drift",
+    "false completed or unsupported financial/causal claim",
+    "forged Evidence/Citation",
+    "tool protocol failure",
+    "unknown outcome or usage",
+    "budget inconsistency/exhaustion",
+    "timeout/cancellation",
+    "collector/scorer inconsistency",
+    "owner STOP"
+  ],
+  "recovery": "Keep original Journal/Ledger reservations; no automatic resend of unknown calls; no substitute Fake; new authorization for any additional campaign",
+  "production_default_switch": false,
+  "gate3": false
+}

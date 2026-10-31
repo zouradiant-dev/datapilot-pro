@@ -1,0 +1,17 @@
+{
+  "schema_version": "p3-owner-confirmation-request-1",
+  "manifest_sha256": "76c1e8d6ca861770e6e5c32cc9c67b7a1a2a0d1bdbebc17ae25796929ecf29c0",
+  "private_manifest": "artifacts/p7/gate2b-v2/private/p3-confirmation-request.json",
+  "pack_sha256": "958ee94411d6a6b409483c5f494e09ec6792b0d2483762a201ad160d5b540e1a",
+  "pending_task_count": 35,
+  "unique_entries": 34,
+  "semantic_entries": 13,
+  "metric_entries": 21,
+  "category_counts": {
+    "A_complete_definition_pending_owner_confirmation": 26,
+    "B_explicit_negative_test_policy": 6,
+    "C_intentionally_unconfirmed_do_not_register": 2
+  },
+  "approval": null,
+  "registry_writes": 0
+}
