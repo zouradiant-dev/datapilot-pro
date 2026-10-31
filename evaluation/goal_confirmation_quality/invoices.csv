@@ -1,0 +1,6 @@
+invoice_id,amount_cents,invoice_date,payment_status,currency
+q7-a,119875,2026-03-02,paid,CNY
+q7-b,3025,2026-03-30,paid,CNY
+q7-c,7999,2026-03-11,unpaid,CNY
+q7-d,11100,2026-04-01,paid,CNY
+q7-e,1550,2026-03-19,paid,USD

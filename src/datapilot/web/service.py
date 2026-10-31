@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 from uuid import uuid4
 
+from datapilot.contracts import AgentFailure
 from datapilot.datasets.contracts import DatasetBinding, DatasetScope, ImportRequest
 from datapilot.db.management import management_url
 from datapilot.ingestion.confirmation import confirm_schema
@@ -278,6 +279,8 @@ class ProductService:
         return record
 
     async def documents(self, id_, version, data, name, reviewed):
+        if self.policy.rag_embedding_profile:
+            deny("WEB_EMBEDDING_PROFILE", "Qwen原件请使用既有受控摄取CLI；本界面摄取默认BGE不变")
         await self.dataset(id_, version)
         safe_name(name, {".txt", ".md"})
         if not reviewed or len(data) > 256 * 1024:
@@ -318,6 +321,13 @@ class ProductService:
     async def task_payload(self, request, *, allow_unconfirmed=False):
         from datapilot.runtime.mcp_client import metric_session
 
+        if request.documents is None and re.search(
+            r"文档|\.(?:md|txt)(?![A-Za-z0-9])", request.question, re.I
+        ):
+            deny(
+                "DOCUMENT_SCOPE_REQUIRED",
+                "原问题包含文档目标，请明确授权Corpus及用途；不能静默只执行指标部分。",
+            )
         if request.documents and request.documents.purpose is None and not allow_unconfirmed:
             deny("DOCUMENT_CONFIRMATION_REQUIRED", "请先确认文档用途；不会自动推断为总结")
         bindings, sources, contexts = {}, {}, []
@@ -366,6 +376,7 @@ class ProductService:
                 owner=self.policy.owner,
                 corpora=selected,
                 datasets=DatasetScope(bindings=list(bindings.values())),
+                embedding_profile=self.policy.rag_embedding_profile,
             )
             doc_goal = DocumentGoal(
                 goal_id="documents",
@@ -408,6 +419,13 @@ class ProductService:
         self.store.check_host_settings(self.settings)
         row = self.store.run(id_)
         p = row["payload"]
+        if p.get("goal_confirmation"):
+            from datapilot.web.chat import ChatService
+
+            await ChatService(self).authorized_goal_payload(p, id_)
+            return row
+        if p["report_scope"].get("document_goal"):
+            deny("RECOVERY_IDENTITY", "旧RAG任务没有当前可信确认记录；不自动迁移或重新执行")
         for b in p["report_scope"]["datasets"]["bindings"]:
             actual = await self.dataset(b["dataset_id"], b["version"])
             if actual["schema"]["source_sha256"] != p["sources"][b["dataset_id"]]:
@@ -447,6 +465,48 @@ class ProductService:
         if fresh != p:
             deny("RECOVERY_VERSION", "Host policy or confirmed scope changed")
         return row
+
+    def ensure_no_unknown(self, run_id):
+        backend = Backend(
+            self.settings.runtime_database_url.get_secret_value(), run_id, self.policy.owner
+        )
+        try:
+            with backend.engine.connect() as conn:
+                if execute(
+                    conn,
+                    "SELECT 1 FROM execution.calls WHERE run_id=:r "
+                    "AND status IN ('issued','uncertain') LIMIT 1",
+                    r=run_id,
+                ).first():
+                    deny("RECOVERY_UNCERTAIN", "先对账未知调用，不能以新合同替代")
+        finally:
+            backend.close()
+
+    async def cancel_runtime(self, run_id):
+        """Reuse the existing monotonic cancellation for a revoked Web confirmation."""
+        from datapilot.persistence.inspection import control_state
+
+        row = self.store.run(run_id)
+        _, terminal = await control_state(
+            self.settings, run_id, self.policy.owner, row["payload"]["question"]
+        )
+        if terminal:
+            return
+        backend = Backend(
+            self.settings.runtime_database_url.get_secret_value(), run_id, self.policy.owner
+        )
+        try:
+            try:
+                backend.cancel()
+            except AgentFailure as exc:
+                with backend.engine.connect() as conn:
+                    exists = execute(
+                        conn, "SELECT 1 FROM execution.runs WHERE run_id=:r", r=run_id
+                    ).first()
+                if exists or exc.error.code != "RECOVERY_FORBIDDEN":
+                    raise
+        finally:
+            backend.close()
 
     async def inspect(self, id_):
         row = await self.authorize_run(id_)

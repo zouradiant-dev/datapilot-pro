@@ -6,7 +6,7 @@ from datetime import date
 import streamlit as st
 
 from datapilot.web.client import ClientError, creation_intent
-from datapilot.web.ui_components import document_requirements, show_error
+from datapilot.web.ui_components import show_error
 
 
 def render_management(api):
@@ -174,7 +174,7 @@ def render_management(api):
         valid = {k: p for k, p in choices.items() if p["metrics"]}
         if valid:
             selected = valid[st.selectbox("已确认的业务数据", list(valid))]
-            requirements = document_requirements("management-documents")
+            st.info("含文档的任务请回到对话，审阅并确认完整有限合同。")
             definitions = {
                 f"{m['metric_id']} v{m['metric_version']}": m for m in selected["metrics"]
             }
@@ -188,15 +188,6 @@ def render_management(api):
                 to_date = end.date_input(
                     "结束日期（不含）；活跃订阅使用此日为 as_of", date(2025, 11, 1)
                 )
-                corpora = api.get("/corpora")["corpora"]
-                ids = [
-                    c["corpus_id"]
-                    for c in corpora
-                    if c["dataset_id"] == selected["schema"]["dataset_id"]
-                    and c["dataset_version"] == selected["schema"]["version"]
-                ]
-                doc_ids = st.multiselect("关联授权文档（可选）", ids)
-                query = st.text_input("文档检索目标", "已付款账单收入和经常性订阅金额有什么区别？")
                 review = st.checkbox("执行前等待宿主审核", value=True)
                 if st.form_submit_button("创建持久分析任务"):
                     requests = []
@@ -222,13 +213,6 @@ def render_management(api):
                             }
                         requests.append(req)
                     body = {"question": goal, "metrics": requests, "require_review": review}
-                    if doc_ids:
-                        body["documents"] = {
-                            "question": query,
-                            "corpus_ids": doc_ids,
-                            "metric_goals": [r["goal_id"] for r in requests],
-                            **requirements,
-                        }
                     intent = creation_intent(st.session_state.get("create_intent"), body)
                     st.session_state.create_intent = intent
                     ack = api.post("/tasks", intent["body"], key=intent["key"])

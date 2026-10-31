@@ -248,7 +248,9 @@ async def run_durable(
                     from datapilot.orchestration.rag_completion import retrieval_goal
 
                     manifest["rag_completion_goal"] = retrieval_goal(
-                        reporting.rag_question if reporting else question
+                        reporting.rag_question if reporting else question,
+                        retrieval,
+                        reporting.scope if reporting else None,
                     )
                     manifest["rag_scope"] = rag_scope.model_dump(mode="json")
                     manifest["rag_sources"] = retrieval.context_scope().model_dump(mode="json")

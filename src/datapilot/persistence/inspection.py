@@ -118,7 +118,9 @@ async def inspect_run(settings, run_id, owner, question, *, report_scope=None, r
                 fresh.update(
                     rag_completion_protocol="rag-submit-v1",
                     rag_completion_goal=retrieval_goal(
-                        reporting.rag_question if reporting else question
+                        reporting.rag_question if reporting else question,
+                        retrieval,
+                        reporting.scope if reporting else None,
                     ),
                     rag_scope=rag_scope.model_dump(mode="json"),
                     rag_sources=retrieval.context_scope().model_dump(mode="json"),

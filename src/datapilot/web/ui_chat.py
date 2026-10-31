@@ -36,7 +36,14 @@ def append(api, cid, body):
     except ClientError as exc:
         # These guards reject before the handler commits a message. All unknown
         # outcomes (including transport failures) keep the original body/key.
-        if exc.error.get("code") in {"WEB_VALIDATION", "WEB_BODY_LIMIT"}:
+        if exc.error.get("code") in {
+            "WEB_VALIDATION",
+            "WEB_BODY_LIMIT",
+            "GOAL_INPUT_LIMIT",
+            "GOAL_SOURCE_QUOTA",
+            "GOAL_SIZE",
+            "WEB_SCOPE",
+        }:
             del st.session_state["message_intent"]
         raise
     del st.session_state["message_intent"]
@@ -127,13 +134,28 @@ def clarification(api, cid, message, datasets):
         ),
     )
     requirements = document_requirements(prefix) if corpora else None
+    sources = (message.get("goal_contract") or {}).get("sources", [])
     with st.form("clarify-" + prefix):
+        revised = (
+            st.text_area("修改完整问题（新合同版本）", message["text"])
+            if message.get("goal_contract")
+            else message["text"]
+        )
         if metric:
             start = st.date_input("开始日期（含）", date(2025, 10, 1))
             end = st.date_input("结束日期（不含）", date(2025, 11, 1))
         else:
             st.caption("仅引用授权文档，不计算指标或生成财务图表；日期筛选不适用。")
         docs = st.multiselect("关联授权文档（可选）", [c["corpus_id"] for c in corpora])
+        required_sources = (
+            st.multiselect(
+                "必需原件（空选表示所选范围全部必需）",
+                [s["source_id"] for s in sources],
+                format_func=lambda id_: next(s["name"] for s in sources if s["source_id"] == id_),
+            )
+            if sources
+            else []
+        )
         reviewed = st.checkbox("我确认此快照、指标、时间和文档范围")
         if st.form_submit_button("补充条件并重新确认", disabled=metric is None and not corpora):
             if not reviewed:
@@ -155,7 +177,12 @@ def clarification(api, cid, message, datasets):
                         document_purpose=requirements["purpose"],
                         required_facts=requirements["required_facts"],
                     )
-                append(api, cid, {"text": message["text"], "selection": selection})
+                    if required_sources:
+                        selection["required_source_ids"] = required_sources
+                body = {"text": revised, "selection": selection}
+                if message.get("goal_contract"):
+                    body["supersedes"] = message["message_id"]
+                append(api, cid, body)
                 st.rerun()
 
 
@@ -190,6 +217,87 @@ def attachments(api, cid, datasets):
                     data={"reviewed": "true"},
                 )
                 st.success("文档已授权；可在候选请求的补充条件中选择。")
+
+
+def goal_card(api, cid, message, datasets):
+    goal = message["goal_contract"]
+    prefix = message["message_id"] + "-" + goal["contract_sha256"]
+    st.subheader("有限目标合同 · " + goal["status"])
+    st.caption("合同版本：" + str(goal["version"]) + " · 服务器保存，刷新不会自动确认")
+    st.write("用户原始问题")
+    st.text(goal["original_question"])
+    request = goal["review"]["request"]
+    st.write("待确认的有限任务")
+    for metric in request["metrics"]:
+        st.write(metric_label(metric["metric_id"]), time_label(metric))
+    doc = request["documents"]
+    st.text("文档子目标：" + doc["question"])
+    st.write("输出用途：", doc.get("purpose"))
+    for d in goal["datasets"]:
+        st.text(f"数据：{d['name']} · v{d['version']} · {d['dataset_id']}")
+    for source in goal["sources"]:
+        st.text(("必需来源：" if source["required"] else "授权背景：") + source["name"])
+        st.caption("Source " + source["source_id"] + " · IndexVersion " + source["index_version"])
+    for fact in doc.get("required_facts", []):
+        st.text("待核验事实（尚非证明）：" + fact["description"])
+    for note in goal["limitations"]:
+        st.caption(note)
+    for note in goal["unresolved"]:
+        st.warning("前置条件未解决：" + note + "；请先修改问题")
+    with st.expander("完整合同、指标口径与版本"):
+        st.json(goal)
+    if goal["status"] == "confirmed":
+        st.success("服务器已记录范围确认；最终事实与业务完成状态仍由原Verifier判定")
+        if message.get("run_id"):
+            render_run(api, message["run_id"], prefix=message["message_id"])
+    if goal["status"] in {"pending_confirmation", "confirmed"}:
+        if goal["status"] == "pending_confirmation":
+            st.write(
+                "执行预算：",
+                goal["review"]["max_model_calls"],
+                "次模型调用 / ",
+                goal["review"]["max_tokens"],
+                "Token上限",
+            )
+            st.caption(goal["review"]["cost"])
+            a = st.checkbox(
+                "我已审阅完整问题、目标、数据、来源与业务口径", key=prefix + "-reviewed"
+            )
+            b = st.checkbox(
+                "我确认此有限合同覆盖完整目标，不要求证明材料齐备或全语料无遗漏",
+                key=prefix + "-covered",
+            )
+            c = st.checkbox("我确认必要前提已解决；不确定时先修改或拒绝", key=prefix + "-resolved")
+            if st.button(
+                "确认范围并创建待审批任务",
+                key=prefix + "-confirm",
+                disabled=not (goal["can_confirm"] and a and b and c),
+            ):
+                api.post(
+                    f"/conversations/{cid}/messages/{message['message_id']}/launch",
+                    {
+                        "confirmed": True,
+                        "expected_version": goal["version"],
+                        "expected_contract_sha256": goal["contract_sha256"],
+                        "reviewed_contract": a,
+                        "covers_original_goal": b,
+                        "prerequisites_resolved": c,
+                    },
+                    key="goal-confirm-" + message["message_id"],
+                )
+                st.rerun()
+        if st.button("取消或撤回本次合同", key=prefix + "-reject"):
+            api.post(
+                f"/conversations/{cid}/messages/{message['message_id']}/goal/reject",
+                {
+                    "expected_version": goal["version"],
+                    "expected_contract_sha256": goal["contract_sha256"],
+                },
+                key="goal-reject-" + message["message_id"],
+            )
+            st.rerun()
+        with st.expander("修改任务范围（新版本，旧确认失效）"):
+            clarification(api, cid, message, datasets)
 
 
 def render_chat(api, datasets):
@@ -227,11 +335,17 @@ def render_chat(api, datasets):
                 del st.session_state["edit_question"]
                 st.rerun()
     for m in page["messages"]:
+        if m.get("goal_event"):
+            with st.chat_message("assistant"):
+                st.info("服务器确认记录：" + m["text"])
+            continue
         with st.chat_message("user"):
             st.text(m["text"] or "上传业务文件")
         with st.chat_message("assistant"):
             if m["unavailable"]:
                 st.warning("此消息的授权、版本或保留时间已失效，内容与报告不可用。")
+            elif m.get("goal_contract"):
+                goal_card(api, cid, m, datasets)
             elif m["upload_id"]:
                 schema_card(api, m["upload_id"], m["message_id"])
             elif m["run_id"]:
@@ -278,7 +392,12 @@ def render_chat(api, datasets):
             if count >= 12:
                 st.info("已到刷新上限，可手动查看原任务。")
                 return
-            ids = [m["run_id"] for m in page["messages"] if m.get("run_id")]
+            ids = [
+                m["run_id"]
+                for m in page["messages"]
+                if m.get("run_id")
+                and (not m.get("goal_contract") or m["goal_contract"]["status"] == "confirmed")
+            ]
             if ids:
                 state = api.get("/tasks/" + ids[-1])
                 st.write("最近任务真实状态：", state["status"])

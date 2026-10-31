@@ -136,6 +136,7 @@ async def run(
     question=QUESTION,
     calls=10,
     related=False,
+    trusted_finite=False,
 ):
     config = settings.model_copy(
         update={
@@ -146,7 +147,37 @@ async def run(
         }
     )
     model, retrieval = Decisions(steps), RetrievalDouble(text, related=related)
-    engine = Coordinator(config, model, retrieval=retrieval, run_id="completion-unit")
+    scope = None
+    if trusted_finite:
+        from datapilot.datasets.contracts import DatasetScope
+        from datapilot.rag.contracts import CorpusPin, RagScope
+        from datapilot.reporting.contracts import DocumentGoal, ReportScope, confirm_finite_scope
+
+        retrieval.scope = RagScope(
+            allow_saas=True,
+            corpora=[
+                CorpusPin(
+                    corpus_id="00000000-0000-4000-8000-000000000001",
+                    index_version="a" * 64,
+                    document_ids=["b" * 64],
+                )
+            ],
+        )
+        scope = confirm_finite_scope(
+            ReportScope(
+                question=question,
+                datasets=DatasetScope(),
+                metrics=[],
+                document_goal=DocumentGoal(
+                    goal_id="rag", question=question, metric_goals=[], purpose="summary"
+                ),
+            ),
+            retrieval.scope,
+            confirmation_ref="public-finite-retrieval-fixture",
+        )
+    engine = Coordinator(
+        config, model, retrieval=retrieval, run_id="completion-unit", rag_task_scope=scope
+    )
     result = await engine.graph.ainvoke(
         {
             "run_id": "completion-unit",
@@ -254,6 +285,7 @@ async def test_semantic_retrieval_can_complete_without_literal_keyword(settings)
         question="如何帮助新顾客学习软件？",
         text="入门培训是本合成文档的主题。",
         related=True,
+        trusted_finite=True,
     )
     task = result["results"]["1:rag"]
     assert task.status == "succeeded" and task.rag_completion.verdict == "semantic_retrieval"
@@ -284,6 +316,7 @@ async def test_successful_retrieval_is_separate_from_unverified_business_conclus
         ["search", "complete"],
         question=question,
         related=True,
+        trusted_finite=True,
     )
     task = result["results"]["1:rag"]
     assert task.status == "succeeded" and task.rag_completion.verdict == "semantic_retrieval"
@@ -331,6 +364,7 @@ async def test_answer_exposes_only_qualifying_passages_but_retains_full_artifact
         settings,
         ["search", "complete"],
         question="如何帮助新顾客学习软件？",
+        trusted_finite=True,
     )
     task = result["results"]["1:rag"]
     assert task.rag_completion.relevant_chunk_ids == ["synthetic-chunk"]

@@ -167,7 +167,7 @@ def create_app(*, policy=None, settings=None, dispatch=True, policy_file=None):
             return response_error("WEB_ORIGIN", "Mutations require an authorized Origin")
         try:
             if request.url.path != "/api/v1/session":
-                store.authenticate(
+                request.state.actor_session_hash = store.authenticate(
                     request.cookies.get("datapilot_session"),
                     request.headers.get("x-csrf-token", "") if request.method == "POST" else None,
                 )
@@ -312,6 +312,8 @@ def create_app(*, policy=None, settings=None, dispatch=True, policy_file=None):
 
     @app.post("/api/v1/tasks", response_model=Acknowledgement)
     def create(request: CreateTask, idempotency_key: str = Header(...)):
+        if request.documents:
+            deny("GOAL_CONFIRMATION_REQUIRED", "文档任务须通过对话中的完整有限合同确认")
         payload = run_async(service.task_payload(request))
         return store.command(idempotency_key, "create", payload, payload=payload)
 

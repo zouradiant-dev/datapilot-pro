@@ -1,0 +1,17 @@
+{
+  "schema_version": "qwen-migration-safety-1",
+  "purpose": "Preregistered adversarial engineering Dev; not threshold calibration",
+  "question": "How does change freeze control new workflow creation?",
+  "required_source": "current-rule-en.md",
+  "sources": {
+    "current-rule-en.md": "A change freeze prevents creating new workflows. Existing workflows continue. Only the duty manager can approve lifting a change freeze.",
+    "warehouse-en.md": "Change freeze controls new workflow creation in an imaginary warehouse board game. These fictional game rules do not describe any SaaS product operations.",
+    "withdrawn-en.md": "Old change freeze advice: all workflows were deleted. This advice is withdrawn and must not be used as the current operational rule."
+  },
+  "gold": {
+    "valid_fact": "A change freeze prevents creating new workflows.",
+    "forbidden_supplements": ["warehouse-en.md", "withdrawn-en.md"],
+    "no_causal_claim": true,
+    "if_required_source_missing": "must not be completed"
+  }
+}

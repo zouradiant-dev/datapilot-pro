@@ -29,6 +29,38 @@ def sql(conn, statement, **params):
     return conn.execute(sa.text(statement), params)
 
 
+def chunk_table(dimensions):
+    # Closed internal names; neither SQL nor a physical identifier is a tool argument.
+    if dimensions not in (512, 1024):
+        raise AgentFailure("EMBEDDING_VERSION", "Unsupported native vector dimensions")
+    return "rag.chunks" if dimensions == 512 else "rag.chunks_1024"
+
+
+def policy_hash(scope):
+    if scope.embedding_profile is None:
+        return None
+    from datapilot.rag.qwen import policy
+
+    return digest(policy(scope.embedding_profile))
+
+
+def search_threshold(scope):
+    if scope.embedding_profile is None:
+        return scope.min_score
+    from datapilot.rag.qwen import policy
+
+    return max(scope.min_score, policy(scope.embedding_profile)["search_threshold"])
+
+
+def validate_manifest_profile(manifest, scope):
+    from datapilot.rag.models import specification
+
+    if manifest.model != specification(scope.embedding_profile) or (
+        manifest.relevance_policy_sha256 != policy_hash(scope)
+    ):
+        raise AgentFailure("EMBEDDING_VERSION", "Pinned model/recipe/relevance policy differs")
+
+
 class Connection:
     def __init__(self, url: str, role: str, *, timeout=2):
         parsed = make_url(url)
@@ -113,7 +145,11 @@ class IngestionService(Connection):
             model=self.embedding.spec,
             chunker=chunker,
             sources=sorted((p.info for p in parsed), key=lambda s: s.source_id),
+            relevance_policy_sha256=policy_hash(scope),
         )
+        # Fixtures remain possible only in explicit component tests, never MCP preflight.
+        if not manifest.model.fixture:
+            validate_manifest_profile(manifest, scope)
         index_version = digest(manifest)
         with self.read() as conn:
             existing = sql(
@@ -128,7 +164,7 @@ class IngestionService(Connection):
             return manifest, index_version, True, None
         fragments = [p.text[s.start : s.end] for p in parsed for s in p.info.chunks]
         vectors, usage = self.embedding.encode(fragments)
-        vectors = validate_vectors(vectors, len(fragments))
+        vectors = validate_vectors(vectors, len(fragments), manifest.model.dimensions)
         try:
             with self.engine.begin() as conn:
                 conn.exec_driver_sql("SET LOCAL statement_timeout='10s'")
@@ -202,7 +238,7 @@ class IngestionService(Connection):
                 if rows:
                     conn.execute(
                         sa.text(
-                            "INSERT INTO rag.chunks "
+                            f"INSERT INTO {chunk_table(manifest.model.dimensions)} "
                             "(corpus_id,index_version,chunk_id,document_id,span,text,embedding,embedding_sha256)"
                             " VALUES (:c,:v,:id,:doc,CAST(:span AS jsonb),:text,"
                             "CAST(:vector AS public.vector),:hash) "
@@ -248,6 +284,7 @@ class Repository(Connection):
                     raise AgentFailure(
                         "DOCUMENT_NOT_AUTHORIZED", "Document/dataset scope was not delegated"
                     )
+                validate_manifest_profile(manifest, self.scope)
                 for source in manifest.sources:
                     raw = sql(
                         conn,
@@ -304,9 +341,11 @@ class Repository(Connection):
             if len(self.goal) <= 512:
                 try:
                     goal_vectors, goal_usage = embedding.encode([self.goal], query=True)
-                    self.goal_vector = validate_vectors(goal_vectors, 1)[0]
+                    self.goal_vector = validate_vectors(goal_vectors, 1, embedding.spec.dimensions)[
+                        0
+                    ]
                     usage = EmbeddingUsage(
-                        mode="local_onnx",
+                        mode=usage.mode,
                         tokens=usage.tokens + goal_usage.tokens,
                         elapsed_ms=usage.elapsed_ms + goal_usage.elapsed_ms,
                         calls=usage.calls + goal_usage.calls,
@@ -314,7 +353,7 @@ class Repository(Connection):
                 except AgentFailure as exc:
                     if exc.error.code != "EMBEDDING_LIMIT":
                         raise
-        vector = validate_vectors(vectors, 1)[0].tolist()
+        vector = validate_vectors(vectors, 1, embedding.spec.dimensions)[0].tolist()
         documents = []
         with self.read() as conn:
             for pin in self.scope.corpora:
@@ -326,7 +365,8 @@ class Repository(Connection):
                         "SELECT chunk_id,document_id,span,text,embedding::text AS vector,"
                         "embedding_sha256,1-(embedding OPERATOR(public.<=>) "
                         "CAST(:vector AS public.vector)) AS score "
-                        "FROM rag.chunks WHERE corpus_id=:c AND index_version=:v "
+                        f"FROM {chunk_table(embedding.spec.dimensions)} "
+                        "WHERE corpus_id=:c AND index_version=:v "
                         "AND document_id=ANY(CAST(:docs AS text[])) "
                         "ORDER BY embedding OPERATOR(public.<=>) CAST(:vector AS public.vector),"
                         "chunk_id LIMIT :k",
@@ -341,7 +381,9 @@ class Repository(Connection):
                 )
                 manifest = manifests[pin.corpus_id]
                 for row in rows:
-                    stored_vector = validate_vectors([json.loads(row["vector"])], 1)[0]
+                    stored_vector = validate_vectors(
+                        [json.loads(row["vector"])], 1, embedding.spec.dimensions
+                    )[0]
                     if (
                         hashlib.sha256(stored_vector.astype("<f4").tobytes()).hexdigest()
                         != row["embedding_sha256"]
@@ -360,7 +402,7 @@ class Repository(Connection):
                             "DOCUMENT_CORRUPT", "Retrieved chunk differs from manifest/source"
                         )
                     score = max(-1.0, min(1.0, float(row["score"])))
-                    if score < self.scope.min_score:
+                    if score < search_threshold(self.scope):
                         continue
                     citation = ChunkCitation(
                         **span.model_dump(),
@@ -412,6 +454,8 @@ def make_pin(manifest: IndexManifest, index_version: str) -> CorpusPin:
 
 
 def verify_result(result, scope: RagScope, manifests: dict[str, IndexManifest]):
+    for manifest in manifests.values():
+        validate_manifest_profile(manifest, scope)
     if len({d.document_id for d in result.documents}) != len(result.documents):
         raise AgentFailure("DOCUMENT_CORRUPT", "Repeated retrieved chunk ID")
     if (
@@ -458,6 +502,6 @@ def verify_result(result, scope: RagScope, manifests: dict[str, IndexManifest]):
             or (document.document_id, document.source, document.version, document.sha256)
             != (span.chunk_id, source.name, source.version, span.sha256)
             or hashlib.sha256(document.text.encode()).hexdigest() != span.sha256
-            or c.score < scope.min_score
+            or c.score < search_threshold(scope)
         ):
             raise AgentFailure("DOCUMENT_CORRUPT", "Citation hash/version/span differs from source")

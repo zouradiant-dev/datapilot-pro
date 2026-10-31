@@ -1,0 +1,29 @@
+{
+  "query": "根据指定规则，说明租户归档由谁审批以及导出链接多久失效。",
+  "goals": {
+    "bge-host-goal-cosine-v1": {
+      "protocol": "retrieval-task-v1",
+      "requirement_policy": "host-goal-requirements-v3",
+      "requirement_class": "bounded_facts",
+      "relevance_policy": "bge-host-goal-cosine-v1",
+      "minimum_goal_score": 0.55,
+      "question_sha256": "fc6f6819c8f067a44617119a47c24dfe1339f35d96043c38df75a988bc73a950",
+      "required_terms": [],
+      "minimum_sources": 1,
+      "unsupported_requirements": false,
+      "business_conclusions_verified": false
+    },
+    "qwen3-cuda-fp16-v1/host-goal-cosine-v1": {
+      "protocol": "retrieval-task-v1",
+      "requirement_policy": "host-goal-requirements-v3",
+      "requirement_class": "bounded_facts",
+      "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+      "minimum_goal_score": 0.55,
+      "question_sha256": "fc6f6819c8f067a44617119a47c24dfe1339f35d96043c38df75a988bc73a950",
+      "required_terms": [],
+      "minimum_sources": 1,
+      "unsupported_requirements": false,
+      "business_conclusions_verified": false
+    }
+  }
+}

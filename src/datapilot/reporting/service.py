@@ -456,7 +456,7 @@ class ReportService:
                 else set()
             )
             selected_names = set()
-            requirements = retrieval_goal(goal.question)
+            requirements = retrieval_goal(goal.question, retrieval, self.scope)
             # A source task's insufficient receipt cannot be promoted by the report.
             source_ready = (
                 source_statuses is None or source_statuses.get(goal.goal_id) == "succeeded"
@@ -471,6 +471,7 @@ class ReportService:
                     not artifact.documents
                     or not (source_ready or partial_source)
                     or requirements["unsupported_requirements"]
+                    or not requirements["completion_eligible"]
                 ):
                     continue
                 result = artifact.documents
@@ -625,6 +626,9 @@ class ReportService:
                 missing[goal.goal_id] = [
                     "snapshot_not_attested"
                     if requirements.get("unsupported_reason") == "snapshot_not_attested"
+                    else "goal_scope_not_attested"
+                    if not requirements["completion_eligible"]
+                    and not requirements["unsupported_requirements"]
                     else "matching_document_or_metric_evidence_missing"
                 ]
                 if required_sources is not None and not required_sources <= {

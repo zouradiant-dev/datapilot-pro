@@ -8,7 +8,7 @@ from zoneinfo import ZoneInfo
 from datapilot.contracts import AgentFailure
 from datapilot.ingestion.common import digest
 from datapilot.persistence.backend import execute, json_value
-from datapilot.web.chat_contracts import ChatDraft, MessageView
+from datapilot.web.chat_contracts import ChatDraft, GoalContractView, MessageView
 from datapilot.web.contracts import CreateTask
 from datapilot.web.intent import resolve
 from datapilot.web.store import deny
@@ -51,6 +51,215 @@ class ChatService:
         if digest(row["payload"]) != row["payload_hash"]:
             deny("CHAT_CORRUPT", "Message hash differs")
         return row["payload"]
+
+    def _message(self, conn, cid, mid):
+        self._conversation(conn, cid)
+        row = (
+            execute(
+                conn,
+                "SELECT * FROM execution.web_messages WHERE conversation_id=:c AND message_id=:m",
+                c=cid,
+                m=mid,
+            )
+            .mappings()
+            .one_or_none()
+        )
+        if not row:
+            deny("CHAT_UNAVAILABLE")
+        self._payload(row)
+        return row
+
+    def _goal_state(self, conn, row):
+        p = self._payload(row)
+        snapshot = p.get("goal_contract")
+        if not snapshot:
+            deny("GOAL_CONFIRMATION_REQUIRED", "请重新创建并审阅当前有限合同")
+        if datetime.fromisoformat(snapshot["expires_at"]) <= datetime.now(UTC):
+            return "expired", None
+        newer = (
+            execute(
+                conn,
+                "SELECT * FROM execution.web_messages WHERE conversation_id=:c "
+                "AND payload->>'supersedes'=:m ORDER BY sequence DESC LIMIT 1",
+                c=row["conversation_id"],
+                m=row["message_id"],
+            )
+            .mappings()
+            .one_or_none()
+        )
+        if newer:
+            self._payload(newer)
+            return "superseded", None
+        event = (
+            execute(
+                conn,
+                "SELECT * FROM execution.web_messages WHERE conversation_id=:c "
+                "AND payload->'goal_event'->>'message_id'=:m ORDER BY sequence DESC LIMIT 1",
+                c=row["conversation_id"],
+                m=row["message_id"],
+            )
+            .mappings()
+            .one_or_none()
+        )
+        if not event:
+            return "pending_confirmation", None
+        e = self._payload(event)["goal_event"]
+        if (
+            e["event_id"],
+            e["conversation_id"],
+            e["message_id"],
+            e["version"],
+            e["contract_sha256"],
+        ) != (
+            event["message_id"],
+            row["conversation_id"],
+            row["message_id"],
+            row["sequence"],
+            digest(snapshot),
+        ):
+            deny("CHAT_CORRUPT", "Confirmation identity differs")
+        return e["action"], e
+
+    def _goal_view(self, row, state):
+        s = self._payload(row)["goal_contract"]
+        return GoalContractView.model_validate_json(
+            json_value(
+                {
+                    "contract_id": row["message_id"],
+                    "version": row["sequence"],
+                    "contract_sha256": digest(s),
+                    "original_question": self._payload(row)["text"],
+                    "status": state,
+                    **{
+                        k: s[k]
+                        for k in (
+                            "expires_at",
+                            "review",
+                            "datasets",
+                            "sources",
+                            "unresolved",
+                            "limitations",
+                        )
+                    },
+                    "can_confirm": s["can_confirm"] and state == "pending_confirmation",
+                }
+            )
+        )
+
+    async def goal(self, cid, mid):
+        with self.store.transaction() as conn:
+            row = self._message(conn, cid, mid)
+            state, _ = self._goal_state(conn, row)
+        from datapilot.web.goal_confirmation import base_payload
+
+        request = CreateTask.model_validate_json(json_value(self._payload(row)["draft"]["request"]))
+        fresh = await self.product.task_payload(request)
+        if fresh != base_payload(self._payload(row)["goal_contract"]):
+            deny("RECOVERY_VERSION", "合同的数据、定义或宿主配置已变化，请重新确认")
+        return self._goal_view(row, state)
+
+    def _actor(self, conn, actor):
+        if (
+            not actor
+            or not execute(
+                conn,
+                "SELECT 1 FROM execution.web_sessions "
+                "WHERE session_hash=:s AND owner=:o AND expires_at>now()",
+                s=actor,
+                o=self.store.policy.owner,
+            ).first()
+        ):
+            deny("WEB_FORBIDDEN", "Confirmation requires a current authenticated session")
+
+    def _event(self, conn, row, action, actor):
+        self._actor(conn, actor)
+        count = execute(
+            conn,
+            "SELECT count(*) FROM execution.web_messages WHERE conversation_id=:c",
+            c=row["conversation_id"],
+        ).scalar_one()
+        if count >= 200:
+            deny("CHAT_QUOTA", "Confirmation needs space in the bounded history")
+        s = self._payload(row)["goal_contract"]
+        e = {
+            "action": action,
+            "event_id": str(uuid4()),
+            "conversation_id": row["conversation_id"],
+            "message_id": row["message_id"],
+            "version": row["sequence"],
+            "contract_sha256": digest(s),
+            "actor_session_hash": actor,
+            "confirmed_at": datetime.now(UTC).isoformat(),
+            "expires_at": s["expires_at"],
+        }
+        if action == "confirmed":
+            e["reviewed_contract"] = True
+            e["covers_original_goal"] = True
+            e["prerequisites_resolved"] = True
+        payload = {
+            "text": "有限合同已确认" if action == "confirmed" else "有限合同已拒绝或撤回",
+            "upload_id": None,
+            "draft": None,
+            "goal_event": e,
+        }
+        execute(
+            conn,
+            "INSERT INTO execution.web_messages(message_id,conversation_id,sequence,request_key,"
+            "request_hash,payload,payload_hash) VALUES(:m,:c,:s,:k,:h,CAST(:p AS jsonb),:ph)",
+            m=e["event_id"],
+            c=row["conversation_id"],
+            s=count + 1,
+            k="goal-" + action + "-" + row["message_id"],
+            h=digest({"action": action, "target": row["message_id"]}),
+            p=json_value(payload),
+            ph=digest(payload),
+        )
+        return e
+
+    async def reject(self, cid, mid, decision, actor):
+        with self.store.transaction() as conn:
+            self._lock(conn)
+            self._actor(conn, actor)
+            row = self._message(conn, cid, mid)
+            self._check_goal_version(row, decision)
+            state, _ = self._goal_state(conn, row)
+            if state not in {"rejected", "superseded", "expired"}:
+                self._event(conn, row, "rejected", actor)
+                if row["run_id"]:
+                    self.store.command(
+                        "goal-cancel-" + mid, "cancel", {}, run_id=row["run_id"], conn=conn
+                    )
+        if row["run_id"]:
+            await self.product.cancel_runtime(row["run_id"])
+        return await self._view(row)
+
+    def _check_goal_version(self, row, decision):
+        snapshot = self._payload(row).get("goal_contract")
+        if not snapshot or (decision.expected_version, decision.expected_contract_sha256) != (
+            row["sequence"],
+            digest(snapshot),
+        ):
+            deny("GOAL_STALE", "请重新读取当前完整合同；旧确认不能复用")
+
+    async def authorized_goal_payload(self, payload, run_id):
+        from datapilot.web.goal_confirmation import base_payload, bind_payload
+
+        ref = payload["goal_confirmation"]
+        with self.store.transaction() as conn:
+            row = self._message(conn, ref["conversation_id"], ref["message_id"])
+            state, event = self._goal_state(conn, row)
+            if row["run_id"] != run_id:
+                deny("RECOVERY_IDENTITY", "确认仅绑定原业务Run")
+        if state != "confirmed" or not event or event["event_id"] != ref["event_id"]:
+            deny("GOAL_REVOKED", "确认已撤回、替换或过期")
+        snapshot = self._payload(row)["goal_contract"]
+        request = CreateTask.model_validate_json(json_value(snapshot["review"]["request"]))
+        if await self.product.task_payload(request) != base_payload(snapshot):
+            deny("RECOVERY_VERSION", "确认的数据、权限或定义已变化")
+        fresh = bind_payload(snapshot, event)
+        if fresh != payload:
+            deny("RECOVERY_IDENTITY", "确认记录与运行载荷不一致")
+        return fresh
 
     def create(self, key, body):
         self._key(key)
@@ -111,6 +320,14 @@ class ChatService:
 
     async def _view(self, row):
         p = self._payload(row)
+        if p.get("goal_event"):
+            return MessageView(
+                message_id=row["message_id"],
+                sequence=row["sequence"],
+                created_at=row["created_at"],
+                text=p["text"],
+                goal_event=p["goal_event"]["action"],
+            )
         view = MessageView(
             message_id=row["message_id"],
             sequence=row["sequence"],
@@ -121,11 +338,15 @@ class ChatService:
             run_id=row["run_id"],
         )
         try:
+            if p.get("goal_contract"):
+                view.goal_contract = await self.goal(row["conversation_id"], row["message_id"])
+                if view.goal_contract.status in {"rejected", "superseded", "expired"}:
+                    return view
             if view.upload_id:
                 self.store.upload(view.upload_id)
             if view.run_id:
                 await self.product.authorize_run(view.run_id)
-            elif view.draft and view.draft.request:
+            elif view.draft and view.draft.request and not p.get("goal_contract"):
                 # Current trusted policy, grants and real MCP versions, never history authority.
                 fresh = await self.product.task_payload(view.draft.request)
                 if digest(fresh) != view.draft.authorization_sha256:
@@ -179,7 +400,7 @@ class ChatService:
         self._key(key)
         hashed = digest(request.model_dump(mode="json"))
         with self.store.transaction() as conn:
-            self._conversation(conn, id_)
+            conversation = self._conversation(conn, id_)
             old = self._existing(conn, id_, key, hashed)
             previous = (
                 execute(
@@ -193,7 +414,19 @@ class ChatService:
                 .one_or_none()
             )
         if old:
+            # An edit can commit before its cancellation acknowledgement is lost.
+            # Reuse the old message AND the original cancellation, never a new Run.
+            if request.supersedes:
+                with self.store.transaction() as conn:
+                    parent = self._message(conn, id_, request.supersedes)
+                if parent["run_id"]:
+                    await self.product.cancel_runtime(parent["run_id"])
             return await self._view(old)
+        if request.supersedes:
+            with self.store.transaction() as conn:
+                parent = self._message(conn, id_, request.supersedes)
+            if parent["run_id"]:
+                self.product.ensure_no_unknown(parent["run_id"])
         # Never hold an owner/advisory/row lock across MCP or network I/O.
         draft, prior_request = None, None
         if request.upload_id:
@@ -242,29 +475,60 @@ class ChatService:
                     )
                     draft.request = CreateTask.model_validate_json(json_value(body))
             if draft.request:
-                fresh = await self.product.task_payload(draft.request)
-                if (
-                    selection.dataset_id
-                    and not draft.request.metrics
-                    and any(
-                        (b["dataset_id"], b["version"])
-                        != (selection.dataset_id, selection.dataset_version)
-                        for b in fresh["report_scope"]["datasets"]["bindings"]
-                    )
-                ):
-                    deny("WEB_SCOPE", "Selected document source differs from the chosen snapshot")
-                draft = draft.model_copy(update={"authorization_sha256": digest(fresh)})
+                try:
+                    fresh = await self.product.task_payload(draft.request)
+                except AgentFailure as exc:
+                    if exc.error.code != "DOCUMENT_SCOPE_REQUIRED":
+                        raise
+                    draft = ChatDraft(missing=[exc.error.message], notes=draft.notes)
+                else:
+                    if (
+                        selection.dataset_id
+                        and not draft.request.metrics
+                        and any(
+                            (b["dataset_id"], b["version"])
+                            != (selection.dataset_id, selection.dataset_version)
+                            for b in fresh["report_scope"]["datasets"]["bindings"]
+                        )
+                    ):
+                        deny(
+                            "WEB_SCOPE", "Selected document source differs from the chosen snapshot"
+                        )
+                    draft = draft.model_copy(update={"authorization_sha256": digest(fresh)})
         payload = {
             "schema_version": "chat-v1",
             "text": request.text,
             "upload_id": request.upload_id,
             "draft": draft.model_dump(mode="json") if draft else None,
         }
+        if request.supersedes:
+            payload["supersedes"] = request.supersedes
+        if draft and draft.request and draft.request.documents:
+            from datapilot.web.goal_confirmation import proposal
+
+            snapshot = await proposal(self.product, draft.request, fresh, request.selection)
+            snapshot["expires_at"] = min(
+                conversation["expires_at"],
+                datetime.now(UTC) + timedelta(seconds=self.store.policy.ttl_seconds),
+            ).isoformat()
+            payload["goal_contract"] = snapshot
+        if len(json_value(payload).encode()) > 24576:
+            deny("GOAL_SIZE", "合同过大，请缩小数据与文档范围")
         with self.store.transaction() as conn:
             self._lock(conn)
             self._conversation(conn, id_)
             row = self._existing(conn, id_, key, hashed)
             if not row:
+                if request.supersedes:
+                    parent = self._message(conn, id_, request.supersedes)
+                    if parent["run_id"]:
+                        self.store.command(
+                            "goal-edit-" + request.supersedes,
+                            "cancel",
+                            {},
+                            run_id=parent["run_id"],
+                            conn=conn,
+                        )
                 count = execute(
                     conn,
                     "SELECT count(*) FROM execution.web_messages WHERE conversation_id=:id",
@@ -290,9 +554,11 @@ class ChatService:
                     .mappings()
                     .one()
                 )
+        if request.supersedes and parent["run_id"]:
+            await self.product.cancel_runtime(parent["run_id"])
         return await self._view(row)
 
-    async def launch(self, conversation_id, message_id, confirmed):
+    async def launch(self, conversation_id, message_id, confirmed, *, decision=None, actor=None):
         if not confirmed:
             deny("CHAT_CONFIRMATION_REQUIRED", "Review the candidate before submitting")
         with self.store.transaction() as conn:
@@ -311,12 +577,21 @@ class ChatService:
             if not row:
                 deny()
             p = self._payload(row)
+        if p.get("supersedes"):
+            with self.store.transaction() as conn:
+                parent = self._message(conn, conversation_id, p["supersedes"])
+            if parent["run_id"]:
+                self.product.ensure_no_unknown(parent["run_id"])
+        if p.get("goal_contract"):
+            return await self._launch_goal(row, decision, actor)
         if row["run_id"]:
             await self.product.authorize_run(row["run_id"])
             return {"schema_version": "api-v1", "run_id": row["run_id"], "accepted": True}
         if not p.get("draft") or not p["draft"].get("request"):
             deny("CHAT_CLARIFICATION_REQUIRED", "Resolve missing definitions first")
         request = CreateTask.model_validate_json(json_value(p["draft"]["request"]))
+        if request.documents:
+            deny("GOAL_CONFIRMATION_REQUIRED", "旧候选须重新审阅当前有限合同")
         if request.question != p["text"] or not request.require_review:
             deny("CHAT_CORRUPT")
         payload = await self.product.task_payload(request)
@@ -352,5 +627,53 @@ class ChatService:
                 "WHERE message_id=:m AND run_id IS NULL",
                 r=ack["run_id"],
                 m=message_id,
+            )
+            return ack
+
+    async def _launch_goal(self, row, decision, actor):
+        from datapilot.web.goal_confirmation import base_payload, bind_payload
+
+        if decision is None or not (
+            decision.reviewed_contract
+            and decision.covers_original_goal
+            and decision.prerequisites_resolved
+        ):
+            deny("GOAL_CONFIRMATION_REQUIRED", "请明确审阅完整目标、有限范围及所有前置条件")
+        self._check_goal_version(row, decision)
+        p = self._payload(row)
+        s = p["goal_contract"]
+        if not s["can_confirm"]:
+            deny("GOAL_UNSUPPORTED", "当前前提或能力不支持此合同，请修改问题")
+        request = CreateTask.model_validate_json(json_value(s["review"]["request"]))
+        if request.question != p["text"] or not request.require_review:
+            deny("CHAT_CORRUPT")
+        fresh = await self.product.task_payload(request)
+        if fresh != base_payload(s):
+            deny("RECOVERY_VERSION", "合同范围或宿主策略发生变化")
+        with self.store.transaction() as conn:
+            self._lock(conn)
+            current = self._message(conn, row["conversation_id"], row["message_id"])
+            self._actor(conn, actor)
+            if self._payload(current) != p:
+                deny("CHAT_CORRUPT")
+            state, event = self._goal_state(conn, current)
+            if state == "confirmed" and current["run_id"]:
+                saved = self.store.run(current["run_id"], conn)
+                if saved["payload_hash"] != digest(bind_payload(s, event)):
+                    deny("RECOVERY_IDENTITY")
+                return {"schema_version": "api-v1", "run_id": current["run_id"], "accepted": True}
+            if state != "pending_confirmation" or current["run_id"]:
+                deny("GOAL_STALE", "合同已替换、拒绝或过期")
+            event = self._event(conn, current, "confirmed", actor)
+            bound = bind_payload(s, event)
+            ack = self.store.command(
+                "chat-run-" + current["message_id"], "create", bound, payload=bound, conn=conn
+            )
+            execute(
+                conn,
+                "UPDATE execution.web_messages SET run_id=:r "
+                "WHERE message_id=:m AND run_id IS NULL",
+                r=ack["run_id"],
+                m=current["message_id"],
             )
             return ack

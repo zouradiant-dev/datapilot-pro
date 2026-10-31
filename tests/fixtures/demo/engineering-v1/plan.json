@@ -1,0 +1,21 @@
+{
+  "id": "p7-engineering-demo-v1",
+  "role": "bounded engineering acceptance, not independent business quality or paid Live",
+  "max_runs": 5,
+  "concurrency": 1,
+  "provider_calls_allowed": 0,
+  "default_embedding": "existing BGE 512, unchanged 0.55/Top-k/Goal v4",
+  "date_window": {"start": "2026-06-01", "end_exclusive": "2026-07-01"},
+  "independent_numeric_gold": {"value": "1432.25", "unit": "CNY", "method": "literal paid CNY CSV rows, independent Decimal and read-only MCP SQL, not Agent output"},
+  "cases": [
+    {"id": "sql", "question": "计算2026年6月已支付账单收入CNY。", "metrics": true, "documents": false, "expected_status": "completed"},
+    {"id": "rag", "question": "根据指定的 billing-guide.md，总结已支付账单收入规则并给出文档引用。", "metrics": false, "documents": true, "expected_status": "completed", "browser_actor": true},
+    {"id": "combined", "question": "计算2026年6月已支付账单收入，并引用文档规则说明：已支付账单收入仅计入状态为paid的账单，以CNY整数分存储。", "metrics": true, "documents": true, "expected_status": "completed"},
+    {"id": "insufficient", "question": "根据指定的 billing-guide.md，总结已支付账单收入规则并说明下一年度退款比例。", "metrics": false, "documents": true, "required_facts": [{"fact_id":"future_refund","description":"下一年度退款比例"}], "expected_status": ["partial","unavailable"]},
+    {"id": "unknown", "question": "核对2026年6月已支付账单收入CNY。", "metrics": true, "documents": false, "fault": "existing LostResponse pattern: issued Fake model call returns no acknowledged outcome", "expected_error": "RECOVERY_UNCERTAIN", "expected_model_attempts": 1}
+  ],
+  "controls": ["real FastAPI goal events and independent Journal approval", "withdraw rag confirmation denies old report", "actual API/UI restart: same reports, IDs, ledger and calls", "unknown resume denied before any reissue"],
+  "approval": "automated synthetic engineering actor reviews full contract; never an independent human semantic signature",
+  "stop": ["false completion", "unauthorized source", "unverified financial publication", "identity mismatch", "unknown reissue"],
+  "not_run": ["formal 40 observation AB", "new quality validation", "Qwen resource retest", "DeepSeek Live", "Gate 3"]
+}

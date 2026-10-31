@@ -12,7 +12,7 @@ from datapilot.ingestion.common import digest
 from datapilot.orchestration.contracts import Artifact
 from datapilot.orchestration.runtime import ArtifactStore, text_hash
 from datapilot.rag.contracts import Target
-from datapilot.reporting.contracts import DocumentFact, ReportScope
+from datapilot.reporting.contracts import DocumentFact, ReportScope, confirm_finite_scope
 
 SOURCE_FIELDS = (
     "corpus_id",
@@ -87,6 +87,10 @@ def citation_case(settings):
         proof(result.documents[0], "retention", "日志保留三年")
     ]
     service.scope.partial_evidence_policy = "partial-facts-v1"
+    service._test_rag_scope = retrieval.scope
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-finite-citation-fixture"
+    )
     return service, pairs, retrieval
 
 
@@ -115,7 +119,11 @@ def policy_data(service, pairs):
 def enable(service, pairs, data=None):
     raw = service.scope.model_dump(mode="json")
     raw["citation_policy"] = data or policy_data(service, pairs)
-    service.scope = ReportScope.model_validate_json(json.dumps(raw))
+    service.scope = confirm_finite_scope(
+        ReportScope.model_validate_json(json.dumps(raw)),
+        service._test_rag_scope,
+        confirmation_ref="public-reviewed-citation-test-contract",
+    )
 
 
 def keep(pairs, indices):

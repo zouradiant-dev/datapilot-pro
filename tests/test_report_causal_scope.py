@@ -15,7 +15,7 @@ from datapilot.ingestion.common import digest
 from datapilot.orchestration.contracts import Artifact, Document, SearchResult
 from datapilot.orchestration.runtime import ArtifactStore
 from datapilot.rag.contracts import ChunkCitation, CorpusPin, RagScope
-from datapilot.reporting.contracts import DocumentGoal, ReportScope
+from datapilot.reporting.contracts import DocumentGoal, ReportScope, confirm_finite_scope
 from datapilot.reporting.service import ReportService, report_session
 
 
@@ -96,6 +96,7 @@ def document_case(settings, question, causal_requested=False):
             documents=result,
         )
     )
+    scope = confirm_finite_scope(scope, rag_scope, confirmation_ref="public-finite-summary-fixture")
     return ReportService(settings, scope, {}, {}, {}, {}), [(ref, store.get(ref))], retrieval
 
 

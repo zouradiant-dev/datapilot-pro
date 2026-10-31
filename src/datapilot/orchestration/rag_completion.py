@@ -11,13 +11,93 @@ PROTOCOL = "rag-submit-v1"
 CORRECTION = "rag_completion_correction"
 RELEVANCE_POLICY = "bge-host-goal-cosine-v1"
 RELEVANCE_THRESHOLD = 0.55
+REQUIREMENT_POLICY = "host-goal-requirements-v4"
+
+
+def requirement_class(question):
+    """Bounded eligibility grammar, not authorization or corpus-completeness proof.
+
+    Negation applies to its own collection action, never a later positive clause.
+    Unresolved breadth is denied rather than silently narrowed to retrieved facts.
+    """
+    collection = (
+        r"文档|文件|资料|来源|证据|语料|知识库|内容|\b(?:documents?|files?|sources?|"
+        r"evidence|corpus|corpora|collection|knowledge\s+base)\b"
+    )
+    quantifier = (
+        r"(?:所有(?!权|者)|全部|整个|完整(?!性)的?|每[一个份篇]?|"
+        r"\b(?:all|every|each|whole|entire|complete)\b\s*)"
+        r"(?!(?:已经|已)(?:确认|证实|验证|知)的?"
+        r"(?:(?!文档|文件|来源|资料|语料)[^，。]){0,24}(?:事实|规则|条件|要求)|"
+        r"\s*(?:confirmed|verified|known)\s+"
+        r"(?:(?!documents?\b|files?\b|sources?\b)[a-z-]+\s+){0,6}"
+        r"(?:facts?|rules?|requirements?|conditions?)\b)"
+    )
+    action = (
+        r"(?:遍历|扫描|检查|审阅|核对|列出|检索|证明|确认|逐篇检查|"
+        r"scan|inspect|review|list|claim|prove)"
+    )
+    has_collection = re.search(collection, question, re.IGNORECASE)
+    classes = set()
+    clauses = re.split(r"[，,。.!?！？；;\n]|但(?:是)?|而(?:是|要)|\bbut\b", question.lower())
+    for clause in clauses:
+        if not clause.strip():
+            continue
+        if re.search(
+            r"不是说|尽量[^，。]{0,24}(?:完整|全面)|(?:所有|全部)(?:应该|应当)|"
+            r"(?:全部|所有)相关内容|(?:不要|不得)漏掉关键来源|"
+            r"everything\s+that\s+should|all\s+relevant\s+information|"
+            r"try\s+to\s+be\s+comprehensive",
+            clause,
+        ):
+            classes.add("ambiguous_unresolved")
+            continue
+        negated = re.search(
+            r"(?:(?:不需要|无需|不必|不用|不要|不要求|禁止)(?:去|再)?\s*|"
+            r"\b(?:do\s+not|don't|no\s+need\s+to|not\s+required\s+to)\s+)" + action,
+            clause,
+        )
+        double_negative = re.search(r"不能不|不得不|并非不|不是不|not\s+unnecessary", clause)
+        if negated and not double_negative and re.search(collection, clause[negated.end() :]):
+            # Do not erase a second, positive requirement joined within this clause.
+            if re.search(
+                r"(?:并|且|还|而|却|必须|\band\b|\bwhile\b|\byet\b).{0,12}" + action,
+                clause[negated.end() :],
+            ):
+                classes.add("ambiguous_unresolved")
+            clause = clause[: negated.start()]
+        omissions = re.search(
+            r"(?:任何)?一[份篇个].{0,8}(?:不能|不得|不许|不)(?:再)?(?:漏|遗漏)|"
+            r"不漏一[份篇]|(?:不允许|不能|不得|没有|无).{0,8}(?:遗漏|漏掉)|"
+            r"\bno\b.{0,32}(?:source|document|file).{0,16}(?:missed|omitted)|"
+            r"without\s+(?:exception|omissions)",
+            clause,
+        )
+        enumerating = re.search(
+            r"逐[篇份]|逐[个条](?:检查|审阅|核对|扫描|读取)?(?:文档|文件|资料|来源|语料)",
+            clause,
+        )
+        if re.search(quantifier + r"[^，。！？；\n]{0,64}(?:" + collection + ")", clause) or (
+            has_collection and (omissions or enumerating)
+        ):
+            classes.add("exhaustive_collection")
+        elif re.search(
+            quantifier
+            + r".{0,32}(?:事实|规则|条件|要求|管理员|用户|客户|账号|账户|账单|发票|订单|订阅)",
+            clause,
+        ) and not re.search(r"已确认|已经确认|已验证|已证实|已知|确认的|指定|pinned", clause):
+            classes.add("ambiguous_unresolved")
+    return next(
+        (c for c in ("exhaustive_collection", "ambiguous_unresolved") if c in classes),
+        "bounded_facts",
+    )
 
 
 def enabled(retrieval):
     return getattr(retrieval, "completion_protocol", None) == PROTOCOL
 
 
-def retrieval_goal(question):
+def retrieval_goal(question, retrieval=None, report_scope=None):
     # Requirements come from the original host goal, never model search keywords.
     match = re.fullmatch(
         r'(?:仅)?(?:检索|查找|定位)包含[“"]([^”"\n]{1,64})[”"]的文档片段'
@@ -43,19 +123,21 @@ def retrieval_goal(question):
             re.IGNORECASE,
         )
     )
+    breadth = "bounded_facts" if match else requirement_class(question)
     unsupported = snapshot_unattested or (
         not match
         and bool(
-            re.search(
-                r"至少(?:[6-9]|\d{2,}|[六七八九十])|(?:全部|所有|完整的?)(?:文档|资料)", question
-            )
-            or (retrieval_only and re.search(r"全部|所有|完整|最近|最新|\d{4}[-年]", question))
+            re.search(r"至少(?:[6-9]|\d{2,}|[六七八九十])", question)
+            or breadth != "bounded_facts"
+            or (retrieval_only and re.search(r"最近|最新|\d{4}[-年]", question))
         )
     )
     goal = {
         "protocol": "retrieval-task-v1",
-        "relevance_policy": RELEVANCE_POLICY,
-        "minimum_goal_score": RELEVANCE_THRESHOLD,
+        "requirement_policy": REQUIREMENT_POLICY,
+        "requirement_class": breadth,
+        "relevance_policy": getattr(retrieval, "relevance_policy", RELEVANCE_POLICY),
+        "minimum_goal_score": getattr(retrieval, "goal_threshold", RELEVANCE_THRESHOLD),
         "question_sha256": text_hash(question),
         "required_terms": [match[1]] if match else [],
         "minimum_sources": minimum,
@@ -63,10 +145,42 @@ def retrieval_goal(question):
         "unsupported_requirements": unsupported,
         "business_conclusions_verified": False,
     }
+    # Classification is not confirmation. Only a trusted review of the entire
+    # host contract (or the exact, closed literal-locator grammar) grants eligibility.
+    attestation = None
+    if report_scope is not None and report_scope.goal_scope_attestation is not None:
+        from datapilot.reporting.contracts import ReportScope, finite_contract_hash
+
+        checked = ReportScope.model_validate_json(report_scope.model_dump_json())
+        proof = checked.goal_scope_attestation
+        if (
+            checked.document_goal is None
+            or checked.document_goal.question != question
+            or retrieval is None
+            or checked.owner != retrieval.scope.owner
+            or checked.datasets != retrieval.scope.datasets
+            or proof.contract_sha256 != finite_contract_hash(checked)
+            or proof.rag_scope_sha256 != digest(retrieval.scope)
+        ):
+            raise AgentFailure("REPORT_SCOPE_INVALID", "Finite goal scope confirmation changed")
+        attestation = proof.model_dump(mode="json")
+    elif match and (report_scope is None or report_scope.question == question):
+        attestation = {
+            "basis": "literal-locator-grammar-v1",
+            "question_sha256": text_hash(question),
+        }
+    goal["scope_attestation"] = attestation
+    goal["completion_eligible"] = bool(not unsupported and attestation is not None)
     if snapshot_unattested:
         # Immutable per-source versions do not attest global freshness or a common cut-off.
         # This is a refusal reason, never a model-supplied snapshot ID or authorization.
         goal["unsupported_reason"] = "snapshot_not_attested"
+    elif breadth != "bounded_facts":
+        goal["unsupported_reason"] = (
+            "exhaustiveness_not_attested"
+            if breadth == "exhaustive_collection"
+            else "goal_scope_unresolved"
+        )
     return goal
 
 
@@ -103,7 +217,12 @@ def validate_submission(envelope, store, granted, submission, retrieval, goal):
         if not documents:
             raise AgentFailure("RAG_OUTCOME_INVALID", "Use unavailable for actual empty retrieval")
         return "insufficient"
-    if not documents or goal is None or goal["unsupported_requirements"]:
+    if (
+        not documents
+        or goal is None
+        or goal["unsupported_requirements"]
+        or goal.get("completion_eligible") is not True
+    ):
         relevant = []
     elif goal["required_terms"]:
         relevant = [d for d in documents if all(t in d.text for t in goal["required_terms"])]

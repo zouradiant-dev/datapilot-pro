@@ -6,7 +6,7 @@ from datapilot.config import Settings
 from datapilot.db.management import management_url
 from datapilot.rag.contracts import Chunker, RagScope, Target
 from datapilot.rag.mcp import rag_session
-from datapilot.rag.models import LocalEmbedding, fetch_model
+from datapilot.rag.models import create_embedding, fetch_model
 from datapilot.rag.storage import IngestionService, make_pin
 
 
@@ -32,6 +32,7 @@ def add_commands(sub):
     ingest.add_argument("--dataset-version", type=int)
     ingest.add_argument("--reviewed", action="store_true")
     ingest.add_argument("--chunk-chars", type=int, default=192)
+    ingest.add_argument("--embedding-profile", choices=("qwen3-cpu-v1", "qwen3-cuda-fp16-v1"))
     ingest.add_argument("--output", type=Path, required=True, help="New artifacts/ scope JSON")
     query = actions.add_parser("query", help="Only read-only MCP search; no SQL parameters")
     query.add_argument("--scope", type=Path, required=True)
@@ -63,6 +64,7 @@ async def run(args):
     scope = RagScope(
         owner=args.owner,
         allow_saas=args.saas,
+        embedding_profile=args.embedding_profile,
         datasets=DatasetScope(
             bindings=[DatasetBinding(dataset_id=args.dataset, version=args.dataset_version)]
             if args.dataset
@@ -74,7 +76,9 @@ async def run(args):
     if args.dataset:
         async with dataset_session(settings, scope.datasets) as tools:
             await tools.schema(args.dataset)  # Verify ready Dataset/version via the existing MCP.
-    service = IngestionService(management_url("rag_ingest"), LocalEmbedding())
+    service = IngestionService(
+        management_url("rag_ingest"), create_embedding(args.embedding_profile)
+    )
     try:
         manifest, version, reused, usage = service.ingest(
             target, args.file, scope=scope, reviewed=True, chunker=Chunker(chars=args.chunk_chars)

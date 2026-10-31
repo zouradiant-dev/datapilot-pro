@@ -175,7 +175,9 @@ def render_run(api, run_id, *, prefix):
         if st.button("批准执行", key=prefix + "-approve", disabled=not approved):
             api.post(f"/tasks/{run_id}/approve", {"confirmed": True}, key="approve-" + run_id)
             st.rerun()
-        if st.button("返回修改（先取消原任务）", key=prefix + "-edit"):
+        if review["request"].get("documents"):
+            st.caption("修改文档任务请使用原对话的合同卡，新版本会使旧确认失效。")
+        elif st.button("返回修改（先取消原任务）", key=prefix + "-edit"):
             api.post(f"/tasks/{run_id}/cancel", {}, key="cancel-" + run_id)
             st.session_state.edit_question = state["question"]
             st.rerun()

@@ -1,0 +1,1019 @@
+[
+  {
+    "id": "gc7-001",
+    "original_user_query": "根据certificate-overlap.md，仅列出证书kid并行期长度和期满后旧kid的处理规则。",
+    "full_subgoals": [
+      "并行期",
+      "期满处理"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "certificate-overlap.md"
+      ],
+      "required_fact_ids": [
+        "overlap",
+        "old_kid"
+      ],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-002",
+    "original_user_query": "根据cursor-window.md，说明分页游标过期时客户端如何恢复，附原文。",
+    "full_subgoals": [
+      "游标过期恢复"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "cursor-window.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-003",
+    "original_user_query": "根据support-triage.md，说明P2工单非当班时间进入哪个队列，以及计时前提。",
+    "full_subgoals": [
+      "非当班队列",
+      "计时前提"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "support-triage.md"
+      ],
+      "required_fact_ids": [
+        "offshift",
+        "clock_start"
+      ],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-004",
+    "original_user_query": "根据event-expiry.md，解释缓存保留与成功投递为什么是两种不同信息；不推断实际投递结果。",
+    "full_subgoals": [
+      "保留规则",
+      "缓存不等于投递成功"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "event-expiry.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-005",
+    "original_user_query": "核对2026年3月已支付账单收入，单位CNY。",
+    "full_subgoals": [
+      "三月paid收入",
+      "CNY"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": "paid_invoice_revenue",
+      "window": {
+        "start": "2026-03-01",
+        "end_exclusive": "2026-04-01"
+      },
+      "required_source_names": [],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-006",
+    "original_user_query": "只计算2026年4月已支付账单收入；4月30日之后不计入。",
+    "full_subgoals": [
+      "四月paid收入",
+      "右开五月一日"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": "paid_invoice_revenue",
+      "window": {
+        "start": "2026-04-01",
+        "end_exclusive": "2026-05-01"
+      },
+      "required_source_names": [],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-007",
+    "original_user_query": "核对2026-03-15到2026-04-15的已支付账单收入（结束不含），以CNY展示。",
+    "full_subgoals": [
+      "指定右开窗口",
+      "CNY"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": "paid_invoice_revenue",
+      "window": {
+        "start": "2026-03-15",
+        "end_exclusive": "2026-04-15"
+      },
+      "required_source_names": [],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-008",
+    "original_user_query": "计算2026年3月已支付账单收入，并根据invoice-rate.md说明它与MRR的区别；不计算MRR。",
+    "full_subgoals": [
+      "三月paid收入",
+      "与MRR区分不计算MRR"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": "paid_invoice_revenue",
+      "window": {
+        "start": "2026-03-01",
+        "end_exclusive": "2026-04-01"
+      },
+      "required_source_names": [
+        "invoice-rate.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-009",
+    "original_user_query": "核对2026年4月已支付账单收入，结合support-triage.md讨论可能原因；明确这不能证明收入变化的因果。",
+    "full_subgoals": [
+      "四月收入",
+      "支持规则背景",
+      "禁止证实因果"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": "paid_invoice_revenue",
+      "window": {
+        "start": "2026-04-01",
+        "end_exclusive": "2026-05-01"
+      },
+      "required_source_names": [
+        "support-triage.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": true
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-010",
+    "original_user_query": "计算MRR并根据line-rounding.md解释发票展示；不能用已支付账单收入替代MRR。",
+    "full_subgoals": [
+      "MRR",
+      "展示规则"
+    ],
+    "boundary_explicit": false,
+    "unresolved_prerequisites": [
+      "MRR没有批准配方"
+    ],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "line-rounding.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "clarify_or_refuse_before_attestation",
+    "expected_attestation_after_valid_independent_review": false,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-011",
+    "original_user_query": "分别根据invoice-rate.md与line-rounding.md说明展示标价、开票舍入与报表实际金额，两个来源缺一不可。",
+    "full_subgoals": [
+      "展示与实际金额",
+      "不重复舍入",
+      "两个来源"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "invoice-rate.md",
+        "line-rounding.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-012",
+    "original_user_query": "对照retry-window.md和event-expiry.md，区分重试次数上限、缓存保留和投递回执；不得用缓存代替成功回执。",
+    "full_subgoals": [
+      "尝试上限",
+      "缓存",
+      "回执"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "retry-window.md",
+        "event-expiry.md"
+      ],
+      "required_fact_ids": [
+        "attempts",
+        "cache",
+        "receipt"
+      ],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-013",
+    "original_user_query": "按certificate-overlap.md、cursor-window.md、event-expiry.md逐来源列出各自时限和到期行为，不把不同资源时限相加。",
+    "full_subgoals": [
+      "三来源分别说明",
+      "禁止跨资源相加"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "certificate-overlap.md",
+        "cursor-window.md",
+        "event-expiry.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-014",
+    "original_user_query": "seat-audit.md提到审计客户，但审计名单与受影响客户的重叠排除规则没有给出。必须先确定两个客户集合的关系再列名单。",
+    "full_subgoals": [
+      "集合关系",
+      "名单"
+    ],
+    "boundary_explicit": false,
+    "unresolved_prerequisites": [
+      "名单",
+      "重叠排除规则"
+    ],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "seat-audit.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "clarify_or_refuse_before_attestation",
+    "expected_attestation_after_valid_independent_review": false,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-015",
+    "original_user_query": "计划把净新增席位改为计费席位，但这次评估究竟采用哪个对象尚未决定。先定对象，再解释seat-audit.md中的计费规则。",
+    "full_subgoals": [
+      "确认对象",
+      "计费规则"
+    ],
+    "boundary_explicit": false,
+    "unresolved_prerequisites": [
+      "指标对象未定"
+    ],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "seat-audit.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "clarify_or_refuse_before_attestation",
+    "expected_attestation_after_valid_independent_review": false,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-016",
+    "original_user_query": "invoice-rate.md只说明金额展示，适用客户取决于尚未提供的合同附件。先确认哪些客户适用，再给范围结论。",
+    "full_subgoals": [
+      "适用客户",
+      "范围结论"
+    ],
+    "boundary_explicit": false,
+    "unresolved_prerequisites": [
+      "合同附件",
+      "适用客户集合"
+    ],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "invoice-rate.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "clarify_or_refuse_before_attestation",
+    "expected_attestation_after_valid_independent_review": false,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-017",
+    "original_user_query": "从所有历史调价版本中逐项比对撤销及生效条款，证明没有漏掉任何改价；当前给出的invoice-rate.md只是一个版本。",
+    "full_subgoals": [
+      "全部历史版本",
+      "无漏项证明"
+    ],
+    "boundary_explicit": false,
+    "unresolved_prerequisites": [
+      "历史版本全集",
+      "穷尽证明"
+    ],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "invoice-rate.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "clarify_or_refuse_before_attestation",
+    "expected_attestation_after_valid_independent_review": false,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-018",
+    "original_user_query": "逐篇清点整个资料库每个费率段落，给出全库段落分母并证明全部覆盖，不能用搜索Top-k代替。",
+    "full_subgoals": [
+      "全库段落",
+      "分母",
+      "覆盖证明"
+    ],
+    "boundary_explicit": false,
+    "unresolved_prerequisites": [
+      "全库枚举与分母证明"
+    ],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "invoice-rate.md",
+        "line-rounding.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "clarify_or_refuse_before_attestation",
+    "expected_attestation_after_valid_independent_review": false,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-019",
+    "original_user_query": "为全部客户例外生成完整支持矩阵，找出一切未记载条款，并保证不存在遗漏。seat-audit.md不是客户例外全集。",
+    "full_subgoals": [
+      "支持矩阵",
+      "所有未记载条款"
+    ],
+    "boundary_explicit": false,
+    "unresolved_prerequisites": [
+      "例外全集",
+      "未记载信息不可闭世界推断"
+    ],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "seat-audit.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "clarify_or_refuse_before_attestation",
+    "expected_attestation_after_valid_independent_review": false,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-020",
+    "original_user_query": "无需引用文档，仅核对2026年3月已支付账单收入CNY；不要增加资料检索。",
+    "full_subgoals": [
+      "只做三月收入",
+      "不要文档检索"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": "paid_invoice_revenue",
+      "window": {
+        "start": "2026-03-01",
+        "end_exclusive": "2026-04-01"
+      },
+      "required_source_names": [],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-021",
+    "original_user_query": "根据retry-window.md与event-expiry.md分别解释记录；不要图表，也不要把不可用缓存解释为从未投递。",
+    "full_subgoals": [
+      "分别解释",
+      "禁止图表",
+      "不可用不等于从未投递"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "retry-window.md",
+        "event-expiry.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-022",
+    "original_user_query": "先解释support-triage.md的工单计时，再分析所有客户退订动机；客户访谈未提供，也不允许默认原因。",
+    "full_subgoals": [
+      "工单计时",
+      "所有退订动机"
+    ],
+    "boundary_explicit": false,
+    "unresolved_prerequisites": [
+      "客户访谈",
+      "退订全集",
+      "动机证据"
+    ],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "support-triage.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "clarify_or_refuse_before_attestation",
+    "expected_attestation_after_valid_independent_review": false,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-023",
+    "original_user_query": "From cursor-window.md, describe the cursor expiry and restart rule only; do not claim anything about revenue or actual delivery.",
+    "full_subgoals": [
+      "cursor expiry",
+      "restart rule",
+      "no unrelated inference"
+    ],
+    "boundary_explicit": true,
+    "unresolved_prerequisites": [],
+    "acceptable_contract": {
+      "metric": null,
+      "window": null,
+      "required_source_names": [
+        "cursor-window.md"
+      ],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "finite_review_possible",
+    "expected_attestation_after_valid_independent_review": true,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  },
+  {
+    "id": "gc7-024",
+    "original_user_query": "那改用另一个未授权账户的账单快照核对2026年3月收入，沿用上次确认即可。",
+    "full_subgoals": [
+      "新快照",
+      "不得继承旧确认"
+    ],
+    "boundary_explicit": false,
+    "unresolved_prerequisites": [
+      "另一个账户未授权",
+      "新范围必须重新确认"
+    ],
+    "acceptable_contract": {
+      "metric": "paid_invoice_revenue",
+      "window": {
+        "start": "2026-03-01",
+        "end_exclusive": "2026-04-01"
+      },
+      "required_source_names": [],
+      "required_fact_ids": [],
+      "causal_requested": false
+    },
+    "unacceptable_narrowing": [
+      "丢弃任一原始子目标",
+      "未声明的Dataset/版本替换",
+      "把局部或背景证据当齐备或因果证明"
+    ],
+    "required_limitations": [
+      "范围确认不是事实验证",
+      "引用不证明数值或因果",
+      "不证明全库完整性"
+    ],
+    "expected_confirmation": "clarify_or_refuse_before_attestation",
+    "expected_attestation_after_valid_independent_review": false,
+    "invalidation": [
+      "query",
+      "dataset_version",
+      "metric_window",
+      "source_index",
+      "facts",
+      "revoke"
+    ],
+    "trusted_basis": "新公开合成原件与已确认saas_metrics_v1；不是独立人工审查"
+  }
+]

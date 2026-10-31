@@ -160,9 +160,14 @@ class ToolRegistry:
                 raise AgentFailure("TOOL_FORBIDDEN", "Original query needs host-bound RAG tools")
             try:
                 original = SearchArguments(query=original_query)
+                expected = retrieval_goal(original.query, retrieval)
+                # The parent verified the trusted ReportScope proof; this check binds
+                # the original query and fixed retrieval semantics, not a model claim.
+                semantic_keys = expected.keys() - {"scope_attestation", "completion_eligible"}
                 if (
                     not original.query.strip()
-                    or retrieval_goal(original.query) != self.rag_goal
+                    or self.rag_goal is None
+                    or any(expected[k] != self.rag_goal.get(k) for k in semantic_keys)
                     or getattr(retrieval, "goal_sha256", text_hash(original.query))
                     != text_hash(original.query)
                 ):

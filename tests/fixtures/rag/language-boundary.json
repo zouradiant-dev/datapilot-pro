@@ -1,0 +1,184 @@
+{
+  "schema_version": "p7-language-boundary-dev-1",
+  "provenance": {
+    "type": "public_synthetic_nonblind_dev",
+    "source_origin": "Phase 3B public sources; exact text reused, no formal Holdout input or Gold",
+    "source_origin_file_sha256": "19eed156ede99910de606d9b286dddaf27c23af9564c78778439c9c1a4bae2f2",
+    "independent_holdout": false,
+    "prior_wording_control_disclosed": true
+  },
+  "parameters": {
+    "top_k": 5,
+    "min_score": 0.55,
+    "maximum_searches": 2,
+    "searches_per_case": 1,
+    "raw_rank_limit": 64,
+    "threshold_tuning": false
+  },
+  "sources": {
+    "zh": {
+      "export.md": "# 导出与删除申请\n\n工作区管理员可从数据管理页导出 CSV。删除申请先由管理员确认，再由服务台核实身份后排队处理。导出下载链接在二十四小时后失效，链接失效不等于原数据已删除。\n",
+      "roles.md": "# 成员角色与授权\n\n工作区管理员邀请成员并分配角色。分析员可查看报表但不能邀请成员；访客只能查看获授权的看板。调整角色后应复核访问范围。本文没有规定审计日志保留年限。\n",
+      "quota.md": "# API 用量配额\n\n每个工作区独立统计 API 请求次数，失败请求也计入用量。达到分钟配额时返回限流响应，客户端应按响应提示退避，不能立即循环重发。配额窗口结束后重新计数。\n",
+      "keys.md": "# API 密钥轮换\n\n管理员先创建替代密钥，更新客户端配置并验证成功，再撤销旧密钥。密钥只应保存在秘密管理器中，禁止把密钥正文发送到客服工单或群聊。\n",
+      "maintenance.md": "# 计划维护通知\n\n计划维护安排在周日凌晨的低峰窗口。服务台提前通过站内公告和订阅邮件通知工作区管理员。紧急故障另发状态通知，计划维护窗口不是恢复时限承诺。本文没有留存率实验。\n",
+      "tickets.md": "# 客服工单交接\n\n服务台轮班时交接未关闭的工单。交接记录包含问题摘要、已尝试步骤和下一位负责人；附件应移除个人信息和访问凭据。交接流程不规定产品订阅价格。\n"
+    },
+    "en": {
+      "keys.md": "# API key rotation\n\nCreate a replacement key, update clients, verify access, then revoke the old key. Keep secrets in a secret manager, never in support tickets.\n",
+      "status.md": "# Service status\n\nThe status page announces planned maintenance and incidents. Subscribers receive notices. A maintenance notice is not a recovery-time guarantee.\n"
+    }
+  },
+  "cases": [
+    {
+      "id": "zh-zh-keys",
+      "query_language": "zh",
+      "document_language": "zh",
+      "topic": "keys",
+      "query": "API密钥应按什么顺序轮换？",
+      "relevant_sources": [
+        "keys.md"
+      ],
+      "answerable": true,
+      "kind": "paired_language_matrix"
+    },
+    {
+      "id": "zh-zh-status",
+      "query_language": "zh",
+      "document_language": "zh",
+      "topic": "status",
+      "query": "计划维护通知是否承诺恢复时限？",
+      "relevant_sources": [
+        "maintenance.md"
+      ],
+      "answerable": true,
+      "kind": "paired_language_matrix"
+    },
+    {
+      "id": "en-en-keys",
+      "query_language": "en",
+      "document_language": "en",
+      "topic": "keys",
+      "query": "How should API keys be rotated?",
+      "relevant_sources": [
+        "keys.md"
+      ],
+      "answerable": true,
+      "kind": "paired_language_matrix"
+    },
+    {
+      "id": "en-en-status",
+      "query_language": "en",
+      "document_language": "en",
+      "topic": "status",
+      "query": "Does a planned maintenance notice guarantee a recovery time?",
+      "relevant_sources": [
+        "status.md"
+      ],
+      "answerable": true,
+      "kind": "paired_language_matrix"
+    },
+    {
+      "id": "en-zh-keys",
+      "query_language": "en",
+      "document_language": "zh",
+      "topic": "keys",
+      "query": "How should API keys be rotated?",
+      "relevant_sources": [
+        "keys.md"
+      ],
+      "answerable": true,
+      "kind": "paired_language_matrix"
+    },
+    {
+      "id": "en-zh-status",
+      "query_language": "en",
+      "document_language": "zh",
+      "topic": "status",
+      "query": "Does a planned maintenance notice guarantee a recovery time?",
+      "relevant_sources": [
+        "maintenance.md"
+      ],
+      "answerable": true,
+      "kind": "paired_language_matrix"
+    },
+    {
+      "id": "zh-en-keys",
+      "query_language": "zh",
+      "document_language": "en",
+      "topic": "keys",
+      "query": "API密钥应按什么顺序轮换？",
+      "relevant_sources": [
+        "keys.md"
+      ],
+      "answerable": true,
+      "kind": "paired_language_matrix"
+    },
+    {
+      "id": "zh-en-status",
+      "query_language": "zh",
+      "document_language": "en",
+      "topic": "status",
+      "query": "计划维护通知是否承诺恢复时限？",
+      "relevant_sources": [
+        "status.md"
+      ],
+      "answerable": true,
+      "kind": "paired_language_matrix"
+    },
+    {
+      "id": "en-en-keys-expanded",
+      "query_language": "en",
+      "document_language": "en",
+      "topic": "keys",
+      "query": "How should an API key be rotated and where should secrets be kept?",
+      "relevant_sources": [
+        "keys.md"
+      ],
+      "answerable": true,
+      "kind": "previous_public_dev_wording_control"
+    },
+    {
+      "id": "en-en-keys-procedure",
+      "query_language": "en",
+      "document_language": "en",
+      "topic": "keys",
+      "query": "What steps replace and revoke an API key, and where should secrets be stored?",
+      "relevant_sources": [
+        "keys.md"
+      ],
+      "answerable": true,
+      "kind": "predeclared_wording_control"
+    },
+    {
+      "id": "zh-zh-absent",
+      "query_language": "zh",
+      "document_language": "zh",
+      "topic": "missing-biometric",
+      "query": "产品是否支持人脸识别登录？",
+      "relevant_sources": [],
+      "answerable": false,
+      "kind": "absent_source_negative"
+    },
+    {
+      "id": "en-en-absent",
+      "query_language": "en",
+      "document_language": "en",
+      "topic": "missing-biometric",
+      "query": "Does the product support facial recognition sign-in?",
+      "relevant_sources": [],
+      "answerable": false,
+      "kind": "absent_source_negative"
+    }
+  ],
+  "scoring": {
+    "positive": "Return every labeled source and at least one chunk from it; valid citations alone do not prove relevance",
+    "negative": "No returned chunks; any nonempty hit is recorded as an irrelevant-hit failure",
+    "recall": "Relevant chunk hits divided by all chunks of labeled short sources; null for empty Gold",
+    "precision": "Relevant chunk hits divided by returned unique chunks; null when no hits",
+    "source": "Distinct source identities, never number of chunks",
+    "mrr": "First relevant returned chunk reciprocal rank, zero on missed positives, null on negatives",
+    "layers": "retrieval/citation/goal relevance only; Worker completion, Report and live model behavior not measured",
+    "quality_gate": "All positives have full source coverage, all negatives empty, and no irrelevant hits anywhere; failures retained, not a pytest pass criterion"
+  }
+}

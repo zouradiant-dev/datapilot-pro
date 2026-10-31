@@ -1,0 +1,55 @@
+{
+  "id": "goal-confirmation-quality-public-v1",
+  "scope": "24 public contract probes, final-source browser controls; no business A/B admission",
+  "roles": {
+    "contract_generator": "frozen product Rule-only Host via real FastAPI/MCP metadata",
+    "gold_author": "Codex AI before collection, based on new public source files and Decimal",
+    "technical_reviewer": "same Codex AI; not independent",
+    "executor": "script/CUA on synthetic isolated data; not a human semantic approval",
+    "independent_human_reviewer": null,
+    "human_semantic_status": "NOT_VERIFIED",
+    "owner_decision": "2026-10-31 user reply: 暂无，按 NOT_VERIFIED 记录"
+  },
+  "admission": {
+    "formal_pilot_max_cases": 20,
+    "formal_pilot_max_observations": 40,
+    "formal_pilot_observed": 0,
+    "formal_pilot_status": "not_run",
+    "reason": "Independent contract semantic review NOT_VERIFIED. No paired case materialization or automated attestation from Gold.",
+    "human_semantic_gate_must_pass_before_expansion": true
+  },
+  "frozen_controls": {
+    "requirement_policy": "host-goal-requirements-v4",
+    "query_policy": "original-first-v1",
+    "partial_policy": "partial-facts-v1",
+    "default_embedding": "unchanged BGE 512",
+    "qwen": "existing opt-in regression only; no business quality comparison",
+    "paid_calls": 0,
+    "clock": "literal 2026-03/04 windows; no relative date resolution",
+    "model_decisions": "scripted ReportDecisions; no DeepSeek"
+  },
+  "denominators": {
+    "public_contracts": 24,
+    "finite_review_expected": 15,
+    "clarify_or_refuse_expected": 9,
+    "original_text": "accepted stored messages only, rejected HTTP requests N/A",
+    "declared_contract_structure": "candidate request exists; field preservation is not semantic equivalence",
+    "missing_requirement": "preregistered required subgoals per case; AI technical notes only, no human accuracy claim",
+    "scope_narrowing": "declared dataset/version/window/source/fact/causal mutations among candidates; semantic narrowing NOT_VERIFIED",
+    "unresolved_prerequisite": "9 preregistered nonfinite cases; distinguish generic refusal from specific prerequisite warning",
+    "incorrect_attestation": "actually confirmed review cases only; 24 collection cases issue zero confirmations, therefore rate N/A",
+    "over_rejection": "finite cases yielding no executable candidate or host cannot-confirm",
+    "confirmation_modification": "separate browser/PG engineering controls, excluded from 24 semantic score and 40 pilot slots",
+    "retrieval_business_quality": "NOT_RUN; do not borrow engineering controls or historical results as quality observations"
+  },
+  "gold_method": "Public original text, explicit owner/scope safety conditions, literal CSV/Decimal. No Agent output, no observed report.",
+  "literal_numeric_gold": [
+    {"start":"2026-03-01","end_exclusive":"2026-04-01","currency":"CNY","paid_only":true,"value":"1229.00"},
+    {"start":"2026-04-01","end_exclusive":"2026-05-01","currency":"CNY","paid_only":true,"value":"111.00"},
+    {"start":"2026-03-15","end_exclusive":"2026-04-15","currency":"CNY","paid_only":true,"value":"141.25"}
+  ],
+  "binding": "Logical source names/CSV frozen first; assigned dataset, source, corpus, document, index and P3 identities sealed after new isolated materialization and before first contract observation.",
+  "stop": ["unreviewed attestation", "unconfirmed execution", "false completion", "missing required fact completed", "scope/hash mismatch", "P3/citation/auth violation", "unknown reissue", "unexplained offline score divergence"],
+  "no_tuning": "No product, frozen candidate, prompt, threshold, P3, Gold or scorer changes after registration. Preserve every failure. No old STOP execution.",
+  "independence_limits": "New public questions/source bytes; designed by the same AI with knowledge of previous defect classes; related thematic families intentionally covered, not a sealed independent human/IID benchmark. Shared 8 documents/1 numeric fixture; no equivalence CI. No result-blind human available."
+}

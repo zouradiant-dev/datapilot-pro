@@ -72,9 +72,7 @@ def test_document_only_approval_concurrency_real_citations_and_restart(api, docu
     ds, corpus, raw = document
     cid, m = candidate(c, corpus)
     with ThreadPoolExecutor(max_workers=2) as pool:
-        a, b = pool.map(
-            lambda _: run_async(app.state.chat.launch(cid, m["message_id"], True)), range(2)
-        )
+        a, b = pool.map(lambda _: launch(c, cid, m["message_id"]), range(2))
     assert a == b == launch(c, cid, m["message_id"])
     id_ = a["run_id"]
     assert launch(c, cid, m["message_id"])["run_id"] == id_  # Committed ACK loss.
@@ -163,7 +161,7 @@ def test_insufficient_retrieval_never_becomes_document_answer_completed(api, doc
         app,
         settings,
         id_,
-        transport=ReportDecisions("账单收入规则") if "missing.md" in question else None,
+        transport=ReportDecisions(question),
     )
     state = c.get(f"/api/v1/tasks/{id_}").json()
     assert state["business_completion"]["status"] == "unavailable"

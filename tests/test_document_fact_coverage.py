@@ -12,7 +12,7 @@ from datapilot.contracts import AgentFailure
 from datapilot.ingestion.common import digest
 from datapilot.orchestration.contracts import Artifact
 from datapilot.orchestration.runtime import ArtifactStore, text_hash
-from datapilot.reporting.contracts import DocumentGoal
+from datapilot.reporting.contracts import DocumentGoal, confirm_finite_scope
 
 
 def synthetic(
@@ -64,16 +64,20 @@ def fact(pairs, id_="retention", quote=None):
 
 def test_legacy_unconfirmed_goal_cannot_complete_from_related_background(settings):
     service, pairs, retrieval = synthetic(settings)
+    service.scope.goal_scope_attestation = None
     report = service.build(pairs, retrieval)
     assert report.business_completion.status == "unavailable"
     assert report.business_completion.verified_goals == []
-    assert report.business_completion.missing_evidence["documents"] == ["document_goal_unconfirmed"]
-    assert report.claims[0].kind == "context"
+    assert report.business_completion.missing_evidence["documents"] == ["goal_scope_not_attested"]
+    assert report.claims[0].kind == "unavailable"
 
 
 def test_missing_year_keeps_background_without_verifying_required_fact(settings):
     service, pairs, retrieval = synthetic(settings, purpose="facts")
     service.scope.document_goal.required_facts = [fact(pairs)]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     report = service.build(pairs, retrieval)
     assert report.business_completion.status == "unavailable"
     assert report.business_completion.verified_goals == []
@@ -90,6 +94,9 @@ def test_reviewed_literal_year_is_supported_without_becoming_p3_metric(settings)
         settings, text="审计日志条款：本合成文档规定保存七年。", purpose="facts"
     )
     service.scope.document_goal.required_facts = [fact(pairs, quote="保存七年")]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     report = service.build(pairs, retrieval)
     assert report.business_completion.status == "completed"
     assert report.claims[0].fact_coverage["retention"].excerpt == "保存七年"
@@ -103,6 +110,9 @@ def test_explicit_document_non_specification_is_a_distinct_supported_fact(settin
     service.scope.document_goal.required_facts = [
         fact(pairs, "policy_presence", "本文未规定保存年限")
     ]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     report = service.build(pairs, retrieval)
     assert report.business_completion.status == "completed"
     assert report.claims[0].fact_coverage["policy_presence"].excerpt == "本文未规定保存年限"
@@ -111,6 +121,9 @@ def test_explicit_document_non_specification_is_a_distinct_supported_fact(settin
 @pytest.mark.parametrize("purpose", ["locate", "summary"])
 def test_explicit_locator_or_summary_needs_no_numeric_fields(settings, purpose):
     service, pairs, retrieval = synthetic(settings, purpose=purpose)
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     report = service.build(pairs, retrieval)
     assert report.business_completion.status == "completed"
     assert not report.claims[0].fact_coverage
@@ -122,6 +135,9 @@ def test_two_required_facts_preserve_verified_part_and_mark_missing(settings):
         fact(pairs, "review_frequency", "按月复核角色权限"),
         fact(pairs),
     ]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     report = service.build(pairs, retrieval)
     assert report.business_completion.status == "partial"
     assert not report.business_completion.verified_goals
@@ -167,6 +183,9 @@ def test_multiple_related_sources_do_not_replace_a_missing_fact(settings):
     pairs = [(ref, store.get(ref))]
     service.scope.question = service.scope.document_goal.question = "至少两份文档说明日志保存年限。"
     service.scope.document_goal.required_facts = [fact(pairs)]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     report = service.build(pairs, retrieval)
     assert len(report.claims[0].documents) == 2
     assert report.business_completion.status == "unavailable"
@@ -181,6 +200,10 @@ def test_verified_p3_metric_is_preserved_when_document_fact_missing(settings, br
     documents.scope.document_goal.required_facts = [fact(pairs)]
     documents.scope.document_goal.metric_goals = [bridge.request.goal_id]
     service.scope.document_goal = documents.scope.document_goal
+    retrieval.scope.datasets = service.scope.datasets
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     report = service.build(metric_inputs + pairs, retrieval)
     assert report.business_completion.status == "partial"
     assert report.business_completion.verified_goals == [bridge.request.goal_id]
@@ -194,6 +217,9 @@ def test_verified_p3_metric_is_preserved_when_document_fact_missing(settings, br
 def test_causal_host_flag_unchanged_for_supported_summary(settings, causal):
     service, pairs, retrieval = synthetic(settings, purpose="summary")
     service.scope.causal_requested = causal
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     report = service.build(pairs, retrieval)
     assert report.business_completion.status == ("partial" if causal else "completed")
     assert report.business_completion.unconfirmed_claims == (
@@ -204,6 +230,9 @@ def test_causal_host_flag_unchanged_for_supported_summary(settings, causal):
 def test_open_conclusion_remains_unverified_despite_related_document(settings):
     service, pairs, retrieval = synthetic(settings, purpose="conclusion")
     service.scope.causal_requested = True
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     report = service.build(pairs, retrieval)
     assert report.business_completion.status == "partial"
     assert not report.business_completion.verified_goals
@@ -218,6 +247,9 @@ def test_wrong_fact_pin_is_not_verified(settings, field):
     proof = fact(pairs, quote="本文未规定保存年限")
     setattr(proof.citation, field, "0" * 64)
     service.scope.document_goal.required_facts = [proof]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     report = service.build(pairs, retrieval)
     assert report.business_completion.status == "unavailable"
     assert report.claims[0].fact_coverage["retention"] is None
@@ -226,6 +258,9 @@ def test_wrong_fact_pin_is_not_verified(settings, field):
 def test_quote_must_be_present_not_just_reviewed_or_relevant(settings):
     service, pairs, retrieval = synthetic(settings, purpose="facts")
     service.scope.document_goal.required_facts = [fact(pairs, quote="保存七年")]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     assert service.build(pairs, retrieval).business_completion.status == "unavailable"
 
 
@@ -243,14 +278,23 @@ def test_missing_or_invalid_authorized_evidence_never_covers_fact(settings, fail
         pairs[0][0].sha256 = "0" * 64
     if failure in {"bad_citation", "bad_ref"}:
         with pytest.raises(AgentFailure):
+            service.scope = confirm_finite_scope(
+                service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+            )
             service.build(pairs, retrieval)
     else:
+        service.scope = confirm_finite_scope(
+            service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+        )
         assert service.build(pairs, retrieval).business_completion.status == "unavailable"
 
 
 def test_unavailable_source_receipt_cannot_be_promoted_even_with_reviewed_quote(settings):
     service, pairs, retrieval = synthetic(settings, purpose="facts")
     service.scope.document_goal.required_facts = [fact(pairs, quote="本文未规定保存年限")]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     report = service.build(pairs, retrieval, source_statuses={"documents": "unavailable"})
     assert report.business_completion.status == "unavailable"
 
@@ -278,6 +322,7 @@ def test_invalid_host_contract_refused(settings, mutation):
 
 def test_old_report_cannot_retain_completed_under_new_unknown_goal_rules(settings):
     service, pairs, retrieval = synthetic(settings)
+    service.scope.goal_scope_attestation = None
     old = service.build(pairs, retrieval)
     old.business_completion.status = "completed"
     old.business_completion.verified_goals = ["documents"]
@@ -295,6 +340,9 @@ def test_default_contract_bytes_and_artifact_hash_are_history_compatible():
 def test_scoped_fact_cannot_be_deleted_via_report_self_assertion(settings):
     service, pairs, retrieval = synthetic(settings, purpose="facts")
     service.scope.document_goal.required_facts = [fact(pairs)]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-reviewed-fact-test"
+    )
     report = service.build(pairs, retrieval)
     report.authorization_scope.document_goal.required_facts = []
     with pytest.raises((AgentFailure, ValidationError)):

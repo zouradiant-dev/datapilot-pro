@@ -7,7 +7,7 @@ from test_semantics import semantic_case as semantic_case
 
 from datapilot.contracts import AgentFailure
 from datapilot.ingestion.common import digest
-from datapilot.reporting.contracts import ReportScope
+from datapilot.reporting.contracts import ReportScope, confirm_finite_scope
 
 
 @pytest.mark.parametrize("policy", ["legacy", "partial-facts-v1"])
@@ -21,6 +21,9 @@ async def test_worker_to_report_preserves_receipt_and_verifies_partial_refs(sett
 
     service, pairs, retrieval = partial_case(settings)
     service.scope.partial_evidence_policy = policy
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-partial-policy-fixture"
+    )
     retrieval.completion_protocol = PROTOCOL
     retrieval.max_search_attempts = 2
 
@@ -87,11 +90,17 @@ def partial_case(settings):
         fact(pairs, "review", "按月复核角色权限"),
         fact(pairs, "retention"),
     ]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-partial-contract-fixture"
+    )
     return service, pairs, retrieval
 
 
 def test_insufficient_keeps_literal_fact_without_completing_goal(settings):
     service, pairs, retrieval = partial_case(settings)
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-explicit-test-contract"
+    )
     report = service.build(pairs, retrieval, source_statuses={"documents": "unavailable"})
     assert report.business_completion.status == "partial"
     assert report.business_completion.verified_goals == []
@@ -107,6 +116,9 @@ def test_source_count_shortfall_does_not_hide_proved_fact(settings):
     service.scope.question = service.scope.document_goal.question = (
         "至少两份文档说明权限复核和日志期限。"
     )
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-explicit-test-contract"
+    )
     report = service.build(pairs, retrieval, source_statuses={"documents": "unavailable"})
     assert report.business_completion.status == "partial"
     assert report.claims[0].fact_coverage["review"]
@@ -119,6 +131,9 @@ def test_source_count_shortfall_does_not_hide_proved_fact(settings):
 def test_all_facts_with_insufficient_receipt_still_cannot_complete(settings):
     service, pairs, retrieval = partial_case(settings)
     service.scope.document_goal.required_facts = [fact(pairs, "review", "按月复核角色权限")]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-explicit-test-contract"
+    )
     report = service.build(pairs, retrieval, source_statuses={"documents": "unavailable"})
     assert report.business_completion.status == "partial"
     assert not report.business_completion.verified_goals
@@ -136,6 +151,9 @@ def test_invalid_or_missing_dependency_never_supplies_partial_facts(settings, st
 def test_background_without_host_fact_proof_stays_unavailable(settings):
     service, pairs, retrieval = partial_case(settings)
     service.scope.document_goal.required_facts = [fact(pairs)]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-explicit-test-contract"
+    )
     report = service.build(pairs, retrieval, source_statuses={"documents": "unavailable"})
     assert report.business_completion.status == "unavailable"
     assert not any(c.kind == "context" for c in report.claims)
@@ -144,6 +162,9 @@ def test_background_without_host_fact_proof_stays_unavailable(settings):
 def test_completed_source_still_requires_all_facts_under_new_policy(settings):
     service, pairs, retrieval = partial_case(settings)
     service.scope.document_goal.required_facts = [fact(pairs, "review", "按月复核角色权限")]
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-explicit-test-contract"
+    )
     report = service.build(pairs, retrieval, source_statuses={"documents": "succeeded"})
     assert report.business_completion.status == "completed"
     assert report.business_completion.verified_goals == ["documents"]
@@ -152,6 +173,9 @@ def test_completed_source_still_requires_all_facts_under_new_policy(settings):
 def test_unsupported_snapshot_cannot_publish_partial_fact(settings):
     service, pairs, retrieval = partial_case(settings)
     service.scope.question = service.scope.document_goal.question = "按最新快照说明权限复核规则。"
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-explicit-test-contract"
+    )
     report = service.build(pairs, retrieval, source_statuses={"documents": "unavailable"})
     assert report.business_completion.status == "unavailable"
     assert report.business_completion.missing_evidence["documents"] == ["snapshot_not_attested"]
@@ -175,6 +199,9 @@ def test_invalid_partial_evidence_never_publishes_fact(settings, mutation):
         with pytest.raises(AgentFailure):
             service.build(pairs, retrieval, source_statuses={"documents": "unavailable"})
     else:
+        service.scope = confirm_finite_scope(
+            service.scope, retrieval.scope, confirmation_ref="public-modified-fact-test"
+        )
         assert (
             service.build(
                 pairs, retrieval, source_statuses={"documents": "unavailable"}
@@ -186,6 +213,9 @@ def test_invalid_partial_evidence_never_publishes_fact(settings, mutation):
 def test_causal_request_and_missing_fact_survive_partial_display(settings):
     service, pairs, retrieval = partial_case(settings)
     service.scope.causal_requested = True
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-explicit-test-contract"
+    )
     report = service.build(pairs, retrieval, source_statuses={"documents": "unavailable"})
     assert report.business_completion.status == "partial"
     assert report.business_completion.unconfirmed_claims == ["causal_conclusion_not_verified"]
@@ -215,7 +245,9 @@ def test_legacy_scope_hash_and_legacy_behavior_are_preserved(settings):
     raw.pop("partial_evidence_policy", None)
     legacy = ReportScope.model_validate(raw)
     assert legacy.model_dump(mode="json") == raw and digest(legacy) == digest(raw)
-    service.scope = legacy
+    service.scope = confirm_finite_scope(
+        legacy, retrieval.scope, confirmation_ref="public-legacy-policy-test"
+    )
     assert (
         service.build(
             pairs, retrieval, source_statuses={"documents": "unavailable"}
@@ -232,6 +264,9 @@ def test_old_report_cannot_be_reinterpreted_under_new_policy(settings):
             for k, v in service.scope.model_dump(mode="json").items()
             if k != "partial_evidence_policy"
         }
+    )
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-legacy-report-test"
     )
     legacy = service.build(pairs, retrieval, source_statuses={"documents": "unavailable"})
     service.scope = service.scope.model_copy(update={"partial_evidence_policy": "partial-facts-v1"})

@@ -1,0 +1,6 @@
+invoice_id,amount_cents,invoice_date,payment_status,currency
+demo-jun-001,100025,2026-06-01,paid,CNY
+demo-jun-002,43200,2026-06-30,paid,CNY
+demo-jun-003,7200,2026-06-15,unpaid,CNY
+demo-jul-001,5100,2026-07-01,paid,CNY
+demo-usd-001,1000,2026-06-20,paid,USD

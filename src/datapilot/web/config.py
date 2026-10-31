@@ -6,6 +6,7 @@ import secrets
 import subprocess
 import sys
 from pathlib import Path
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, SecretStr
 
@@ -48,6 +49,7 @@ class HostPolicy(BaseModel):
     max_pending: int = Field(default=20, ge=1, le=100)
     ttl_seconds: int = Field(default=86400, ge=60, le=604800)
     telemetry: str = "off"
+    rag_embedding_profile: Literal["qwen3-cpu-v1", "qwen3-cuda-fp16-v1"] | None = None
 
     def object_path(self, ref):
         import re

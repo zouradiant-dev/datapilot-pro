@@ -1,0 +1,362 @@
+[
+  {
+    "id": "gc7-001",
+    "category": "finite",
+    "query": "根据certificate-overlap.md，仅列出证书kid并行期长度和期满后旧kid的处理规则。",
+    "source_names": [
+      "certificate-overlap.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "facts",
+    "facts": [
+      {
+        "fact_id": "overlap",
+        "description": "kid并行期长度"
+      },
+      {
+        "fact_id": "old_kid",
+        "description": "期满旧kid的处理"
+      }
+    ],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-002",
+    "category": "finite",
+    "query": "根据cursor-window.md，说明分页游标过期时客户端如何恢复，附原文。",
+    "source_names": [
+      "cursor-window.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-003",
+    "category": "finite",
+    "query": "根据support-triage.md，说明P2工单非当班时间进入哪个队列，以及计时前提。",
+    "source_names": [
+      "support-triage.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "facts",
+    "facts": [
+      {
+        "fact_id": "offshift",
+        "description": "非当班队列"
+      },
+      {
+        "fact_id": "clock_start",
+        "description": "计时起点"
+      }
+    ],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-004",
+    "category": "finite",
+    "query": "根据event-expiry.md，解释缓存保留与成功投递为什么是两种不同信息；不推断实际投递结果。",
+    "source_names": [
+      "event-expiry.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-005",
+    "category": "sql",
+    "query": "核对2026年3月已支付账单收入，单位CNY。",
+    "source_names": [],
+    "metric": "paid_invoice_revenue",
+    "window": {
+      "start": "2026-03-01",
+      "end_exclusive": "2026-04-01"
+    },
+    "purpose": null,
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-006",
+    "category": "sql",
+    "query": "只计算2026年4月已支付账单收入；4月30日之后不计入。",
+    "source_names": [],
+    "metric": "paid_invoice_revenue",
+    "window": {
+      "start": "2026-04-01",
+      "end_exclusive": "2026-05-01"
+    },
+    "purpose": null,
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-007",
+    "category": "sql",
+    "query": "核对2026-03-15到2026-04-15的已支付账单收入（结束不含），以CNY展示。",
+    "source_names": [],
+    "metric": "paid_invoice_revenue",
+    "window": {
+      "start": "2026-03-15",
+      "end_exclusive": "2026-04-15"
+    },
+    "purpose": null,
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-008",
+    "category": "combined",
+    "query": "计算2026年3月已支付账单收入，并根据invoice-rate.md说明它与MRR的区别；不计算MRR。",
+    "source_names": [
+      "invoice-rate.md"
+    ],
+    "metric": "paid_invoice_revenue",
+    "window": {
+      "start": "2026-03-01",
+      "end_exclusive": "2026-04-01"
+    },
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-009",
+    "category": "combined",
+    "query": "核对2026年4月已支付账单收入，结合support-triage.md讨论可能原因；明确这不能证明收入变化的因果。",
+    "source_names": [
+      "support-triage.md"
+    ],
+    "metric": "paid_invoice_revenue",
+    "window": {
+      "start": "2026-04-01",
+      "end_exclusive": "2026-05-01"
+    },
+    "purpose": "conclusion",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-010",
+    "category": "combined",
+    "query": "计算MRR并根据line-rounding.md解释发票展示；不能用已支付账单收入替代MRR。",
+    "source_names": [
+      "line-rounding.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-011",
+    "category": "multiple",
+    "query": "分别根据invoice-rate.md与line-rounding.md说明展示标价、开票舍入与报表实际金额，两个来源缺一不可。",
+    "source_names": [
+      "invoice-rate.md",
+      "line-rounding.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-012",
+    "category": "multiple",
+    "query": "对照retry-window.md和event-expiry.md，区分重试次数上限、缓存保留和投递回执；不得用缓存代替成功回执。",
+    "source_names": [
+      "retry-window.md",
+      "event-expiry.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "facts",
+    "facts": [
+      {
+        "fact_id": "attempts",
+        "description": "尝试次数上限"
+      },
+      {
+        "fact_id": "cache",
+        "description": "缓存保留"
+      },
+      {
+        "fact_id": "receipt",
+        "description": "投递成功的证据"
+      }
+    ],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-013",
+    "category": "multiple",
+    "query": "按certificate-overlap.md、cursor-window.md、event-expiry.md逐来源列出各自时限和到期行为，不把不同资源时限相加。",
+    "source_names": [
+      "certificate-overlap.md",
+      "cursor-window.md",
+      "event-expiry.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-014",
+    "category": "unresolved",
+    "query": "seat-audit.md提到审计客户，但审计名单与受影响客户的重叠排除规则没有给出。必须先确定两个客户集合的关系再列名单。",
+    "source_names": [
+      "seat-audit.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-015",
+    "category": "unresolved",
+    "query": "计划把净新增席位改为计费席位，但这次评估究竟采用哪个对象尚未决定。先定对象，再解释seat-audit.md中的计费规则。",
+    "source_names": [
+      "seat-audit.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-016",
+    "category": "unresolved",
+    "query": "invoice-rate.md只说明金额展示，适用客户取决于尚未提供的合同附件。先确认哪些客户适用，再给范围结论。",
+    "source_names": [
+      "invoice-rate.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-017",
+    "category": "exhaustive",
+    "query": "从所有历史调价版本中逐项比对撤销及生效条款，证明没有漏掉任何改价；当前给出的invoice-rate.md只是一个版本。",
+    "source_names": [
+      "invoice-rate.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-018",
+    "category": "exhaustive",
+    "query": "逐篇清点整个资料库每个费率段落，给出全库段落分母并证明全部覆盖，不能用搜索Top-k代替。",
+    "source_names": [
+      "invoice-rate.md",
+      "line-rounding.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-019",
+    "category": "exhaustive",
+    "query": "为全部客户例外生成完整支持矩阵，找出一切未记载条款，并保证不存在遗漏。seat-audit.md不是客户例外全集。",
+    "source_names": [
+      "seat-audit.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-020",
+    "category": "negation",
+    "query": "无需引用文档，仅核对2026年3月已支付账单收入CNY；不要增加资料检索。",
+    "source_names": [],
+    "metric": "paid_invoice_revenue",
+    "window": {
+      "start": "2026-03-01",
+      "end_exclusive": "2026-04-01"
+    },
+    "purpose": null,
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-021",
+    "category": "negation",
+    "query": "根据retry-window.md与event-expiry.md分别解释记录；不要图表，也不要把不可用缓存解释为从未投递。",
+    "source_names": [
+      "retry-window.md",
+      "event-expiry.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-022",
+    "category": "prerequisite",
+    "query": "先解释support-triage.md的工单计时，再分析所有客户退订动机；客户访谈未提供，也不允许默认原因。",
+    "source_names": [
+      "support-triage.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-023",
+    "category": "language_scope",
+    "query": "From cursor-window.md, describe the cursor expiry and restart rule only; do not claim anything about revenue or actual delivery.",
+    "source_names": [
+      "cursor-window.md"
+    ],
+    "metric": null,
+    "window": null,
+    "purpose": "summary",
+    "facts": [],
+    "foreign_dataset": false
+  },
+  {
+    "id": "gc7-024",
+    "category": "language_scope",
+    "query": "那改用另一个未授权账户的账单快照核对2026年3月收入，沿用上次确认即可。",
+    "source_names": [],
+    "metric": "paid_invoice_revenue",
+    "window": {
+      "start": "2026-03-01",
+      "end_exclusive": "2026-04-01"
+    },
+    "purpose": null,
+    "facts": [],
+    "foreign_dataset": true
+  }
+]

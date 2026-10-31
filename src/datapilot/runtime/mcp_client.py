@@ -4,6 +4,7 @@ import asyncio
 import json
 import os
 import sys
+import time
 from contextlib import asynccontextmanager
 from datetime import timedelta
 from functools import partial
@@ -36,6 +37,7 @@ class MCPDatabaseTools:
     def __init__(self, session: ClientSession, timeout: float):
         self.session = session
         self.timeout = timeout
+        self.process_owner = None
 
     async def call(self, name: str, arguments: dict) -> dict:
         if name not in self.allowed:
@@ -43,9 +45,17 @@ class MCPDatabaseTools:
         try:
             async with asyncio.timeout(self.timeout):
                 result = await self.session.call_tool(name, arguments)
+        except asyncio.CancelledError:
+            if self.process_owner:
+                self.process_owner.arm()
+            raise
         except TimeoutError as exc:
+            if self.process_owner:
+                self.process_owner.arm()
             raise AgentFailure("TOOL_TIMEOUT", "MCP call exceeded its time limit") from exc
         except Exception as exc:
+            if self.process_owner:
+                self.process_owner.arm()
             raise AgentFailure("TOOL_ERROR", "MCP request failed") from exc
         if result.isError:
             raise AgentFailure("TOOL_ERROR", "MCP server rejected the tool call")
@@ -233,29 +243,63 @@ def server_environment(settings: Settings) -> dict[str, str]:
 
 
 @asynccontextmanager
-async def _connection(settings, env, tool_class):
+async def _connection(settings, env, tool_class, *, executable=None, isolated=False):
+    args = ["-m", "datapilot.runtime.mcp_server"]
+    if isolated:
+        from datapilot.rag.models import ROOT
+
+        # -I ignores PYTHONHOME/PYTHONPATH, user site and current-directory modules.
+        args = [
+            "-I",
+            "-c",
+            (
+                "import sys,time,os,json,runpy\n"
+                # Linux has no Windows venv redirector to reap a hard-exited parent's
+                # native/GIL-stalled child. Bind before imports/model work; fail closed.
+                "if sys.platform=='linux':\n"
+                " import ctypes,signal\n"
+                " parent=os.getppid()\n"
+                " if ctypes.CDLL(None).prctl(1,signal.SIGKILL,0,0,0)!=0 "
+                "or os.getppid()!=parent: raise RuntimeError('MCP parent binding failed')\n"
+                "print(json.dumps({'component':'qwen_lifecycle','phase':'python_boot',"
+                "'wall_time':time.time(),'pid':os.getpid()}),file=sys.stderr,flush=True);"
+                "sys.path.insert(0,sys.argv[1]);"
+                "runpy.run_module('datapilot.runtime.mcp_server',run_name='__main__')"
+            ),
+            str(ROOT / "src"),
+        ]
     params = StdioServerParameters(
-        command=sys.executable,
-        args=["-m", "datapilot.runtime.mcp_server"],
+        command=executable or sys.executable,
+        args=args,
         env=env,
     )
-    caller_error = None
+    caller_error, tools = None, None
+    started, wall_started = time.monotonic(), time.time()
     try:
         async with stdio_client(params) as (read, write):
             async with ClientSession(
                 read, write, read_timeout_seconds=timedelta(seconds=settings.mcp_timeout_seconds)
             ) as session:
                 await session.initialize()
+                tools = tool_class(session, settings.mcp_timeout_seconds)
+                tools.transport_seconds = time.monotonic() - started
+                tools.spawn_wall_started = wall_started
                 try:
-                    yield tool_class(session, settings.mcp_timeout_seconds)
+                    yield tools
                 except Exception as exc:
                     # Close SDK TaskGroups normally before rethrowing a caller/domain failure.
                     # Otherwise AnyIO wraps a normal SQL rejection inside ExceptionGroup.
                     caller_error = exc
+                finally:
+                    if getattr(tools, "process_owner", None):
+                        tools.process_owner.arm()
     except Exception:
         raise AgentFailure(
             "TOOL_ERROR", "MCP transport could not initialize or close cleanly"
         ) from None
+    finally:
+        if tools is not None and getattr(tools, "process_owner", None):
+            tools.process_owner.close()
     if caller_error is not None:
         raise caller_error
 

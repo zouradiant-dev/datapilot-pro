@@ -2,7 +2,7 @@
 
 from uuid import UUID
 
-from fastapi import Header, Query
+from fastapi import Header, Query, Request
 
 from datapilot.persistence.session import run_async
 from datapilot.web.chat import ChatService
@@ -11,6 +11,8 @@ from datapilot.web.chat_contracts import (
     ConversationCreate,
     ConversationsView,
     ConversationView,
+    GoalContractView,
+    GoalReject,
     MessageCreate,
     MessagesView,
     MessageView,
@@ -44,9 +46,32 @@ def register_chat_routes(app, product):
     @app.post(
         "/api/v1/conversations/{id_}/messages/{message_id}/launch", response_model=Acknowledgement
     )
-    def launch(id_: UUID, message_id: UUID, request: ChatLaunch):
+    def launch(id_: UUID, message_id: UUID, request: ChatLaunch, http: Request):
         # Message identity itself is the persistent creation idempotency key.
-        return run_async(chat.launch(str(id_), str(message_id), request.confirmed))
+        return run_async(
+            chat.launch(
+                str(id_),
+                str(message_id),
+                request.confirmed,
+                decision=request,
+                actor=http.state.actor_session_hash,
+            )
+        )
+
+    @app.get(
+        "/api/v1/conversations/{id_}/messages/{message_id}/goal", response_model=GoalContractView
+    )
+    def goal(id_: UUID, message_id: UUID):
+        return run_async(chat.goal(str(id_), str(message_id)))
+
+    @app.post(
+        "/api/v1/conversations/{id_}/messages/{message_id}/goal/reject",
+        response_model=MessageView,
+    )
+    def reject_goal(id_: UUID, message_id: UUID, request: GoalReject, http: Request):
+        return run_async(
+            chat.reject(str(id_), str(message_id), request, http.state.actor_session_hash)
+        )
 
     @app.get("/api/v1/tasks/{id_}/review", response_model=ReviewView)
     def review(id_: UUID):

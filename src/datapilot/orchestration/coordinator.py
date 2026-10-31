@@ -94,10 +94,16 @@ class Coordinator:
         interrupt_before=None,
         interrupt_after=None,
         reporting=None,
+        rag_task_scope=None,
     ):
         self.settings, self.run_id = settings, run_id
         self.question = None
         self.reporting = reporting
+        # Non-report library callers may confirm a finite retrieval subtask too.
+        # Durable entry points always supply the original persisted ReportScope.
+        if reporting is not None and rag_task_scope is not None:
+            raise ValueError("Use a single host goal authority")
+        self.rag_task_scope = reporting.scope if reporting else rag_task_scope
         if reporting and getattr(reporting.scope, "citation_policy", None) is not None:
             reporting.validate_citation_policy(retrieval)
         self.context_metadata = context_metadata or {}
@@ -222,6 +228,12 @@ class Coordinator:
         if envelope.parent_id != self.run_id or envelope.run_id != self.run_id:
             raise AgentFailure("TOOL_FORBIDDEN", "Subagent must belong to the parent run")
         task = envelope.task
+        if (
+            self.rag_task_scope
+            and self.question is not None
+            and self.rag_task_scope.question != self.question
+        ):
+            raise AgentFailure("REPORT_SCOPE_INVALID", "Host task scope changed the parent goal")
         account = self.ledger.fork(key(envelope.plan_version, task.task_id), envelope.budget)
         started = time.monotonic()
         tools = ToolRegistry(
@@ -236,7 +248,9 @@ class Coordinator:
             max_view_chars=self.settings.max_tool_view_chars,
             durability=self.durability,
             rag_goal=retrieval_goal(
-                self.reporting.rag_question if self.reporting else self.question or ""
+                self.reporting.rag_question if self.reporting else self.question or "",
+                self.retrieval,
+                self.rag_task_scope,
             ),
             original_query=(
                 self.reporting.rag_question
@@ -591,7 +605,9 @@ class Coordinator:
                     raise AgentFailure("EVIDENCE_INVALID", "A committed RAG submission is required")
                 receipt = RagCompletionReceipt.model_validate_json(receipt.model_dump_json())
                 goal = retrieval_goal(
-                    self.reporting.rag_question if self.reporting else self.question or ""
+                    self.reporting.rag_question if self.reporting else self.question or "",
+                    self.retrieval,
+                    self.rag_task_scope,
                 )
                 origin_version = state["plan_version"]
                 if result.reused_from:

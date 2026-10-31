@@ -104,6 +104,19 @@ class CitationPolicy(Contract):
         return self
 
 
+class GoalScopeAttestation(Contract):
+    """Trusted host record of full-goal equivalence to a finite contract, not a signature.
+
+    A fact confirmation or execute approval alone must never create this record.
+    The caller must already have reviewed the complete original goal and prerequisites.
+    """
+
+    basis: Literal["host-reviewed-finite-contract-v1"] = "host-reviewed-finite-contract-v1"
+    confirmation_ref: str = Field(min_length=1, max_length=128, pattern=r"\S")
+    contract_sha256: Digest
+    rag_scope_sha256: Digest
+
+
 class ReportScope(Contract):
     schema_version: Literal["p6b-scope-1"] = "p6b-scope-1"
     owner: str = Field(default="local-user", min_length=1, max_length=64)
@@ -116,6 +129,7 @@ class ReportScope(Contract):
     partial_evidence_policy: Literal["legacy", "partial-facts-v1"] = "legacy"
     citation_policy: CitationPolicy | None = None
     rag_query_policy: Literal["legacy", "original-first-v1"] = "legacy"
+    goal_scope_attestation: GoalScopeAttestation | None = None
 
     @model_serializer(mode="wrap")
     def preserve_legacy_policy(self, handler):
@@ -126,6 +140,8 @@ class ReportScope(Contract):
             value.pop("citation_policy", None)
         if self.rag_query_policy == "legacy":
             value.pop("rag_query_policy", None)
+        if self.goal_scope_attestation is None:
+            value.pop("goal_scope_attestation", None)
         return value
 
     @model_validator(mode="after")
@@ -173,6 +189,38 @@ class ReportScope(Contract):
         ):
             raise ValueError("Original-first policy requires a nonblank host document goal")
         return self
+
+
+def finite_contract_hash(scope: ReportScope):
+    from datapilot.ingestion.common import digest
+
+    return digest(scope.model_dump(mode="json", exclude={"goal_scope_attestation"}))
+
+
+def confirm_finite_scope(scope: ReportScope, rag_scope: RagScope, *, confirmation_ref: str):
+    """Host-only confirmation, deliberately not called by parsing, tools or execute approval.
+
+    This records an existing trusted review; it does not infer intent equivalence.
+    Reuse is safe only while both exact contracts remain unchanged.
+    """
+    from datapilot.ingestion.common import digest
+
+    scope = ReportScope.model_validate_json(scope.model_dump_json())
+    rag_scope = RagScope.model_validate_json(rag_scope.model_dump_json())
+    if (
+        scope.document_goal is None
+        or scope.document_goal.purpose is None
+        or scope.owner != rag_scope.owner
+        or scope.datasets != rag_scope.datasets
+        or not rag_scope.corpora
+    ):
+        raise ValueError("A reviewed finite document contract needs its exact authorized scope")
+    scope.goal_scope_attestation = GoalScopeAttestation(
+        confirmation_ref=confirmation_ref,
+        contract_sha256=finite_contract_hash(scope),
+        rag_scope_sha256=digest(rag_scope),
+    )
+    return scope
 
 
 class MetricBridge(Contract):

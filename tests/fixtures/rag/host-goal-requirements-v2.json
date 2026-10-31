@@ -1,0 +1,62 @@
+{
+  "schema_version": "host-goal-requirements-dev-2",
+  "scope_rule": "Only trusted RagScope/ReportScope authorizes sources; no query grants access",
+  "cases": [
+    {"id":"own01","query":"数据所有权转移规则是什么？","classification":"business_noun","unsupported":false},
+    {"id":"own02","query":"Who owns this dataset?","classification":"business_noun","unsupported":false},
+    {"id":"own03","query":"数据资产所有权如何确认？","classification":"business_noun","unsupported":false},
+    {"id":"own04","query":"所有权交接需要哪些审批？","classification":"business_noun","unsupported":false},
+    {"id":"own05","query":"请解释文档中的 ownership transfer policy。","classification":"business_noun","unsupported":false},
+    {"id":"own06","query":"所有者变更是否需要管理员确认？","classification":"business_noun","unsupported":false},
+    {"id":"all01","query":"列出数据集中的所有文档。","classification":"exhaustive_sources","unsupported":true},
+    {"id":"all02","query":"展示全部原始文件。","classification":"exhaustive_sources","unsupported":true},
+    {"id":"all03","query":"搜索并返回所有相关来源，不允许遗漏。","classification":"exhaustive_sources","unsupported":true},
+    {"id":"all04","query":"给我整个语料库的完整内容。","classification":"exhaustive_sources","unsupported":true},
+    {"id":"all05","query":"列出所有权相关的所有文档。","classification":"exhaustive_sources","unsupported":true},
+    {"id":"all06","query":"证明已经检查全部授权文件且没有遗漏。","classification":"exhaustive_sources","unsupported":true},
+    {"id":"bound01","query":"当前授权范围内有哪些已验证的所有权要求？","classification":"host_confirmed_facts","unsupported":false},
+    {"id":"bound02","query":"总结这两份指定 Required Source 中的所有权交接条件。","classification":"pinned_source_facts","unsupported":false},
+    {"id":"bound03","query":"请告诉我所有管理员的所有权配置。","classification":"ambiguous_entity_inventory","unsupported":true},
+    {"id":"bound04","query":"我要全部账单数据，而不是汇总指标。","classification":"unbounded_business_rows","unsupported":true},
+    {"id":"bound05","query":"请列出所有已经证实的事实，并说明证据不足部分。","classification":"host_confirmed_facts","unsupported":false},
+    {"id":"bound06","query":"覆盖这两份指定来源中全部已确认的 Required Facts。","classification":"host_confirmed_facts","unsupported":false},
+    {"id":"all07","query":"List all documents in this dataset.","classification":"exhaustive_sources","unsupported":true},
+    {"id":"all08","query":"Return every relevant source without omissions.","classification":"exhaustive_sources","unsupported":true},
+    {"id":"all09","query":"Give me the entire authorized corpus.","classification":"exhaustive_sources","unsupported":true},
+    {"id":"all10","query":"分析所有文档中的费用规则。","classification":"exhaustive_sources","unsupported":true},
+    {"id":"all11","query":"展示完整的证据集合。","classification":"exhaustive_sources","unsupported":true},
+    {"id":"old01","query":"检索最近的所有权变更记录。","classification":"unattested_freshness","unsupported":true},
+    {"id":"old02","query":"寻找至少六份文档中的交接规则。","classification":"unsupported_source_count","unsupported":true},
+    {"id":"old03","query":"分析最新的固定文档快照中的交接规则。","classification":"unattested_snapshot","unsupported":true},
+    {"id":"literal01","query":"检索包含“所有文档”的文档片段，保留来源引用","classification":"literal_locator","unsupported":false},
+    {"id":"scope01","query":"查找另一个租户的所有权交接规则。","classification":"unauthorized_scope_request","unsupported":false,"scope":"blocked_by_host_scope"},
+    {"id":"all12","query":"列出文档，不允许遗漏任何一份。","classification":"exhaustive_sources","unsupported":true},
+    {"id":"bound07","query":"Explain all confirmed Required Facts in the two pinned sources.","classification":"host_confirmed_facts","unsupported":false}
+  ],
+  "expected_completion": {
+    "business_noun":"Eligibility only; complete requires authorized relevant evidence and all host Required facts",
+    "exhaustive_sources":"No exhaustive completion receipt; insufficient/unavailable, never claim corpus completeness",
+    "host_confirmed_facts":"Only enumerate actually confirmed host facts, retain missing facts; never imply exhaustive corpus access",
+    "pinned_source_facts":"Same pinned identities, verify every Required fact; missing facts remain partial/unavailable",
+    "ambiguous_entity_inventory":"Ambiguous breadth; request clarification or unavailable, never silently narrow to one administrator",
+    "unbounded_business_rows":"This RAG goal cannot attest a complete business-row export; no SQL permission granted",
+    "unauthorized_scope_request":"No grant from text; trusted scope must reject an out-of-owner Corpus before execution"
+  },
+  "e2e": {
+    "query":"数据资产所有权转移需要哪些审批？",
+    "causal_query":"数据资产所有权转移需要哪些审批，能否证明这会提升收入？",
+    "exhaustive_query":"列出所有权相关的所有文档。",
+    "sources": {
+      "ownership-en.md":"Data asset ownership transfer requires approval by the current owner and the security steward.",
+      "ownership-zh.md":"数据资产所有权转移需要当前所有者和安全专员共同审批。",
+      "form-layout.md":"The ownership approval form displays a blue header. This layout note does not specify any approval rule.",
+      "billing.md":"Paid invoices use the CNY currency; this billing note contains no ownership transfer rule."
+    },
+    "fact_quote_en":"Data asset ownership transfer requires approval by the current owner and the security steward.",
+    "fact_quote_zh":"数据资产所有权转移需要当前所有者和安全专员共同审批。",
+    "expected":{"complete":"completed","partial":"partial","missing":"unavailable","exhaustive":"unavailable","causal":"partial","unrelated_required":"unavailable","foreign":"blocked"},
+    "scope":"Fresh isolated test DB; real original MCP/Verifier/Report/Durable; no paid models",
+    "profiles":[null,"qwen3-cuda-fp16-v1"],
+    "threshold_change":false
+  }
+}

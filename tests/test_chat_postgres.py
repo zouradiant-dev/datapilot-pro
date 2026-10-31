@@ -35,7 +35,19 @@ def message(c, cid, text="2025年10月收入", selection=None, key=None):
 
 
 def launch(c, cid, mid):
-    return request(c, f"/conversations/{cid}/messages/{mid}/launch", {"confirmed": True})
+    body = {"confirmed": True}
+    goal = c.get(f"/api/v1/conversations/{cid}/messages/{mid}/goal")
+    if goal.status_code == 200:
+        # Explicit synthetic user decision; the API, never this test, mints the proof.
+        g = goal.json()
+        body.update(
+            expected_version=g["version"],
+            expected_contract_sha256=g["contract_sha256"],
+            reviewed_contract=True,
+            covers_original_goal=True,
+            prerequisites_resolved=True,
+        )
+    return request(c, f"/conversations/{cid}/messages/{mid}/launch", body)
 
 
 def test_chat_verified_report_followup_restart_and_read_only_history(api):

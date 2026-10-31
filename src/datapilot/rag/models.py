@@ -1,6 +1,7 @@
 """Pinned local CPU inference; no training, API credential, network or arbitrary model code."""
 
 import hashlib
+import importlib.metadata
 import time
 import urllib.request
 from pathlib import Path
@@ -24,13 +25,25 @@ MODEL_DIR = ROOT / ".cache/rag-models" / REVISION
 QUERY_PREFIX = "为这个句子生成表示以用于检索相关文章："
 
 
-def specification() -> ModelSpec:
+def specification(profile=None) -> ModelSpec:
+    if profile is not None:
+        from datapilot.rag.qwen import specification as qwen_specification
+
+        return qwen_specification(profile)
     return ModelSpec(
         model="BAAI/bge-small-zh-v1.5/Qdrant-onnx",
         revision=REVISION,
         recipe="cls-l2-query-prefix-1/ort-1.31.0/tokenizers-0.23.3",
         files={name: entry[1] for name, entry in FILES.items()},
     )
+
+
+def create_embedding(profile=None, *, observer=None):
+    if profile is None:
+        return LocalEmbedding()
+    from datapilot.rag.qwen import QwenEmbedding
+
+    return QwenEmbedding(profile, observer=observer)
 
 
 def checked_file(name: str) -> Path:
@@ -71,9 +84,13 @@ def fetch_model() -> None:
             temporary.unlink(missing_ok=True)
 
 
-def validate_vectors(values, count):
+def validate_vectors(values, count, dimensions=512):
     matrix = np.asarray(values, dtype=np.float32)
-    if matrix.shape != (count, 512) or not np.isfinite(matrix).all():
+    if (
+        dimensions not in (512, 1024)
+        or matrix.shape != (count, dimensions)
+        or not np.isfinite(matrix).all()
+    ):
         raise AgentFailure("EMBEDDING_INVALID", "Embedding dimensions/finite values differ")
     norms = np.linalg.norm(matrix, axis=1)
     if np.any(np.abs(norms - 1) > 0.001):
@@ -83,6 +100,11 @@ def validate_vectors(values, count):
 
 class LocalEmbedding:
     def __init__(self):
+        if (
+            importlib.metadata.version("tokenizers") != "0.23.3"
+            or importlib.metadata.version("onnxruntime") != "1.31.0"
+        ):
+            raise AgentFailure("EMBEDDING_VERSION", "Legacy BGE needs its original locked runtime")
         import onnxruntime as ort
         from tokenizers import Tokenizer
 

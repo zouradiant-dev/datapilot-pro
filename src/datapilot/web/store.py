@@ -89,6 +89,11 @@ class WebStore:
                 "owner": self.policy.owner,
                 "settings": settings.model_dump(exclude=excluded),
                 "identities": identities,
+                **(
+                    {"rag_embedding_profile": self.policy.rag_embedding_profile}
+                    if self.policy.rag_embedding_profile
+                    else {}
+                ),
             }
         )
 
@@ -152,6 +157,7 @@ class WebStore:
             deny()
         if csrf is not None and not secrets.compare_digest(row["csrf_hash"], token_hash(csrf)):
             deny("WEB_CSRF", "A current host session and CSRF token are required")
+        return row["session_hash"]
 
     def put_upload(self, upload_id, payload):
         with self.transaction() as conn:

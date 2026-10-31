@@ -1,0 +1,978 @@
+{
+  "schema_version": "host-goal-safety-dev-3",
+  "not_blind_validation": true,
+  "cases": [
+    {
+      "id": "o01",
+      "query": "谁是账单工作区的所有者？",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "o02",
+      "query": "请解释审计日志所有权规则。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "o03",
+      "query": "Which owner approves a sandbox export?",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "o04",
+      "query": "Explain document ownership transfer conditions.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "o05",
+      "query": "所有权相关的审批要求是什么？",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "o06",
+      "query": "文件所有者怎样确认访问级别？",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "b01",
+      "query": "根据指定两份文档总结沙盒导出审批条件。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "b02",
+      "query": "只说明当前已经确认的沙盒导出规则。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "b03",
+      "query": "总结这几个已授权 Source 中的已验证事实。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "b04",
+      "query": "已确认的所有导出审批条件是什么？",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "b05",
+      "query": "列出全部已知事实并标注缺证据项。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "b06",
+      "query": "逐条列出已确认的三个审批条件。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "b07",
+      "query": "Explain all confirmed rules in the two pinned sources.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "b08",
+      "query": "Summarize every verified fact from source A and source B.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "b09",
+      "query": "只说明授权文档已证实的全部费用规则。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "b10",
+      "query": "完整说明已确认的两项审批条件。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "n01",
+      "query": "不需要遍历整个知识库，只解释已确认的审批事实。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "n02",
+      "query": "不要扫描全部文件；只回答指定来源中的导出条件。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "n03",
+      "query": "无需逐篇检查语料，只给出已验证的规则。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "n04",
+      "query": "不要求列出所有来源，而是总结指定两份文档中的条件。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "n05",
+      "query": "禁止遍历整个语料库，按已确认事实作答。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "n06",
+      "query": "Do not review every document; summarize confirmed export rules.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "n07",
+      "query": "No need to scan the entire corpus. Explain the two verified facts.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "n08",
+      "query": "You are not required to inspect all files; use the pinned facts.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "n09",
+      "query": "无需证明没有遗漏任何文档，只说明已知审批条件。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "n10",
+      "query": "不要遍历所有文件；do not scan the entire corpus; 仅解释已确认事实。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "e01",
+      "query": "逐篇检查这些导出文档，一篇也不能漏。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e02",
+      "query": "检查每一个文件并证明没有遗漏。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e03",
+      "query": "遍历所有文档并列出导出条件。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e04",
+      "query": "扫描整个知识库，确认全部审批要求。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e05",
+      "query": "核对全部来源，确保无遗漏。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e06",
+      "query": "逐份审阅这套资料，不漏一份。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e07",
+      "query": "逐个检查文档，核对导出审批。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e08",
+      "query": "Review every document without exception.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e09",
+      "query": "Verify that no relevant source was missed.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e10",
+      "query": "Scan the whole knowledge base before answering.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e11",
+      "query": "Check each file and prove there are no omissions.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e12",
+      "query": "列出所有权相关的全部来源。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e13",
+      "query": "Inspect the complete collection of documents.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "e14",
+      "query": "审阅每份资料，任何一份都不得漏掉。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "a01",
+      "query": "看一下全部相关内容。",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "a02",
+      "query": "尽量检查完整，再回答审批问题。",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "a03",
+      "query": "检查所有应该检查的资料。",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "a04",
+      "query": "不要漏掉关键来源。",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "a05",
+      "query": "检查所有权相关的所有要求。",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "a06",
+      "query": "Check everything that should be checked.",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "a07",
+      "query": "Review all relevant information.",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "a08",
+      "query": "Try to be comprehensive about the export checks.",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "d01",
+      "query": "不能不遍历全部导出文档。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "d02",
+      "query": "并非不需要检查每一个文件。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "d03",
+      "query": "不要只看一份，必须遍历整个语料库。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "d04",
+      "query": "不需要扫描所有来源，但仍须审阅每份文件。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "d05",
+      "query": "Do not skip reviewing every document.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "d06",
+      "query": "It is not unnecessary to scan the entire corpus.",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "d07",
+      "query": "不要求输出每份原件，但必须核对全部文档。",
+      "expected_class": "exhaustive_collection",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "d08",
+      "query": "不是说不用检查所有资料，范围还需要确认。",
+      "expected_class": "ambiguous_unresolved",
+      "unsupported": true,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": false,
+      "expected_report_status": "unavailable",
+      "reason": "No exhaustive collection attestation or unresolved target boundary"
+    },
+    {
+      "id": "s01",
+      "query": "逐条说明指定两份文档里的已确认规则。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "s02",
+      "query": "List all verified facts; do not claim the corpus is exhaustive.",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "s03",
+      "query": "不要确认整个知识库已穷尽，只报告已证实的审批规则。",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    },
+    {
+      "id": "s04",
+      "query": "仅检索包含“所有文档”的文档片段，保留来源引用",
+      "expected_class": "bounded_facts",
+      "unsupported": false,
+      "required_sources": [
+        "export-policy.md"
+      ],
+      "required_facts": [
+        "export_approval"
+      ],
+      "scope": "trusted owner + exact Corpus/IndexVersion; query grants nothing",
+      "completion_eligible": true,
+      "expected_report_status": "completed",
+      "reason": "All host-confirmed facts and citations still required"
+    }
+  ],
+  "e2e": {
+    "sources": {
+      "export-policy.md": "沙盒导出审批需要工作区所有者和审计专员共同确认。 Sandbox export approval requires the workspace owner and audit steward.",
+      "layout.md": "沙盒导出表单可显示蓝色图标。图标颜色不定义审批角色。"
+    },
+    "quote": "沙盒导出审批需要工作区所有者和审计专员共同确认。",
+    "query": "沙盒导出审批需要哪些角色确认？",
+    "negative_query": "不需要遍历全部文档，只说明已确认的沙盒导出审批角色。",
+    "exhaustive_query": "逐份检查导出语料，任何一份都不得漏掉。",
+    "double_query": "不能不遍历全部沙盒导出文档。",
+    "ambiguous_query": "不要漏掉关键来源。"
+  }
+}

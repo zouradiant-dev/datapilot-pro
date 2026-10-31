@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-from pydantic import Field, model_validator
+from pydantic import Field, model_serializer, model_validator
 
 from datapilot.contracts import Contract
 from datapilot.datasets.contracts import DatasetId, DatasetScope, Version
@@ -15,9 +15,9 @@ RETRIEVER = "pg-cosine-exact-1"
 class ModelSpec(Contract):
     model: str = Field(min_length=1, max_length=128)
     revision: str = Field(pattern=r"^[a-f0-9]{40}$")
-    dimensions: Literal[512] = DIMENSIONS
+    dimensions: Literal[512, 1024] = DIMENSIONS
     recipe: str = Field(min_length=1, max_length=128)
-    files: dict[str, Digest] = Field(min_length=1, max_length=4)
+    files: dict[str, Digest] = Field(min_length=1, max_length=8)
     fixture: bool = False
 
 
@@ -72,6 +72,15 @@ class RagScope(Contract):
     datasets: DatasetScope = Field(default_factory=DatasetScope)
     allow_saas: bool = False
     min_score: float = Field(default=0.55, ge=-1, le=1, allow_inf_nan=False)
+    # Trusted deployment choice, not a tool argument. Omitted for historical hashes.
+    embedding_profile: Literal["qwen3-cpu-v1", "qwen3-cuda-fp16-v1"] | None = None
+
+    @model_serializer(mode="wrap")
+    def legacy_projection(self, handler):
+        value = handler(self)
+        if self.embedding_profile is None:
+            value.pop("embedding_profile", None)
+        return value
 
     @model_validator(mode="after")
     def unique(self):
@@ -123,6 +132,14 @@ class IndexManifest(Contract):
     chunker: Chunker
     retriever: Literal["pg-cosine-exact-1"] = RETRIEVER
     sources: list[SourceInfo] = Field(min_length=1, max_length=32)
+    relevance_policy_sha256: Digest | None = None
+
+    @model_serializer(mode="wrap")
+    def legacy_projection(self, handler):
+        value = handler(self)
+        if self.relevance_policy_sha256 is None:
+            value.pop("relevance_policy_sha256", None)
+        return value
 
     @model_validator(mode="after")
     def bounded_unique_sources(self):
@@ -153,7 +170,7 @@ class ChunkCitation(ChunkSpan):
 
 
 class EmbeddingUsage(Contract):
-    mode: Literal["local_onnx", "synthetic_test"]
+    mode: Literal["local_onnx", "local_torch", "synthetic_test"]
     tokens: int = Field(ge=0, le=512 * 1024)
     elapsed_ms: float = Field(ge=0)
     calls: int = Field(ge=0, le=1024)

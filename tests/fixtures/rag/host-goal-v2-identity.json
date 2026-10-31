@@ -1,0 +1,28 @@
+{
+  "query": "沙盒导出审批需要哪些角色确认？",
+  "purpose": "Exact old v2 bounded-goal objects, test-only legacy Manifest generation; no product fallback",
+  "goals": {
+    "bge-host-goal-cosine-v1": {
+      "protocol": "retrieval-task-v1",
+      "requirement_policy": "host-goal-requirements-v2",
+      "relevance_policy": "bge-host-goal-cosine-v1",
+      "minimum_goal_score": 0.55,
+      "question_sha256": "3bb75a614599570592ab41854961df93d7a190128171985ec4d572ed2bd409a9",
+      "required_terms": [],
+      "minimum_sources": 1,
+      "unsupported_requirements": false,
+      "business_conclusions_verified": false
+    },
+    "qwen3-cuda-fp16-v1/host-goal-cosine-v1": {
+      "protocol": "retrieval-task-v1",
+      "requirement_policy": "host-goal-requirements-v2",
+      "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+      "minimum_goal_score": 0.55,
+      "question_sha256": "3bb75a614599570592ab41854961df93d7a190128171985ec4d572ed2bd409a9",
+      "required_terms": [],
+      "minimum_sources": 1,
+      "unsupported_requirements": false,
+      "business_conclusions_verified": false
+    }
+  }
+}

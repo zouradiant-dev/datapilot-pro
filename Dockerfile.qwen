@@ -1,0 +1,21 @@
+# Same pinned Python/uv base as the existing product Dockerfile; independent Qwen env.
+FROM ghcr.io/astral-sh/uv:python3.11-bookworm-slim@sha256:4f5d923c9dcea037f57bda425dd209f3ec643da2f0b74227f68d09dab0b3bb36
+COPY --from=ghcr.io/astral-sh/uv:0.12.5 /uv /usr/local/bin/uv
+WORKDIR /app
+ENV UV_PROJECT_ENVIRONMENT=/app/.venv PYTHONUNBUFFERED=1 PYTHONUTF8=1 UV_NO_CACHE=1
+COPY pyproject.toml uv.lock README.md alembic.ini ./
+RUN uv sync --locked --no-install-project
+COPY requirements/qwen-mcp-linux.lock ./requirements/qwen-mcp-linux.lock
+RUN uv venv .venv-qwen --python /usr/local/bin/python && \
+    uv pip sync requirements/qwen-mcp-linux.lock --python .venv-qwen/bin/python --require-hashes \
+    --index https://download.pytorch.org/whl/cu128 --index https://pypi.org/simple \
+    --index-strategy unsafe-best-match
+COPY src ./src
+COPY migrations ./migrations
+COPY tests ./tests
+COPY scripts ./scripts
+COPY evaluation ./evaluation
+COPY requirements/qwen-mcp.lock ./requirements/qwen-mcp.lock
+RUN uv sync --locked && PYTHONPATH=/app/src .venv-qwen/bin/python -m datapilot.rag.qwen_runtime --install
+# No default model switch, automatic migration or model download.
+CMD ["/app/.venv/bin/python", "-m", "pytest", "tests/test_qwen_migration.py", "-q", "-p", "no:cacheprovider"]

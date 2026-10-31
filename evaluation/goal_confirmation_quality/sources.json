@@ -1,0 +1,10 @@
+{
+  "cursor-window.md": "Public synthetic SaaS API guide. A continuation cursor remains valid for fifteen minutes. If it expires, restart pagination from the first page; do not reuse the expired cursor. This is a request-navigation rule, not a revenue metric.",
+  "certificate-overlap.md": "公开合成接口证书轮换规范：发布新证书后，新旧kid并行接受48小时；重叠期结束拒绝旧kid。此规范不包含操作密钥，也不授权执行轮换。",
+  "support-triage.md": "公开合成支持排班：P2工单在09:00至17:00 UTC进入当班队列，其他时间进入下一班待办；计时从完整日志提交后开始。该规范不能证明实际客户退订原因。",
+  "invoice-rate.md": "公开合成展示费率说明：已支付账单收入采用paid账单实际CNY整数分金额，按账单日期统计。这个金额不是MRR；展示套餐标价也不是实际收款。",
+  "line-rounding.md": "公开合成账单说明：展示的行项目舍入发生在开票前。经营报表读取已开具账单的整数分总额，不能再次逐行舍入；退款需要独立记录，此资料不含退款记录。",
+  "event-expiry.md": "公开合成事件回放说明：回放缓存保留48小时，过期后请求返回记录不可用。缓存存在不代表事件已经成功送达，投递结果需要回执日志。",
+  "retry-window.md": "公开合成回调说明：收到可重试失败时，首次发送加后续尝试合计最多5次；Retry-After优先于默认退避。文档规定不证明任何一次真实投递成功。",
+  "seat-audit.md": "公开合成席位说明：计费席位按月末有效授权快照确定，试用席位不计费。审计客户集合须由专门名单定义；本文未提供该名单或客户重叠排除规则。"
+}

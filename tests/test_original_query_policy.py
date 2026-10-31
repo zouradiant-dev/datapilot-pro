@@ -176,6 +176,12 @@ async def test_full_loop_wrong_first_call_has_one_feedback_no_rewrite_or_retry(s
 
     service, pairs, retrieval = partial_case(settings)
     service.scope.rag_query_policy = "original-first-v1"
+    from datapilot.reporting.contracts import confirm_finite_scope
+
+    retrieval.scope.datasets = service.scope.datasets
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-original-query-test"
+    )
     retrieval.completion_protocol, retrieval.max_search_attempts = PROTOCOL, 2
     calls = []
 
@@ -238,6 +244,12 @@ async def test_combined_task_uses_host_rag_subgoal_not_global_or_planner_text(
     service.scope.document_goal = goal
     service.scope.question = "核对收入，并解释日志归档；全局目标不能覆盖文档子目标。"
     service.scope.rag_query_policy = "original-first-v1"
+    from datapilot.reporting.contracts import confirm_finite_scope
+
+    retrieval.scope.datasets = service.scope.datasets
+    service.scope = confirm_finite_scope(
+        service.scope, retrieval.scope, confirmation_ref="public-original-query-test"
+    )
     retrieval.completion_protocol, retrieval.max_search_attempts = PROTOCOL, 2
     calls = []
 
