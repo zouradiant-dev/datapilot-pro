@@ -13,11 +13,13 @@ from test_rag_postgres import rag_data as rag_data
 from datapilot.contracts import AgentFailure
 from datapilot.graph import run_question
 from datapilot.ingestion.common import digest
+from datapilot.orchestration.coordinator import Coordinator
 from datapilot.orchestration.rag_completion import retrieval_goal
 from datapilot.orchestration.runtime import text_hash
 from datapilot.persistence.backend import Backend, execute, json_value
 from datapilot.persistence.session import run_async
 from datapilot.rag.mcp import rag_session
+from datapilot.reporting.contracts import DocumentGoal, ReportScope, confirm_finite_scope
 
 pytestmark = pytest.mark.integration
 
@@ -53,14 +55,50 @@ def test_real_semantic_retrieval_checks_original_goal_not_model_search_keywords(
                     "max_replans": 0,
                 }
             )
-            model = SearchDecisions(["search", "complete", "insufficient"])
-            result = await run_question(
-                config,
-                question,
-                transport=model,
-                retrieval=retrieval,
-                include_artifacts=True,
+            if related:
+                # Same semantic query through the legacy facade cannot self-confirm.
+                legacy = await run_question(
+                    config,
+                    question,
+                    transport=SearchDecisions(["search", "complete", "insufficient"]),
+                    retrieval=retrieval,
+                )
+                assert legacy["completion"].status == "blocked"
+                assert (
+                    legacy["results"]["1:rag"].rag_completion.submission.outcome == "insufficient"
+                )
+            # Explicit synthetic Host review; no facade API change or literal-query substitution.
+            contract = confirm_finite_scope(
+                ReportScope(
+                    owner=scope.owner,
+                    question=question,
+                    datasets=scope.datasets,
+                    metrics=[],
+                    document_goal=DocumentGoal(
+                        goal_id="rag", question=question, metric_goals=[], purpose="summary"
+                    ),
+                ),
+                scope,
+                confirmation_ref="public-ci-final31-semantic-host-review",
             )
+            model = SearchDecisions(["search", "complete", "insufficient"])
+            engine = Coordinator(
+                config, model, retrieval=retrieval, run_id=str(uuid4()), rag_task_scope=contract
+            )
+            result = await engine.graph.ainvoke(
+                {
+                    "run_id": engine.run_id,
+                    "question": question,
+                    "status": "pending",
+                    "results": {},
+                    "verifications": {},
+                    "steps": 0,
+                    "replans": 0,
+                    "error": None,
+                },
+                config={"recursion_limit": config.max_steps * 3 + 10},
+            )
+            result["artifacts"] = engine.store.export()
             task = result["results"]["1:rag"]
             receipt = task.rag_completion
             assert receipt is not None, task.error.code if task.error else task.status
@@ -150,6 +188,28 @@ def test_committed_rag_control_restores_across_process_without_duplicate_calls(
     path.write_text(scope.model_dump_json(), encoding="utf-8")
     id_ = str(uuid4())
     options = ("--scenario", scenario)
+    if scenario == "semantic":
+        # Keep the original low-trust path as a separate negative control.
+        legacy = probe("start", str(uuid4()), path, *options)
+        assert legacy["completion"]["status"] == "blocked"
+        assert not any(t["status"] == "succeeded" for t in legacy["results"].values())
+        question = "仅检索客户入门培训相关文档片段，保留实际来源引用"
+        contract = confirm_finite_scope(
+            ReportScope(
+                owner=scope.owner,
+                question=question,
+                datasets=scope.datasets,
+                metrics=[],
+                document_goal=DocumentGoal(
+                    goal_id="rag", question=question, metric_goals=[], purpose="summary"
+                ),
+            ),
+            scope,
+            confirmation_ref="public-ci-final31-semantic-durable-review",
+        )
+        host_path = tmp_path / "reviewed-report-scope.json"
+        host_path.write_text(contract.model_dump_json(), encoding="utf-8")
+        options += ("--report-scope", str(host_path))
     probe("start", id_, path, *options, "--cut-point", cut, expected=91)
     result = probe("resume", id_, path, *options)
     before_repeat = [dict(r) for r in call_counts(pg_settings, id_)]

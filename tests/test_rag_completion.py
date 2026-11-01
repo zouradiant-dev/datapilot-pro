@@ -294,6 +294,45 @@ async def test_semantic_retrieval_can_complete_without_literal_keyword(settings)
     assert result["completion"].status == "completed"
 
 
+async def test_related_semantic_goal_without_confirmation_is_not_self_approved(settings):
+    result, engine, model, _ = await run(
+        settings,
+        ["search", "complete", "insufficient"],
+        question="如何帮助新顾客学习软件？",
+        related=True,
+    )
+    task = result["results"]["1:rag"]
+    assert task.rag_completion.submission.outcome == "insufficient"
+    assert result["completion"].status == "blocked"
+    assert len(model.requests) == 3  # One existing correction, never automatic confirmation.
+    assert engine.ledger.snapshot().calls == 4  # Includes the original Planner attempt.
+
+
+async def test_recovery_probe_reuses_host_plan_without_extra_worker_decisions(monkeypatch):
+    from pathlib import Path
+
+    from langchain_core.messages import HumanMessage, SystemMessage
+
+    from scripts.rag_recovery_probe import RagDecisions
+
+    # The CLI normally has its sibling script directory on sys.path.
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1] / "scripts"))
+    question = "仅检索客户入门培训相关文档片段，保留实际来源引用"
+    menu = [{"task_id": "rag", "worker": "rag", "instruction": question}]
+    response = await RagDecisions("semantic").respond(
+        [
+            SystemMessage(content="REPORT_PLAN_JSON\nHOST_APPROVED_GOALS: " + json.dumps(menu)),
+            HumanMessage(content=question),
+        ],
+        [],
+    )
+    plan = Plan.model_validate_json(response.content)
+    assert [t.task_id for t in plan.tasks] == ["rag", "report"]
+    assert plan.tasks[0].instruction == question
+    assert plan.tasks[1].dependencies == ["rag"]
+    assert response.usage_metadata == USAGE and not response.tool_calls
+
+
 async def test_true_hash_and_nonempty_semantic_retrieval_do_not_prove_relevance(settings):
     result, _, _, _ = await run(
         settings,

@@ -178,6 +178,9 @@ def test_five_independent_business_cases_real_sources_and_p3_gold(
     from datapilot.persistence.backend import Backend, DurableArtifacts
 
     scope = scope_for(report_data, kind, question, query)
+    scope = confirm_finite_scope(
+        scope, report_data[3], confirmation_ref="public-ci-final31-cross-source-review"
+    )
     id_ = str(uuid4())
     started = time.monotonic()
     result = run_async(
@@ -378,6 +381,9 @@ def test_rag_and_metric_references_survive_cross_node_checkpoint(
         "已付款账单收入的业务口径",
         unique=True,
     )
+    scope = confirm_finite_scope(
+        scope, report_data[3], confirmation_ref="public-ci-final31-cross-node-review"
+    )
     path, rag = tmp_path / "scope.json", tmp_path / "rag.json"
     path.write_text(scope.model_dump_json(), encoding="utf-8")
     rag.write_text(report_data[3].model_dump_json(), encoding="utf-8")
@@ -543,6 +549,11 @@ def test_prompt_injection_source_and_denied_tool_do_not_approve_report(
         rag.corpora = [make_pin(manifest, version)]
     finally:
         ingestor.close()
+    # Review the complete finite contract after the adversarial source pin is final.
+    # This authorizes retrieval, never the injected instructions or a business fact.
+    scope = confirm_finite_scope(
+        scope, rag, confirmation_ref="public-ci-final31-injection-scope-review"
+    )
     safe = run_async(
         run_durable(
             pg_settings,

@@ -171,9 +171,8 @@ def scenario(name, fresh):
 @pytest.mark.parametrize("name", ["missing", "year", "absence", "partial", "summary", "causal"])
 def test_real_worker_receipt_report_and_persistent_fact_coverage(pg_settings, fact_sources, name):
     rag, scope, expected = scenario(name, fact_sources)
-    if name in {"missing", "year"}:
-        # Only these two public finite contracts are migrated in this batch.
-        # A missing retention proof remains missing after scope confirmation.
+    if name in {"missing", "year", "absence", "partial", "summary", "causal"}:
+        # Reviewed public finite contracts; missing facts/causal proof stay unverified.
         scope = confirm_finite_scope(
             scope, rag, confirmation_ref="public-ci-batch3-document-fact-review"
         )

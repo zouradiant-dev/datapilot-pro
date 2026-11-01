@@ -20,7 +20,7 @@ from datapilot.persistence.session import run_async, run_durable
 from datapilot.rag.contracts import RagScope, Target
 from datapilot.rag.models import LocalEmbedding
 from datapilot.rag.storage import IngestionService, make_pin
-from datapilot.reporting.contracts import CitationPolicy, CitationSource
+from datapilot.reporting.contracts import CitationPolicy, CitationSource, confirm_finite_scope
 
 DATA = json.loads(
     (Path(__file__).parent / "fixtures/rag/host-goal-requirements-v3.json").read_bytes()
@@ -124,6 +124,10 @@ def configured(dev, kind):
 def test_goal_and_business_eligibility_remain_separate(goal_dev, kind, expected):
     settings, folder, _, _, _ = goal_dev
     rag, report = configured(goal_dev, kind)
+    if kind in {"complete", "negative", "partial", "required_gap", "causal"}:
+        report = confirm_finite_scope(
+            report, rag, confirmation_ref="public-ci-final31-goal-safety-review"
+        )
     id_ = str(uuid4())
     result = probe(goal_dev, "start", id_, rag, report)
     (folder / (id_ + "-result.json")).write_text(json.dumps(result), encoding="utf-8")
@@ -161,6 +165,9 @@ def test_text_cannot_grant_owner_version_or_model_scope(goal_dev, fault):
 def test_cross_process_v3_reuse_or_v2_identity_rejection(goal_dev, legacy):
     settings, _, _, _, _ = goal_dev
     rag, report = configured(goal_dev, "complete")
+    report = confirm_finite_scope(
+        report, rag, confirmation_ref="public-ci-final31-goal-restore-review"
+    )
     id_ = str(uuid4())
     paused = probe(goal_dev, "start", id_, rag, report, "--pause", *(["--v2"] if legacy else []))
     assert paused["status"] == "paused"

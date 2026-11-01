@@ -206,6 +206,11 @@ def test_policy_manifest_conflict_and_legacy_restore(dev_environment):
 def test_partial_refs_restore_across_node_checkpoint(dev_environment):
     dev, settings = dev_environment
     config, run_id = config_for(dev, "cp06"), str(uuid4())
+    config["report_scope"] = confirm_finite_scope(
+        ReportScope.model_validate(config["report_scope"]),
+        RagScope.model_validate(config["rag_scope"]),
+        confirmation_ref="public-ci-final31-partial-cross-node-review",
+    ).model_dump(mode="json")
     paused = probe(config, "start", run_id, "--pause")
     assert paused["status"] == "paused"
     before = snapshot(settings, run_id, config["report_scope"]["owner"])

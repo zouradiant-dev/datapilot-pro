@@ -29,7 +29,7 @@ from datapilot.ingestion.service import IngestionService
 from datapilot.persistence.backend import Backend, DurableArtifacts
 from datapilot.persistence.inspection import inspect_run
 from datapilot.persistence.session import run_async, run_durable
-from datapilot.reporting.contracts import ReportScope
+from datapilot.reporting.contracts import ReportScope, confirm_finite_scope
 from datapilot.runtime.mcp_client import metric_session
 from datapilot.semantics.contracts import MetricDraft, MetricRequest, MetricWindow
 from datapilot.semantics.registry import RegistryStore
@@ -132,6 +132,9 @@ def test_explicit_false_report_survives_real_sources_and_readonly_inspection(
     question = "核对账单收入及文档事实，不宣称资料证明了收入改善的因果关系。"
     rs = scope_for(report_data, "paid_invoice_revenue", question, query, unique=True)
     rs.causal_requested = False
+    rs = confirm_finite_scope(
+        rs, report_data[3], confirmation_ref="public-ci-final31-explicit-false-review"
+    )
     run_id = str(uuid4())
     result = run_async(
         run_durable(

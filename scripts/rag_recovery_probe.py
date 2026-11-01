@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+from pathlib import Path
 
 from langchain_core.messages import AIMessage
 
@@ -19,6 +20,11 @@ class RagDecisions:
         self.scenario = scenario
 
     async def respond(self, messages, tools):
+        if messages[0].content.startswith("REPORT_PLAN_JSON"):
+            # Reuse the existing scripted Host/report planner, not a new Agent loop.
+            from report_recovery_probe import ReportDecisions
+
+            return await ReportDecisions("").respond(messages, tools)
         usage = {"input_tokens": 10, "output_tokens": 5, "total_tokens": 15}
         if messages[0].content.startswith("PLAN_JSON"):
             return AIMessage(
@@ -93,12 +99,22 @@ def main():
     parser.add_argument("--pause", action="store_true")
     parser.add_argument("--cut-tool-committed", action="store_true")
     parser.add_argument("--cut-point")
+    parser.add_argument("--report-scope", help="Explicit trusted test-host contract JSON")
     parser.add_argument(
         "--scenario",
         choices=("normal", "plain", "malformed", "two-search", "closed-search", "semantic"),
         default="normal",
     )
     args = parser.parse_args()
+    report = None
+    if args.report_scope:
+        from datapilot.reporting.contracts import ReportScope
+
+        if args.scenario != "semantic":
+            parser.error("A reviewed Host contract is only used by the semantic test scenario")
+        report = ReportScope.model_validate_json(
+            Path(args.report_scope).read_text(encoding="utf-8")
+        )
 
     def fault(point):
         if (args.cut_tool_committed and point == "tool_committed") or point == args.cut_point:
@@ -118,6 +134,7 @@ def main():
                 else None,
                 resume=args.action == "resume",
                 rag_scope=read_scope(args.scope),
+                report_scope=report,
                 transport=RagDecisions(args.scenario),
                 interrupt_after=["worker"] if args.pause else None,
                 fault=fault,

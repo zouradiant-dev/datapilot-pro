@@ -153,6 +153,10 @@ def probe(dev, action, run_id, rag, report, *args, expected=0):
 def test_new_public_ownership_report_chain(fresh_ownership, kind):
     settings, folder, _, _, _ = fresh_ownership
     rag, report = configured(fresh_ownership, kind)
+    if kind in {"complete", "partial", "causal"}:
+        report = confirm_finite_scope(
+            report, rag, confirmation_ref="public-ci-final31-ownership-review"
+        )
     id_ = str(uuid4())
     result = probe(fresh_ownership, "start", id_, rag, report)
     expected = DATA["expected"][kind]
@@ -198,6 +202,9 @@ def test_host_goal_text_never_grants_scope_or_version(fresh_ownership, fault):
 def test_new_goal_cross_process_restore_preserves_receipt_and_budget(fresh_ownership):
     settings, _, _, _, _ = fresh_ownership
     rag, report = configured(fresh_ownership, "complete")
+    report = confirm_finite_scope(
+        report, rag, confirmation_ref="public-ci-final31-ownership-restore-review"
+    )
     id_ = str(uuid4())
     first = probe(fresh_ownership, "start", id_, rag, report, "--pause")
     assert first["status"] == "paused"

@@ -110,7 +110,7 @@ def assert_original_search(rows, question):
 def test_real_original_query_report_and_terminal_reuse(dev_environment, case_id):
     dev, settings = dev_environment
     config = new_config(dev, case_id) if case_id != "english" else english_config(settings)
-    if case_id in {"cp09", "cp06"}:
+    if case_id in {"cp09", "cp06", "cp12"}:
         # Confirm after Original Query and citation/partial policies are final.
         config["report_scope"] = confirm_finite_scope(
             ReportScope.model_validate_json(json.dumps(config["report_scope"])),
@@ -228,6 +228,11 @@ def english_config(settings):
 def test_call_and_feedback_cut_points_do_not_reissue_search_or_settle_twice(dev_environment, cut):
     dev, settings = dev_environment
     config, run_id = new_config(dev), str(uuid4())
+    config["report_scope"] = confirm_finite_scope(
+        ReportScope.model_validate(config["report_scope"]),
+        RagScope.model_validate(config["rag_scope"]),
+        confirmation_ref="public-ci-final31-original-cut-review",
+    ).model_dump(mode="json")
     probe(config, "start", run_id, "--cut", cut, expected=91)
     owner = config["report_scope"]["owner"]
     before = snapshot(settings, run_id, owner)
@@ -336,6 +341,11 @@ def test_model_selected_second_search_and_its_committed_feedback_are_reused(dev_
     dev, settings = dev_environment
     config, run_id = new_config(dev), str(uuid4())
     config["second_query"] = "存储配额采用GiB，按二进制容量计量"
+    config["report_scope"] = confirm_finite_scope(
+        ReportScope.model_validate(config["report_scope"]),
+        RagScope.model_validate(config["rag_scope"]),
+        confirmation_ref="public-ci-final31-second-search-review",
+    ).model_dump(mode="json")
     probe(config, "start", run_id, "--cut", "second_search_committed", expected=91)
     owner = config["report_scope"]["owner"]
     before = snapshot(settings, run_id, owner)
