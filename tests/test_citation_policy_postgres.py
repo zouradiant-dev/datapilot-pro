@@ -8,6 +8,7 @@ from pathlib import Path
 from uuid import uuid4
 
 import pytest
+from pydantic import ValidationError
 from test_document_fact_postgres import host_fact
 from test_partial_evidence_postgres import (
     assert_no_new_budget_usage,
@@ -174,6 +175,7 @@ def test_real_supplement_only_and_forged_quotes_cannot_fill_required_sources(dev
     scope = ReportScope.model_validate_json(json.dumps(config["report_scope"]))
     rag = RagScope.model_validate_json(json.dumps(config["rag_scope"]))
     scope = confirm_finite_scope(scope, rag, confirmation_ref="public-ci-batch3-citation-review")
+    confirmed_scope = scope.model_copy(deep=True)
 
     async def check():
         async with (
@@ -224,12 +226,45 @@ def test_real_supplement_only_and_forged_quotes_cannot_fill_required_sources(dev
             )
             invalid = service.build(pairs, retrieval)
             assert not any(c.supplementary_coverage for c in invalid.claims)
-            service.scope.citation_policy.required_sources[0].index_version = "0" * 64
-            service.scope = confirm_finite_scope(
-                service.scope, rag, confirmation_ref="public-ci-batch3-invalid-pin-scope"
+            # A real, different public index already exists in the same fixture;
+            # borrowing its version cannot authorize it for the current corpus.
+            replacement_index = config_for(dev, "cp06")["rag_scope"]["corpora"][0]["index_version"]
+            assert replacement_index != rag.corpora[0].index_version
+            inconsistent = confirmed_scope.model_copy(deep=True)
+            inconsistent.citation_policy.required_sources[0].index_version = replacement_index
+            with pytest.raises(
+                ValidationError, match="Required facts cannot be relabelled as supplementary"
+            ):
+                confirm_finite_scope(inconsistent, rag, confirmation_ref="invalid-contract-test")
+
+            # Restore the original valid confirmation, then corrupt only the untrusted
+            # result. The contract/grants and their hashes are never forged or replaced.
+            service.scope = confirmed_scope
+            contract, grants = service.scope.model_dump_json(), retrieval.scope.model_dump_json()
+            assert (
+                service.build([(control, store.get(control))], retrieval).business_completion.status
+                == "completed"
             )
-            with pytest.raises(AgentFailure):
+            changed = result.model_copy(deep=True)
+            next(
+                d for d in changed.documents if d.source == "quota.md"
+            ).citation.index_version = replacement_index
+            ref = store.put(
+                Artifact(
+                    run_id=store.run_id,
+                    task_id="documents",
+                    plan_version=1,
+                    kind="documents",
+                    source="real-pg-runtime-index-substitution",
+                    documents=changed,
+                )
+            )
+            pairs = [(ref, store.get(ref))]
+            with pytest.raises(AgentFailure) as denied:
                 service.build(pairs, retrieval)
+            assert denied.value.error.code == "DOCUMENT_NOT_AUTHORIZED"
+            assert service.scope.model_dump_json() == contract
+            assert retrieval.scope.model_dump_json() == grants
 
     run_async(check())
 

@@ -161,6 +161,51 @@ def test_supplement_alone_never_replaces_required_source(settings):
     assert report.claims[0].supplementary_coverage
 
 
+def test_inconsistent_required_index_cannot_be_confirmed(settings):
+    service, pairs, retrieval = citation_case(settings)
+    enable(service, pairs)
+    original = service.scope.model_dump_json()
+    candidate = service.scope.model_copy(deep=True)
+    candidate.citation_policy.required_sources[0].index_version = digest(
+        {"public_unit_fixture": "ci25-foreign-index"}
+    )
+    with pytest.raises(
+        ValidationError, match="Required facts cannot be relabelled as supplementary"
+    ):
+        confirm_finite_scope(candidate, retrieval.scope, confirmation_ref="invalid-contract-test")
+    assert service.scope.model_dump_json() == original
+
+
+def test_runtime_index_substitution_reaches_result_validation(settings):
+    service, pairs, retrieval = citation_case(settings)
+    enable(service, pairs)
+    assert service.build(pairs, retrieval).business_completion.status == "completed"
+    original_contract, original_grants = (
+        service.scope.model_dump_json(),
+        retrieval.scope.model_dump_json(),
+    )
+    changed = pairs[0][1].model_copy(deep=True)
+    changed.documents.documents[0].citation.index_version = digest(
+        {"public_unit_fixture": "ci25-foreign-index"}
+    )
+    # Rehash the candidate through the ordinary store, never forge an Artifact ref.
+    store = ArtifactStore(changed.run_id)
+    ref = store.put(changed)
+    original_validate, checked = retrieval.validate_result, []
+
+    def validate(value):
+        checked.append(value)
+        return original_validate(value)  # Explicit source double, not real PG/MCP.
+
+    retrieval.validate_result = validate
+    with pytest.raises(AgentFailure) as denied:
+        service.build([(ref, store.get(ref))], retrieval)
+    assert denied.value.error.code == "DOCUMENT_NOT_AUTHORIZED"
+    assert len(checked) == 1
+    assert service.scope.model_dump_json() == original_contract
+    assert retrieval.scope.model_dump_json() == original_grants
+
+
 def test_supplement_does_not_satisfy_minimum_two_sources(settings):
     service, pairs, retrieval = citation_case(settings)
     service.scope.question = service.scope.document_goal.question = (
