@@ -1,0 +1,222 @@
+{
+  "schema_version": "full-ci-recovery-v1",
+  "recorded_at_utc": "2026-11-01T10:52:47.871931+00:00",
+  "repository": "zouradiant-dev/datapilot-pro",
+  "branch": "p7-engineering-candidate-v1",
+  "base_commit": "2f2f1694525cf2d677d9df13a449090836f1e731",
+  "original_full_workflow_commit": "607e68c988121e0e686ee36f740e601a5f8e0e86",
+  "restored_original_workflow_exact_except_scope_metadata": true,
+  "workflow_scope": {
+    "scope": "full-ci",
+    "full_ci": true,
+    "planned_tests": 1724,
+    "planned_pg_tests": 388,
+    "planned_nonintegration_tests": 1336
+  },
+  "full_ci_scope_is_not_execution_success": true,
+  "local_validation": {
+    "3.11": {
+      "all_collected": 1724,
+      "integration_collected": 388,
+      "expected_nonintegration": 1336,
+      "contracts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "all_original_60_in_full_integration": true,
+      "original_ci22_no_missing_cases": true,
+      "raw_dynamic_pid_identity": "tests/test_qwen_lifecycle.py::test_process_metadata_cannot_target_current_or_system_process[26856]",
+      "canonical_nodeids_sha256": "0069093b2512897a8bd2be780f0a9d101fd8873e6dea281b19fdde50e4a85e32",
+      "full_pg_nodeids_sha256": "d3fbd0dfb3141f3277d6775973671a93a9353af507f04d7ea2b8a82a8d9f604d"
+    },
+    "3.13": {
+      "all_collected": 1724,
+      "integration_collected": 388,
+      "expected_nonintegration": 1336,
+      "contracts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "all_original_60_in_full_integration": true,
+      "original_ci22_no_missing_cases": true,
+      "raw_dynamic_pid_identity": "tests/test_qwen_lifecycle.py::test_process_metadata_cannot_target_current_or_system_process[17132]",
+      "canonical_nodeids_sha256": "0069093b2512897a8bd2be780f0a9d101fd8873e6dea281b19fdde50e4a85e32",
+      "full_pg_nodeids_sha256": "d3fbd0dfb3141f3277d6775973671a93a9353af507f04d7ea2b8a82a8d9f604d"
+    }
+  },
+  "full_ci_collection": "PASS",
+  "original_ci22_collected": 1717,
+  "current_full_collected": 1724,
+  "current_integration_collected": 388,
+  "approved_prior_additional_unit_controls": 7,
+  "original_tests_removed": 0,
+  "original_failed_nodeids_in_full_matrix": [
+    "tests/test_chat_review_regressions.py::test_corpus_listing_cap_must_not_revoke_existing_run_authority",
+    "tests/test_citation_policy_postgres.py::test_real_policy_report_terminal_reuse_preserves_citations_p3_and_budget[cp09]",
+    "tests/test_citation_policy_postgres.py::test_real_policy_report_terminal_reuse_preserves_citations_p3_and_budget[cp07]",
+    "tests/test_citation_policy_postgres.py::test_new_policy_survives_cross_process_cut_without_model_reissue[rag_submission_committed]",
+    "tests/test_citation_policy_postgres.py::test_new_policy_survives_cross_process_cut_without_model_reissue[report_artifact_committed]",
+    "tests/test_citation_policy_postgres.py::test_new_policy_survives_cross_process_cut_without_model_reissue[checkpoint]",
+    "tests/test_citation_policy_postgres.py::test_real_supplement_only_and_forged_quotes_cannot_fill_required_sources",
+    "tests/test_citation_policy_postgres.py::test_real_unrelated_source_is_not_published_even_after_separate_search",
+    "tests/test_cross_source_postgres.py::test_five_independent_business_cases_real_sources_and_p3_gold[paid_invoice_revenue-\\u5206\\u6790\\u5df2\\u652f\\u4ed8\\u8d26\\u5355\\u6536\\u5165\\u5e76\\u89e3\\u91ca\\u8d26\\u5355\\u53e3\\u5f84-\\u5df2\\u4ed8\\u6b3e\\u8d26\\u5355\\u6536\\u5165\\u548c\\u7ecf\\u5e38\\u6027\\u8ba2\\u9605\\u91d1\\u989d\\u6709\\u4ec0\\u4e48\\u533a\\u522b\\uff1f-300]",
+    "tests/test_cross_source_postgres.py::test_five_independent_business_cases_real_sources_and_p3_gold[customer_churn-\\u8ba1\\u7b97\\u671f\\u521d\\u5ba2\\u6237\\u961f\\u5217\\u51c0\\u6d41\\u5931\\u7387\\u5e76\\u63d0\\u4f9b\\u53e3\\u5f84\\u6765\\u6e90-\\u5ba2\\u6237\\u6d41\\u5931\\u4e0e\\u8ba2\\u9605\\u53d6\\u6d88\\u7684\\u671f\\u521d\\u961f\\u5217\\u53e3\\u5f84-0.4]",
+    "tests/test_cross_source_postgres.py::test_five_independent_business_cases_real_sources_and_p3_gold[subscription_churn-\\u8ba1\\u7b97\\u8ba2\\u9605\\u5408\\u540c\\u6d41\\u5931\\u7387\\u5e76\\u9644\\u4e1a\\u52a1\\u5b9a\\u4e49-\\u8ba2\\u9605\\u5408\\u540c\\u6d41\\u5931\\u4e0e\\u964d\\u7ea7\\u5982\\u4f55\\u533a\\u5206\\uff1f-0.666666666667]",
+    "tests/test_cross_source_postgres.py::test_five_independent_business_cases_real_sources_and_p3_gold[usage-\\u6c47\\u603b\\u4ea7\\u54c1\\u4f7f\\u7528\\u91cf\\u5e76\\u8bf4\\u660e\\u4e8b\\u4ef6\\u6570\\u91cf\\u9650\\u5236-\\u4ea7\\u54c1\\u4f7f\\u7528\\u4e8b\\u4ef6\\u6570\\u91cf\\u548c\\u6d3b\\u8dc3\\u7528\\u6237\\u6570\\u6709\\u4ec0\\u4e48\\u533a\\u522b\\uff1f-35]",
+    "tests/test_cross_source_postgres.py::test_five_independent_business_cases_real_sources_and_p3_gold[active_subscriptions-\\u6838\\u5bf9\\u65f6\\u70b9\\u6d3b\\u8dc3\\u5408\\u540c\\u5e76\\u5f15\\u7528\\u8ba2\\u9605\\u5386\\u53f2\\u8981\\u6c42-\\u6d3b\\u8dc3\\u8ba2\\u9605\\u5408\\u540c\\u7684\\u65f6\\u70b9\\u53e3\\u5f84\\u4e0e\\u5386\\u53f2\\u6570\\u636e\\u8981\\u6c42\\u662f\\u4ec0\\u4e48\\uff1f-4]",
+    "tests/test_cross_source_postgres.py::test_rag_and_metric_references_survive_cross_node_checkpoint",
+    "tests/test_cross_source_postgres.py::test_real_persisted_metric_and_document_tampering_is_rejected",
+    "tests/test_cross_source_postgres.py::test_prompt_injection_source_and_denied_tool_do_not_approve_report",
+    "tests/test_document_confirmation_postgres.py::test_confirmed_document_purpose_survives_chat_review_and_durable[locate-completed]",
+    "tests/test_document_confirmation_postgres.py::test_confirmed_document_purpose_survives_chat_review_and_durable[summary-completed]",
+    "tests/test_document_confirmation_postgres.py::test_confirmed_document_purpose_survives_chat_review_and_durable[facts-unavailable]",
+    "tests/test_document_confirmation_postgres.py::test_confirmed_document_purpose_survives_chat_review_and_durable[conclusion-partial]",
+    "tests/test_document_confirmation_postgres.py::test_legacy_creation_and_source_injection_do_not_grant_confirmation",
+    "tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[missing]",
+    "tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[year]",
+    "tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[absence]",
+    "tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[partial]",
+    "tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[summary]",
+    "tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[causal]",
+    "tests/test_document_fact_postgres.py::test_real_pins_and_scope_cannot_be_forged",
+    "tests/test_host_goal_postgres.py::test_new_public_ownership_report_chain[bge-complete]",
+    "tests/test_host_goal_postgres.py::test_new_public_ownership_report_chain[bge-partial]",
+    "tests/test_host_goal_postgres.py::test_new_public_ownership_report_chain[bge-causal]",
+    "tests/test_host_goal_postgres.py::test_new_goal_cross_process_restore_preserves_receipt_and_budget[bge]",
+    "tests/test_host_goal_postgres.py::test_legacy_requirement_manifest_is_not_silently_reinterpreted[bge]",
+    "tests/test_host_goal_safety_postgres.py::test_goal_and_business_eligibility_remain_separate[bge-complete-completed]",
+    "tests/test_host_goal_safety_postgres.py::test_goal_and_business_eligibility_remain_separate[bge-negative-completed]",
+    "tests/test_host_goal_safety_postgres.py::test_goal_and_business_eligibility_remain_separate[bge-partial-partial]",
+    "tests/test_host_goal_safety_postgres.py::test_goal_and_business_eligibility_remain_separate[bge-required_gap-partial]",
+    "tests/test_host_goal_safety_postgres.py::test_goal_and_business_eligibility_remain_separate[bge-causal-partial]",
+    "tests/test_host_goal_safety_postgres.py::test_cross_process_v3_reuse_or_v2_identity_rejection[bge-False]",
+    "tests/test_original_query_postgres.py::test_real_original_query_report_and_terminal_reuse[cp09]",
+    "tests/test_original_query_postgres.py::test_real_original_query_report_and_terminal_reuse[cp06]",
+    "tests/test_original_query_postgres.py::test_real_original_query_report_and_terminal_reuse[cp12]",
+    "tests/test_original_query_postgres.py::test_call_and_feedback_cut_points_do_not_reissue_search_or_settle_twice[worker_model_committed]",
+    "tests/test_original_query_postgres.py::test_call_and_feedback_cut_points_do_not_reissue_search_or_settle_twice[tool_committed]",
+    "tests/test_original_query_postgres.py::test_call_and_feedback_cut_points_do_not_reissue_search_or_settle_twice[rag_submission_committed]",
+    "tests/test_original_query_postgres.py::test_call_and_feedback_cut_points_do_not_reissue_search_or_settle_twice[report_artifact_committed]",
+    "tests/test_original_query_postgres.py::test_model_selected_second_search_and_its_committed_feedback_are_reused",
+    "tests/test_partial_evidence_postgres.py::test_real_partial_receipt_report_and_terminal_cross_process_reuse[cp04]",
+    "tests/test_partial_evidence_postgres.py::test_real_partial_receipt_report_and_terminal_cross_process_reuse[cp06]",
+    "tests/test_partial_evidence_postgres.py::test_committed_submission_or_report_crash_reuses_without_new_model[rag_submission_committed]",
+    "tests/test_partial_evidence_postgres.py::test_committed_submission_or_report_crash_reuses_without_new_model[report_artifact_committed]",
+    "tests/test_partial_evidence_postgres.py::test_partial_refs_restore_across_node_checkpoint",
+    "tests/test_partial_evidence_postgres.py::test_real_fact_validation_after_rehydration_rejects_wrong_hash",
+    "tests/test_phase12_postgres.py::test_explicit_false_report_survives_real_sources_and_readonly_inspection",
+    "tests/test_phase4_postgres.py::test_real_rag_budget_pressure_uses_only_original_limit_and_preserves_facts[True]",
+    "tests/test_phase4_postgres.py::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[None]",
+    "tests/test_phase4_postgres.py::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[tool_committed]",
+    "tests/test_rag_completion_postgres.py::test_real_semantic_retrieval_checks_original_goal_not_model_search_keywords[True]",
+    "tests/test_rag_completion_postgres.py::test_committed_rag_control_restores_across_process_without_duplicate_calls[semantic-rag_submission_committed-3]",
+    "tests/test_web_postgres.py::test_real_document_upload_retrieval_report_and_source_ref"
+  ],
+  "dynamic_identity": {
+    "prefix": "tests/test_qwen_lifecycle.py::test_process_metadata_cannot_target_current_or_system_process",
+    "source": "[0, 1, -1, os.getpid()]",
+    "source_byte_identical_since_ci22": true,
+    "alias": "<current-process-pid>",
+    "reporting_comparison_only": true,
+    "fixed_pid_negatives_unchanged": true,
+    "all_raw_ids_retained": true,
+    "other_identities_compared_strictly": true
+  },
+  "historical_only_skip_profile": {
+    "total": 63,
+    "qwen_cuda_opt_in": 62,
+    "paid_live_opt_in": 1,
+    "reasons": {
+      "Explicit real CUDA Qwen test opt-in required": 10,
+      "Explicit real Qwen CUDA opt-in required": 18,
+      "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials": 1,
+      "Explicit local Qwen integration opt-in required; never substitutes vectors": 20,
+      "Explicit real CUDA test opt-in required": 13,
+      "Explicit local CUDA opt-in required": 1
+    },
+    "current_full_ci_actual_skips": "NOT_RUN"
+  },
+  "changed_existing_files": [
+    ".github/workflows/test.yml"
+  ],
+  "workflow_diff": {
+    "additions": 4,
+    "deletions": 37
+  },
+  "product_core_changes": "NONE",
+  "test_source_changes": "NONE",
+  "marker_optin_changes": "NONE",
+  "dependencies_profiles_gold_seal_stop_changes": "NONE",
+  "protected_historical_files_verified": 203,
+  "workflow_worktree_sha256": "6e8ca5d84db9d00ab6940c1edf85c6ddb08212905f283c409b7fd9ab41590ac8",
+  "workflow_git_lf_sha256": "9e13659468186f27ccd9079cf6d495c55bccb090a2673e5f2a79bd8b2e68f4cc",
+  "static": [
+    {
+      "command": [
+        ".venv/Scripts/ruff.exe",
+        "check",
+        "."
+      ],
+      "exit_code": 0,
+      "log": "ruff.log"
+    },
+    {
+      "command": [
+        ".venv/Scripts/ruff.exe",
+        "format",
+        "--check",
+        "src",
+        "tests",
+        "scripts",
+        "migrations",
+        "evaluation"
+      ],
+      "exit_code": 0,
+      "log": "format.log"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "diff.log"
+    }
+  ],
+  "evidence_directory": "artifacts/p7/full-ci-recovery-v1",
+  "detailed_audit_sha256": "046f43d1490ef3f6c565f19c5e19df3d962d013a58fca5d677869356c37a8abb",
+  "planned_commit": {
+    "message": "fix(ci): restore complete dual-version regression workflow",
+    "files": [
+      ".github/workflows/test.yml",
+      "docs/research/p7-full-ci-recovery.md",
+      "docs/research/p7-full-ci-recovery.json",
+      "docs/research/p7-full-ci-recovery-handoff.md"
+    ],
+    "sha_record": "artifacts/p7/full-ci-recovery-v1/commit-verification.json (post-commit, local only)"
+  },
+  "push_authorized": false,
+  "paid_calls": 0,
+  "database_operations": 0,
+  "post_push_plan": {
+    "workflow": "DataPilot checks",
+    "attempts": 1,
+    "automatic_reruns": false,
+    "full_nonintegration": true,
+    "full_integration": true,
+    "download_all_evidence": true,
+    "on_failure": "Preserve exact failures and diagnose only; no repair, follow-up commit, retry or expanded scope"
+  },
+  "status": {
+    "full_ci_collection": "PASS",
+    "python311_full_ci": "NOT_RUN",
+    "python313_full_ci": "NOT_RUN",
+    "product_core_changes": "NONE",
+    "github_push": "AWAITING_APPROVAL"
+  }
+}
