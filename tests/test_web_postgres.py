@@ -14,6 +14,7 @@ from datapilot.web.worker import execute_one
 
 pytestmark = pytest.mark.integration
 ROOT = Path(__file__).parents[1]
+BILLING_GOAL = "计算2025年10月已支付账单收入，并根据指定的 billing.md 总结账单口径。"
 
 
 @pytest.fixture
@@ -204,27 +205,45 @@ def test_csv_is_real_upload_and_requires_confirmation(api):
 
 
 def test_real_document_upload_retrieval_report_and_source_ref(api):
+    from test_chat_postgres import conversation, message
+    from test_chat_postgres import request as chat_request
     from test_cross_source_postgres import ReportDecisions
+    from test_rag_only_postgres import approve_and_run
+    from test_web_goal_confirmation_postgres import decision
 
     c, app, settings = api
     request = import_sample(c)
-    request["require_review"] = False
     metric = request["metrics"][0]
     doc = (ROOT / "tests/fixtures/reporting/billing.md").read_bytes()
     path = f"/api/v1/datasets/{metric['dataset_id']}/versions/{metric['dataset_version']}/documents"
     r = c.post(path, files={"file": ("billing.md", doc)}, data={"reviewed": "true"})
     assert r.status_code == 200, r.text
     assert r.json()["embedding_fixture"] is False
-    query = "已付款账单收入和经常性订阅金额有什么区别？"
-    request["documents"] = {
-        "question": query,
-        "purpose": "summary",  # Explicit synthetic host confirmation, not an inferred default.
-        "metric_goals": ["revenue"],
-        "corpus_ids": [r.json()["corpus_id"]],
+    cid = conversation(c)
+    m = message(
+        c,
+        cid,
+        BILLING_GOAL,
+        {
+            **{
+                k: metric[k]
+                for k in ("dataset_id", "dataset_version", "metric_id", "metric_version", "window")
+            },
+            "corpus_ids": [r.json()["corpus_id"]],
+            "document_purpose": "summary",
+        },
+    )
+    draft = m["draft"]["request"]
+    assert draft["question"] == draft["documents"]["question"] == BILLING_GOAL
+    assert draft["require_review"] is True
+    assert {k: draft["metrics"][0][k] for k in metric if k != "goal_id"} == {
+        k: v for k, v in metric.items() if k != "goal_id"
     }
-    c.headers["Idempotency-Key"] = uuid4().hex
-    id_ = post(c, "/api/v1/tasks", request)["run_id"]
-    run_async(execute_one(settings, app.state.store, id_, transport=ReportDecisions(query)))
+    assert m["goal_contract"]["can_confirm"] and not m["goal_contract"]["unresolved"]
+    id_ = chat_request(c, f"/conversations/{cid}/messages/{m['message_id']}/launch", decision(m))[
+        "run_id"
+    ]
+    approve_and_run(c, app, settings, id_, transport=ReportDecisions(BILLING_GOAL))
     state = c.get(f"/api/v1/tasks/{id_}")
     assert state.status_code == 200, state.text
     assert state.json()["status"] == "completed", state.text

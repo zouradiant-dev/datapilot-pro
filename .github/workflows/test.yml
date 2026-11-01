@@ -1,10 +1,10 @@
-name: DataPilot CI22 representatives - NOT FULL CI
+name: DataPilot CI22 Batch 2 - NOT FULL CI
 on: [push, pull_request]
 permissions:
   contents: read
 jobs:
   checks:
-    name: ci22-representative (${{ matrix.python }})
+    name: ci22-batch2 (${{ matrix.python }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -62,7 +62,7 @@ jobs:
           set -euo pipefail
           mkdir -p artifacts/ci
           git rev-parse HEAD > artifacts/ci/commit.txt
-          printf '%s\n' '{"scope":"ci22-representative","full_ci":false,"planned_pg_tests":4}' > artifacts/ci/test-scope.json
+          printf '%s\n' '{"scope":"ci22-batch2","full_ci":false,"planned_pg_tests":11}' > artifacts/ci/test-scope.json
           git ls-files -z | xargs -0 sha256sum -- > artifacts/ci/source-sha256.txt
       - uses: astral-sh/setup-uv@v6
         with:
@@ -100,12 +100,24 @@ jobs:
             uv run --locked datapilot health
             uv run --locked datapilot rag model-fetch
           } 2>&1 | tee artifacts/ci/initialize.log
-      - name: CI22 four PG representatives - NOT FULL CI
+      - name: CI22 Batch 2 eleven PG cases - NOT FULL CI
         if: ${{ !cancelled() && steps.initialize.outcome == 'success' }}
         shell: bash
         run: |
           set -euo pipefail
-          uv run --locked python -m pytest -m integration 'tests/test_document_confirmation_postgres.py::test_confirmed_document_purpose_survives_chat_review_and_durable[summary-completed]' 'tests/test_document_fact_postgres.py::test_real_pins_and_scope_cannot_be_forged' 'tests/test_phase4_postgres.py::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[None]' 'tests/test_host_goal_postgres.py::test_legacy_requirement_manifest_is_not_silently_reinterpreted[bge]' -p no:cacheprovider --junitxml=artifacts/ci/integration.xml --cov=datapilot --cov-append --cov-report=term-missing --cov-report=xml:artifacts/ci/coverage.xml 2>&1 | tee artifacts/ci/integration.log
+          uv run --locked python -m pytest -m integration \
+            'tests/test_chat_review_regressions.py::test_corpus_listing_cap_must_not_revoke_existing_run_authority' \
+            'tests/test_document_confirmation_postgres.py::test_legacy_creation_and_source_injection_do_not_grant_confirmation' \
+            'tests/test_web_postgres.py::test_real_document_upload_retrieval_report_and_source_ref' \
+            'tests/test_citation_policy_postgres.py::test_real_policy_report_terminal_reuse_preserves_citations_p3_and_budget[cp09]' \
+            'tests/test_citation_policy_postgres.py::test_real_policy_report_terminal_reuse_preserves_citations_p3_and_budget[cp07]' \
+            'tests/test_citation_policy_postgres.py::test_new_policy_survives_cross_process_cut_without_model_reissue[rag_submission_committed]' \
+            'tests/test_citation_policy_postgres.py::test_new_policy_survives_cross_process_cut_without_model_reissue[report_artifact_committed]' \
+            'tests/test_citation_policy_postgres.py::test_new_policy_survives_cross_process_cut_without_model_reissue[checkpoint]' \
+            'tests/test_partial_evidence_postgres.py::test_real_partial_receipt_report_and_terminal_cross_process_reuse[cp04]' \
+            'tests/test_partial_evidence_postgres.py::test_real_partial_receipt_report_and_terminal_cross_process_reuse[cp06]' \
+            'tests/test_partial_evidence_postgres.py::test_real_partial_receipt_report_and_terminal_cross_process_reuse[cp07]' \
+            -p no:cacheprovider --junitxml=artifacts/ci/integration.xml --cov=datapilot --cov-append --cov-report=term-missing --cov-report=xml:artifacts/ci/coverage.xml 2>&1 | tee artifacts/ci/integration.log
       - name: Ruff lint
         if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
         shell: bash

@@ -1,6 +1,7 @@
 """Finite intent/DTO/UI boundaries. No database, MCP or paid model."""
 
 import ast
+import json
 from datetime import date
 from pathlib import Path
 from uuid import uuid4
@@ -68,6 +69,42 @@ def test_intent_preserves_confirmed_versions_and_requires_review():
     m = draft.request.metrics[0]
     assert (m.metric_id, m.metric_version, m.semantic_version) == ("paid_invoice_revenue", 3, 2)
     assert ds[0]["metrics"][0]["definition"]["currency"] == "CNY"
+
+
+def test_ci_billing_question_preserves_full_goal_registry_and_review_boundary():
+    from test_web_postgres import BILLING_GOAL
+
+    datasets = catalog()
+    metric = datasets[0]["metrics"][0]
+    corpus_id = str(uuid4())
+    selection = ChatSelection.model_validate_json(
+        json.dumps(
+            {
+                **{
+                    k: metric[k]
+                    for k in ("dataset_id", "dataset_version", "metric_id", "metric_version")
+                },
+                "window": {"start": "2025-10-01", "end_exclusive": "2025-11-01"},
+                "corpus_ids": [corpus_id],
+                "document_purpose": "summary",
+            }
+        )
+    )
+    draft = resolve(BILLING_GOAL, selection, datasets, today=date(2026, 11, 1))
+    assert not draft.missing and draft.request is not None
+    request = draft.request.model_dump(mode="json")
+    assert request["question"] == request["documents"]["question"] == BILLING_GOAL
+    assert request["require_review"] is True and request["causal_requested"] is False
+    assert len(request["metrics"]) == 1
+    resolved = request["metrics"][0]
+    for key in ("dataset_id", "dataset_version", "semantic_version", "metric_id", "metric_version"):
+        assert resolved[key] == metric[key]
+    assert resolved["window"] == {"start": "2025-10-01", "end_exclusive": "2025-11-01"}
+    assert resolved["as_of"] is None and resolved["intent"] == "measure"
+    assert request["documents"]["corpus_ids"] == [corpus_id]
+    assert request["documents"]["metric_goals"] == [resolved["goal_id"]]
+    assert "goal_scope_attestation" not in request
+    assert "goal_confirmation" not in request
 
 
 def test_followup_is_new_request_not_mutation_or_invented_growth():

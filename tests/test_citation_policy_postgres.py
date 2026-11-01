@@ -25,7 +25,7 @@ from datapilot.orchestration.runtime import ArtifactStore, text_hash
 from datapilot.persistence.session import run_async
 from datapilot.rag.contracts import RagScope
 from datapilot.rag.mcp import rag_session
-from datapilot.reporting.contracts import CitationSource, ReportScope
+from datapilot.reporting.contracts import CitationSource, ReportScope, confirm_finite_scope
 from datapilot.reporting.service import report_session
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -103,6 +103,13 @@ def test_real_policy_report_terminal_reuse_preserves_citations_p3_and_budget(
 ):
     dev, settings = dev_environment
     config, run_id = configured(dev, case_id), str(uuid4())
+    # Review the exact finite contract after its Required/Supplement policy is final.
+    # Scope approval supplies neither missing facts nor a successful completion receipt.
+    config["report_scope"] = confirm_finite_scope(
+        ReportScope.model_validate_json(json.dumps(config["report_scope"])),
+        RagScope.model_validate_json(json.dumps(config["rag_scope"])),
+        confirmation_ref="public-ci-batch2-citation-scope-review",
+    ).model_dump(mode="json")
     first = probe(config, "start", run_id, *(["--insufficient"] if case_id == "cp07" else []))
     assert first["business_completion"]["status"] == (
         "completed" if case_id == "cp09" else "partial"
@@ -128,6 +135,11 @@ def test_real_policy_report_terminal_reuse_preserves_citations_p3_and_budget(
 def test_new_policy_survives_cross_process_cut_without_model_reissue(dev_environment, cut):
     dev, settings = dev_environment
     config, run_id = configured(dev), str(uuid4())
+    config["report_scope"] = confirm_finite_scope(
+        ReportScope.model_validate_json(json.dumps(config["report_scope"])),
+        RagScope.model_validate_json(json.dumps(config["rag_scope"])),
+        confirmation_ref="public-ci-batch2-citation-recovery-review",
+    ).model_dump(mode="json")
     if cut == "checkpoint":
         assert probe(config, "start", run_id, "--pause")["status"] == "paused"
     else:

@@ -100,6 +100,8 @@ def test_confirmed_document_purpose_survives_chat_review_and_durable(api, purpos
 
 
 def test_legacy_creation_and_source_injection_do_not_grant_confirmation(api):
+    from test_chat_postgres import conversation
+
     c, app, _ = api
     selection = document(c)
     body = {
@@ -113,10 +115,28 @@ def test_legacy_creation_and_source_injection_do_not_grant_confirmation(api):
     }
     response = post(c, "/api/v1/tasks", body)
     assert response.status_code >= 400
-    assert response.json()["error"]["code"] == "DOCUMENT_CONFIRMATION_REQUIRED"
+    assert response.json()["error"]["code"] == "GOAL_CONFIRMATION_REQUIRED"
     assert c.get("/api/v1/tasks").json()["run_ids"] == []
     body["documents"].update(purpose="summary", corpus_ids=[str(uuid4())])
     response = post(c, "/api/v1/tasks", body)
+    assert response.status_code >= 400
+    assert response.json()["error"]["code"] == "GOAL_CONFIRMATION_REQUIRED"
+    # Exercise the actual source authorization guard through the current proposal API;
+    # the legacy entry point must not mint confirmation even when purpose is supplied.
+    cid = conversation(c)
+    response = post(
+        c,
+        f"/api/v1/conversations/{cid}/messages",
+        {
+            "text": QUESTION,
+            "selection": {
+                **selection,
+                "document_purpose": "summary",
+                "corpus_ids": body["documents"]["corpus_ids"],
+            },
+        },
+    )
     assert response.status_code >= 400 and response.json()["error"]["code"] == "WEB_SCOPE"
     body["documents"]["document_ids"] = ["a" * 64]
     assert post(c, "/api/v1/tasks", body).status_code == 422
+    assert c.get("/api/v1/tasks").json()["run_ids"] == []

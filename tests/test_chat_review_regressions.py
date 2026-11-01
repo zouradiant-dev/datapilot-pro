@@ -8,8 +8,8 @@ from uuid import UUID, uuid4
 import pytest
 from streamlit.testing.v1 import AppTest
 from test_chat_contracts import catalog
+from test_web_postgres import BILLING_GOAL, import_sample
 from test_web_postgres import api as api
-from test_web_postgres import import_sample
 
 from datapilot.contracts import AgentFailure
 from datapilot.persistence.backend import execute
@@ -17,7 +17,6 @@ from datapilot.persistence.session import run_async
 from datapilot.rag.contracts import CorpusPin, Target
 from datapilot.web.chat_contracts import ChatSelection
 from datapilot.web.client import APIClient, ClientError
-from datapilot.web.contracts import CreateTask
 from datapilot.web.intent import resolve
 
 
@@ -109,6 +108,10 @@ def test_legacy_task_rejects_non_jsonb_text_as_validation_error(api, monkeypatch
 
 @pytest.mark.integration
 def test_corpus_listing_cap_must_not_revoke_existing_run_authority(api):
+    from test_chat_postgres import conversation, message
+    from test_chat_postgres import request as chat_request
+    from test_web_goal_confirmation_postgres import decision
+
     c, app, settings = api
     request = import_sample(c)
     metric = request["metrics"][0]
@@ -121,14 +124,27 @@ def test_corpus_listing_cap_must_not_revoke_existing_run_authority(api):
     assert document.status_code == 200, document.text
     corpus_id = document.json()["corpus_id"]
     assert UUID(corpus_id).int > 100
-    request["documents"] = {
-        "question": "paid invoice revenue",
-        "purpose": "summary",
-        "metric_goals": [metric["goal_id"]],
-        "corpus_ids": [corpus_id],
+    cid = conversation(c)
+    m = message(
+        c,
+        cid,
+        BILLING_GOAL,
+        {
+            **{
+                k: metric[k]
+                for k in ("dataset_id", "dataset_version", "metric_id", "metric_version", "window")
+            },
+            "corpus_ids": [corpus_id],
+            "document_purpose": "summary",
+        },
+    )
+    draft = m["draft"]["request"]
+    assert draft["question"] == draft["documents"]["question"] == BILLING_GOAL
+    assert {k: draft["metrics"][0][k] for k in metric if k != "goal_id"} == {
+        k: v for k, v in metric.items() if k != "goal_id"
     }
-    payload = run_async(app.state.service.task_payload(CreateTask.model_validate(request)))
-    ack = app.state.store.command(uuid4().hex, "create", payload, payload=payload)
+    assert m["goal_contract"]["can_confirm"] and not m["goal_contract"]["unresolved"]
+    ack = chat_request(c, f"/conversations/{cid}/messages/{m['message_id']}/launch", decision(m))
     run_async(app.state.service.authorize_run(ack["run_id"]))
     # Test-only PG metadata fillers. The target above is a real locally embedded corpus.
     for index in range(1, 101):

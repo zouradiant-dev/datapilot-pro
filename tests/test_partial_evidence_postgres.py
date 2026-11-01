@@ -12,7 +12,9 @@ import pytest
 from datapilot.ingestion.common import digest
 from datapilot.persistence.backend import Backend, DurableArtifacts, execute
 from datapilot.persistence.session import run_async
+from datapilot.rag.contracts import RagScope
 from datapilot.rag.mcp import rag_session
+from datapilot.reporting.contracts import ReportScope, confirm_finite_scope
 from datapilot.reporting.service import report_session
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -108,6 +110,12 @@ def assert_no_new_budget_usage(before, after):
 def test_real_partial_receipt_report_and_terminal_cross_process_reuse(dev_environment, case_id):
     dev, settings = dev_environment
     config = config_for(dev, case_id)
+    # Approve the finite questions, never the deliberately absent fact/source proofs.
+    config["report_scope"] = confirm_finite_scope(
+        ReportScope.model_validate_json(json.dumps(config["report_scope"])),
+        RagScope.model_validate_json(json.dumps(config["rag_scope"])),
+        confirmation_ref="public-ci-batch2-partial-scope-review",
+    ).model_dump(mode="json")
     run_id = str(uuid4())
     first = probe(config, "start", run_id)
     assert first["business_completion"]["status"] == "partial"
