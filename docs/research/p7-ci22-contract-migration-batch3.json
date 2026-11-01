@@ -1,0 +1,472 @@
+{
+  "schema_version": "ci22-contract-migration-batch3-v1",
+  "recorded_at_utc": "2026-11-01T06:22:14.479413+00:00",
+  "repository": "zouradiant-dev/datapilot-pro",
+  "branch": "p7-engineering-candidate-v1",
+  "source_base_commit": "be880d1415f6d5069c914a09417732f5d501805e",
+  "final_commit_record": "artifacts/p7/ci22-batch3-v1/commit-verification.json",
+  "scope": "ci22-batch3",
+  "full_ci": false,
+  "planned_pg_tests": 15,
+  "cases": [
+    {
+      "id": 17,
+      "group": "A1",
+      "nodeid": "tests/test_document_confirmation_postgres.py::test_confirmed_document_purpose_survives_chat_review_and_durable[locate-completed]",
+      "assert_before": 17,
+      "assert_after": 20,
+      "raises_before": 0,
+      "raises_after": 0,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 19,
+      "group": "A1",
+      "nodeid": "tests/test_document_confirmation_postgres.py::test_confirmed_document_purpose_survives_chat_review_and_durable[facts-unavailable]",
+      "assert_before": 17,
+      "assert_after": 20,
+      "raises_before": 0,
+      "raises_after": 0,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 20,
+      "group": "A1",
+      "nodeid": "tests/test_document_confirmation_postgres.py::test_confirmed_document_purpose_survives_chat_review_and_durable[conclusion-partial]",
+      "assert_before": 17,
+      "assert_after": 20,
+      "raises_before": 0,
+      "raises_after": 0,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 7,
+      "group": "A2",
+      "nodeid": "tests/test_citation_policy_postgres.py::test_real_supplement_only_and_forged_quotes_cannot_fill_required_sources",
+      "assert_before": 5,
+      "assert_after": 7,
+      "raises_before": 1,
+      "raises_after": 1,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 8,
+      "group": "A2",
+      "nodeid": "tests/test_citation_policy_postgres.py::test_real_unrelated_source_is_not_published_even_after_separate_search",
+      "assert_before": 4,
+      "assert_after": 4,
+      "raises_before": 0,
+      "raises_after": 0,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 15,
+      "group": "A3",
+      "nodeid": "tests/test_cross_source_postgres.py::test_real_persisted_metric_and_document_tampering_is_rejected",
+      "assert_before": 3,
+      "assert_after": 7,
+      "raises_before": 4,
+      "raises_after": 5,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 22,
+      "group": "A2",
+      "nodeid": "tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[missing]",
+      "assert_before": 9,
+      "assert_after": 9,
+      "raises_before": 0,
+      "raises_after": 0,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 23,
+      "group": "A2",
+      "nodeid": "tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[year]",
+      "assert_before": 9,
+      "assert_after": 9,
+      "raises_before": 0,
+      "raises_after": 0,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 40,
+      "group": "A2",
+      "nodeid": "tests/test_original_query_postgres.py::test_real_original_query_report_and_terminal_reuse[cp09]",
+      "assert_before": 8,
+      "assert_after": 8,
+      "raises_before": 0,
+      "raises_after": 0,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 41,
+      "group": "A2",
+      "nodeid": "tests/test_original_query_postgres.py::test_real_original_query_report_and_terminal_reuse[cp06]",
+      "assert_before": 8,
+      "assert_after": 8,
+      "raises_before": 0,
+      "raises_after": 0,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 50,
+      "group": "A2",
+      "nodeid": "tests/test_partial_evidence_postgres.py::test_committed_submission_or_report_crash_reuses_without_new_model[rag_submission_committed]",
+      "assert_before": 5,
+      "assert_after": 7,
+      "raises_before": 0,
+      "raises_after": 0,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 51,
+      "group": "A2",
+      "nodeid": "tests/test_partial_evidence_postgres.py::test_committed_submission_or_report_crash_reuses_without_new_model[report_artifact_committed]",
+      "assert_before": 5,
+      "assert_after": 7,
+      "raises_before": 0,
+      "raises_after": 0,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 53,
+      "group": "A3",
+      "nodeid": "tests/test_partial_evidence_postgres.py::test_real_fact_validation_after_rehydration_rejects_wrong_hash",
+      "assert_before": 1,
+      "assert_after": 3,
+      "raises_before": 1,
+      "raises_after": 1,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 55,
+      "group": "A4",
+      "nodeid": "tests/test_phase4_postgres.py::test_real_rag_budget_pressure_uses_only_original_limit_and_preserves_facts[True]",
+      "assert_before": 10,
+      "assert_after": 10,
+      "raises_before": 0,
+      "raises_after": 0,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    },
+    {
+      "id": 57,
+      "group": "A4",
+      "nodeid": "tests/test_phase4_postgres.py::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[tool_committed]",
+      "assert_before": 11,
+      "assert_after": 11,
+      "raises_before": 0,
+      "raises_after": 0,
+      "deleted_or_changed_original_assertions": 0,
+      "pg_execution": "NOT_RUN"
+    }
+  ],
+  "python_results": {
+    "3.11": {
+      "unit": {
+        "tests": 182,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "unit_seconds": "7.774",
+      "integration_collection": {
+        "count": 15,
+        "exact_identities": true
+      },
+      "integration_execution": "NOT_RUN",
+      "unit_log": "py311-unit.log",
+      "junit": "py311-unit.xml"
+    },
+    "3.13": {
+      "unit": {
+        "tests": 182,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "unit_seconds": "8.385",
+      "integration_collection": {
+        "count": 15,
+        "exact_identities": true
+      },
+      "integration_execution": "NOT_RUN",
+      "unit_log": "py313-unit.log",
+      "junit": "py313-unit.xml"
+    }
+  },
+  "local_status": "PASS",
+  "real_pg_status": "NOT_RUN",
+  "safety_regression": "NOT_VERIFIED",
+  "safety_qualification": "No regression observed in bounded unit/static checks; real PG assertions not executed this round.",
+  "github_push": "AWAITING_APPROVAL",
+  "paid_calls": 0,
+  "workflow": {
+    "path": ".github/workflows/test.yml",
+    "name": "DataPilot CI22 Batch 3 - NOT FULL CI",
+    "matrix": [
+      "3.11",
+      "3.13"
+    ],
+    "pg_service_env_init_unchanged": true,
+    "nodeids_match": true,
+    "other_repository_workflow_files": [],
+    "external_webhooks": "not audited"
+  },
+  "product_helpers_fixtures_probes_dependencies_unchanged": true,
+  "no_new_confirmation_helper": true,
+  "static": {
+    "ruff": {
+      "exit_code": 0,
+      "log": "ruff.log"
+    },
+    "format": {
+      "exit_code": 0,
+      "log": "format.log"
+    },
+    "diff-check": {
+      "exit_code": 0,
+      "log": "diff-check.log"
+    }
+  },
+  "source_worktree_sha256": {
+    ".github/workflows/test.yml": "8441362d95eac93cf59b3f00127ab73be311df5b1f76fd80b80cb5919ab6a4e9",
+    "tests/test_citation_policy_postgres.py": "e1fa53bb9bb27b831220d38efc1f7099b002daa89b54542d92bb3296c4067cb9",
+    "tests/test_cross_source_postgres.py": "87603553d681e2418bb68e0820402df78c0470aa66852e358dcdb148109cb94a",
+    "tests/test_document_confirmation_postgres.py": "8f33680c357fda24bf5a3498adee649aeadbf93a5a2fa8aecbfd618586974bb5",
+    "tests/test_document_fact_postgres.py": "6744d3ae2859d0318b0b2a300f64edd4549db056d974c83e2b22e2c645902b77",
+    "tests/test_original_query_postgres.py": "78290a5fac42e03e26eef7dcc1cb1beaadcc3806b4d5f49d51bfb376f027a3c1",
+    "tests/test_partial_evidence_postgres.py": "694dfc29a0b400036844d98d16a3e7048c12c5b46f96381d1d512058cf2c9e23",
+    "tests/test_phase4_postgres.py": "4628c3f9d26749f1b7bd2c0ac91b391580c1e91b0cbdf008a91e23159ea711bf"
+  },
+  "hash_qualification": "Worktree bytes may be CRLF. Raw staged/committed Git blob SHA is saved in the final local commit record.",
+  "historical_evidence_sha256": {
+    "docs/research/p7-ci22-failure-attribution.md": "7c5f33c0650c8a85a6b19f7180c71c3f4e60546c5da00016b430cc5cd430cf00",
+    "docs/research/p7-ci22-failure-attribution.json": "29890fb6eba217afa1ae97281e8c7e0b0af502c34e5e8713de73663af682fbde",
+    "docs/research/p7-ci22-contract-migration.md": "2a96e1829916c13a8f00d43d421570829c82bff8a9a4ed1a82da0b3df2b9a6db",
+    "docs/research/p7-ci22-contract-migration-batch2.md": "eb20271e48c45bedbabb05675c0b953ef12751145cb5896fdbb7b87dd6947008",
+    "docs/research/p7-ci22-representative-actions-results.md": "8707741da838097f75d9280de14d6003e49ed60c658394ebf1b5a92cbe37a707",
+    "docs/research/p7-ci22-batch2-actions-results.md": "ae65021401a56245fa86f5a43c1676df2adcb86eece8cb54edf2d33c2dd54928",
+    "artifacts/p7/ci22-actions-representative-run-v1/verified-results.json": "2520682910a0d5858e30f03434e996c28de4a9ef3a5ec0ec19054b8ab3b8aef2",
+    "artifacts/p7/ci22-actions-representative-run-v1/RESULT-SEAL.json": "da4755cf939ea7f19ff373bfa38c3f642123a3e6426ab8202b832b9bd889b653",
+    "artifacts/p7/ci22-batch2-actions-v1/verified-results.json": "294d61af1ff71e2fe7c88c7f1ee40eaf529e2aa34b771fa11fd4ce6293b9f77a",
+    "artifacts/p7/ci22-batch2-actions-v1/RESULT-SEAL.json": "d0a78a90a1ebd47fd9557147d5738ad072154fbaa7b447bf0b9da9fc26e3de07",
+    "docs/research/p7-engineering-freeze.md": "3fd940f6bbed7dc98821eebc850433f1f1e6db2f05d887ea49aefc0aef1917b7",
+    "docs/research/p7-demo-acceptance.md": "5632b544c3a36dd81208fd43af7bf22ee74dc5f53ec851eee4cf9bea832644e4"
+  },
+  "artifact_sha256": {
+    "artifacts/p7/ci22-batch3-v1/audit.json": "0a8a08988d0e2b72794c87d96ac0496e7c410c616cecb0664ccb868173e05f76",
+    "artifacts/p7/ci22-batch3-v1/audit.py": "504da848d5f454264947c24d8e50bc55ef699acd9a80a77d40a3613e52f661df",
+    "artifacts/p7/ci22-batch3-v1/diff-check.log": "1c7110050ba168729d3e40665669a71c487afa906d9c0e9d07f6f572213e304a",
+    "artifacts/p7/ci22-batch3-v1/format.log": "9fa2e30088122b883ebbf1c300359d4a0c9d09c988b20631e8625a40425a9723",
+    "artifacts/p7/ci22-batch3-v1/nodeids.json": "5fd331142416dbaf4ab421490b80843f0db923067f1610024fd4ad0dfb4c1eae",
+    "artifacts/p7/ci22-batch3-v1/plan.json": "24fa3eaa89a125d5fb38104de623de7baa737fb5f6f9c5a602d6f7c0aa41d5f5",
+    "artifacts/p7/ci22-batch3-v1/prepare.py": "69af97c739bea768a3bdc77a58fb58bbb45fb098a8079ce8471fa22d4fd42312",
+    "artifacts/p7/ci22-batch3-v1/prepare_delivery.py": "dfd4912227245eba97fcd61aaa6fc9eb59ec9fe23d078b3f8884620e7b6f34fd",
+    "artifacts/p7/ci22-batch3-v1/py311-collection.json": "4fbe8207d6ec1f92f72637ec10bb5650380970537a03de3f27a0ce5e7695dc9e",
+    "artifacts/p7/ci22-batch3-v1/py311-collection.log": "5c56bb3e181fe7ac8f18ce1b900e0f956c89597aa7a810271a539bf3396c438c",
+    "artifacts/p7/ci22-batch3-v1/py311-unit.json": "8d89a0f977575440376cd7a5dfddef9e0a4eb72f7c91008edb1dd06f2addc94e",
+    "artifacts/p7/ci22-batch3-v1/py311-unit.log": "d597623a64d5e3dec9c33065a6719466875342155c7d7da3328beff9cd27d7d9",
+    "artifacts/p7/ci22-batch3-v1/py311-unit.xml": "e024c087f96e2663b8887eb519c387f9e2228f550714d5788e7613be3954022f",
+    "artifacts/p7/ci22-batch3-v1/py313-collection.json": "707c1dca8d2b295914d6464b704ec7dd012dfa4e8504dc874c8cec7723f94c60",
+    "artifacts/p7/ci22-batch3-v1/py313-collection.log": "cb04475ec729ed8547d1bfbe6780698596b2d92338192d933fa3dceda8a4f8b1",
+    "artifacts/p7/ci22-batch3-v1/py313-unit.json": "81838b292b3916d89842894269cc749a4aa5ad597979ceaf809a0a6aa36f4bc7",
+    "artifacts/p7/ci22-batch3-v1/py313-unit.log": "8906bc9fffc6b45112356ce923f67f1bb53c0a843b76ea47bc7b2789ff459c75",
+    "artifacts/p7/ci22-batch3-v1/py313-unit.xml": "ec8b4f9df745199301ca446e0df2c5682d3048f626060a559a576810c77788ff",
+    "artifacts/p7/ci22-batch3-v1/remote-before.json": "d31be29f233d5022dfce0d281117165d90f3e5078e7726c44d99c9b568f0e082",
+    "artifacts/p7/ci22-batch3-v1/ruff.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "artifacts/p7/ci22-batch3-v1/run_local.py": "f4dbaa013fa9c9dddec33078ef274614d5d7b521521c227f1800c94dc8847931"
+  },
+  "original_failure_counts": {
+    "planned_original": 60,
+    "already_pg_verified": 14,
+    "this_batch_pending_pg": 15,
+    "not_in_this_or_previous_batches": 31,
+    "all_not_yet_pg_verified": 46
+  },
+  "outside_batch_by_group": {
+    "A2": 29,
+    "A5": 2
+  },
+  "outside_batch_cases": [
+    {
+      "id": 9,
+      "group": "A2",
+      "nodeid": "tests/test_cross_source_postgres.py::test_five_independent_business_cases_real_sources_and_p3_gold[paid_invoice_revenue-\\u5206\\u6790\\u5df2\\u652f\\u4ed8\\u8d26\\u5355\\u6536\\u5165\\u5e76\\u89e3\\u91ca\\u8d26\\u5355\\u53e3\\u5f84-\\u5df2\\u4ed8\\u6b3e\\u8d26\\u5355\\u6536\\u5165\\u548c\\u7ecf\\u5e38\\u6027\\u8ba2\\u9605\\u91d1\\u989d\\u6709\\u4ec0\\u4e48\\u533a\\u522b\\uff1f-300]"
+    },
+    {
+      "id": 10,
+      "group": "A2",
+      "nodeid": "tests/test_cross_source_postgres.py::test_five_independent_business_cases_real_sources_and_p3_gold[customer_churn-\\u8ba1\\u7b97\\u671f\\u521d\\u5ba2\\u6237\\u961f\\u5217\\u51c0\\u6d41\\u5931\\u7387\\u5e76\\u63d0\\u4f9b\\u53e3\\u5f84\\u6765\\u6e90-\\u5ba2\\u6237\\u6d41\\u5931\\u4e0e\\u8ba2\\u9605\\u53d6\\u6d88\\u7684\\u671f\\u521d\\u961f\\u5217\\u53e3\\u5f84-0.4]"
+    },
+    {
+      "id": 11,
+      "group": "A2",
+      "nodeid": "tests/test_cross_source_postgres.py::test_five_independent_business_cases_real_sources_and_p3_gold[subscription_churn-\\u8ba1\\u7b97\\u8ba2\\u9605\\u5408\\u540c\\u6d41\\u5931\\u7387\\u5e76\\u9644\\u4e1a\\u52a1\\u5b9a\\u4e49-\\u8ba2\\u9605\\u5408\\u540c\\u6d41\\u5931\\u4e0e\\u964d\\u7ea7\\u5982\\u4f55\\u533a\\u5206\\uff1f-0.666666666667]"
+    },
+    {
+      "id": 12,
+      "group": "A2",
+      "nodeid": "tests/test_cross_source_postgres.py::test_five_independent_business_cases_real_sources_and_p3_gold[usage-\\u6c47\\u603b\\u4ea7\\u54c1\\u4f7f\\u7528\\u91cf\\u5e76\\u8bf4\\u660e\\u4e8b\\u4ef6\\u6570\\u91cf\\u9650\\u5236-\\u4ea7\\u54c1\\u4f7f\\u7528\\u4e8b\\u4ef6\\u6570\\u91cf\\u548c\\u6d3b\\u8dc3\\u7528\\u6237\\u6570\\u6709\\u4ec0\\u4e48\\u533a\\u522b\\uff1f-35]"
+    },
+    {
+      "id": 13,
+      "group": "A2",
+      "nodeid": "tests/test_cross_source_postgres.py::test_five_independent_business_cases_real_sources_and_p3_gold[active_subscriptions-\\u6838\\u5bf9\\u65f6\\u70b9\\u6d3b\\u8dc3\\u5408\\u540c\\u5e76\\u5f15\\u7528\\u8ba2\\u9605\\u5386\\u53f2\\u8981\\u6c42-\\u6d3b\\u8dc3\\u8ba2\\u9605\\u5408\\u540c\\u7684\\u65f6\\u70b9\\u53e3\\u5f84\\u4e0e\\u5386\\u53f2\\u6570\\u636e\\u8981\\u6c42\\u662f\\u4ec0\\u4e48\\uff1f-4]"
+    },
+    {
+      "id": 14,
+      "group": "A2",
+      "nodeid": "tests/test_cross_source_postgres.py::test_rag_and_metric_references_survive_cross_node_checkpoint"
+    },
+    {
+      "id": 16,
+      "group": "A2",
+      "nodeid": "tests/test_cross_source_postgres.py::test_prompt_injection_source_and_denied_tool_do_not_approve_report"
+    },
+    {
+      "id": 24,
+      "group": "A2",
+      "nodeid": "tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[absence]"
+    },
+    {
+      "id": 25,
+      "group": "A2",
+      "nodeid": "tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[partial]"
+    },
+    {
+      "id": 26,
+      "group": "A2",
+      "nodeid": "tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[summary]"
+    },
+    {
+      "id": 27,
+      "group": "A2",
+      "nodeid": "tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[causal]"
+    },
+    {
+      "id": 29,
+      "group": "A2",
+      "nodeid": "tests/test_host_goal_postgres.py::test_new_public_ownership_report_chain[bge-complete]"
+    },
+    {
+      "id": 30,
+      "group": "A2",
+      "nodeid": "tests/test_host_goal_postgres.py::test_new_public_ownership_report_chain[bge-partial]"
+    },
+    {
+      "id": 31,
+      "group": "A2",
+      "nodeid": "tests/test_host_goal_postgres.py::test_new_public_ownership_report_chain[bge-causal]"
+    },
+    {
+      "id": 32,
+      "group": "A2",
+      "nodeid": "tests/test_host_goal_postgres.py::test_new_goal_cross_process_restore_preserves_receipt_and_budget[bge]"
+    },
+    {
+      "id": 34,
+      "group": "A2",
+      "nodeid": "tests/test_host_goal_safety_postgres.py::test_goal_and_business_eligibility_remain_separate[bge-complete-completed]"
+    },
+    {
+      "id": 35,
+      "group": "A2",
+      "nodeid": "tests/test_host_goal_safety_postgres.py::test_goal_and_business_eligibility_remain_separate[bge-negative-completed]"
+    },
+    {
+      "id": 36,
+      "group": "A2",
+      "nodeid": "tests/test_host_goal_safety_postgres.py::test_goal_and_business_eligibility_remain_separate[bge-partial-partial]"
+    },
+    {
+      "id": 37,
+      "group": "A2",
+      "nodeid": "tests/test_host_goal_safety_postgres.py::test_goal_and_business_eligibility_remain_separate[bge-required_gap-partial]"
+    },
+    {
+      "id": 38,
+      "group": "A2",
+      "nodeid": "tests/test_host_goal_safety_postgres.py::test_goal_and_business_eligibility_remain_separate[bge-causal-partial]"
+    },
+    {
+      "id": 39,
+      "group": "A2",
+      "nodeid": "tests/test_host_goal_safety_postgres.py::test_cross_process_v3_reuse_or_v2_identity_rejection[bge-False]"
+    },
+    {
+      "id": 42,
+      "group": "A2",
+      "nodeid": "tests/test_original_query_postgres.py::test_real_original_query_report_and_terminal_reuse[cp12]"
+    },
+    {
+      "id": 43,
+      "group": "A2",
+      "nodeid": "tests/test_original_query_postgres.py::test_call_and_feedback_cut_points_do_not_reissue_search_or_settle_twice[worker_model_committed]"
+    },
+    {
+      "id": 44,
+      "group": "A2",
+      "nodeid": "tests/test_original_query_postgres.py::test_call_and_feedback_cut_points_do_not_reissue_search_or_settle_twice[tool_committed]"
+    },
+    {
+      "id": 45,
+      "group": "A2",
+      "nodeid": "tests/test_original_query_postgres.py::test_call_and_feedback_cut_points_do_not_reissue_search_or_settle_twice[rag_submission_committed]"
+    },
+    {
+      "id": 46,
+      "group": "A2",
+      "nodeid": "tests/test_original_query_postgres.py::test_call_and_feedback_cut_points_do_not_reissue_search_or_settle_twice[report_artifact_committed]"
+    },
+    {
+      "id": 47,
+      "group": "A2",
+      "nodeid": "tests/test_original_query_postgres.py::test_model_selected_second_search_and_its_committed_feedback_are_reused"
+    },
+    {
+      "id": 52,
+      "group": "A2",
+      "nodeid": "tests/test_partial_evidence_postgres.py::test_partial_refs_restore_across_node_checkpoint"
+    },
+    {
+      "id": 54,
+      "group": "A2",
+      "nodeid": "tests/test_phase12_postgres.py::test_explicit_false_report_survives_real_sources_and_readonly_inspection"
+    },
+    {
+      "id": 58,
+      "group": "A5",
+      "nodeid": "tests/test_rag_completion_postgres.py::test_real_semantic_retrieval_checks_original_goal_not_model_search_keywords[True]"
+    },
+    {
+      "id": 59,
+      "group": "A5",
+      "nodeid": "tests/test_rag_completion_postgres.py::test_committed_rag_control_restores_across_process_without_duplicate_calls[semantic-rag_submission_committed-3]"
+    }
+  ],
+  "next_batch_condition": "Only after all 15 pass real PG/MCP; no automatic expansion or full CI.",
+  "approval_required": "确认Batch 3推送",
+  "untracked_before_excluded": [
+    "docs/research/docker-historical-recovery-20261101.md",
+    "docs/research/p7-ci22-actions-representative-plan.md",
+    "docs/research/p7-ci22-batch2-actions-results.md",
+    "docs/research/p7-ci22-failure-attribution.json",
+    "docs/research/p7-ci22-failure-attribution.md",
+    "docs/research/p7-ci22-representative-actions-results.md"
+  ]
+}

@@ -24,7 +24,7 @@ from datapilot.persistence.journal import Journal
 from datapilot.rag.contracts import RagScope, Target
 from datapilot.rag.models import LocalEmbedding
 from datapilot.rag.storage import IngestionService, make_pin
-from datapilot.reporting.contracts import DocumentGoal, ReportScope
+from datapilot.reporting.contracts import DocumentGoal, ReportScope, confirm_finite_scope
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = None  # Bound by the module reporting_output fixture.
@@ -110,6 +110,13 @@ def assert_original_search(rows, question):
 def test_real_original_query_report_and_terminal_reuse(dev_environment, case_id):
     dev, settings = dev_environment
     config = new_config(dev, case_id) if case_id != "english" else english_config(settings)
+    if case_id in {"cp09", "cp06"}:
+        # Confirm after Original Query and citation/partial policies are final.
+        config["report_scope"] = confirm_finite_scope(
+            ReportScope.model_validate_json(json.dumps(config["report_scope"])),
+            RagScope.model_validate_json(json.dumps(config["rag_scope"])),
+            confirmation_ref="public-ci-batch3-original-query-review",
+        ).model_dump(mode="json")
     run_id = str(uuid4())
     args = ["--insufficient"] if case_id == "cp07" else []
     first = probe(config, "start", run_id, *args)

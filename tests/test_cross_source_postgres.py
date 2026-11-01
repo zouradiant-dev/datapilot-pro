@@ -22,7 +22,7 @@ from datapilot.persistence.session import run_async, run_durable
 from datapilot.rag.contracts import RagScope, Target
 from datapilot.rag.mcp import rag_session
 from datapilot.rag.storage import IngestionService, make_pin
-from datapilot.reporting.contracts import DocumentGoal, ReportScope
+from datapilot.reporting.contracts import DocumentGoal, ReportScope, confirm_finite_scope
 from datapilot.reporting.service import report_session
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -402,9 +402,13 @@ async def test_real_persisted_metric_and_document_tampering_is_rejected(pg_setti
 
     query = "已付款账单收入的业务口径"
     scope = scope_for(report_data, "paid_invoice_revenue", "核对收入及账单口径", query)
+    rag = report_data[3].model_copy(deep=True)
+    scope = confirm_finite_scope(
+        scope, rag, confirmation_ref="public-ci-batch3-metric-source-review"
+    )
     async with (
         report_session(pg_settings, scope, scope.question, scope.owner) as service,
-        rag_session(pg_settings, report_data[3], goal=query) as retrieval,
+        rag_session(pg_settings, rag, goal=query) as retrieval,
     ):
         bridge = await service.compute(scope.metrics[0].goal_id)
         result = await retrieval.search(query, 3)
@@ -420,6 +424,32 @@ async def test_real_persisted_metric_and_document_tampering_is_rejected(pg_setti
                 metric=bridge,
             )
         )
+        valid_ref = store.put(
+            Artifact(
+                run_id=store.run_id,
+                task_id="documents",
+                plan_version=1,
+                kind="documents",
+                source="original-source-control",
+                documents=result,
+            )
+        )
+        valid_pairs = [(metric_ref, store.get(metric_ref)), (valid_ref, store.get(valid_ref))]
+        original = service.build(valid_pairs, retrieval)
+        assert original.business_completion.status == "completed"
+        assert any(c.kind == "context" and c.documents for c in original.claims)
+        # Genuine metric/source evidence cannot stand in for complete-goal approval.
+        service.scope = scope.model_copy(deep=True)
+        service.scope.goal_scope_attestation = None
+        unconfirmed = service.build(valid_pairs, retrieval)
+        assert unconfirmed.business_completion.status == "partial"
+        assert all(c.kind != "context" for c in unconfirmed.claims)
+        service.scope = scope
+        allowed = retrieval.scope
+        retrieval.scope = allowed.model_copy(update={"owner": "unapproved-ci-owner"}, deep=True)
+        with pytest.raises(AgentFailure):
+            service.build(valid_pairs, retrieval)
+        retrieval.scope = allowed
         for field, value in (
             ("unit", "USD"),
             ("version", bridge.request.metric_version + 1),
@@ -437,7 +467,14 @@ async def test_real_persisted_metric_and_document_tampering_is_rejected(pg_setti
                 bad.source_sha256 = value
             with pytest.raises(AgentFailure):
                 service.verify_metric(bad)
-        for field in ("version", "source_sha256", "index_version", "sha256", "goal_sha256"):
+        for field in (
+            "version",
+            "source_sha256",
+            "index_version",
+            "sha256",
+            "goal_sha256",
+            "document_id",
+        ):
             bad = result.model_copy(deep=True)
             setattr(bad.documents[0].citation, field, "0" * 64)
             ref = store.put(

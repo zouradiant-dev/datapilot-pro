@@ -150,6 +150,10 @@ def test_real_rag_budget_pressure_uses_only_original_limit_and_preserves_facts(
     pg_settings, fact_sources, enabled
 ):
     rag, scope = inputs(fact_sources)
+    if enabled:
+        scope = confirm_finite_scope(
+            scope, rag, confirmation_ref="public-ci-batch3-budget-pressure-review"
+        )
     config = budget_settings(pg_settings, enabled)
     run_id = str(uuid4())
     result = run_async(

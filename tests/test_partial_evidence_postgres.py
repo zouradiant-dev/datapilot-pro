@@ -147,8 +147,20 @@ def test_real_partial_receipt_report_and_terminal_cross_process_reuse(dev_enviro
 def test_committed_submission_or_report_crash_reuses_without_new_model(dev_environment, cut):
     dev, settings = dev_environment
     config, run_id = config_for(dev, "cp06"), str(uuid4())
+    scope = ReportScope.model_validate_json(json.dumps(config["report_scope"]))
+    rag = RagScope.model_validate_json(json.dumps(config["rag_scope"]))
+    config["report_scope"] = confirm_finite_scope(
+        scope, rag, confirmation_ref="public-ci-batch3-partial-recovery-review"
+    ).model_dump(mode="json")
     probe(config, "start", run_id, "--cut", cut, expected=91)
     before = snapshot(settings, run_id, config["report_scope"]["owner"])
+    other = json.loads(json.dumps(config))
+    other["report_scope"] = confirm_finite_scope(
+        scope, rag, confirmation_ref="public-ci-batch3-different-confirmation"
+    ).model_dump(mode="json")
+    refused = probe(other, "resume", run_id, expected=2)
+    assert refused["error"]["code"] == "RECOVERY_IDENTITY"
+    assert before == snapshot(settings, run_id, config["report_scope"]["owner"])
     first = probe(config, "resume", run_id)
     assert first["business_completion"]["status"] == "partial"
     after = snapshot(settings, run_id, config["report_scope"]["owner"])
@@ -244,14 +256,15 @@ def test_real_fact_validation_after_rehydration_rejects_wrong_hash(dev_environme
     from datapilot.contracts import AgentFailure
     from datapilot.orchestration.contracts import Artifact
     from datapilot.orchestration.runtime import ArtifactStore
-    from datapilot.rag.contracts import RagScope
-    from datapilot.reporting.contracts import ReportScope
 
     dev, settings = dev_environment
     config = config_for(dev, "cp06")
     scope, rag = (
         ReportScope.model_validate(config["report_scope"]),
         RagScope.model_validate(config["rag_scope"]),
+    )
+    scope = confirm_finite_scope(
+        scope, rag, confirmation_ref="public-ci-batch3-partial-hash-review"
     )
 
     async def check():
@@ -261,6 +274,24 @@ def test_real_fact_validation_after_rehydration_rejects_wrong_hash(dev_environme
         ):
             result = await retrieval.search(scope.question, 5)
             assert result.documents
+            valid_store = ArtifactStore("new-partial-original-control")
+            control = valid_store.put(
+                Artifact(
+                    run_id=valid_store.run_id,
+                    task_id="documents",
+                    plan_version=1,
+                    kind="documents",
+                    source="original-source-control",
+                    documents=result,
+                )
+            )
+            original = service.build(
+                [(control, valid_store.get(control))],
+                retrieval,
+                source_statuses={"documents": "unavailable"},
+            )
+            assert original.business_completion.status == "partial"
+            assert any(c.fact_coverage.get("identity") is not None for c in original.claims)
             result.documents[0].citation.sha256 = "0" * 64
             store = ArtifactStore("new-partial-corrupt-copy")
             ref = store.put(

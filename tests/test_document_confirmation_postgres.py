@@ -65,6 +65,9 @@ def test_confirmed_document_purpose_survives_chat_review_and_durable(api, purpos
     # Purpose selection is not Goal v4 approval. Review this exact public synthetic
     # contract through the real HTTP actor/event path, then approve execution separately.
     assert message["goal_contract"]["status"] == "pending_confirmation"
+    assert message["text"] == message["goal_contract"]["original_question"] == QUESTION
+    assert message["goal_contract"]["can_confirm"] and not message["goal_contract"]["unresolved"]
+    assert message["goal_contract"]["review"]["request"]["documents"]["purpose"] == purpose
     assert post(c, launch, {"confirmed": True}).status_code == 403
     response = post(c, launch, decision(message))
     assert response.status_code == 200, response.text

@@ -173,6 +173,7 @@ def test_real_supplement_only_and_forged_quotes_cannot_fill_required_sources(dev
     config = configured(dev)
     scope = ReportScope.model_validate_json(json.dumps(config["report_scope"]))
     rag = RagScope.model_validate_json(json.dumps(config["rag_scope"]))
+    scope = confirm_finite_scope(scope, rag, confirmation_ref="public-ci-batch3-citation-review")
 
     async def check():
         async with (
@@ -181,6 +182,19 @@ def test_real_supplement_only_and_forged_quotes_cannot_fill_required_sources(dev
         ):
             result = await retrieval.search(scope.question, 5)
             store = ArtifactStore("new-citation-partial-pg")
+            control = store.put(
+                Artifact(
+                    run_id=store.run_id,
+                    task_id="documents",
+                    plan_version=1,
+                    kind="documents",
+                    source="real-pg-original-source-control",
+                    documents=result,
+                )
+            )
+            original = service.build([(control, store.get(control))], retrieval)
+            assert original.business_completion.status == "completed"
+            assert original.claims[0].fact_coverage["unit"] is not None
             selected = result.model_copy(deep=True)
             selected.documents = [d for d in selected.documents if d.source == "rounding.md"]
             assert selected.documents
@@ -203,9 +217,17 @@ def test_real_supplement_only_and_forged_quotes_cannot_fill_required_sources(dev
                 in report.business_completion.missing_evidence["documents"]
             )
             service.scope.citation_policy.supplementary_claims[0].quotation = "虚构收益翻倍"
+            # Review the same bounded question with the adversarial claim candidate;
+            # scope confirmation never certifies that its quotation is a real fact.
+            service.scope = confirm_finite_scope(
+                service.scope, rag, confirmation_ref="public-ci-batch3-forged-quote-scope"
+            )
             invalid = service.build(pairs, retrieval)
             assert not any(c.supplementary_coverage for c in invalid.claims)
             service.scope.citation_policy.required_sources[0].index_version = "0" * 64
+            service.scope = confirm_finite_scope(
+                service.scope, rag, confirmation_ref="public-ci-batch3-invalid-pin-scope"
+            )
             with pytest.raises(AgentFailure):
                 service.build(pairs, retrieval)
 
@@ -225,6 +247,9 @@ def test_real_unrelated_source_is_not_published_even_after_separate_search(dev_e
         "required_sources": [c.model_dump(include=set(CitationSource.model_fields))],
     }
     scope = ReportScope.model_validate_json(json.dumps(raw))
+    scope = confirm_finite_scope(
+        scope, rag, confirmation_ref="public-ci-batch3-unrelated-source-review"
+    )
 
     async def check():
         async with (

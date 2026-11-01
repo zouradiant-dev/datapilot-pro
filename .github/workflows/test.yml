@@ -1,10 +1,10 @@
-name: DataPilot CI22 Batch 2 - NOT FULL CI
+name: DataPilot CI22 Batch 3 - NOT FULL CI
 on: [push, pull_request]
 permissions:
   contents: read
 jobs:
   checks:
-    name: ci22-batch2 (${{ matrix.python }})
+    name: ci22-batch3 (${{ matrix.python }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -62,7 +62,7 @@ jobs:
           set -euo pipefail
           mkdir -p artifacts/ci
           git rev-parse HEAD > artifacts/ci/commit.txt
-          printf '%s\n' '{"scope":"ci22-batch2","full_ci":false,"planned_pg_tests":11}' > artifacts/ci/test-scope.json
+          printf '%s\n' '{"scope":"ci22-batch3","full_ci":false,"planned_pg_tests":15}' > artifacts/ci/test-scope.json
           git ls-files -z | xargs -0 sha256sum -- > artifacts/ci/source-sha256.txt
       - uses: astral-sh/setup-uv@v6
         with:
@@ -100,23 +100,27 @@ jobs:
             uv run --locked datapilot health
             uv run --locked datapilot rag model-fetch
           } 2>&1 | tee artifacts/ci/initialize.log
-      - name: CI22 Batch 2 eleven PG cases - NOT FULL CI
+      - name: CI22 Batch 3 fifteen PG cases - NOT FULL CI
         if: ${{ !cancelled() && steps.initialize.outcome == 'success' }}
         shell: bash
         run: |
           set -euo pipefail
           uv run --locked python -m pytest -m integration \
-            'tests/test_chat_review_regressions.py::test_corpus_listing_cap_must_not_revoke_existing_run_authority' \
-            'tests/test_document_confirmation_postgres.py::test_legacy_creation_and_source_injection_do_not_grant_confirmation' \
-            'tests/test_web_postgres.py::test_real_document_upload_retrieval_report_and_source_ref' \
-            'tests/test_citation_policy_postgres.py::test_real_policy_report_terminal_reuse_preserves_citations_p3_and_budget[cp09]' \
-            'tests/test_citation_policy_postgres.py::test_real_policy_report_terminal_reuse_preserves_citations_p3_and_budget[cp07]' \
-            'tests/test_citation_policy_postgres.py::test_new_policy_survives_cross_process_cut_without_model_reissue[rag_submission_committed]' \
-            'tests/test_citation_policy_postgres.py::test_new_policy_survives_cross_process_cut_without_model_reissue[report_artifact_committed]' \
-            'tests/test_citation_policy_postgres.py::test_new_policy_survives_cross_process_cut_without_model_reissue[checkpoint]' \
-            'tests/test_partial_evidence_postgres.py::test_real_partial_receipt_report_and_terminal_cross_process_reuse[cp04]' \
-            'tests/test_partial_evidence_postgres.py::test_real_partial_receipt_report_and_terminal_cross_process_reuse[cp06]' \
-            'tests/test_partial_evidence_postgres.py::test_real_partial_receipt_report_and_terminal_cross_process_reuse[cp07]' \
+            'tests/test_document_confirmation_postgres.py::test_confirmed_document_purpose_survives_chat_review_and_durable[locate-completed]' \
+            'tests/test_document_confirmation_postgres.py::test_confirmed_document_purpose_survives_chat_review_and_durable[facts-unavailable]' \
+            'tests/test_document_confirmation_postgres.py::test_confirmed_document_purpose_survives_chat_review_and_durable[conclusion-partial]' \
+            'tests/test_citation_policy_postgres.py::test_real_supplement_only_and_forged_quotes_cannot_fill_required_sources' \
+            'tests/test_citation_policy_postgres.py::test_real_unrelated_source_is_not_published_even_after_separate_search' \
+            'tests/test_cross_source_postgres.py::test_real_persisted_metric_and_document_tampering_is_rejected' \
+            'tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[missing]' \
+            'tests/test_document_fact_postgres.py::test_real_worker_receipt_report_and_persistent_fact_coverage[year]' \
+            'tests/test_original_query_postgres.py::test_real_original_query_report_and_terminal_reuse[cp09]' \
+            'tests/test_original_query_postgres.py::test_real_original_query_report_and_terminal_reuse[cp06]' \
+            'tests/test_partial_evidence_postgres.py::test_committed_submission_or_report_crash_reuses_without_new_model[rag_submission_committed]' \
+            'tests/test_partial_evidence_postgres.py::test_committed_submission_or_report_crash_reuses_without_new_model[report_artifact_committed]' \
+            'tests/test_partial_evidence_postgres.py::test_real_fact_validation_after_rehydration_rejects_wrong_hash' \
+            'tests/test_phase4_postgres.py::test_real_rag_budget_pressure_uses_only_original_limit_and_preserves_facts[True]' \
+            'tests/test_phase4_postgres.py::test_compacted_durable_restore_keeps_known_results_or_blocks_unknown[tool_committed]' \
             -p no:cacheprovider --junitxml=artifacts/ci/integration.xml --cov=datapilot --cov-append --cov-report=term-missing --cov-report=xml:artifacts/ci/coverage.xml 2>&1 | tee artifacts/ci/integration.log
       - name: Ruff lint
         if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
