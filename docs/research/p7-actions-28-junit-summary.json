@@ -1,0 +1,60 @@
+{
+  "schema": "datapilot-ci-junit-summary/v1",
+  "run_id": 41299832252,
+  "run_number": 28,
+  "run_url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41299832252",
+  "workflow": "DataPilot checks",
+  "event": "push",
+  "attempt": 1,
+  "conclusion": "success",
+  "head_sha": "b06cc52d5c7de2a97d8c565cca9a51e3cb57a761",
+  "head_branch": "p7-engineering-candidate-v1",
+  "source": "JUnit XML artifacts downloaded from this run and parsed locally; no raw logs, environment variables, credentials or host paths are included",
+  "versions": {
+    "3.11": {
+      "unit": {
+        "total": 1336,
+        "passed": 1336,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "integration": {
+        "total": 388,
+        "passed": 325,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 63
+      }
+    },
+    "3.13": {
+      "unit": {
+        "total": 1336,
+        "passed": 1336,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "integration": {
+        "total": 388,
+        "passed": 325,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 63
+      }
+    }
+  },
+  "skip_reasons": {
+    "Explicit real CUDA Qwen test opt-in required": 10,
+    "Explicit real Qwen CUDA opt-in required": 18,
+    "Explicit local Qwen integration opt-in required; never substitutes vectors": 20,
+    "Explicit real CUDA test opt-in required": 13,
+    "Explicit local CUDA opt-in required": 1,
+    "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials": 1
+  },
+  "notes": [
+    "Counts are per Python version and are identical for 3.11 and 3.13.",
+    "63 skipped = 62 Qwen/CUDA explicit opt-in tests + 1 live-model opt-in test.",
+    "The run and both jobs concluded success on attempt 1."
+  ]
+}

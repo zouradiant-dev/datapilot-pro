@@ -1,214 +1,183 @@
 # DataPilot Pro
 
-## 当前工程候选状态（P7）
+> 面向 SaaS 经营分析场景的 **Evidence-driven AI Agent**：模型可以参与规划与工具决策，但不能自行授予数据访问权限、批准业务合同或证明业务结论。
 
 | 验收维度 | 当前状态 |
 |---|---|
-| Engineering Demo Candidate | **ACCEPTED**（可信本地单用户、限定合成场景） |
+| Engineering Demo Candidate | **ACCEPTED**（本地单用户、合成数据、脚本 Worker） |
+| Python 3.11 / 3.13 完整 CI | **PASS**（[Actions #28](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41299832252)，提交 `b06cc52`） |
 | Independent Business Quality | **PENDING** |
 | DeepSeek Live Gate | **PENDING** |
+| 独立人工合同语义审查 | **NOT_VERIFIED** |
 
-最新 Demo 使用真实 PostgreSQL 17/pgvector、MCP、BGE、LangGraph、P3 与 Durable，模型决策由脚本/Fake Worker 提供；不代表真实 DeepSeek 自主分析已通过。收入示例为 **1432.25 CNY**，合同确认、独立执行审批、重启一致性、撤回与 unknown-outcome 防重发均有有界工程记录。
+分支：`p7-engineering-candidate-v1`。公开交付索引见 [P7 工程候选](docs/releases/p7-engineering-candidate-v1/README.md)；架构速览见 [architecture-overview.md](docs/architecture-overview.md)；面试材料见 [showcase.md](docs/showcase.md)；英文概览见 [README.en.md](README.en.md)。
 
-请先看 [GitHub 交付索引与公开结果](docs/releases/p7-engineering-candidate-v1/README.md)：包含 Goal v4 的可信范围确认、Demo、测试证据摘要和已知限制。BGE 仍是默认；Qwen3 1024 是可选 Profile，最新 Web 确认链的 RAM 资源补验仍未完成。独立人工语义审核为 **NOT_VERIFIED**，原质量 A/B、STOP 和 Live 失败记录保留。
+## 30 秒了解
 
-历史研究报告中的 `artifacts/...` 引用属于 **local-only**，不随代码上传；公开索引提供脱敏副本、聚合摘要及原件 SHA。旧实验的结果不因本次 Git 整理而改变。
+- **输入**：CSV/XLSX 业务数据 + 用户确认的语义/指标口径 + 经授权的 TXT/Markdown 文档。
+- **过程**：对话把问题收敛为**可信有限合同** → 用户确认 → 独立执行审批 → LangGraph 双环执行 → 业务查询只走 MCP → P3 六层验证 → 报告独立重建引用。
+- **输出**：带 Evidence/Verification 引用的精确数字、文档引述与显式缺口（`completed` / `partial` / `unavailable` / `blocked`），而不是一段无法复核的"分析文字"。
 
-面向 SaaS 企业的智能经营分析系统，当前已实现 **Day 1：SQL 基线**、**P1：CSV/XLSX 解析确认**、**P2：受限入库与动态 MCP**、**P3：SaaS 指标/证据验证**、**P4 / D9–D10：动态任务 DAG 与双层执行**。业务数据库使用 **PostgreSQL 17 + pgvector**，运行期业务查询全部经过真正的 MCP Server/Client。
+与传统 Text-to-SQL 的核心区别：
 
-实现：固定种子、Alembic、隔离角色、AST/只读/资源限制、指标证据、LangGraph 动态 DAG/Send、独立 SQL/RAG Loop、父子预算/取消、L0–L4、脱敏 Trace 和 CLI。P5B 提供官方 PG Checkpoint、持久预算/工件和跨进程恢复；P6A 提供授权 TXT/Markdown 摄取、本地真实 BGE Embedding 与同实例 pgvector/MCP 检索。P6B 将已确认的 P3 指标接入现有 DAG，输出有持久验证引用的结构化报告、Markdown 与图表规格。P6C 增加 FastAPI、仅通过 HTTP 操作业务的 Streamlit、默认 Durable 的 Web 任务、可关闭的本地 OTel 投影及独立维护清理入口；未接远程 Langfuse。旧 RAG fixture 只用于回归。
+1. **授权在宿主，不在模型**：Dataset/version、指标口径、RAG 范围、执行批准都由服务端可信入口绑定；模型参数不能扩权。
+2. **数字必须独立复算**：P3 用另一条原始列投影在 Python 中重算，六层验证全过才发布；模型不参与心算。
+3. **长流程可恢复且不重复花钱**：官方 PG Checkpoint + Journal + 原子预算账本；未知结果保守计账并阻断自动重发。
 
-详见 [架构与目标设计](docs/architecture.md)、[v2 Gate 路线图](docs/roadmap-v2.md)、[本轮代码审计与回归](docs/planning-audit-v2.md)、[开发约束](AGENTS.md)、[Day 1 历史验收记录](docs/day1-delivery.md)。
+## 它解决什么问题
 
-v2 目标闭环：**CSV/XLSX 上传 → Schema 预览确认 → 受限入库/数据集版本 → 动态 MCP 查询 → 语义指标与证据验证 → 多 Agent 报告**。P6B 通过可信宿主 ReportScope 显式选择已确认的 MetricRequest 和文档目标；模型只能安排这些任务，不确认字段或生成新指标配方。P3 独立入口、普通 ask 快速 SQL 路径保留，长期 Memory 后端仍未实现。
+SaaS 经营分析的真实难点不是"写出 SQL"，而是：
 
-首发聚焦 SaaS，本地单用户/可信演示。后续干洗店等行业经 Domain Pack 复用引擎，POS 品牌/API/报表未知；LangGraph Fork 有实证必要时独立研究。两者不作为 SaaS 交付前提。旧七天安排已替换为按依赖和验收推进的 Gates；已完成 [P7 Gate 2 意图对照及 CI 核验](docs/p7-gate2.md)，另已封存 [60 个新业务目标及 Gold](docs/p7-business-holdout.md)。[Gate 2B v2](docs/p7-gate2b-v2.md) 完成七条 Pin、32 项精确 P3 登记及 [NUMERIC 修复](docs/p7-numeric-serialization-fix.md) 后，本轮 [正式 DeepSeek 业务 Live](docs/p7-gate2b-live.md) 在 bh2-031 预算预留失败时安全停止：观测 31/60，原冻结评分严格通过 25、未通过 6、29 条未运行；完整 Gate 2B 尚未验收，评分汇总缺陷另列。没有调优后重跑、进入 Gate 3/P11 或承诺生产 SLA/稳定成功率。
+- 同一句话可能有多种口径（paid 账单收入 vs MRR、客户流失 vs 订阅流失、右开区间、CNY 分）；
+- 数字要能回答"从哪来、按什么版本、谁确认的、能否复算"；
+- 文档背景常被误当成数字证明，相关性被误写成因果；
+- 长链路里模型调用、工具调用与状态提交不在同一事务，失败后容易重复扣费或掩盖未知。
 
-P4.1 在现有组件上增加受控工具生命周期、宿主 `completion` 三态、完整工件先保存的 L0 模型视图与上下文计量。`status=succeeded` 仍表示工具执行成功；业务指标缺少 P3 六层已验证证据时 `completion=blocked`，不能当作已验证报告。简单客户数查询仍只需两次 Fake 决策。历史记录见 [P4.1 交付](docs/p4-hardening.md)。
+DataPilot Pro 把这些约束写进类型、权限和验证层，而不是写进 Prompt。
 
-P5A 复用 Gateway/ArtifactStore/父子账本，实现 L1 旧工具视图裁剪、L2 引用去重、L3 完整工具轮次折叠、受预算和校验约束的 L4 摘取式摘要；原消息与证据保持完整，默认小查询不触发压缩。Memory 仅有经审阅的受限契约及内存实现，来源/版本/有效期/撤回均须校验。详见 [上下文工程与实测](docs/context-engineering.md)。P5B 只增加持久适配，不重新优化 L4。
+## 为什么需要 Agent
 
-## 本地产品 Demo（P6C / P6C.1）
+单次 Text-to-SQL 无法处理"多源 + 多步 + 失败分支 + 人工审批 + 崩溃恢复"的组合：
 
-P6C.1 默认打开对话工作台，支持安全上传卡片、有限规则的 SaaS 指标提问、补充条件、人工审批、可信报告与独立 Run 追问。业务映射/指标/诊断仍保留在数据管理。会话历史存 PostgreSQL，不能作为授权或执行 Checkpoint；未确认口径不会自动分析。详见 [Chat-first 契约与验收](docs/chat-first-ui.md)、[ADR-015](docs/adr/0015-chat-first-conversation.md)。默认 Fake 只替代模型决策，数据库/MCP/P3 验证实际执行；P6C 原交付无额外付费模型实验；后续 Gate 0/1/2 的独立 Live 记录另列。
+- 需要**规划**：把复合问题拆成有依赖的 SQL / RAG / Analysis / Report 任务；
+- 需要**工具循环**：模型观察结构化反馈后修正，而不是一次性生成；
+- 需要**边界**：每一步都要校验身份、能力、预算与证据，模型不能自己放宽；
+- 需要**恢复**：跨进程恢复时重放已完成调用、阻断未知调用，而不是"再跑一次"。
 
-已有 P6C 部署只需显式执行 `uv run --locked datapilot migrate` 追加 0007，再重启 API/UI；不重新 Seed，不重置数据库或 Volume。新聊天接口与原 `/api/v1/tasks` 同用 Host/Session/CSRF、Outbox、Durable 和报告投影。
+Agent 的价值在这里是**编排与约束**，不是让模型自由发挥。
 
-已有数据库在仓库根目录增量部署，不重新 Seed：
+## 工作原理
 
-```powershell
-uv sync --locked
-uv run --locked python scripts/configure_local.py --add-web-roles
-uv run --locked datapilot db-init
-uv run --locked datapilot migrate
-uv run --locked datapilot runtime-init
-uv run --locked datapilot health
-.\scripts\start_demo.ps1
+```mermaid
+flowchart LR
+  U["用户"] --> UI["Streamlit<br/>Chat-first UI"]
+  UI -->|HTTP only| API["FastAPI Host<br/>Session · CSRF"]
+  API --> G["Goal v4 确认<br/>+ Journal 审批"]
+  G --> R["LangGraph<br/>Coordinator"]
+  R --> W["Worker Loop<br/>SQL / RAG / Analysis / Report"]
+  W --> M["MCP Gateway<br/>最小只读凭据"]
+  M --> P[("PostgreSQL 17<br/>+ pgvector")]
+  W --> V["P3 六层验证<br/>Report 重建"]
+  V --> R
+  R -.->|Checkpoint / Journal / Ledger| E[("execution 元数据")]
 ```
 
-打开 [Streamlit](http://127.0.0.1:8501/)，API 契约见 [OpenAPI 快照](docs/api-v1-openapi.json)；运行实例的 `/api/v1/docs` 需要宿主会话。加载合成 SaaS 样例 → 审阅 Schema → 受限入库 → 读取并人工确认样例业务映射 → 确认 paid_invoice_revenue → 创建任务 → 人工批准 → 刷新真实进度。合成样例 2025 年 10 月已支付账单收入为 **300 CNY**，报告保留 P3 Evidence/Verification 引用。不要将这个小样例值用于其他 Dataset。
+- 外层 `planner → scheduler → worker → verifier → replan → finish`，内层 `decide → tools → decide` 子图；模型只提供 Plan 数据。
+- 业务数据只经独立 MCP 子进程读取；SQL 走 AST 白名单 + 只读角色 + 超时/行数/输出配额。
+- 组合报告只用经 scoped MCP 重读并核对的 P3 verified 数值；文档引述另验原件/跨度/版本/hash。
 
-默认 Fake 只替代模型决策，PG、MCP、业务计算和验证均真实执行；本地 Embedding 仍需先按 RAG 文档准备已校验的权重。Fake 的 RAG 完成策略保守，可能返回 partial，不能视作真实模型语义分析质量测试。真实 DeepSeek 需显式 `-Mode live`，会消耗 API 额度，本阶段未新增付费实验。
+四张分层图（总览、双环、端到端时序、信任边界与恢复）见 [docs/architecture-overview.md](docs/architecture-overview.md)；完整设计见 [docs/architecture.md](docs/architecture.md)。
 
-Windows/Docker 命令、浏览器与 API 验收、失败历史和实际测试统计见 [P6C 交付](docs/product-demo.md)、[版本化 API](docs/api-v1.md)、[保留与维护](docs/data-retention.md)。Web 请求不能迁移数据库、清理数据或自授 scope；任意旧 Dataset 需宿主显式授权，知道 UUID 不等于获得访问权。
+## 当前已实现 / 仍待验证
 
-## 持久执行与恢复（P5B）
+| 能力 | 状态 | 说明 |
+|---|---|---|
+| Chat-first 对话、有界候选、追问新 Run | ✅ 已实现 | 会话只是索引，不是权限或 Checkpoint |
+| CSV/XLSX 解析、预览、确认、受限入库 | ✅ 已实现 | 动态表只由受限 Ingestion 服务创建 |
+| 版本化 Dataset / Semantic / Metric Registry | ✅ 已实现 | 人工确认 + append-only 版本 |
+| SQL MCP、AST 白名单、只读角色与配额 | ✅ 已实现 | 模型无 DDL/文件/Shell 工具 |
+| P3 六层验证与 Evidence/Verification | ✅ 已实现 | 独立复算 + 引用读回 |
+| 授权 TXT/MD + 固定 BGE + pgvector 检索 | ✅ 已实现 | 同实例精确 cosine，无独立向量服务 |
+| 跨来源报告（claims / 图表 / 四态完成） | ✅ 已实现 | 文档只作背景，不证明因果 |
+| Goal v4 有限范围确认 + 独立执行审批 | ✅ 已实现 | 确认 ≠ 批准执行 |
+| Durable / Checkpoint / Journal / Ledger / 恢复 | ✅ 已实现 | unknown-outcome 阻断重发 |
+| 维护与保留 CLI | ✅ 已实现 | 默认 dry-run、整 Run 原子清理 |
+| Qwen3 Embedding | 🟡 可选 opt-in | 默认仍是 BGE 512/ONNX；CUDA/生产切换未验收 |
+| 真实 DeepSeek 自主业务质量 | ⏳ PENDING | Live Gate 未完成，不能宣传为已验收 |
+| 完整 60 条独立业务 Holdout | ⏳ 未完成 | 已观测 31 条，29 条 `not_run` |
+| 多租户 / RLS / 生产认证 / 远程 Langfuse / HNSW | ❌ 未实现 | 明确不在这版范围 |
 
-P6B 的 [跨来源报告与实际验证](docs/cross-source-report.md) 区分 `execution_status` 与 `business_completion`：只有原 P3 六层 verified 的数字进入 claim/图表；文档另验来源和相关性，仅作背景。缺定义/MRR 不可算，因果未验证或缺相关文档时明确 partial/unavailable；模型不能批准确认。跨节点/进程恢复重新读取 P3 持久引用，既不重复生成 Evidence，也不修改原 verdict。新增 `durable --report-scope` 是可信宿主入口，非模型授权工具。
+## 可信工程验收（截至 `b06cc52`）
 
-P6B 本地全量回归为 541 passed / 1 skipped；最终补充后真 PG 定向 18 passed、Python 3.13 本地回归 415 passed，Ruff 通过。五个合成业务案例与 P3 Gold 和独立 SQL 一致；模型决策明确为脚本替身，真实本地 Embedding/pgvector/MCP 均执行，本阶段没有新增真实模型实验。完整命令、证据与边界见上述交付记录。
+### 完整 CI（Actions #28，双版本）
 
-P6A 的有界 TXT/Markdown 文档链路、固定 512 维中文 BGE 模型、独立 RAG 只读角色和可追溯引用已接入相同 Durable/MCP 边界，见 [RAG 部署与 Demo](docs/rag-pipeline.md)、[P6A 交付](docs/p6a-delivery.md)。Embedding 在本地真实推理，无需 API Key；MCP 不自动下载模型、不接收 scope/DDL/文件工具参数。模型权重缺失/hash 错误明确失败，原 fixture 不冒充真实检索。
+| Python | 非集成 | PG/MCP 集成 | 合法 skip | failed / errors |
+|---|---:|---:|---:|---:|
+| 3.11 | **1336 passed** | **325 passed** | 63 | **0** |
+| 3.13 | **1336 passed** | **325 passed** | 63 | **0** |
 
-最初两次真实 DeepSeek RAG smoke 因交付格式和检索次数上限失败，历史错误和用量保留。当前定向补强专用完成工具、一次 Stop Hook 纠正、阶段权限收缩及跨进程幂等恢复，见 [最新交付与实测](docs/rag-completion-repair.md)。相关证据可完成检索任务，业务结论仍需外层验证；不只凭非空/hash/分数宣称业务完成。
+计划范围 1724 项 = 非集成 1336 + 集成 388；集成 388 = 通过 325 + 合法 skip 63（Qwen/CUDA 62 项 + Live 1 项，逐条来自 JUnit）。上述数字由两版本下载的 JUnit 工件直接解析：unit 1336 / 0 failed / 0 errors / 0 skipped，integration 388 = 325 passed + 63 skipped；Run 与两个 Job 结论均为 `success`（attempt 1，HEAD `b06cc52`）。脱敏摘要见 [p7-actions-28-junit-summary.json](docs/research/p7-actions-28-junit-summary.json)；原始 Run API 快照、job 日志与 JUnit 工件仍为 local-only（`artifacts/p7/full-ci-actions-v1/`），不随仓库上传。workflow 与范围声明见 [`.github/workflows/test.yml`](.github/workflows/test.yml)，恢复记录见 [full CI recovery](docs/research/p7-full-ci-recovery.md)。
 
-补强后唯一获授权的 DeepSeek 合成语义检索 Smoke 通过：5 次模型调用、7,565 Token、两次检索/一次完成提交，约 10.07 秒；本例没有触发 Stop Hook，不声称已测得真实纠正成功率或完整业务结论。最终 Python 3.13 真实 PG 全量为 504 passed / 1 skipped，详细边界与历史负结果见上述交付记录。
+### 工程 Demo（五个真实 Run，2026-10-31）
 
-已有数据库先增量部署，保留旧数据：
+| 场景 | 终态 | 证明的事实 |
+|---|---|---|
+| SQL-only | completed | **1432.25 CNY**（P7 Demo 独立合成数据集），P3 六层 verified |
+| RAG-only | completed（随后撤回） | 撤回后报告 `403 GOAL_REVOKED` |
+| SQL+RAG | completed | 精确数值 + 授权 Chunk 引述，不推导因果 |
+| 证据不足 | unavailable | 文档无该事实时明确缺失，不编造 |
+| 合成未知调用 | blocked / RECOVERY_UNCERTAIN | 禁止自动恢复/重发，预算保守保留 |
 
-```powershell
-uv run --locked python scripts/configure_local.py --add-runtime-roles
-uv run --locked datapilot db-init
-uv run --locked datapilot migrate
-uv run --locked datapilot runtime-init
-$runId = [guid]::NewGuid().ToString()
-uv run --locked datapilot durable start $runId --question '查询客户总数' --mode fake --pause-after worker
-uv run --locked datapilot durable resume $runId --mode fake
-```
+真实执行：PostgreSQL 17/pgvector、MCP、BGE、P3、Durable；API/UI 真正重启后五个 Run 签名一致。模型决策为 Fake/脚本（10 次调用、150 Mock Token；另 1 次 unknown 保守计账 3375），Provider 实际调用为 0。详见 [Demo 验收](docs/releases/p7-engineering-candidate-v1/frozen/p7-demo-acceptance.md)。
 
-普通 ask 保留内存模式；durable 采用官方父/子图 Checkpoint、独立元数据角色、事务预算和完整工件。已提交响应可复用，未确认执行返回 RECOVERY_UNCERTAIN 并保守保留预算；不承诺供应商 exactly-once。真实 PG 跨进程故障与真实 DeepSeek 两次调用恢复实测见 [部署/协议](docs/recovery.md)、[交付记录](docs/p5b-delivery.md)。没有自动删库、永久 Memory 后端或生产多租户实现。
+**数字归属（勿混用）**：**1432.25 CNY** 属于 P7 工程 Demo 的独立合成数据集（新建隔离数据库、窗口 `[2026-06-01, 2026-07-01)`，两条 paid/CNY 账单）；**300 CNY** 属于首次部署“加载合成 SaaS 样例”的另一套数据（2025-10 窗口）。两组数字来自不同 Dataset，不可互相引用、对比或当作同一份数据的结果。
 
-补充 [DeepSeek 真实压缩 A/B](docs/p5a-live-context-ab.md)：20 次调用、75,304 tokens，受控长回放中 L3 总 Token 减少 75.12%；L4 计入摘要后减少 32.21%，但本样本估算费用和耗时增加。短查询未触发压缩。以上为小样本真实 API + 部分合成历史，不是完整 SaaS 任务基准或稳定省费承诺。
+### 真实模型与业务评测（未完成，保持原值）
 
-## 双层执行与 Trace（P4，需要真实 PostgreSQL）
+- 意图：59 条 Holdout 上 Rule-only 46/59、LLM-only 58/59、Hybrid 57/59（67 次真实调用 / 59,640 Token）。
+- 业务：60 条计划中观测 31 条、严格通过 25、未通过 6、`not_run` 29；因 `bh2-031` 预算预留失败安全停止，61 次真实调用全部结算、无 unknown。这是**固定顺序的前缀样本**，不能当无偏成功率。见 [Gate 2B Live](docs/p7-gate2b-live.md)。
+- 50 条开发目标在脚本决策 + 真实 PG/MCP 下为 48/50，不是真实模型成绩。
 
-Planner → Scheduler → Send Worker → Verifier → Finish/Replan。简单已知 SQL 意图跳过规划模型，Worker 用两次决策完成查询和引用确认；复杂任务按能力和依赖分波次执行。所有数字计算由 SQL/Decimal 完成，模型只选工具与实际证据引用。
+**这些数字证明什么**：工程链路、权限边界、证据链与恢复机制可运行且可复核。
+**不证明什么**：DeepSeek 自主完成经营分析的业务质量、自然语言成功率、生产 SLA 或多租户安全。
 
-```powershell
-uv run --locked datapilot ask '查询客户总数' --mode fake --json
-uv run --locked datapilot ask '查询客户总数，并计算2025-10收入' --mode fake --json
-uv run --locked python scripts/trace_orchestration_demo.py --output artifacts/my-two-sql.json
-uv run --locked python scripts/trace_orchestration_demo.py --with-rag-fixture --output artifacts/my-rag-fixture.json
-```
+## 本地运行（安全合成数据）
 
-Fake 只产生计划/工具决策，SQL 仍走真实 MCP/PG；RAG 示例显式标注 fixture，默认 ask 不启用替身。`--json` 可导出本地执行工件和 Trace，Trace 本身不含原始 SQL/业务行。Live 模式现在需要供应商支持原生 tool calling；本轮 HTTP Mock 证明异步协议/并发，未声称真实 LLM 通过。完整接口、源码借鉴和边界见 [编排说明](docs/orchestration.md)、[交付记录](docs/p4-delivery.md)、[ADR-006](docs/adr/0006-two-level-orchestration.md)。
-
-## DeepSeek Flash 最小接入
-
-在忽略的 `.env` 中配置以下内容；API Key 只写本地，不发送到聊天或提交 Git：
-
-```dotenv
-DATAPILOT_LLM_MODE=live
-DATAPILOT_MODEL_PROVIDER=deepseek
-DATAPILOT_BASE_URL=https://api.deepseek.com
-DATAPILOT_MODEL=deepseek-flash
-DATAPILOT_API_KEY=
-```
-
-填写自己的 Key 后执行 `uv run --locked datapilot ask '查询客户总数' --mode live --json`。该适配显式关闭思考模式，使用 Chat Completions/native tools，并发送 DeepSeek 的 `max_tokens`；通用供应商仍使用默认的 `openai_compatible` profile。预算、取消、工具权限与真实 MCP 不变，无 Key 时明确失败。HTTP Mock 与真实 PG/MCP 回归通过；2026-10-21 补充真实 DeepSeek 客户数 smoke：240 客户、completion=completed，2 次调用/2297 tokens。不代表复杂指标或完整业务报告已验收，详见 [接入与验证](docs/deepseek-transport.md)。
-
-## 文件预览与确认（P1，无需数据库或 API Key）
-
-```powershell
-$env:PYTHONUTF8 = '1'
-uv sync --locked
-uv run --locked datapilot ingest preview tests/fixtures/ingestion/customers_utf8_bom.csv --header present
-New-Item -ItemType Directory -Force artifacts | Out-Null
-uv run --locked datapilot ingest preview tests/fixtures/ingestion/saas_multi_sheet.xlsx --header present --output artifacts/preview.json
-uv run --locked datapilot ingest confirm tests/fixtures/ingestion/saas_multi_sheet.xlsx --proposal artifacts/preview.json --reviewed --output artifacts/confirmation.json
-```
-
-保留前导零、Decimal 精度、空列/重复列/中文原名映射，报告缺值/重复/IQR 异常及待确认关系；类型建议经全列验证。公式保留文本，宏与外部关系拒绝，ZIP/XML/行列/解码内容/预览均有配额。确认时重新读源并验证覆盖配置，输出不是入库授权；文件已存在不会覆盖。详情及限制见 [P1 使用说明](docs/data-ingestion.md) 与 [真实验收](docs/p1-delivery.md)。
-
-框架研究：[LangGraph / Mini Claude Code 能力对照与融合方案](docs/framework-research.md)、[源码索引](docs/source-reference-index.md)、[后续 Fork 研究门槛](docs/langgraph-fork-research-plan.md)。当前保留原版 LangGraph；研究方案与已实现能力分开记录。
-
-## 文件入库与动态查询（P2，需要真实 PostgreSQL）
-
-已有 Day 1 环境先升级配置与 Schema，保留旧密码和数据；**不要重新 Seed**：
-
-```powershell
-uv run --locked python scripts/configure_local.py --add-upload-roles
-uv run --locked python scripts/configure_local.py --add-registry-role
-uv run --locked datapilot db-init
-uv run --locked datapilot migrate
-uv run --locked datapilot health
-```
-
-新环境按下一节一次初始化即可。P2 使用 `catalog` 四表和独立 `uploads`；P3 的 0003 增加语义/指标/证据，P5B 的 0004 增加 execution，P6A 的 0005 增加版本化文档/向量。当前迁移 head 为 `0008`，另含 Web/会话与 Qwen 独立向量表；历史迁移不回写，实际数据库升级需单独核对。
-
-```powershell
-$demoDir = 'artifacts/demo-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
-New-Item -ItemType Directory -Force $demoDir | Out-Null
-$sourceFile = 'tests/fixtures/ingestion/invoices_semicolon.csv'
-uv run --locked datapilot ingest preview $sourceFile --header present --output "$demoDir/preview.json"
-uv run --locked datapilot ingest confirm $sourceFile --proposal "$demoDir/preview.json" --reviewed --output "$demoDir/confirmation.json"
-uv run --locked datapilot ingest import $sourceFile --confirmation "$demoDir/confirmation.json" --name 'SaaS invoices' --output "$demoDir/import.json"
-$datasetId = (Get-Content "$demoDir/import.json" -Raw | ConvertFrom-Json).dataset_id
-$datasetSchema = uv run --locked datapilot datasets schema $datasetId | ConvertFrom-Json
-$tableName = $datasetSchema.tables[0].physical_name
-uv run --locked datapilot datasets query $datasetId "SELECT COUNT(*) AS invoices,SUM(amount) AS total FROM $tableName"
-uv run --locked datapilot datasets list --dataset $datasetId
-```
-
-合成 CSV 示例结果为 3 张账单、精确金额字符串 `1213.4400`。XLSX 可用同样的 preview/confirm/import 流程，多 Sheet 表名从 schema 输出获取，可在同一 Dataset 内 JOIN。自然语言 `ask` 仍走原 SaaS 路径；P2 提供显式 SQL 查询入口，不声称完成上传数据的自主分析 Agent。
-
-导入仅用隔离的 `datapilot_ingest`，重新验证原件/确认后事务化建表、批量写入、登记和授权。模型侧仅有 `datapilot_upload_reader`；DatasetScope 由可信宿主注入，工具参数不能扩权。重复导入相同确认复用版本，新内容/映射保留旧表并产生新版本；`datasets schema/query --version N` 在宿主固定历史版本，`datasets activate ID --version N` 只修改当前指针。详情与边界见 [P2 使用说明](docs/dataset-ingestion.md)、[P2 实际验收](docs/p2-delivery.md)。
-
-## SaaS 指标与可复核证据（P3）
-
-映射和口径分别经用户确认并版本化；收入、客户净流失、订阅流失、活跃合同、使用量由受控 SQL 与原始列 Python 独立复算。MRR 不用账单收入替代，缺信息/历史/覆盖范围或零分母明确不能计算。通过六层校验的报告数字均绑定 Evidence/Verification ID。
-
-已有环境先执行上面的 Registry 角色升级、db-init 和 migrate。无需模型 Key 的合成 Demo：
-
-```powershell
-$demoDir = 'artifacts/semantic-demo-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
-uv run --locked python scripts/prepare_semantic_demo.py --reviewed-synthetic --output $demoDir
-uv run --locked datapilot semantics run "$demoDir/requests.json"
-```
-
-这是明确标记的 `deterministic` 执行；不冒充真实 LLM E2E。入口为显式版本化请求 JSON，原 `ask` 保留 Day 1 路径。完整确认/证据读取/公式/配额与限制见 [P3 使用说明](docs/semantic-metrics.md)、[P3 交付](docs/p3-delivery.md)、[ADR-005](docs/adr/0005-semantic-registry-verifier.md)。
-
-## 本地运行
-
-要求 Python 3.11–3.13、uv、Docker Desktop（Windows 使用 WSL 2/Linux containers）。Linux/macOS 使用 Docker Engine + Compose 亦可。
-
-以下 PowerShell 命令在仓库根目录执行。项目采用精确 editable 导入以支持中文路径；开启 UTF-8 可保留中文输出。
+要求：Python 3.11–3.13、[uv](https://docs.astral.sh/uv/)、Docker Desktop（Windows 使用 WSL 2 / Linux containers）。以下 PowerShell 命令在仓库根目录执行；`PYTHONUTF8=1` 用于保留中文输出。
 
 ```powershell
 $env:PYTHONUTF8 = '1'
 uv sync --locked --python 3.11
-uv run --locked python scripts/configure_local.py
-docker compose up -d --wait
-uv run --locked datapilot db-init
-uv run --locked datapilot migrate
-uv run --locked datapilot seed
-uv run --locked datapilot health
+uv run --locked python scripts/configure_local.py   # 生成被忽略的 .env，独立随机密码，拒绝覆盖
+docker compose up -d --wait                          # PostgreSQL 17 + pgvector，绑定 127.0.0.1:55432
+uv run --locked datapilot db-init                    # 管理员创建角色/扩展
+uv run --locked datapilot migrate                    # Owner 执行 Alembic 并精确授权
+uv run --locked datapilot runtime-init               # 官方 Saver/Checkpoint 元数据初始化（显式运维）
+uv run --locked datapilot seed                       # 仅 INSERT；非空库拒绝
+uv run --locked datapilot health                     # Reader 检查版本/扩展/权限/种子
+.\scripts\start_demo.ps1                             # Fake 模式启动 API 与 UI
 ```
 
-`configure_local.py` 用独立随机密码创建被忽略的 `.env`，拒绝覆盖；默认数据库绑定 `127.0.0.1:55432`。它不创建模型 API Key。也可参考 `.env.example` 自行配置；密码中特殊字符需 URL 编码。
+打开 [Streamlit](http://127.0.0.1:8501/)，API 为 `127.0.0.1:8000`（`/api/v1/docs` 需要宿主会话）。
 
-四条数据库命令独立：`db-init` 使用管理员创建权限/扩展；`migrate` 使用 Owner 执行 Alembic 并精确授权；`seed` 仅 INSERT，非空库拒绝；`health` 使用 Reader 检查 PG17/扩展/权限/种子。初始化/迁移可重复执行，Seed 不可重复覆盖。不需要通过清卷来“重试”。
+演示步骤（全部使用仓库合成 fixture，无需 API Key）：
+
+1. 加载合成 SaaS 样例 → 审阅 Schema → 确认 → 受限入库；
+2. 在数据管理页确认业务映射与 `paid_invoice_revenue` 指标；
+3. 在对话中提问，审阅候选卡片后确认合同，再单独点击执行审批；
+4. 刷新查看真实状态与报告：首次部署样例 `[2025-10-01, 2025-11-01)` 收入为 **300 CNY**（独立于 P7 Demo 的 1432.25 CNY 数据集），保留 P3 Evidence/Verification 引用。
+
+可选项：
 
 ```powershell
-uv run --locked datapilot ask '查询客户总数' --mode fake
-uv run --locked datapilot ask '计算2025-10收入' --mode fake
-uv run --locked datapilot ask '查询2025-07-01到2025-10-01新增订阅' --mode fake
-uv run --locked datapilot ask '按客户分群查询活跃订阅 JOIN' --mode fake --json
+uv run --locked datapilot rag model-fetch            # 仅使用 RAG 时需要：拉取并校验固定 BGE 权重
+.\scripts\start_demo.ps1 -Mode live                  # 真实模型：需在忽略的 .env 配置 Key，会消耗额度
 ```
 
-Fake 只覆盖以上确定性问题模板，输出 SQL 后仍通过真实 MCP 查询真实 PostgreSQL；没有数据库就失败。Fake 路由/SQL 不证明真实模型推理能力。收入为 paid 账单的整数 **CNY 分**，区间右端不包含。数据固定为 2025 年，默认 240 客户。
+默认 Fake 只替代模型决策，PG/MCP/业务计算/验证均真实执行；Fake 的 RAG 完成策略保守，可能返回 `partial`，不代表真实模型语义质量。已有数据库只做增量升级（例如 `--add-web-roles`、`runtime-init`），不要重新 Seed、不要 `docker compose down -v`、不要清库。详细命令与排障见 [product-demo.md](docs/product-demo.md)、[recovery.md](docs/recovery.md)、[rag-pipeline.md](docs/rag-pipeline.md)。
 
-开启真实模型：编辑本地 `.env`（不要提交）或设置环境变量：
+## 文档地图
 
-```powershell
-$env:DATAPILOT_LLM_MODE = 'live'
-$env:DATAPILOT_API_KEY = '<你的 API Key>'
-$env:DATAPILOT_BASE_URL = '<供应商 OpenAI-compatible v1 地址>'
-$env:DATAPILOT_MODEL = '<供应商模型 ID>'
-uv run --locked datapilot ask '查询客户总数' --mode live --json
-```
-
-`--json` 返回 SQL、结果、状态、错误、节点路径、时延、Token 使用。默认限制见 `.env.example`，SDK 隐式重试关闭。Qwen/DeepSeek 的供应商兼容性需真实凭据验证；HTTP Mock 测试不能替代该验证。
+| 文档 | 内容 |
+|---|---|
+| [architecture-overview.md](docs/architecture-overview.md) | 当前实现的 Mermaid 架构图、模块对照、明确不存在的组件 |
+| [architecture.md](docs/architecture.md) | 完整技术设计与各阶段边界（历史设计，保留原文） |
+| [orchestration.md](docs/orchestration.md) | 双环执行、任务契约、预算/取消/Trace |
+| [semantic-metrics.md](docs/semantic-metrics.md) | P3 指标口径、六层验证与复算 |
+| [rag-pipeline.md](docs/rag-pipeline.md) | 文档摄取、固定 BGE、pgvector 检索与引用 |
+| [cross-source-report.md](docs/cross-source-report.md) | 跨来源报告与四态业务完成 |
+| [recovery.md](docs/recovery.md) | Checkpoint / Journal / 预算与未知结果协议 |
+| [chat-first-ui.md](docs/chat-first-ui.md) | 对话优先 UI、候选/确认/审批的验收记录 |
+| [ADR-015](docs/adr/0015-chat-first-conversation.md) · [ADR-018](docs/adr/0018-trusted-goal-scope.md) · [ADR-019](docs/adr/0019-web-goal-confirmation.md) | 会话索引、Goal v4、Web 确认的关键决策 |
+| [releases/p7-engineering-candidate-v1](docs/releases/p7-engineering-candidate-v1/README.md) | 公开交付索引、冻结与不可复现边界 |
+| [evaluation.md](docs/evaluation.md) | P7 评测状态索引（含未通过项） |
+| [roadmap-v2.md](docs/roadmap-v2.md) · [planning-audit-v2.md](docs/planning-audit-v2.md) | v2 Gate 路线图与代码审计（历史规划） |
+| [day1-delivery.md](docs/day1-delivery.md) | Day 1 历史验收记录 |
+| [showcase.md](docs/showcase.md) | 求职展示：亮点、难点、演示脚本、限制 |
+| [engineering-history.md](docs/engineering-history.md) | 分阶段实现、复现命令与历史验收（原 README 详版） |
+| [api-v1.md](docs/api-v1.md) · [api-v1-openapi.json](docs/api-v1-openapi.json) | 版本化 HTTP 契约 |
+| [product-demo.md](docs/product-demo.md) | Windows/Docker 部署、实际操作与验收 |
+| [AGENTS.md](AGENTS.md) | 开发约束与阶段边界（最严格的规则来源） |
 
 ## 自动化验证
 
@@ -216,11 +185,11 @@ uv run --locked datapilot ask '查询客户总数' --mode live --json
 # 纯生成器、AST、模型 HTTP Mock、Worker/Graph Mock、真实 MCP 无数据库协议
 uv run --locked pytest -m 'not integration and not live' -q
 
-# 必须先启动、初始化、迁移、seed 真 PostgreSQL 17 + pgvector
+# 需先启动、初始化、迁移并 seed 真实 PostgreSQL 17 + pgvector
 $env:DATAPILOT_RUN_DB_TESTS = '1'
 uv run --locked pytest -m 'integration and not live' -q
 
-# 真实模型+MCP+PG；显式 opt-in，消耗 API Token
+# 真实模型 + MCP + PG：显式 opt-in，消耗 API Token
 $env:DATAPILOT_RUN_LIVE_TESTS = '1'
 uv run --locked pytest -m live -q
 
@@ -228,23 +197,25 @@ uv run --locked ruff check .
 uv run --locked ruff format --check .
 ```
 
-默认没有 `DATAPILOT_RUN_DB_TESTS=1` 时数据库测试明确 skip；一旦开启，连接/权限失败必须 fail。集成验收包括独立 SQL 对照客户数、月收入、区间订阅、JOIN、安全拒绝、错误字段、修复耗尽/成功、超时/截断、Reader grants、pgvector 写入与距离。向量测试事务回滚，不残留测试文档。
+没有 `DATAPILOT_RUN_DB_TESTS=1` 时数据库测试明确 skip；一旦开启，连接或权限失败必须 fail。本地通过不等于远端 CI 通过，配置存在也不等于 CI 已执行。
 
-CI 配置使用真实 PG17/pgvector 服务，覆盖 Python 3.11/3.13。仓库尚未发布或 CI 尚未执行时，不能将配置存在称为 CI 通过。
+## 安全边界与设计取向
 
-## 安全边界与局限
+- 业务数据库唯一入口是 MCP：SaaS 会话只有 `datapilot_reader`，上传会话只有 `datapilot_upload_reader`，RAG 只有 `rag_reader`；模型拿不到管理员、Owner、Seed、Ingest、Registry 或维护凭据。
+- AST 白名单与数据库授权**互相独立**：即使 AST 被绕过，Reader grants 仍拒绝写入；即使角色配置漂移，AST 仍限制语句、表、函数与 schema。
+- 运行期业务访问与执行元数据分开：Checkpoint/预算元数据是独立的非模型基础设施通道，不能借此直连业务表。
+- 首版是本地单用户/可信演示：`dataset_id` 不是生产租户隔离；认证、租户传播、RLS、远程 Langfuse、HNSW 与生产 SLA 均未实现。
+- `.env` 只在本机、已被忽略；不提交数据库、缓存、模型权重或原始业务数据。`docker compose stop` 只暂停数据库，`docker compose start` 恢复；**不要**执行带 `-v` 的 down 或自动清库脚本。
+- 更完整的约束见 [AGENTS.md](AGENTS.md) 与 [ADR 目录](docs/adr/)；早期架构决策见 [双层 Runtime](docs/adr/0001-runtime-harness.md)、[导入权限](docs/adr/0002-ingestion-permissions.md)、[单用户边界](docs/adr/0003-local-single-user.md)、[指标/证据](docs/adr/0004-metrics-evidence-domain.md)。
 
-MCP 仅注册只读数据库工具，SaaS/上传会话各拿自己的 Reader 凭据；模型看不到管理员、Owner、Seed、Ingest 或 Registry 凭据。Reader 无业务写权限、Schema CREATE、TEMP 或角色继承；AST 同时限制表、函数及语句。上传策略每请求绑定精确物理表，多个 Dataset 同时被选中也不允许单次请求跨 Dataset JOIN。数据库端显式只读事务、statement_timeout 与外层 LIMIT 独立生效。默认角色只读设置本身可以被修改，因此权限 grants 不可省略。
+## English overview
 
-`.env` 是本机开发配置，stdio 子进程仍受宿主 OS 信任，不是对恶意宿主进程的沙箱。P6A 已提供授权文档摄取、固定 Embedding 和 pgvector/MCP 检索；不运行独立向量服务。索引/模型身份、权限和完成资格分别验证，真实引用不等于业务目标充分。
+See [README.en.md](README.en.md) for a concise English project overview. The technical documentation is Chinese-first by design.
 
-v2 设计决策：[双层 Runtime/Harness](docs/adr/0001-runtime-harness.md)、[动态导入与权限](docs/adr/0002-ingestion-permissions.md)、[单用户边界](docs/adr/0003-local-single-user.md)、[指标/证据与领域包](docs/adr/0004-metrics-evidence-domain.md)。固定结构由 Alembic 管理，上传动态表仅由受限 Ingestion Service 管理，模型不会取得 DDL 权限。P6C 提供默认关闭的本地 OTel 投影；远程 Langfuse 尚未安装或集成。
+## 历史与声明
 
-`docker compose stop` 暂停数据库，`docker compose start` 恢复。**不要执行带 `-v` 的 down 或自动清库脚本**，持久数据保存在项目命名卷。
-
-
-### P7 Gate 1 开发评测（2026-10-24）
-
-[Gate 1 交付](docs/p7-gate1.md)：Rule-only 原始 59 条开发任务为 46/59；同一获授权 12 条开发子集上 Rule-only/LLM-only/Hybrid 为 6/12、10/12、12/12。实际 13 次 DeepSeek 调用、11783 Token。仅是受限开发实验，默认网站仍为原 Rule-only，未新增生产付费意图入口；不能据此宣称稳定业务成功率。
-
-此段为 Gate 1 当时的历史快照：59 条 Holdout 保持封存，Gate 2 未开始，按当时指令停止。随后 Gate 2 意图评测已另行授权完成；当前 Gate 2B 状态见上方链接及 [评测索引](docs/evaluation.md)。完整 P7 尚未验收。
+- 历史失败、STOP、`NOT_VERIFIED` 与 `not_run` 记录全部保留，不因展示需要而修改或美化。
+- 本仓库公开的是可复核摘要与脱敏副本；原始日志、签名包、模型权重与数据库留在本地，不随代码上传。
+- 旧研究报告中的 `artifacts/...` 引用属于 **local-only**，GitHub 上不可访问；公开索引提供聚合摘要与原件 SHA。
+- 项目使用合成数据与固定种子；不包含真实企业经营数据。
+- 原 README 的分阶段技术说明、复现命令与历史引用已完整归档到 [engineering-history.md](docs/engineering-history.md)，未删除失败或 STOP 记录。
