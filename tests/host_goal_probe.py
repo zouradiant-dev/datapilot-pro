@@ -1,13 +1,29 @@
 """Trusted test-only process entry; original Durable, no paid transport or model tools."""
 
 import argparse
-import importlib.util
 import json
 import os
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def legacy_goal(question, retrieval=None, report_scope=None):
+    """Fixed public synthetic identity, never executable private code or a fallback."""
+    from datapilot.ingestion.common import digest
+
+    frozen = json.loads((ROOT / "tests/fixtures/rag/host-goal-legacy-identity.json").read_bytes())
+    policy = getattr(retrieval, "relevance_policy", "bge-host-goal-cosine-v1")
+    goal = frozen["goals"].get(policy)
+    if (
+        question != frozen["query"]
+        or goal is None
+        or getattr(retrieval, "goal_threshold", 0.55) != goal["minimum_goal_score"]
+        or digest(goal) != frozen["goal_sha256"][policy]
+    ):
+        raise ValueError("Legacy test fixture requires its exact public query and policy")
+    return goal
 
 
 def main():
@@ -22,18 +38,9 @@ def main():
     parser.add_argument("--cut")
     args = parser.parse_args()
     if args.legacy:
-        # Only a retained, fixed pre-fix source file. No path supplied by a model/request.
-        spec = importlib.util.spec_from_file_location(
-            "pre_fix_requirements",
-            ROOT / "artifacts/p7/host-goal-repair-v2/before/rag_completion.py",
-        )
-        legacy = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(legacy)
         import datapilot.orchestration.rag_completion as control
 
-        control.retrieval_goal = lambda question, retrieval=None, report_scope=None: (
-            legacy.retrieval_goal(question, retrieval)
-        )
+        control.retrieval_goal = legacy_goal
     if args.v2:
         import datapilot.orchestration.rag_completion as control
 

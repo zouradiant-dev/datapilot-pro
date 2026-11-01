@@ -19,7 +19,7 @@ from datapilot.persistence.session import run_async, run_durable
 from datapilot.rag.contracts import RagScope, Target
 from datapilot.rag.models import LocalEmbedding
 from datapilot.rag.storage import IngestionService, make_pin
-from datapilot.reporting.contracts import CitationPolicy, CitationSource
+from datapilot.reporting.contracts import CitationPolicy, CitationSource, confirm_finite_scope
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = json.loads((ROOT / "tests/fixtures/rag/host-goal-requirements-v2.json").read_bytes())["e2e"]
@@ -213,6 +213,9 @@ def test_new_goal_cross_process_restore_preserves_receipt_and_budget(fresh_owner
 def test_legacy_requirement_manifest_is_not_silently_reinterpreted(fresh_ownership):
     settings, _, _, _, _ = fresh_ownership
     rag, report = configured(fresh_ownership, "complete")
+    report = confirm_finite_scope(
+        report, rag, confirmation_ref="public-ci-legacy-recovery-scope-review"
+    )
     id_ = str(uuid4())
     first = probe(fresh_ownership, "start", id_, rag, report, "--pause", "--legacy")
     assert first["status"] == "paused"

@@ -20,7 +20,7 @@ from datapilot.persistence.backend import Backend, DurableLedger, execute
 from datapilot.persistence.session import run_async, run_durable
 from datapilot.rag.contracts import RagScope
 from datapilot.rag.mcp import rag_session
-from datapilot.reporting.contracts import DocumentGoal, ReportScope
+from datapilot.reporting.contracts import DocumentGoal, ReportScope, confirm_finite_scope
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "artifacts/p7/phase4-budget-snapshot"
@@ -223,6 +223,9 @@ def test_compacted_durable_restore_keeps_known_results_or_blocks_unknown(
     pg_settings, fact_sources, cut
 ):
     rag, scope = inputs(fact_sources)
+    # Review the same finite public audit-retention contract before persisting it;
+    # keep all original budget, crash, wrong-version and no-reissue assertions.
+    scope = confirm_finite_scope(scope, rag, confirmation_ref="public-ci-budget-recovery-review")
     run_id = str(uuid4())
     path = OUT / f"input-{run_id}.json"
     path.write_text(

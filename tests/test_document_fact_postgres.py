@@ -20,7 +20,12 @@ from datapilot.persistence.session import run_async, run_durable
 from datapilot.rag.contracts import ChunkCitation, RagScope, Target
 from datapilot.rag.mcp import rag_session
 from datapilot.rag.storage import IngestionService, make_pin
-from datapilot.reporting.contracts import DocumentFact, DocumentGoal, ReportScope
+from datapilot.reporting.contracts import (
+    DocumentFact,
+    DocumentGoal,
+    ReportScope,
+    confirm_finite_scope,
+)
 from datapilot.reporting.service import ReportService
 
 pytestmark = [
@@ -251,12 +256,29 @@ def test_real_worker_receipt_report_and_persistent_fact_coverage(pg_settings, fa
 
 def test_real_pins_and_scope_cannot_be_forged(pg_settings, fact_sources):
     rag, scope, _ = scenario("year", fact_sources)
+    # Explicit synthetic Host review of this finite retention question only;
+    # fact confirmation alone must not confer full-goal completion eligibility.
+    scope = confirm_finite_scope(scope, rag, confirmation_ref="public-ci-retention-scope-review")
 
     async def check():
         async with rag_session(pg_settings, rag, goal=scope.question) as tools:
             result = await tools.search(scope.question, 5)
             assert result.documents
             service = ReportService(pg_settings, scope, {}, {}, {}, {})
+            store = ArtifactStore("valid-source-control")
+            ref = store.put(
+                Artifact(
+                    run_id=store.run_id,
+                    task_id="documents",
+                    plan_version=1,
+                    kind="documents",
+                    source="real-rag-valid-control",
+                    documents=result,
+                )
+            )
+            valid = service.build([(ref, store.get(ref))], tools)
+            assert valid.business_completion.status == "completed"
+            assert valid.claims[0].fact_coverage["retention"] is not None
             for field in ("sha256", "version", "index_version", "source_sha256"):
                 corrupt = result.model_copy(deep=True)
                 setattr(corrupt.documents[0].citation, field, "0" * 64)

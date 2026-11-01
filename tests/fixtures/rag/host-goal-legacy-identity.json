@@ -1,0 +1,33 @@
+{
+  "schema_version": "public-legacy-goal-identity-v1",
+  "synthetic": true,
+  "query": "数据资产所有权转移需要哪些审批？",
+  "purpose": "Fresh public synthetic compatibility input for the pre-requirement-policy goal projection; not a historical Run, Gold or human approval. No legacy executable code is loaded. The legacy ownership-query false rejection is retained, not reinterpreted with current Goal v4 semantics.",
+  "reference_source_sha256": "bd2e90610b8366c92b7312b417ebd6e34f0037fe6d3ba2aa5a4ffc74a3ef2bf5",
+  "goals": {
+    "bge-host-goal-cosine-v1": {
+      "protocol": "retrieval-task-v1",
+      "relevance_policy": "bge-host-goal-cosine-v1",
+      "minimum_goal_score": 0.55,
+      "question_sha256": "833042323deb866eeda3557015b9e5084fc565dc9ea620551ebb284269720d80",
+      "required_terms": [],
+      "minimum_sources": 1,
+      "unsupported_requirements": true,
+      "business_conclusions_verified": false
+    },
+    "qwen3-cuda-fp16-v1/host-goal-cosine-v1": {
+      "protocol": "retrieval-task-v1",
+      "relevance_policy": "qwen3-cuda-fp16-v1/host-goal-cosine-v1",
+      "minimum_goal_score": 0.55,
+      "question_sha256": "833042323deb866eeda3557015b9e5084fc565dc9ea620551ebb284269720d80",
+      "required_terms": [],
+      "minimum_sources": 1,
+      "unsupported_requirements": true,
+      "business_conclusions_verified": false
+    }
+  },
+  "goal_sha256": {
+    "bge-host-goal-cosine-v1": "6ddad8bbb3a1bf1f2e794276bde0cf7966ca4ce1bea9a75f21404910e2c553d0",
+    "qwen3-cuda-fp16-v1/host-goal-cosine-v1": "ab312d146d10eb1cbf615f8bba44b37e976e782c0ad3561ea74bb7e148405298"
+  }
+}

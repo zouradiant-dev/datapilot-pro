@@ -99,6 +99,76 @@ def test_current_goal_and_attestation_are_part_of_receipt_identity(settings):
     assert goal == retrieval_goal(service.scope.document_goal.question, retrieval, same)
 
 
+def test_public_legacy_goal_fixture_binds_query_and_policy(settings, tmp_path, monkeypatch):
+    from types import SimpleNamespace
+
+    import host_goal_probe
+    from host_goal_probe import legacy_goal
+    from test_report_causal_scope import document_case
+
+    query = "数据资产所有权转移需要哪些审批？"
+    service, _, retrieval = document_case(settings, query)
+    relative = "tests/fixtures/rag/host-goal-legacy-identity.json"
+    fixture = (host_goal_probe.ROOT / relative).read_bytes()
+    public = tmp_path / relative
+    public.parent.mkdir(parents=True)
+    public.write_bytes(fixture)
+    monkeypatch.setattr(host_goal_probe, "ROOT", tmp_path)
+    assert not (tmp_path / "artifacts").exists()
+    legacy = legacy_goal(query)
+    current = retrieval_goal(query, retrieval, service.scope)
+    assert legacy["question_sha256"] == current["question_sha256"]
+    assert all(current[k] == v for k, v in legacy.items() if k != "unsupported_requirements")
+    # Preserve the pre-fix ownership false rejection in the old identity itself.
+    assert legacy["unsupported_requirements"] is True
+    assert current["unsupported_requirements"] is False
+    assert "requirement_policy" not in legacy and "scope_attestation" not in legacy
+    assert goal_hash(current) != goal_hash(legacy)
+    assert current["completion_eligible"] is True
+    with pytest.raises(ValueError):
+        legacy_goal(query + "并证明没有遗漏")
+    with pytest.raises(ValueError):
+        legacy_goal(query, SimpleNamespace(relevance_policy="unapproved", goal_threshold=0.55))
+    with pytest.raises(ValueError):
+        legacy_goal(
+            query,
+            SimpleNamespace(relevance_policy=legacy["relevance_policy"], goal_threshold=0.1),
+        )
+
+
+def test_legacy_goal_is_rejected_by_original_manifest_guard(settings):
+    from copy import deepcopy
+    from datetime import UTC, datetime, timedelta
+    from unittest.mock import Mock
+
+    from host_goal_probe import legacy_goal
+    from test_report_causal_scope import document_case
+
+    from datapilot.ingestion.common import digest
+    from datapilot.persistence.backend import Backend
+
+    query = "数据资产所有权转移需要哪些审批？"
+    service, _, retrieval = document_case(settings, query)
+    old = {"question": query, "rag_completion_goal": legacy_goal(query)}
+    current = {**old, "rag_completion_goal": retrieval_goal(query, retrieval, service.scope)}
+    row = {
+        "owner": "public-legacy-unit-host",
+        "expires_at": datetime.now(UTC) + timedelta(hours=1),
+        "manifest": old,
+        "manifest_hash": digest(old),
+    }
+    before = deepcopy(row)
+    backend = object.__new__(Backend)
+    backend.owner, backend.run_id = row["owner"], "public-legacy-unit-run"
+    conn = Mock()  # Unit database response only; no PostgreSQL or historical Run is used.
+    conn.execute.return_value.mappings.return_value.one_or_none.return_value = row
+    assert backend.authorize(conn, old) is row
+    with pytest.raises(AgentFailure) as exc:
+        backend.authorize(conn, current)
+    assert exc.value.error.code == "RECOVERY_IDENTITY"
+    assert row == before
+
+
 def test_model_arguments_cannot_supply_a_host_attestation():
     from datapilot.orchestration.tools import DEFINITIONS
     from datapilot.web.contracts import DocumentQuery

@@ -4,6 +4,7 @@ from uuid import uuid4
 
 import pytest
 from test_cross_source_postgres import ReportDecisions
+from test_web_goal_confirmation_postgres import decision
 from test_web_postgres import api as api
 from test_web_postgres import import_sample
 
@@ -61,10 +62,18 @@ def test_confirmed_document_purpose_survives_chat_review_and_durable(api, purpos
     mid = message["message_id"]
     assert message["draft"]["request"]["documents"]["purpose"] == purpose
     launch = f"{path}/{mid}/launch"
-    response = post(c, launch, {"confirmed": True})
+    # Purpose selection is not Goal v4 approval. Review this exact public synthetic
+    # contract through the real HTTP actor/event path, then approve execution separately.
+    assert message["goal_contract"]["status"] == "pending_confirmation"
+    assert post(c, launch, {"confirmed": True}).status_code == 403
+    response = post(c, launch, decision(message))
     assert response.status_code == 200, response.text
     rid = response.json()["run_id"]
-    assert post(c, launch, {"confirmed": True}).json()["run_id"] == rid
+    assert post(c, launch, decision(message)).json()["run_id"] == rid
+    payload = app.state.store.run(rid)["payload"]
+    assert payload["report_scope"]["goal_scope_attestation"]["confirmation_ref"] == (
+        "web-goal:" + payload["goal_confirmation"]["event_id"]
+    )
     run_async(execute_one(settings, app.state.store, rid, transport=ReportDecisions(QUESTION)))
     assert c.get(f"/api/v1/tasks/{rid}").json()["status"] == "awaiting_review"
     response = post(c, f"/api/v1/tasks/{rid}/approve", {"confirmed": True})
@@ -78,7 +87,7 @@ def test_confirmed_document_purpose_survives_chat_review_and_durable(api, purpos
     selection["document_purpose"] = "summary" if purpose != "summary" else "locate"
     selection.pop("required_facts", None)
     follow = post(c, path, {"text": QUESTION, "selection": selection}).json()
-    other = post(c, f"{path}/{follow['message_id']}/launch", {"confirmed": True}).json()
+    other = post(c, f"{path}/{follow['message_id']}/launch", decision(follow)).json()
     assert other["run_id"] != rid and app.state.store.run(rid)["payload_hash"] == before
     history = c.get(path).json()["messages"]
     assert (
