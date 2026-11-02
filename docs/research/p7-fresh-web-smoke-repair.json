@@ -1,0 +1,78 @@
+{
+  "schema": "fresh-web-smoke-repair/v1",
+  "repair_date": "2026-11-02",
+  "base_commit": "cccd829f7240b9ff56b7d3817c7b716c39616108",
+  "repair_commit": "434dc1870925b4740b51078804703f287f058dcd",
+  "original_freeze": {
+    "id": "p7-fresh-web-smoke-admission-v1-483bc675998f",
+    "sha256": "483bc675998fa4c2e6c2df4a9c95b972c2c05b064f9c2768cd5e52a7a858a841",
+    "modified": false
+  },
+  "new_source_status": "LOCAL_COMMIT_ONLY_CI_NOT_RUN",
+  "new_freeze_status": "PENDING_NEW_CI_AND_LIVE_AUTHORIZATION",
+  "live_authorized": false,
+  "paid_model_calls": 0,
+  "changed_files": {
+    "src/datapilot/orchestration/context.py": "7e9c876452f0d65d0073e2d5a9a05de9c21486b6fc364b66819c781a56d4931b",
+    "src/datapilot/web/contracts.py": "e6cc62e240016d8e02bbf21db66e67dddfcaba6bb13fe1fd41330c4a11caee5f",
+    "src/datapilot/web/goal_confirmation.py": "e02fa147c01d85e09449f402c72e93a096f7136706ab92b2423c463628498ee3",
+    "src/datapilot/web/service.py": "11ca9cf4aee35dea04e5d986d571c4704914984561b89dd8ae11d6229b14cb9d",
+    "src/datapilot/web/ui_chat.py": "63fa6e336e451d32704d8bba4e20f51be93091d902ac3099e3dce25ebf286635",
+    "src/datapilot/web/ui_components.py": "a457907fef710c071ff39a85a91057720f0b205d62906fcc85bac219db8ca34b",
+    "tests/test_context_engineering.py": "7a5d91409cf1c010975dd2b78f08d6eb3ccebe70e7f7b6ce11988f5f5a98cece",
+    "tests/test_web_goal_confirmation_postgres.py": "f80d27b9053927bfce5b9ebb4b92cab99d011d4a53522cde08551f7bddd9c713",
+    ".github/workflows/test.yml": "343b162e42d5d6da033d524ce1b40d0f93a63d9751f7bcff50ebc7d6de37abe8"
+  },
+  "planned_ci": {
+    "tests": 1748,
+    "nonintegration": 1344,
+    "pg": 404
+  },
+  "verification": {
+    "nonintegration_py311": "1344 passed, 404 deselected",
+    "nonintegration_py313": "1344 passed, 404 deselected",
+    "collect_py311": 1748,
+    "collect_py313": 1748,
+    "context_py311": "39 passed",
+    "context_py313_included_in_41": "41 passed (39 context + 2 quoted-fact PG tests)",
+    "web_goal_pg": "16 passed",
+    "rag_cross_admission_pg": "38 passed",
+    "new_quoted_fact": "2 passed on 3.11 and included on 3.13",
+    "sql_only_regression": "passed"
+  },
+  "root_causes": {
+    "rag": "Web Goal required_facts carried descriptions but citation/quotation were null; Report fact_coverage returned no proofs, replaced docs with empty coverage, and published unavailable. Fix: exact quotation is host-resolved to an immutable ChunkCitation during Goal review and stored as DocumentFact; client text is not proof.",
+    "budget": "After three RAG model calls, context estimate was 10,995 before compression and 12,131 after; root remaining was 10,881; next reservation 13,331 was rejected before dispatch. The view repeated the same document body in search and read_context, kept an empty search result, and added the full authority anchor. Fix: exact duplicate source bodies become references, empty search bodies collapse, and a compact authority anchor is preferred under budget pressure. Estimator and limits unchanged."
+  },
+  "engineering_control": {
+    "original_combined_run": "fc2201a1-f88e-4661-b9ec-24c654a0c08d",
+    "event_before_estimated_tokens": 10995,
+    "event_after_estimated_tokens": 12131,
+    "root_remaining_tokens": 10881,
+    "blocked_reservation_tokens": 13331,
+    "replay_source": "stored worker messages + stored artifacts + reconstructed authority from run manifest",
+    "replay_before_estimated_tokens": 11448,
+    "replay_prepared_estimated_tokens": 9615,
+    "replay_compact_anchor_tokens": 269,
+    "replay_output_reserved": 1200,
+    "replay_total": 10815,
+    "replay_within_original_remaining": true,
+    "caveat": "This is a deterministic context replay, not a new DeepSeek call."
+  },
+  "remaining": [
+    "Historical RAG run cc12be91... remains unavailable; not rerun.",
+    "Budget repair was verified at ContextManager/replay level; no new paid SQL+RAG Live run.",
+    "New source must pass a fresh full CI and receive a new Freeze before any new Live permit; original Freeze and old Permit are not reusable.",
+    "Actual provider bill remains irrelevant/not_reconciled for this repair (no paid calls)."
+  ],
+  "next_live_boundary": {
+    "scope": "new independent authorization only",
+    "cases": 3,
+    "root_calls": 8,
+    "root_tokens": 18000,
+    "campaign_calls": 24,
+    "campaign_tokens": 54000,
+    "single_run_180_is_not_hard_stop": true,
+    "old_freeze_reusable": false
+  }
+}
