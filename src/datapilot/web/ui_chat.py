@@ -240,6 +240,8 @@ def goal_card(api, cid, message, datasets):
         st.caption("Source " + source["source_id"] + " · IndexVersion " + source["index_version"])
     for fact in doc.get("required_facts", []):
         st.text("待核验事实（尚非证明）：" + fact["description"])
+        if fact.get("quotation"):
+            st.caption("已选择原文引述：" + fact["quotation"])
     for note in goal["limitations"]:
         st.caption(note)
     for note in goal["unresolved"]:

@@ -189,6 +189,174 @@ async def test_twelve_closed_rounds_l1_l2_keep_canonical_history_and_exact_artif
     assert gateway.ledger.snapshot().calls == 1
 
 
+async def test_duplicate_document_observation_is_replaced_by_reference(settings):
+    _, manager, _, registry, prefix = make_context(settings, max_chars=100000)
+    result = SearchResult(
+        fixture=True,
+        documents=[
+            Document(
+                document_id="chunk-1",
+                source="fixture://document",
+                version="1",
+                text="same bounded passage " + "y" * 400,
+                sha256=text_hash("same bounded passage " + "y" * 400),
+            )
+        ],
+    )
+    messages = [
+        *prefix,
+        AIMessage(
+            content="",
+            tool_calls=[
+                {
+                    "id": "call_search",
+                    "name": "search_documents",
+                    "args": {"query": "same", "top_k": 1},
+                }
+            ],
+        ),
+        ToolMessage(
+            tool_call_id="call_search",
+            name="search_documents",
+            content=json.dumps(
+                {
+                    "documents": [d.model_dump() for d in result.documents],
+                    "document_count": 1,
+                    "artifact_refs": [],
+                }
+            ),
+        ),
+        AIMessage(
+            content="",
+            tool_calls=[
+                {
+                    "id": "call_read",
+                    "name": "read_context",
+                    "args": {"artifact_id": "a" * 64, "document_id": "chunk-1"},
+                }
+            ],
+        ),
+        ToolMessage(
+            tool_call_id="call_read",
+            name="read_context",
+            content=json.dumps(
+                {
+                    "text": "same bounded passage " + "y" * 400,
+                    "context_refs": [],
+                    "citation_ref": {"chunk_id": "chunk-1"},
+                }
+            ),
+        ),
+    ]
+    original = messages_to_dict(messages)
+    deduped, changed = manager._dedupe_observations(messages)
+    assert changed
+    assert messages_to_dict(messages) == original
+    assert "same bounded passage" in deduped[3].content
+    assert "same bounded passage" not in deduped[5].content
+    assert "duplicate_text" in deduped[5].content
+
+
+async def test_budget_pressure_reuses_duplicate_observation_without_extra_tokens(settings):
+    _, manager, _, registry, prefix = make_context(settings, max_chars=100000)
+    text = "bounded duplicate source " + "x" * 700
+    result = SearchResult(
+        fixture=True,
+        documents=[
+            Document(
+                document_id="chunk-1",
+                source="fixture://document",
+                version="1",
+                text=text,
+                sha256=text_hash(text),
+            )
+        ],
+    )
+    messages = [
+        *prefix,
+        AIMessage(
+            content="",
+            tool_calls=[
+                {
+                    "id": "call_search",
+                    "name": "search_documents",
+                    "args": {"query": "duplicate", "top_k": 1},
+                }
+            ],
+        ),
+        ToolMessage(
+            tool_call_id="call_search",
+            name="search_documents",
+            content=json.dumps(
+                {
+                    "documents": [d.model_dump() for d in result.documents],
+                    "document_count": 1,
+                    "artifact_refs": [],
+                }
+            ),
+        ),
+        AIMessage(
+            content="",
+            tool_calls=[
+                {
+                    "id": "call_read",
+                    "name": "read_context",
+                    "args": {"artifact_id": "a" * 64, "document_id": "chunk-1"},
+                }
+            ],
+        ),
+        ToolMessage(
+            tool_call_id="call_read",
+            name="read_context",
+            content=json.dumps(
+                {"text": text, "context_refs": [], "citation_ref": {"chunk_id": "chunk-1"}}
+            ),
+        ),
+        AIMessage(
+            content="",
+            tool_calls=[
+                {
+                    "id": "call_empty",
+                    "name": "search_documents",
+                    "args": {"query": "no match", "top_k": 1},
+                }
+            ],
+        ),
+        ToolMessage(
+            tool_call_id="call_empty",
+            name="search_documents",
+            content=json.dumps({"documents": [], "document_count": 0, "artifact_refs": []}),
+        ),
+    ]
+    deduped, _ = manager._dedupe_observations(messages)
+    from datapilot.orchestration.context import measure_context
+
+    compact = measure_context(deduped, registry.schemas(), 1200)[1]
+    available = compact.estimated_input_tokens + compact.output_reserved_tokens
+
+    class Ledger:
+        pending = {}
+
+        def remaining(self, account):
+            return 8, available
+
+        def snapshot(self, account=None):
+            from types import SimpleNamespace
+
+            return SimpleNamespace(calls=4, reported_tokens=0, usage_complete=True)
+
+    class Gateway:
+        ledger = Ledger()
+        trace = None
+
+    prepared = await manager.prepare(messages, registry.schemas(), Gateway(), "1:r")
+    refs = [m for m in prepared.messages if "duplicate_text" in m.content]
+    assert refs and "bounded duplicate source" not in refs[0].content
+    anchors = [m for m in prepared.messages if m.name == "context_authority"]
+    assert anchors and "HOST_TASK_STATE_SHA256" in anchors[0].content
+    assert manager.stats[-1].levels in (["L1"], ["L1", "L3"])
+
+
 async def test_l3_folds_whole_completed_turns_and_reinjects_current_authority(settings):
     _, manager, gateway, registry, prefix = make_context(settings, max_chars=13000)
     messages = history(manager, prefix, ai_body=1800, body=900)

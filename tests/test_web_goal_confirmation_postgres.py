@@ -213,6 +213,50 @@ def test_real_rag_completed_restart_and_confirmation_withdrawal(host):
     )
 
 
+def test_quoted_fact_is_host_pinned_and_report_completes(host):
+    c, app, settings, _, _ = host
+    quote = "已支付账单收入仅计入状态为paid的账单，以CNY整数分存储；"
+    cid, m = candidate(
+        host,
+        purpose="facts",
+        facts=[
+            {
+                "fact_id": "paid_rule",
+                "description": "已支付账单收入的计入规则",
+                "quotation": quote,
+            }
+        ],
+    )
+    assert m["goal_contract"]["can_confirm"] is True, m["goal_contract"]["unresolved"]
+    assert (
+        m["goal_contract"]["review"]["request"]["documents"]["required_facts"][0]["quotation"]
+        == quote
+    )
+    id_ = confirm(host, cid, m)
+    approve_and_run(c, app, settings, id_, transport=ReportDecisions(QUESTION))
+    report = c.get(f"/api/v1/tasks/{id_}/report")
+    assert report.status_code == 200, report.text
+    assert report.json()["business_completion"]["status"] == "completed"
+    assert any(item["quotation"] == quote for item in report.json()["citations"])
+
+
+def test_missing_quoted_fact_stays_unconfirmable(host):
+    c, _, _, _, _ = host
+    cid, m = candidate(
+        host,
+        purpose="facts",
+        facts=[
+            {
+                "fact_id": "paid_rule",
+                "description": "已支付账单收入的计入规则",
+                "quotation": "这段原文不在授权文档中",
+            }
+        ],
+    )
+    assert m["goal_contract"]["can_confirm"] is False
+    assert any("fact_proof_missing" in item for item in m["goal_contract"]["unresolved"])
+
+
 def test_fact_requirements_are_not_proofs_even_after_confirmation(host):
     c, app, settings, _, _ = host
     cid, m = candidate(

@@ -387,7 +387,8 @@ class ProductService:
                 metric_goals=request.documents.metric_goals,
                 purpose=request.documents.purpose,
                 required_facts=[
-                    DocumentFact(**f.model_dump()) for f in request.documents.required_facts
+                    DocumentFact(fact_id=f.fact_id, description=f.description)
+                    for f in request.documents.required_facts
                 ],
             )
         report = ReportScope(

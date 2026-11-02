@@ -106,10 +106,22 @@ class MetricReview(DTO):
 
 
 class FactRequirement(DTO):
-    """A question to verify, without a client-provided proof or approval reference."""
+    """A fact question plus an optional exact quotation for host review.
+
+    ``quotation`` is only a review input. The host resolves and pins the
+    immutable citation; it is never accepted as a client-provided proof.
+    """
 
     fact_id: str = Field(pattern=r"^[a-z][a-z0-9_]{0,47}$")
     description: DatabaseText = Field(min_length=1, max_length=256)
+    quotation: str | None = Field(default=None, min_length=1, max_length=256)
+
+    @model_serializer(mode="wrap")
+    def legacy_projection(self, handler):
+        value = handler(self)
+        if self.quotation is None:
+            value.pop("quotation", None)
+        return value
 
 
 class DocumentQuery(DTO):

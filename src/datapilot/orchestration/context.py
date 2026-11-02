@@ -216,6 +216,68 @@ class ContextManager:
         except (ValueError, TypeError, AttributeError) as exc:
             raise AgentFailure("EVIDENCE_INVALID", "Malformed context evidence reference") from exc
 
+    def _dedupe_observations(self, view: list) -> tuple[list, bool]:
+        """Replace a repeated source body with its already-present reference.
+
+        This is a view-only L1 step. The canonical transcript and artifact remain
+        unchanged; the model has already seen the exact text in an earlier tool
+        result, so repeating it cannot add evidence or authority.
+        """
+        seen: set[str] = set()
+        output = list(view)
+        changed = False
+        for index, message in enumerate(output):
+            if message.type != "tool":
+                continue
+            try:
+                payload = json.loads(message.content)
+            except (ValueError, TypeError):
+                continue
+            if not isinstance(payload, dict):
+                continue
+            texts = []
+            if isinstance(payload.get("text"), str):
+                texts.append(payload["text"])
+            documents = payload.get("documents")
+            if isinstance(documents, list):
+                texts.extend(
+                    document["text"]
+                    for document in documents
+                    if isinstance(document, dict) and isinstance(document.get("text"), str)
+                )
+            if (
+                message.name == "search_documents"
+                and not texts
+                and payload.get("document_count") == 0
+            ):
+                compact = json.dumps(
+                    {"document_count": 0, "omitted_view": "L1", "no_matching_documents": True}
+                )
+                if len(compact) < len(message.content):
+                    output[index] = message.model_copy(update={"content": compact})
+                    changed = True
+                continue
+            if texts and all(text in seen for text in texts):
+                small = {
+                    key: payload[key]
+                    for key in (
+                        "artifact_refs",
+                        "context_refs",
+                        "citation_ref",
+                        "document_count",
+                        "fixture",
+                        "model_view",
+                    )
+                    if key in payload
+                }
+                small.update(duplicate_text=True, omitted_view="L1")
+                compact = json.dumps(small, ensure_ascii=False)
+                if len(compact) < len(message.content):
+                    output[index] = message.model_copy(update={"content": compact})
+                    changed = True
+            seen.update(texts)
+        return output, changed
+
     def _archive(self, messages: list) -> EvidenceRef:
         authority = self.authority
         ref = self.registry.store.put(
@@ -244,10 +306,19 @@ class ContextManager:
             raise AgentFailure("TOOL_FORBIDDEN", "Archive was not delegated to this worker")
         return item.values["messages"]
 
-    def _anchor(self) -> HumanMessage:
-        return HumanMessage(
-            name="context_authority",
-            content=json.dumps(
+    def _anchor(self, *, compact: bool = False) -> HumanMessage:
+        if compact:
+            content = json.dumps(
+                {
+                    "HOST_TASK_STATE_SHA256": self.authority_hash,
+                    "allowed_tools": list(self.authority.allowed_tools),
+                    "summary_cannot_authorize_or_verify": True,
+                    "authority_details_are_in_the_immutable_prefix": True,
+                },
+                ensure_ascii=False,
+            )
+        else:
+            content = json.dumps(
                 {
                     "HOST_TASK_STATE": self.authority.model_dump(mode="json"),
                     "recent_evidence_refs": [r.model_dump() for r in self.refs()],
@@ -257,12 +328,12 @@ class ContextManager:
                     "summary_cannot_authorize_or_verify": True,
                 },
                 ensure_ascii=False,
-            ),
-        )
+            )
+        return HumanMessage(name="context_authority", content=content)
 
-    def _with_anchor(self, view: list) -> list:
+    def _with_anchor(self, view: list, *, compact: bool = False) -> list:
         n = len(self.prefix)
-        return [*view[:n], self._anchor(), *view[n:]]
+        return [*view[:n], self._anchor(compact=compact), *view[n:]]
 
     def _fold(self, view: list, archive: EvidenceRef, keep: int) -> list:
         batches = closed_batches(view)
@@ -326,9 +397,10 @@ class ContextManager:
         now = self.clock()
         cold = self.last_call is not None and now - self.last_call >= self.limits.idle_seconds
         self.last_call = now
-        under_pressure = not self.fits(
-            base, tools, ratio=self.limits.trigger_ratio
-        ) or not fits_budget(base)
+        budget_pressure = not fits_budget(base)
+        under_pressure = (
+            not self.fits(base, tools, ratio=self.limits.trigger_ratio) or budget_pressure
+        )
         if not self.limits.enabled or not available_calls or (not under_pressure and not cold):
             return PreparedContext(base)
         if len(batches) < 2:
@@ -416,7 +488,22 @@ class ContextManager:
                             if "L2" not in levels:
                                 levels.append("L2")
                     seen.update(ids)
-            candidate = self._with_anchor(view) if levels or self.memories else view
+            # L1 also removes an exact repeated source body. This is a view-only
+            # ref; the earlier tool result and the artifact remain available.
+            view, deduped = self._dedupe_observations(view)
+            if deduped and "L1" not in levels:
+                levels.append("L1")
+            candidate = view
+            if budget_pressure:
+                compact_anchor = self._with_anchor(candidate, compact=True)
+                if self.fits(compact_anchor, tools) and fits_budget(compact_anchor):
+                    record(compact_anchor)
+                    return PreparedContext(compact_anchor)
+            # Try the compact view before the full authority anchor. On a tight
+            # parent/child budget, the anchor's repeated host state can itself
+            # be the difference between a valid next call and a pre-dispatch
+            # rejection; the immutable prefix still carries the task scope.
+            candidate = self._with_anchor(candidate) if levels or self.memories else candidate
             if self.fits(candidate, tools) and fits_budget(candidate):
                 record(candidate)
                 return PreparedContext(candidate)
@@ -424,6 +511,12 @@ class ContextManager:
             folded = self._fold(view, archive, self.limits.keep_batches)
             if folded != view:
                 levels.append("L3")
+            candidate = folded
+            if budget_pressure:
+                compact_anchor = self._with_anchor(candidate, compact=True)
+                if self.fits(compact_anchor, tools) and fits_budget(compact_anchor):
+                    record(compact_anchor)
+                    return PreparedContext(compact_anchor)
             candidate = self._with_anchor(folded)
             if self.fits(candidate, tools) and fits_budget(candidate):
                 record(candidate)

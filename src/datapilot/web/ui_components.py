@@ -34,12 +34,22 @@ def document_requirements(key):
     )
     facts = []
     if purpose in {"facts", "conclusion"}:
-        st.caption("待核验问题不是证明；没有可信原文支持时会保持未验证。")
+        st.caption("待核验问题不是证明；请另填授权原文中的精确引述，宿主会核实来源、版本与Chunk。")
         text = st.text_area("必需事实（每行一项，最多 8 项，每项 256 字符）", key=key + "-facts")
+        quotes = st.text_area(
+            "逐项原文引述（与上一栏同序；没有引述时保持未验证）",
+            key=key + "-quotes",
+            help="只填授权原件中逐字出现的文本；不会把问题描述当作证明。",
+        )
+        descriptions = [line.strip() for line in text.splitlines() if line.strip()]
+        quotations = [line.strip() for line in quotes.splitlines() if line.strip()]
         facts = [
-            {"fact_id": f"fact_{i}", "description": line.strip()}
-            for i, line in enumerate(text.splitlines(), 1)
-            if line.strip()
+            {
+                "fact_id": f"fact_{i}",
+                "description": line,
+                **({"quotation": quotations[i - 1]} if i <= len(quotations) else {}),
+            }
+            for i, line in enumerate(descriptions, 1)
         ]
     return {"purpose": purpose, "required_facts": facts}
 

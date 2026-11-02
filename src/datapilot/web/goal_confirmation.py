@@ -2,6 +2,7 @@
 
 import json
 
+from datapilot.contracts import AgentFailure
 from datapilot.orchestration.rag_completion import retrieval_goal
 from datapilot.orchestration.runtime import text_hash
 from datapilot.rag.contracts import RagScope
@@ -9,8 +10,10 @@ from datapilot.rag.mcp import rag_session
 from datapilot.reporting.contracts import (
     CitationPolicy,
     CitationSource,
+    DocumentFact,
     ReportScope,
     confirm_finite_scope,
+    source_identity,
 )
 from datapilot.web.chat_contracts import GoalDataset, GoalSource, ReviewDocument, ReviewView
 from datapilot.web.store import deny
@@ -50,6 +53,50 @@ async def proposal(product, request, payload, selection):
         deny("WEB_SCOPE", "必需来源不在当前授权集合")
     for source in sources:
         source.required = not ids or source.source_id in ids
+    unresolved = []
+    required = [source_identity(s) for s in sources if s.required]
+    scope = scope.model_copy(deep=True)
+    proofs = {f.fact_id: f for f in scope.document_goal.required_facts}
+    quoted = [f for f in request.documents.required_facts if (f.quotation or "").strip()]
+    found = None
+    if quoted:
+        try:
+            # The manifest session above is intentionally short-lived; use a
+            # fresh host-bound session for the fact quote lookup.
+            async with rag_session(
+                product.settings, rag, goal=scope.document_goal.question
+            ) as search_tools:
+                found = await search_tools.search(scope.document_goal.question, 5)
+        except AgentFailure:
+            unresolved.extend("fact_proof_unresolved:" + fact.fact_id for fact in quoted)
+    for fact in quoted if found is not None else []:
+        quote = fact.quotation.strip()
+        matches = [
+            document
+            for document in found.documents
+            if quote in document.text
+            and document.citation is not None
+            and source_identity(document.citation) in required
+        ]
+        if len(matches) != 1:
+            unresolved.append(
+                "fact_proof_ambiguous:" + fact.fact_id
+                if matches
+                else "fact_proof_missing:" + fact.fact_id
+            )
+            continue
+        citation = matches[0].citation
+        proofs[fact.fact_id] = DocumentFact(
+            fact_id=fact.fact_id,
+            description=fact.description,
+            citation=citation,
+            quotation=quote,
+            confirmation_ref="web-fact:"
+            + text_hash(f"{fact.fact_id}:{quote}:{citation.source_id}:{citation.chunk_id}"),
+        )
+    scope.document_goal.required_facts = [
+        proofs[f.fact_id] for f in scope.document_goal.required_facts
+    ]
     scope.citation_policy = CitationPolicy(
         goal_sha256=text_hash(scope.question),
         required_sources=[
@@ -97,11 +144,12 @@ async def proposal(product, request, payload, selection):
         max_tokens=product.settings.max_total_tokens,
     )
     goal = retrieval_goal(scope.document_goal.question)
-    unresolved = (
+    goal_unresolved = (
         [goal.get("unsupported_reason", "unsupported_requirement")]
         if goal["unsupported_requirements"]
         else []
     )
+    unresolved = [*unresolved, *goal_unresolved]
     return {
         "payload": payload,
         "review": review.model_dump(mode="json"),
@@ -126,6 +174,13 @@ def base_payload(snapshot):
     scope.rag_query_policy = "legacy"
     scope.partial_evidence_policy = "legacy"
     scope.goal_scope_attestation = None
+    if scope.document_goal is not None:
+        # Fact proofs are host-resolved during Goal review. Freshness comparisons
+        # still check the original question, sources and Dataset/version pins.
+        scope.document_goal.required_facts = [
+            fact.model_copy(update={"citation": None, "quotation": None, "confirmation_ref": None})
+            for fact in scope.document_goal.required_facts
+        ]
     value["report_scope"] = scope.model_dump(mode="json")
     return value
 
