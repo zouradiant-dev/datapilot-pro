@@ -261,6 +261,119 @@ class FakeTransport:
     def __init__(self, client):
         self.client = client
 
+    @staticmethod
+    def _host_first_query(tools, fallback):
+        """Use the exact host-bound query offered in the search tool schema.
+
+        The human message also carries worker context (SCHEMA/authority JSON); passing
+        that concatenation as the first search would violate the host first-query policy.
+        """
+        marker = "HOST_FIRST_QUERY_JSON: "
+        for schema in tools:
+            function = schema.get("function", {})
+            if function.get("name") != "search_documents":
+                continue
+            query_schema = function.get("parameters", {}).get("properties", {}).get("query", {})
+            description = query_schema.get("description") or ""
+            if marker in description:
+                try:
+                    value = json.loads(description.split(marker, 1)[1])
+                except ValueError:
+                    return fallback
+                return value if isinstance(value, str) and value else fallback
+        return fallback
+
+    @staticmethod
+    def _host_goal(system):
+        marker = "HOST_GOAL_CONTRACT: "
+        if marker not in system:
+            return None
+        try:
+            value = json.loads(system.split(marker, 1)[1])
+        except ValueError:
+            return None
+        return value if isinstance(value, dict) else None
+
+    @staticmethod
+    def _rag_outcome(payload, goal):
+        """Deterministic Fake choice; the host Verifier remains the only authority.
+
+        Complete is offered only when the host goal's minimum source count and literal
+        required terms are visible in the actual retrieved documents. Otherwise the Fake
+        reports insufficient; the host still validates every completion.
+        """
+        documents = payload.get("documents") or []
+        count = payload.get("document_count")
+        try:
+            count = len(documents) if count is None else int(count)
+        except (TypeError, ValueError):
+            return "insufficient"
+        if count == 0:
+            return "unavailable"
+        if not goal:
+            return "insufficient"
+        # Missing or malformed host fields are not confirmation. Only an explicit
+        # completion_eligible=true with unsupported_requirements=false may be proposed.
+        if (
+            goal.get("unsupported_requirements") is not False
+            or goal.get("completion_eligible") is not True
+        ):
+            return "insufficient"
+        try:
+            minimum = goal.get("minimum_sources")
+            if isinstance(minimum, bool) or not isinstance(minimum, int) or minimum < 1:
+                return "insufficient"
+        except (TypeError, ValueError):
+            return "insufficient"
+        terms = goal.get("required_terms")
+        if not isinstance(terms, list) or any(not isinstance(term, str) for term in terms):
+            return "insufficient"
+        text = "\n".join(str(document.get("text") or "") for document in documents)
+        if count >= minimum and all(term in text for term in terms if term):
+            return "complete"
+        return "insufficient"
+
+    @staticmethod
+    def _rejected_complete_artifacts(messages):
+        """Find artifacts from the completed call rejected by the host tool feedback.
+
+        This is derived from the task's own message transcript, not shared mutable state,
+        so concurrent tasks and recovery/replay cannot borrow another task's evidence.
+        """
+        last = messages[-1]
+        call_id = getattr(last, "tool_call_id", None)
+        if not call_id:
+            return None
+        for message in reversed(messages[:-1]):
+            for call in getattr(message, "tool_calls", []) or []:
+                if call.get("id") != call_id or call.get("name") != "submit_rag_result":
+                    continue
+                args = call.get("args") or {}
+                artifacts = args.get("artifact_ids") or []
+                if (
+                    args.get("outcome") == "complete"
+                    and isinstance(artifacts, list)
+                    and artifacts
+                    and all(isinstance(item, str) for item in artifacts)
+                ):
+                    return artifacts
+                return None
+        return None
+
+    @staticmethod
+    def _submit(artifact_ids, outcome, turn):
+        return AIMessage(
+            content="",
+            tool_calls=[
+                {
+                    "id": "submit_" + str(turn),
+                    "name": "submit_rag_result",
+                    "args": {"artifact_ids": artifact_ids, "outcome": outcome},
+                }
+            ],
+            usage_metadata={"input_tokens": 0, "output_tokens": 0, "total_tokens": 0},
+        )
+
     async def respond(self, messages, tools):
         await asyncio.sleep(0)  # Real cooperative scheduling; no blocking provider call.
         system = messages[0].content
@@ -347,30 +460,21 @@ class FakeTransport:
         last = messages[-1]
         if last.type == "tool":
             payload = json.loads(last.content)
+            if payload.get("error"):
+                rejected = self._rejected_complete_artifacts(messages)
+                if rejected is not None:
+                    # The host rejected a complete claim. Keep the same evidence and
+                    # submit insufficient; never retry complete or publish a rejection.
+                    return self._submit(rejected, "insufficient", len(messages))
             if payload.get("artifact_refs"):
+                artifact_ids = [r["artifact_id"] for r in payload["artifact_refs"]]
                 if any(t["function"]["name"] == "submit_rag_result" for t in tools):
-                    return AIMessage(
-                        content="",
-                        tool_calls=[
-                            {
-                                "id": "submit_" + str(len(messages)),
-                                "name": "submit_rag_result",
-                                "args": {
-                                    "artifact_ids": [
-                                        r["artifact_id"] for r in payload["artifact_refs"]
-                                    ],
-                                    "outcome": "unavailable"
-                                    if payload.get("document_count") == 0
-                                    else "insufficient",
-                                },
-                            }
-                        ],
-                        usage_metadata={"input_tokens": 0, "output_tokens": 0, "total_tokens": 0},
-                    )
+                    outcome = self._rag_outcome(payload, self._host_goal(system))
+                    return self._submit(artifact_ids, outcome, len(messages))
                 return AIMessage(
                     content=json.dumps(
                         {
-                            "artifact_ids": [r["artifact_id"] for r in payload["artifact_refs"]],
+                            "artifact_ids": artifact_ids,
                             "outcome": "unavailable"
                             if payload.get("document_count") == 0
                             else "complete",
@@ -387,7 +491,13 @@ class FakeTransport:
             proposal = self.client.generate(SQLProposal, system=SQL_SYSTEM, user=context)
             name, args = "query_database", {"sql": proposal.sql}
         else:
-            name, args = "search_documents", {"query": question[:512], "top_k": 3}
+            name, args = (
+                "search_documents",
+                {
+                    "query": self._host_first_query(tools, question[:512]),
+                    "top_k": 3,
+                },
+            )
         return AIMessage(
             content="",
             tool_calls=[{"id": call_id, "name": name, "args": args}],
