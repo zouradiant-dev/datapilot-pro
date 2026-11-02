@@ -77,6 +77,8 @@ async def execute_one(settings, store, run_id, *, transport=None, fault=None, in
                 settings = current
                 store.check_host_settings(settings)
                 service = ProductService(current, store)
+                if row["action"] != "cancel" and service.admission.enabled:
+                    service.admission.check_run(run_id)
                 p = row["payload"]
                 backend = Backend(
                     settings.runtime_database_url.get_secret_value(), run_id, store.policy.owner

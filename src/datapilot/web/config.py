@@ -50,6 +50,8 @@ class HostPolicy(BaseModel):
     ttl_seconds: int = Field(default=86400, ge=60, le=604800)
     telemetry: str = "off"
     rag_embedding_profile: Literal["qwen3-cpu-v1", "qwen3-cuda-fp16-v1"] | None = None
+    smoke_admission_file: Path | None = None
+    smoke_admission_key_env: str = "DATAPILOT_SMOKE_ADMISSION_KEY"
 
     def object_path(self, ref):
         import re
@@ -73,7 +75,12 @@ def load_policy(path: Path | None = None):
     path = Path(path or os.environ.get("DATAPILOT_WEB_HOST_FILE", ROOT / "artifacts/web/host.json"))
     if path.is_symlink() or path.stat().st_size > 16384:
         raise ValueError("Invalid local host policy file")
-    return HostPolicy.model_validate_json(path.read_bytes())
+    policy = HostPolicy.model_validate_json(path.read_bytes())
+    if policy.smoke_admission_file is not None and not policy.smoke_admission_file.is_absolute():
+        policy = policy.model_copy(
+            update={"smoke_admission_file": (path.parent / policy.smoke_admission_file).resolve()}
+        )
+    return policy
 
 
 def bootstrap(path: Path, *, api_host="127.0.0.1:8000", ui_origin="http://127.0.0.1:8501"):

@@ -618,9 +618,14 @@ class ChatService:
                 if original["payload_hash"] != digest(payload):
                     deny("RECOVERY_VERSION")
                 return {"schema_version": "api-v1", "run_id": current["run_id"], "accepted": True}
+            existing, case, _ = self.product.admission.reserve(conn, payload, message_id)
+            if existing:
+                return {"schema_version": "api-v1", "run_id": existing, "accepted": True}
             ack = self.store.command(
                 "chat-run-" + message_id, "create", payload, payload=payload, conn=conn
             )
+            if case is not None:
+                self.product.admission.attach(conn, case["case_id"], ack["run_id"])
             execute(
                 conn,
                 "UPDATE execution.web_messages SET run_id=:r "
@@ -666,9 +671,16 @@ class ChatService:
                 deny("GOAL_STALE", "合同已替换、拒绝或过期")
             event = self._event(conn, current, "confirmed", actor)
             bound = bind_payload(s, event)
+            existing, case, _ = self.product.admission.reserve(
+                conn, bound, current["message_id"], digest(s)
+            )
+            if existing:
+                return {"schema_version": "api-v1", "run_id": existing, "accepted": True}
             ack = self.store.command(
                 "chat-run-" + current["message_id"], "create", bound, payload=bound, conn=conn
             )
+            if case is not None:
+                self.product.admission.attach(conn, case["case_id"], ack["run_id"])
             execute(
                 conn,
                 "UPDATE execution.web_messages SET run_id=:r "

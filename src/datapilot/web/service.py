@@ -20,6 +20,7 @@ from datapilot.rag.contracts import CorpusPin, RagScope, Target
 from datapilot.reporting.contracts import DocumentFact, DocumentGoal, ReportScope
 from datapilot.runtime.mcp_client import dataset_session
 from datapilot.semantics.registry import RegistryStore
+from datapilot.web.admission import AdmissionGate
 from datapilot.web.config import private_directory
 from datapilot.web.contracts import CitationView, ErrorInfo, MetricFact, ReportView, TaskView
 from datapilot.web.store import deny
@@ -174,6 +175,7 @@ class ProductService:
     def __init__(self, settings, store):
         self._settings, self.store, self.policy = settings, store, store.policy
         self._host_bound = False
+        self.admission = AdmissionGate(self.policy, store, settings)
 
     @property
     def settings(self):
@@ -184,6 +186,7 @@ class ProductService:
         if self._host_bound:
             self.store.publish_host_settings(value)
         self._settings = value
+        self.admission.update_settings(value)
 
     def bind_host_settings(self):
         self.store.publish_host_settings(self.settings)

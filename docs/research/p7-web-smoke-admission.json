@@ -1,0 +1,314 @@
+{
+  "schema": "web-smoke-admission/v1",
+  "campaign_id": "p7-fresh-web-smoke-v1",
+  "created_at": "2026-11-02",
+  "status": {
+    "minimal_admission_control": "PASS",
+    "persistent_idempotency_budget": "PASS",
+    "business_definitions": "PENDING",
+    "goal_execution_approval": "PENDING",
+    "final_source_full_ci": "NOT_RUN",
+    "ready_for_live_authorization": "NO",
+    "paid_model_calls": 0,
+    "live_smoke": "NOT_RUN"
+  },
+  "baseline": {
+    "git_head": "2f71dcb346cc527d0dd39bb5293029c2fe16ae92",
+    "remote_head": "2f71dcb346cc527d0dd39bb5293029c2fe16ae92",
+    "ci_run": 41383487439,
+    "ci_conclusion": "success",
+    "ci_scope": "old source; does not cover admission implementation",
+    "old_ci_counts": {
+      "3.11": {
+        "collected": 1730,
+        "integration": 388,
+        "nonintegration": 1342
+      },
+      "3.13": {
+        "collected": 1730,
+        "integration": 388,
+        "nonintegration": 1342
+      }
+    }
+  },
+  "blocker_reclassification": {
+    "technical_pre_execution": "implemented minimal admission for 3 cases, per-case one Run, 3-run cap, expiry/STOP, permit signature, restart persistence, approval/worker recheck",
+    "business_confirmation": "pending exact SemanticDraft/MetricDraft and Goal contracts",
+    "execution_approval": "pending per-Run browser approval",
+    "post_execution_reconciliation": "not a pre-execution blocker; no bill exists and no Live call was made"
+  },
+  "mechanisms_reused": [
+    "HostPolicy trusted host file",
+    "WebStore/Outbox and transaction owner lock",
+    "web_messages request/run linkage and idempotency",
+    "Web worker execute_one and original run_durable",
+    "DurableLedger/Journal/Manifest/recovery checks",
+    "existing Web session/Host/Origin/CSRF",
+    "original Goal launch and /tasks/{id}/approve separation"
+  ],
+  "changes": [
+    {
+      "file": "src/datapilot/web/admission.py",
+      "new": true,
+      "purpose": "permit validation, case matching, reserve/attach/check_run"
+    },
+    {
+      "file": "migrations/versions/0009_web_smoke_admission.py",
+      "new": true,
+      "purpose": "persistent one-row-per-case admission table and web grants"
+    },
+    {
+      "file": "src/datapilot/web/config.py",
+      "purpose": "optional HostPolicy smoke admission path/key env; normal hosts unchanged"
+    },
+    {
+      "file": "src/datapilot/web/service.py",
+      "purpose": "construct AdmissionGate and update it with bound settings"
+    },
+    {
+      "file": "src/datapilot/web/chat.py",
+      "purpose": "reserve/attach admission in existing launch transactions"
+    },
+    {
+      "file": "src/datapilot/web/app.py",
+      "purpose": "startup permit validation, direct-task block, approve/resume recheck"
+    },
+    {
+      "file": "src/datapilot/web/worker.py",
+      "purpose": "worker recheck before model execution; cancel remains allowed"
+    },
+    {
+      "file": ".github/workflows/test.yml",
+      "purpose": "planned counts 1744/402/1342; no logic change"
+    },
+    {
+      "file": "tests/test_web_smoke_admission.py",
+      "new": true,
+      "purpose": "14 real-PG admission/idempotency/budget/expiry tests"
+    }
+  ],
+  "new_state_necessity": {
+    "table": "execution.web_smoke_admissions",
+    "why": "one durable row per owner/case is required to prevent a failed/new-message retry from creating a second Run after restart; existing web_requests has no owner+case uniqueness and retention can retire it",
+    "columns": [
+      "owner,case_id PK",
+      "permit_sha256/freeze_sha256 for revocation/drift",
+      "request_sha256/message_id for same-request idempotency",
+      "goal_contract_sha256 for audit binding",
+      "run_id UNIQUE for one Run per case",
+      "binding JSONB for exact scope audit",
+      "admitted_at/expires_at for campaign bound"
+    ],
+    "no_new_ledger": "three admitted Runs x original per-Run 8 calls/18,000 units is the 24/54,000 global ceiling; no second global budget ledger"
+  },
+  "admission_semantics": {
+    "permit_trust": "only the trusted operator starts the private HostPolicy with smoke_admission_file; the permit is HMAC-signed with DATAPILOT_SMOKE_ADMISSION_KEY, which is not in the host file, browser, model or MCP env; approved_by_role and source approval ref are inside the signed body",
+    "one_run_per_case": "PRIMARY KEY(owner,case_id); second message for same case rejected; failed case cannot be retried with a new key",
+    "same_request_retry": "same request SHA + message returns the original run; no new command",
+    "fourth_or_replacement": "only exactly 3 signed cases match; fourth request/other dataset/version/corpus rejected",
+    "owner_scope": "owner, question SHA, metric/semantic/dataset, full window, report/rag policy, corpus/index/document and required-fact bindings checked against payload",
+    "expiry_stop": "permit expiry and STOP file checked on every gate; permit hash change rejects existing Run; campaign 1800s is shared from min(admitted_at) for the permit",
+    "restart": "admission row is committed with the original Web transaction; restart re-reads the row and permit",
+    "unknown": "existing run/ledger unknown-outcome handling remains; admission never creates a replacement Run",
+    "normal_fake": "gate disabled when smoke_admission_file is absent; existing Fake tests pass",
+    "limits": "per-Run wall-clock 180s is an authorization/stop condition, not a hard process-kill wall clock; existing 30s provider timeout and step/SQL limits remain"
+  },
+  "tests": {
+    "admission_311": "14 passed",
+    "admission_313": "14 passed",
+    "normal_web_311": "15 passed, 18 skipped",
+    "normal_web_313": "15 passed, 18 skipped",
+    "normal_pg_311": "1 passed",
+    "unknown_311": "1 passed",
+    "unknown_313": "1 passed",
+    "collect_311": {
+      "total": 1744,
+      "integration": 402,
+      "nonintegration": 1342
+    },
+    "collect_313": {
+      "total": 1744,
+      "integration": 402,
+      "nonintegration": 1342
+    },
+    "initial_failure_record": "artifacts/p7/fresh-web-smoke-v1/private/failures/admission-initial.txt"
+  },
+  "business_definitions": {
+    "status": "PENDING",
+    "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+    "dataset_version": 1,
+    "source_sha256": "dd197a51b949a0e19f38eae9583215cc5c4a824c4a2963cd7e58d29b9f095c6a",
+    "row_count": 6,
+    "distinct_invoice_ids": 6,
+    "window": {
+      "start": "2026-09-01",
+      "end_exclusive": "2026-10-01"
+    },
+    "paid_cny": "803.35",
+    "currencies": [
+      "CNY",
+      "USD"
+    ],
+    "statuses": [
+      "paid",
+      "unpaid"
+    ],
+    "mapping": {
+      "record_id": "invoice_id",
+      "amount": "amount_cents",
+      "invoice_date": "invoice_date",
+      "payment_status": "payment_status",
+      "currency": "currency",
+      "grain": [
+        "invoice_id"
+      ],
+      "amount_storage": "minor",
+      "currency_filter": "currency='CNY'",
+      "paid_values": [
+        "paid"
+      ],
+      "coverage_start": "2026-09-01",
+      "coverage_end_exclusive": "2026-10-01",
+      "history_complete": false
+    },
+    "semantic_draft": {
+      "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+      "dataset_version": 1,
+      "domain_version": "saas-1",
+      "entities": [
+        {
+          "entity": "invoices",
+          "table_id": "table_1",
+          "fields": {
+            "record_id": "invoice_id",
+            "amount": "amount_cents",
+            "invoice_date": "invoice_date",
+            "payment_status": "payment_status",
+            "currency": "currency"
+          },
+          "grain": [
+            "invoice_id"
+          ],
+          "coverage_start": "2026-09-01",
+          "coverage_end_exclusive": "2026-10-01",
+          "history_complete": false,
+          "subscription_identity": "unknown",
+          "amount_storage": "minor",
+          "currency_constant": null,
+          "timezone": "UTC",
+          "null_policy": "reject_required"
+        }
+      ]
+    },
+    "semantic_draft_sha256": "087f8470a7767a63e02adcef3267d80c5676f9510101d346a4b10819dabde61e",
+    "metric_draft": {
+      "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+      "dataset_version": 1,
+      "semantic_version": 1,
+      "metric_id": "paid_invoice_revenue",
+      "policy": "saas_metrics_v1",
+      "currency": "CNY",
+      "paid_values": [
+        "paid"
+      ],
+      "churn_values": [
+        "churned"
+      ],
+      "non_churn_end_values": [
+        "downgraded",
+        "plan_change"
+      ],
+      "feature": null
+    },
+    "metric_draft_sha256": "e143653681bff867e8fb68f69a4370cf092348bc7dee00b4ac308f16e0dae7ed",
+    "approval_checklist": [
+      "Confirm invoices entity mapping for record_id/invoice_date/amount/payment_status/currency",
+      "Confirm amount_cents is minor CNY (divide by 100 for exact CNY)",
+      "Confirm paid_values=['paid'] and currency=CNY",
+      "Confirm coverage [2026-09-01, 2026-10-01) and no hidden rows",
+      "Confirm Metric paid_invoice_revenue v1 under the new dataset/semantic version",
+      "Confirm all three Goal contracts and execute approvals separately in the browser"
+    ],
+    "confirmed": false,
+    "no_confirm_calls": true
+  },
+  "goal_approval": {
+    "rag_only_conversation_id": "d4d07c6f-7f5e-406c-b8b2-073ac203075a",
+    "rag_only_message_id": "94c80f8e-7889-4313-b297-27c0bb8f79ec",
+    "rag_only_status": "pending_confirmation",
+    "sql_sql_rag": "cannot be created until semantic/metric confirmation",
+    "execution_approval": "pending per-Run browser approval"
+  },
+  "freeze": {
+    "parent_freeze_id": "p7-fresh-web-smoke-v1-6bf94e733bd7",
+    "parent_freeze_sha256": "6bf94e733bd7804123126d55eb34c3e856353ac3c363bf8cbe9dbc74d37af925",
+    "new_freeze_id": "p7-fresh-web-smoke-admission-v1-483bc675998f",
+    "new_freeze_sha256": "483bc675998fa4c2e6c2df4a9c95b972c2c05b064f9c2768cd5e52a7a858a841",
+    "source_manifest_sha256": "e8c8a20526572a0ff82d7c14759862ed92bcc6211a95d34ae7b1b7fdd87b9ba2",
+    "admission_template_sha256": "d3008a6a34408717dcb94cfeb10a2c28a89afbbb194ea184ed0e7b1f29a34ba6",
+    "candidate_definitions_sha256": "f578927d62d067eb823b092ccd5c1bc341ae3c88d099a9fce1bb7925919f5c14",
+    "cases_sha256": "4ca243d70d5b90c5c07c00793efe2dc8e4eb0f0077279f3f263f656a3f27113d",
+    "gold_sha256": "26056d43ed34aa591e0a8d4a59b2e3d26d078369a4b9d5464e74cff993c98df2",
+    "base_commit": "2f71dcb346cc527d0dd39bb5293029c2fe16ae92"
+  },
+  "ci_plan": {
+    "workflow_updated_to": {
+      "planned_tests": 1744,
+      "planned_pg_tests": 402,
+      "planned_nonintegration_tests": 1342
+    },
+    "expected": {
+      "3.11": {
+        "collected": 1744,
+        "nonintegration": 1342,
+        "integration": 402,
+        "integration_passed": 339,
+        "skipped": 63,
+        "failed": 0,
+        "errors": 0
+      },
+      "3.13": {
+        "collected": 1744,
+        "nonintegration": 1342,
+        "integration": 402,
+        "integration_passed": 339,
+        "skipped": 63,
+        "failed": 0,
+        "errors": 0
+      }
+    },
+    "not_run": true,
+    "requires_new_ci": "Yes; CI #29 is old source"
+  },
+  "whitelist": [
+    ".github/workflows/test.yml",
+    "migrations/versions/0009_web_smoke_admission.py",
+    "src/datapilot/web/admission.py",
+    "src/datapilot/web/config.py",
+    "src/datapilot/web/service.py",
+    "src/datapilot/web/chat.py",
+    "src/datapilot/web/app.py",
+    "src/datapilot/web/worker.py",
+    "tests/test_web_smoke_admission.py",
+    "docs/research/p7-web-smoke-admission.md",
+    "docs/research/p7-web-smoke-admission.json"
+  ],
+  "paid_authorization_steps": [
+    "Owner approves SemanticDraft/MetricDraft exactly; operator uses existing /semantics/confirm and /metrics/confirm.",
+    "Owner confirms RAG/SQL/SQL+RAG Goal contracts in browser.",
+    "Start Web live with max_parallel_workers=1 and a private HostPolicy smoke_admission_file; seal the one-shot permit with the operator key after approving the exact text.",
+    "Owner gives explicit one-shot paid authorization; create the permit with authorized=true, expiry, freeze and cases.",
+    "Run only the three page-driven cases, with per-Run execution approval; do not use API approve fallback.",
+    "Reconcile actual provider usage/bill after execution; unknown remains conservative."
+  ],
+  "remaining": "Business definitions/Goal confirmation pending; final source full CI not run; per-Run 180s hard wall-clock not enforced (campaign 1800s from the first admission and permit expiry are).",
+  "gates": {
+    "minimal_admission_control": "PASS",
+    "persistent_idempotency_budget": "PASS",
+    "business_definitions": "PENDING",
+    "goal_execution_approval": "PENDING",
+    "final_source_full_ci": "NOT_RUN",
+    "ready_for_live_authorization": "NO",
+    "paid_model_calls": 0
+  }
+}

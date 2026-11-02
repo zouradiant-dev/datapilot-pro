@@ -56,6 +56,7 @@ def create_app(*, policy=None, settings=None, dispatch=True, policy_file=None):
     store = WebStore(management_url("web"), policy)
     service = ProductService(settings, store)
     service.bind_host_settings()
+    service.admission.validate()
     store.settings_provider = lambda: service.settings
 
     @asynccontextmanager
@@ -312,6 +313,11 @@ def create_app(*, policy=None, settings=None, dispatch=True, policy_file=None):
 
     @app.post("/api/v1/tasks", response_model=Acknowledgement)
     def create(request: CreateTask, idempotency_key: str = Header(...)):
+        if service.admission.enabled:
+            deny(
+                "SMOKE_GOAL_CONFIRMATION_REQUIRED",
+                "Smoke runs must use a confirmed Web Goal admission",
+            )
         if request.documents:
             deny("GOAL_CONFIRMATION_REQUIRED", "文档任务须通过对话中的完整有限合同确认")
         payload = run_async(service.task_payload(request))
@@ -343,6 +349,8 @@ def create_app(*, policy=None, settings=None, dispatch=True, policy_file=None):
         if action not in {"approve", "resume", "cancel"}:
             deny("WEB_ACTION", "Unsupported task action")
         row = store.run(str(id_))
+        if action in {"approve", "resume"} and service.admission.enabled:
+            service.admission.check_run(str(id_))
         if action != "cancel":
             run_async(service.authorize_run(str(id_)))
         old = store.replay(idempotency_key, action, request.model_dump(mode="json"), str(id_))
