@@ -1,0 +1,111 @@
+{
+  "schema": "p7-final-50-delivery/v1",
+  "created_at": "2026-11-03T06:07:02.628085+00:00",
+  "manifest": "artifacts\\p7\\final-evaluation-v1\\total-50\\manifest.json",
+  "materialization": "artifacts\\p7\\final-evaluation-v1\\total-50\\materialization.json",
+  "launch_configs": "artifacts\\p7\\final-evaluation-v1\\total-50\\launch-configs.json",
+  "preflight_counts": {
+    "READY": 44,
+    "EXPECTED_HOST_REJECTION": 6
+  },
+  "ready": 44,
+  "blocked_cases": [],
+  "expected_host_rejection": [
+    {
+      "case_id": "p7-holdout-v3-018",
+      "lane": "sql_only",
+      "status": "EXPECTED_HOST_REJECTION",
+      "reason": "REPORT_SCOPE_INVALID",
+      "mapping": []
+    },
+    {
+      "case_id": "p7-holdout-v3-019",
+      "lane": "sql_only",
+      "status": "EXPECTED_HOST_REJECTION",
+      "reason": "VERSION_NOT_AUTHORIZED",
+      "mapping": []
+    },
+    {
+      "case_id": "p7-holdout-v3-039",
+      "lane": "rag_only",
+      "status": "EXPECTED_HOST_REJECTION",
+      "reason": "DOCUMENT_NOT_AUTHORIZED",
+      "mapping": []
+    },
+    {
+      "case_id": "p7-holdout-v3-059",
+      "lane": "sql_rag",
+      "status": "EXPECTED_HOST_REJECTION",
+      "reason": "DOCUMENT_NOT_AUTHORIZED",
+      "mapping": []
+    },
+    {
+      "case_id": "p7-holdout-v3-040",
+      "lane": "rag_only",
+      "status": "EXPECTED_HOST_REJECTION",
+      "reason": "DOCUMENT_NOT_AUTHORIZED",
+      "mapping": []
+    },
+    {
+      "case_id": "p7-holdout-v3-060",
+      "lane": "sql_rag",
+      "status": "EXPECTED_HOST_REJECTION",
+      "reason": "DOCUMENT_NOT_AUTHORIZED",
+      "mapping": []
+    }
+  ],
+  "budget": {
+    "schema": "p7-final-50-budget/v1",
+    "planned": 50,
+    "ready": 44,
+    "expected_host_rejection": 6,
+    "blocked": 0,
+    "runtime_runs": 44,
+    "provider_attempts": 352,
+    "token_units": 792000,
+    "peak_usd": "0.9504",
+    "rate": "18,000 token units/run at $1.2/M peak output; conservative",
+    "concurrency": 1,
+    "provider_timeout_seconds": 30,
+    "task_timeout_seconds": 180,
+    "campaign_timeout_seconds": 10800,
+    "sdk_retries": 0,
+    "outer_retries": 0,
+    "ordinary_failure": "continue",
+    "hard_stop": "unknown/safety/budget/identity/integrity",
+    "permit": "authorized=false template only",
+    "actual_bill": "not_reconciled"
+  },
+  "authorization_template": {
+    "schema": "p7-final-50-authorization-template/v1",
+    "authorized": false,
+    "approved_by_role": null,
+    "approval_ref": null,
+    "expires_at": null,
+    "campaign_id": "p7-final-50-v1",
+    "case_count": 50,
+    "runtime_runs": 44,
+    "provider_attempts": 352,
+    "token_units": 792000,
+    "estimated_peak_usd": "0.9504",
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "thinking": "disabled",
+    "temperature": 0,
+    "max_output_tokens": 1200,
+    "concurrency": 1,
+    "task_timeout_seconds": 180,
+    "campaign_timeout_seconds": 10800,
+    "retries": 0,
+    "note": "Template only; no permit created."
+  },
+  "formal_execution_command": "NOT_AVAILABLE: current entry is a control/probe harness; no 50-case formal executor is implemented",
+  "remaining_blockers": [
+    "formal 50-case Runner/Collector/Scorer CLI not implemented"
+  ],
+  "case_017": {
+    "status": "READY",
+    "dataset_version": 2,
+    "mapping": "usage metric planned v3 -> actual v1 with identical definition_sha256; Gold unchanged"
+  }
+}

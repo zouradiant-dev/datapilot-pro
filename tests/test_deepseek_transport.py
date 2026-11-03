@@ -194,7 +194,11 @@ async def test_deepseek_errors_are_redacted_charged_and_not_sdk_retried(monkeypa
 
     async def respond(request):
         requests.append(request)
-        return httpx.Response(status, json={"error": {"message": "private-provider-detail"}})
+        return httpx.Response(
+            status,
+            headers={"x-request-id": "req-mock-123"},
+            json={"error": {"message": "private-provider-detail"}},
+        )
 
     async with httpx.AsyncClient(transport=httpx.MockTransport(respond)) as http:
         monkeypatch.setattr(provider, "ChatOpenAI", partial(ChatOpenAI, http_async_client=http))
@@ -203,6 +207,8 @@ async def test_deepseek_errors_are_redacted_charged_and_not_sdk_retried(monkeypa
             await model.invoke(MESSAGES, [], "root")
     assert exc.value.error.code == "MODEL_ERROR"
     assert "private-provider-detail" not in exc.value.error.message
+    assert f"HTTP {status}" in exc.value.error.message
+    assert "request_id=req-mock-123" in exc.value.error.message
     assert len(requests) == 1 and model.ledger.snapshot().calls == 1
     assert model.ledger.snapshot().total_tokens > 0
     assert not model.ledger.snapshot().usage_complete and not model.ledger.pending

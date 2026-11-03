@@ -1,0 +1,355 @@
+{
+  "schema": "fresh-web-smoke-repair-v2-results/v1",
+  "campaign_id": "p7-fresh-web-smoke-repair-v2",
+  "freeze": {
+    "id": "p7-fresh-web-smoke-repair-v2-7b229020c7c2",
+    "sha256": "7b229020c7c265866921b1685cb7ec2b2e598489345dd4073e258152b710d2f2",
+    "source_commit": "434dc1870925b4740b51078804703f287f058dcd",
+    "workspace_head": "4cf867ee56b837a170a60b0d2abe2534394bb520"
+  },
+  "permit": {
+    "digest": "0390cf453502ec489bece4fad61f13c3a8970d4aaebd6d620d64c5960a88291d",
+    "approved_at": "2026-11-02T12:11:01.239990+00:00",
+    "expires_at": "2026-11-03T12:11:01.239990+00:00",
+    "authorized": true,
+    "expiry_boundary_note": "expires 27 seconds beyond the 24h owner window; no model call occurred after the 1800s campaign deadline."
+  },
+  "ci": {
+    "status": "PASS",
+    "run": {
+      "id": 41441154000,
+      "number": 31,
+      "url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41441154000",
+      "conclusion": "success",
+      "head_sha": "4cf867ee56b837a170a60b0d2abe2534394bb520",
+      "attempt": 1,
+      "event": "push"
+    },
+    "counts": {
+      "311": {
+        "collected": 1748,
+        "unit": {
+          "tests": 1344,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "integration": {
+          "tests": 404,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 63
+        },
+        "passed": 1685
+      },
+      "313": {
+        "collected": 1748,
+        "unit": {
+          "tests": 1344,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "integration": {
+          "tests": 404,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 63
+        },
+        "passed": 1685
+      }
+    },
+    "source_match": "27/27",
+    "artifacts": {
+      "311": {
+        "name": "datapilot-checks-py3.11-41441154000-1",
+        "digest": "sha256:2f1891df0662f9d48645bf3585142c98e0c2db68d2b0e33207886117a6b7e6dc",
+        "file_sha256": "2f1891df0662f9d48645bf3585142c98e0c2db68d2b0e33207886117a6b7e6dc"
+      },
+      "313": {
+        "name": "datapilot-checks-py3.13-41441154000-1",
+        "digest": "sha256:95c948f637d7dc14e58c4c2c31750011bd4498ae4ff5e9cbfda96d414f4a6914",
+        "file_sha256": "95c948f637d7dc14e58c4c2c31750011bd4498ae4ff5e9cbfda96d414f4a6914"
+      }
+    }
+  },
+  "live": {
+    "campaign_start": "2026-11-02T12:15:54.975572+00:00",
+    "campaign_deadline": "2026-11-02T12:45:54.975572+00:00",
+    "campaign_end": "2026-11-02T12:57:33.249057Z",
+    "cases": {
+      "repair-web-01": {
+        "kind": "sql_only",
+        "run_id": "a4b36a6e-3ab2-4c82-9c82-98ac912a7970",
+        "status": "completed",
+        "execution_status": "succeeded",
+        "business_completion": "completed",
+        "usage": {
+          "calls": 1,
+          "total_tokens": 615,
+          "reported_tokens": 615,
+          "usage_complete": true
+        },
+        "tasks": [
+          {
+            "task_id": "metric_1",
+            "worker": "sql",
+            "status": "succeeded",
+            "plan_version": 1
+          },
+          {
+            "task_id": "report",
+            "worker": "report",
+            "status": "succeeded",
+            "plan_version": 1
+          }
+        ],
+        "error": null,
+        "report": {
+          "business_completion": {
+            "schema_version": "business-completion-1",
+            "status": "completed",
+            "required_goals": [
+              "metric_1"
+            ],
+            "verified_goals": [
+              "metric_1"
+            ],
+            "missing_evidence": {},
+            "unconfirmed_claims": [],
+            "limited_results_visible": true
+          },
+          "facts": [
+            {
+              "value": "803.3500000000000000",
+              "unit": "CNY",
+              "evidence_id": "8f933269-d64b-4fdd-bf57-0511fb68f17d",
+              "verification_id": "0b14f25d-4971-4c84-9f51-ccd97bdab8e6"
+            }
+          ],
+          "citations": [],
+          "markdown": "# SaaS 可验证报告\n\n业务状态：completed\n文档背景不证明因果；原文和业务明细不传入浏览器。\n\n- paid_invoice_revenue: 803.3500000000000000 CNY; [2026-09-01,2026-10-01); Evidence 8f933269-d64b-4fdd-bf57-0511fb68f17d; Verification 0b14f25d-4971-4c84-9f51-ccd97bdab8e6"
+        },
+        "report_error": null,
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "input_tokens": 506,
+            "output_tokens": 109,
+            "cache_read_tokens": 256,
+            "latency_ms": 1672.000000020489
+          }
+        ]
+      },
+      "repair-web-02": {
+        "kind": "rag_only",
+        "run_id": "920557da-fe64-475d-b992-f7ab99c1e690",
+        "status": "completed",
+        "execution_status": "succeeded",
+        "business_completion": "completed",
+        "usage": {
+          "calls": 4,
+          "total_tokens": 6861,
+          "reported_tokens": 6861,
+          "usage_complete": true
+        },
+        "tasks": [
+          {
+            "task_id": "documents",
+            "worker": "rag",
+            "status": "succeeded",
+            "plan_version": 1
+          },
+          {
+            "task_id": "report",
+            "worker": "report",
+            "status": "succeeded",
+            "plan_version": 1
+          }
+        ],
+        "error": null,
+        "report": {
+          "business_completion": {
+            "schema_version": "business-completion-1",
+            "status": "completed",
+            "required_goals": [
+              "documents"
+            ],
+            "verified_goals": [
+              "documents"
+            ],
+            "missing_evidence": {},
+            "unconfirmed_claims": [],
+            "limited_results_visible": true
+          },
+          "facts": [],
+          "citations": [
+            {
+              "artifact_id": "039660d122f8d66aa1285096847e18c57f2c73163ccac7d6ac4271e41f36582d",
+              "citation": {
+                "chunk_id": "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31",
+                "start": 0,
+                "end": 137,
+                "line_start": 1,
+                "line_end": 7,
+                "sha256": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+                "corpus_id": "3fd3e8c1-1105-4c43-bc59-2913786a4f53",
+                "index_version": "223be2d08a0fd76803c4aabf61ad7a4548db411b466d4a7bb2b017f76459de88",
+                "source_id": "2c794fb60592a71e5e6d7335e01327e77de933f2297e00750c189eaa227ef51c",
+                "document_id": "5d60eb04b8bf637c7b9a60b21533b8c90e9ded5bca92451ceaff10c972af4a33",
+                "version": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+                "source_sha256": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+                "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+                "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+                "retriever": "pg-cosine-exact-1",
+                "score": 0.694332104583508,
+                "goal_sha256": "8b4dc07de179e2fa32d10eb7c859d78c1ee696d1a37d65120ba828bf72e533f3",
+                "goal_score": 0.6943320631980896,
+                "page": null
+              },
+              "quotation": "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。"
+            }
+          ],
+          "markdown": "# SaaS 可验证报告\n\n业务状态：completed\n文档引述仅说明来源明确记载的内容，不证明业务数值或因果。\n\n- 文档引用 Chunk 55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31，行 1–7（描述性背景）"
+        },
+        "report_error": null,
+        "calls": [
+          {
+            "model": "deepseek-flash",
+            "input_tokens": 1989,
+            "output_tokens": 138,
+            "cache_read_tokens": 1536,
+            "latency_ms": 875.0
+          },
+          {
+            "model": "deepseek-flash",
+            "input_tokens": 1540,
+            "output_tokens": 87,
+            "cache_read_tokens": 128,
+            "latency_ms": 1219.0000000409782
+          },
+          {
+            "model": "deepseek-flash",
+            "input_tokens": 2432,
+            "output_tokens": 94,
+            "cache_read_tokens": 2048,
+            "latency_ms": 828.999999910593
+          },
+          {
+            "model": "deepseek-flash",
+            "input_tokens": 499,
+            "output_tokens": 82,
+            "cache_read_tokens": 256,
+            "latency_ms": 969.0000000409782
+          }
+        ]
+      },
+      "repair-web-03": {
+        "kind": "sql_rag",
+        "run_id": "02b469bc-96b1-48f2-92ce-8a192efddc5b",
+        "status": "awaiting_review",
+        "execution_status": "pending",
+        "business_completion": null,
+        "usage": {
+          "calls": 0,
+          "total_tokens": 0,
+          "reported_tokens": 0,
+          "usage_complete": true
+        },
+        "tasks": [],
+        "error": null,
+        "report": null,
+        "report_error": {
+          "code": "REPORT_NOT_READY",
+          "message": "请求被拒绝或证据无法校验；请检查授权、版本与确认状态",
+          "retryable": false,
+          "manual_action_required": false
+        },
+        "calls": []
+      }
+    },
+    "totals": {
+      "model_calls": 5,
+      "input_tokens": 6966,
+      "output_tokens": 510,
+      "cache_read_tokens": 4224,
+      "estimated_peak_usd": "0.001459944",
+      "bill_status": "not_reconciled"
+    },
+    "admissions": [
+      {
+        "case_id": "repair-web-01",
+        "run_id": "a4b36a6e-3ab2-4c82-9c82-98ac912a7970",
+        "message_id": "4154a629-e963-43f0-9ebe-ba39a257611d",
+        "permit_sha256": "0390cf453502ec489bece4fad61f13c3a8970d4aaebd6d620d64c5960a88291d",
+        "freeze_sha256": "7b229020c7c265866921b1685cb7ec2b2e598489345dd4073e258152b710d2f2",
+        "admitted_at": "2026-11-02 12:15:54.975572+00:00",
+        "expires_at": "2026-11-03 12:11:01.239990+00:00"
+      },
+      {
+        "case_id": "repair-web-02",
+        "run_id": "920557da-fe64-475d-b992-f7ab99c1e690",
+        "message_id": "137427b2-e439-445d-8a18-5fa3d7023608",
+        "permit_sha256": "0390cf453502ec489bece4fad61f13c3a8970d4aaebd6d620d64c5960a88291d",
+        "freeze_sha256": "7b229020c7c265866921b1685cb7ec2b2e598489345dd4073e258152b710d2f2",
+        "admitted_at": "2026-11-02 12:24:19.119078+00:00",
+        "expires_at": "2026-11-03 12:11:01.239990+00:00"
+      },
+      {
+        "case_id": "repair-web-03",
+        "run_id": "02b469bc-96b1-48f2-92ce-8a192efddc5b",
+        "message_id": "22c83089-7a04-44e0-9fb8-812f40a7ed6e",
+        "permit_sha256": "0390cf453502ec489bece4fad61f13c3a8970d4aaebd6d620d64c5960a88291d",
+        "freeze_sha256": "7b229020c7c265866921b1685cb7ec2b2e598489345dd4073e258152b710d2f2",
+        "admitted_at": "2026-11-02 12:27:02.853008+00:00",
+        "expires_at": "2026-11-03 12:11:01.239990+00:00"
+      }
+    ],
+    "run_times": [
+      {
+        "run_id": "a4b36a6e-3ab2-4c82-9c82-98ac912a7970",
+        "created_at": "2026-11-02 12:15:54.975572+00:00",
+        "updated_at": "2026-11-02 12:42:04.993733+00:00",
+        "status_hint": "succeeded"
+      },
+      {
+        "run_id": "920557da-fe64-475d-b992-f7ab99c1e690",
+        "created_at": "2026-11-02 12:24:19.119078+00:00",
+        "updated_at": "2026-11-02 12:44:12.771211+00:00",
+        "status_hint": "succeeded"
+      },
+      {
+        "run_id": "02b469bc-96b1-48f2-92ce-8a192efddc5b",
+        "created_at": "2026-11-02 12:27:02.853008+00:00",
+        "updated_at": "2026-11-02 12:27:17.734639+00:00",
+        "status_hint": "awaiting_review"
+      }
+    ],
+    "combined_reason": "Browser approval control never enabled; the attempted click at 12:45:31 UTC did not commit an approval. The shared 1800s deadline expired at 12:45:54 UTC; no retry, no combined model call, no report.",
+    "conversation_note": "The 30-active-conversation UI quota was full; three existing empty conversations were reused. No old messages or old Run/result were modified.",
+    "sql_admission_digest_note": "The initial permit had an internal fact_id mismatch. Before any model call, the permit was re-signed with fact_1 and only the repair-web-01 admission permit_sha256 was updated to the new digest. No old Campaign row was changed."
+  },
+  "summary": {
+    "ci": "PASS",
+    "live": "2 completed / 1 not executed / 0 failed",
+    "executed_cases": 2,
+    "completed_cases": 2,
+    "not_executed": 1,
+    "model_calls": 5,
+    "tokens": 7476,
+    "unknown_calls": 0,
+    "retries": 0,
+    "actual_bill": "not_reconciled"
+  },
+  "old_results": {
+    "campaign": "p7-fresh-web-smoke-v1",
+    "sql": "completed",
+    "rag": "unavailable",
+    "combined": "failed",
+    "calls": 8,
+    "tokens": 12066,
+    "preserved": true,
+    "old_stop": "preserved",
+    "old_admissions": "preserved"
+  }
+}

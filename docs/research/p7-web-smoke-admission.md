@@ -224,3 +224,97 @@ A docs/research/p7-web-smoke-admission.json
 - 单 Run 180 秒硬 wall-clock 未实现；campaign 1800 秒与 permit expiry 已检查。
 - Permit 的 project-owner 批准引用由运维签名绑定，不是产品内审批工作流；产品内仍有独立 Goal/Execution 审批。
 - 未调用任何付费模型；未进入 Live/Holdout/Gate 3。
+
+
+## 13. 追加记录（2026-11-02）：业务定义登记、Goal 准备与 CI #30
+
+> 本节是推送后追加记录。第 1–12 节保留推送前 Freeze/报告快照；其中 `Business Definitions: PENDING`、`Final Source Full CI: NOT_RUN` 是当时的真实快照，不是当前状态。以下追加不修改代码、不重跑 CI、不 Commit/Push。
+
+### 13.1 业务定义登记（已获本次有限授权）
+
+数据集 `ea9efaf0-854f-5287-8d42-cca8ca0efaf1` v1，来源 SHA `dd197a51b949a0e19f38eae9583215cc5c4a824c4a2963cd7e58d29b9f095c6a`。
+
+通过原 `/api/v1/semantics/confirm` 与 `/api/v1/metrics/confirm` 接口登记；未直接修改 `reviewed` 状态：
+
+| 项目 | 值 |
+|---|---|
+| Semantic version | **1** |
+| Semantic registry definition SHA | `2da3a80810a17f679aa9c67e8d32d01772866cd4927651187c3e1dbf019f1364` |
+| Metric version | **1** |
+| Metric registry definition SHA | `f2178982580185dbd47994e8c6d9ff1e80656292c915efcb834be80f7ef6e9a1` |
+| Metric semantic SHA | `2da3a808…` |
+
+说明：`087f8470…` / `e1436536…` 是批准时使用的 **Draft SHA**；Registry 的 `definition_sha256` 是服务端 canonical digest，数值不同但登记后的 `definition` 内容与批准的 SemanticDraft/MetricDraft **逐字段相等**（已核对）。
+
+- 相同确认重复提交返回同一版本 1，没有重复登记。
+- 未声明 USD 换算、MRR、未批准指标；`history_complete=false`。
+- 803.35 CNY 仍只是独立预期，不用于反推或改口径。
+
+### 13.2 三条 Goal/候选合同准备（未确认、未启动 Run）
+
+| Case | Conversation | Message | 状态 |
+|---|---|---|---|
+| fresh-web-01 SQL-only | `6441c9ad-8247-459e-babc-184304ee7451` | `5943ab03-fc1b-44e3-a6ed-6f899cb94e4c` | 仅有 metric-only candidate draft；`run_id=null`，`missing=[]` |
+| fresh-web-02 RAG-only | `94a2c266-e00c-4afa-b6eb-df5836782044` | `f05694cb-1e77-4a62-b1e6-d6138ff5a192` | Goal `pending_confirmation`，`can_confirm=true`，`run_id=null` |
+| fresh-web-03 SQL+RAG | `2df8270b-e38e-4f33-80c2-00e77521e11e` | `d5d39f24-13a9-4a3d-a6e8-d85c273d70e1` | Goal `pending_confirmation`，`can_confirm=true`，`run_id=null` |
+
+- SQL-only 的现有产品路径不生成 document Goal v4 合同，只有 metric-only 候选；这是既有 Web 设计，不是本轮新增限制。其候选请求为 P3 指标 + 窗口，确认后仍需独立执行审批。
+- RAG-only contract SHA `880cccb5c6415311fcd4e3f32d2541a1e6e5fccb0f71f0ffabece4c60f872a53`；来源 `refund-policy-2026.md`，Corpus/Index/Source/Document 见 Goal JSON。
+- SQL+RAG contract SHA `eedd353f943253534a1a6671aa037e0a10ce21a73faa99a266ee5128eb505472`；指标与文档事实同时待确认。
+- 三条均未启动 Run；未批准 Goal；未批准执行；未调用模型。
+- 这些准备合同创建于当前 Fake Host 配置。最终 Live Host 将改为 `llm_mode=live` 且 `max_parallel_workers=1`，Host settings hash 会变化；**最终确认前需在最终 Live Host 下重新生成/审阅合同**，不能把当前 Fake 准备合同直接当作 Live 合同。
+
+完成条件（不变）：
+
+- SQL-only：803.35 CNY，P3 verified，窗口/单位/来源正确；
+- RAG-only：7 个工作日，指定原文/Chunk/行/版本可核验；
+- SQL+RAG：803.35 CNY + 7 个工作日原文，两者均由原 Host/Verifier/Report 判定，文档不证明收入因果。
+
+### 13.3 CI #30 实际 PASS（追加）
+
+| 项目 | 实际 |
+|---|---|
+| Actions | https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41416548492（#30） |
+| 触发 | Push，attempt 1；无额外 dispatch/rerun |
+| Commit | `cccd829f7240b9ff56b7d3817c7b716c39616108` |
+| 3.11 / 3.13 收集 | 各 **1744** = 1342 非集成 + 402 集成 |
+| 3.11 / 3.13 通过 | 各 **1681 passed**（1342 非集成 + 339 集成） |
+| 跳过 | 各 **63**（62 Qwen/CUDA + 1 Live opt-in） |
+| failed / errors | **0 / 0** |
+| 原 60 项 | **60/60 passed** |
+| 新增 admission 14 项 | **14/14 passed** |
+| 迁移 0009 | CI 日志确认 revision 0009 |
+| Artifact digest | 3.11 `45fe7572…`、3.13 `b8d84510…`，下载 ZIP SHA256 均一致 |
+| 源码对比 | 21 个 Freeze 文件对 CI `source-sha256` **21/21 匹配，0 mismatch** |
+
+验收记录：`artifacts/ci30/verification.json`（local-only）。
+
+原推送前 `Final Source Full CI: NOT_RUN` 快照保留；以上追加是当前实际 CI 结果。未新增提交、未重新推送、未修改 CI。
+
+### 13.4 最终确认与付费授权边界
+
+- SQL-only：在最终 Live Host 页面审阅候选请求，点击提交并等待人工审批；不预先批准。
+- RAG-only/SQL+RAG：在页面完成三项显式确认，生成 `awaiting_review`，再独立点击执行审批；不得用 API 审批兜底。
+- 一次性付费授权只能使用新 Freeze `p7-fresh-web-smoke-admission-v1-483bc675998f`，3 案例各一次；模型 `deepseek-flash`、Thinking disabled、无自动重试、每 Run 8/18,000、全局 24/54,000、并发 1。
+- 时间边界：Permit `expires_at` + 同一 Permit 最早 admission 起 **1800 秒 Campaign 截止**；到期/STOP 后不再派发，正在执行的本地任务只能原取消；**不保证 Provider 未收到/未计费**。
+- **单 Run 180 秒不是硬终止**；只有原 30 秒 provider timeout、step/SQL 限制与取消。最终授权必须明确接受此边界，或另行批准最小硬超时实现。
+- 本轮未创建有效 Permit，未调用 DeepSeek，未执行 Smoke、Holdout 或 Gate3。
+
+
+### 13.5 一次性 Live 授权草案（未生效）
+
+以下文本仅供负责人审批时使用；当前 `authorized=false`，不构成 Permit，也不授权任何付费调用。
+
+> 授权 DataPilot Pro Campaign `p7-fresh-web-smoke-v1` / Freeze `p7-fresh-web-smoke-admission-v1-483bc675998f`（SHA256 `483bc675998fa4c2e6c2df4a9c95b972c2c05b064f9c2768cd5e52a7a858a841`），仅执行 `fresh-web-01`、`fresh-web-02`、`fresh-web-03` 各一次。Dataset `ea9efaf0-854f-5287-8d42-cca8ca0efaf1` v1；Semantic v1 `2da3a808…`；Metric `paid_invoice_revenue` v1 `f2178982…`。
+>
+> Provider DeepSeek；端点 `https://api.deepseek.com`；模型 `deepseek-flash`；Thinking disabled；temperature 0；max_output_tokens 1200/attempt；SDK 与外层自动重试 0；并发 1（Host `max_workers=1` 且 `max_parallel_workers=1`）。
+>
+> 最多 3 个业务 Run；每 Run 8 次调用尝试 / 18,000 Token 计账单位；Campaign 24 次 / 54,000；实际费用上界按执行前官方费率重核，2026-11-02 峰值估算为 0.0648 USD，不是账单保证。
+>
+> 时间边界：Permit `expires_at` 生效；Campaign 从同一 Permit 下最早 admission 起 1800 秒截止。到期/STOP 后不再受理或派发新执行；正在执行的本地任务只能通过原取消路径处理；**不保证供应商已收到的请求未执行/未计费**。单 Run 180 秒不是硬终止，只有原 30 秒 provider timeout、step/SQL 限制与取消；负责人必须明确接受此边界或另行批准最小硬超时实现。
+>
+> 执行入口为真实 Web 页面；每条 Goal 由用户确认，每个 Run 另行执行审批，不使用 API 审批兜底。普通明确业务失败保留并停止后续派发；权限/来源/版本/预算/身份/unknown/恢复冲突/超时/费率变化立即停止。
+>
+> 本授权仅限上述 Campaign、Freeze、案例、模型、数据和预算；不适用其他 Campaign/模型/Prompt/Scorer/Holdout/Gate3，不重跑、不续跑、不挪用剩余额度。
+
+在最终 Live Host 下重新生成并审阅三份 Goal 后，才可签署 Permit。SQL-only 是 metric-only candidate（现有产品不生成 document Goal v4）；RAG-only/SQL+RAG 是真正的 document Goal 合同。

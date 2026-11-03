@@ -130,6 +130,7 @@ class DocumentQuery(DTO):
     corpus_ids: list[DatasetId] = Field(min_length=1, max_length=8)
     purpose: Literal["locate", "summary", "facts", "conclusion"] | None = None
     required_facts: list[FactRequirement] = Field(default_factory=list, max_length=8)
+    independent_facts: bool = False
 
     @model_validator(mode="after")
     def requirements(self):
@@ -137,6 +138,8 @@ class DocumentQuery(DTO):
             raise ValueError("State the facts to verify; user text is not proof")
         if self.required_facts and self.purpose not in {"facts", "conclusion"}:
             raise ValueError("Facts require an explicit fact/conclusion purpose")
+        if self.independent_facts and (self.purpose != "facts" or not self.required_facts):
+            raise ValueError("Independent facts require a facts purpose and facts")
         if len({f.fact_id for f in self.required_facts}) != len(self.required_facts):
             raise ValueError("Duplicate fact requirement")
         return self
@@ -148,6 +151,8 @@ class DocumentQuery(DTO):
             value.pop("purpose", None)
         if not self.required_facts:
             value.pop("required_facts", None)
+        if not self.independent_facts:
+            value.pop("independent_facts", None)
         return value
 
 
@@ -176,7 +181,7 @@ class CreateTask(DTO):
             refs = self.documents.metric_goals
             if len(set(refs)) != len(refs) or not set(refs) <= set(goals):
                 raise ValueError("Document associations must name actual metric goals")
-            if self.metrics and not refs:
+            if self.metrics and not refs and not self.documents.independent_facts:
                 raise ValueError("Combined tasks require explicit metric associations")
             if len(set(self.documents.corpus_ids)) != len(self.documents.corpus_ids):
                 raise ValueError("Repeated corpus")

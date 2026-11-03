@@ -36,3 +36,8 @@
 ## 待后续独立授权的范围
 
 新的 RAG/阈值专项、完整并发/TTL/维护/遥测矩阵、临时源码变异、L0–L4 成本消融及正式业务 Holdout 均未继续执行。原安全守卫、P3/P5B/P6A/B 未为评测弱化。未来需在同一冻结协议上明确剩余实验授权、版本和分母，不以本页部分结果替代完整验收。
+
+
+## P7 Final Evaluation Prep（2026-11-03）
+
+本轮不重跑旧故障矩阵，也不把旧结果提升为当前源码证据。已确认的历史结果：旧 Provider HTTP 测试曾 13 passed / 1 failed（畸形 usage）；随后统一回归将 Journal 缓存畸形响应类型化为 `RECOVERY_CORRUPT`，并移除对该项的 xfail（见 [统一回归](p7-unified-regression.md)）。旧隔离 PG 重启只完成 5 类只读断言且是显式 Fake 模型 double，不是完整实例矩阵。当前工作区源码的完整故障注入整表仍为 **NOT_RUN**，需新隔离 PG 与本地 Provider Mock；不以 `pg_terminate_backend` 代替全实例重启。对照、Final 50 部分封存与授权边界见 [最终评测计划](research/p7-final-evaluation-plan.md) 与 [封存与下一步](research/p7-final-50-closure-and-next.md)。

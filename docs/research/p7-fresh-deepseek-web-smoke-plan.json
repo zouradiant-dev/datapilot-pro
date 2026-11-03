@@ -1,0 +1,608 @@
+{
+  "schema": "fresh-deepseek-web-smoke-plan/v1",
+  "campaign_id": "p7-fresh-web-smoke-v1",
+  "created_at": "2026-11-02",
+  "status": {
+    "engineering_preflight": "BLOCKED",
+    "business_definitions": "PENDING",
+    "goal_confirmation": "PENDING",
+    "ready_for_live_authorization": "NO",
+    "paid_model_calls": 0,
+    "live_smoke": "NOT_RUN",
+    "independent_business_quality": "PENDING",
+    "new_source_full_ci": "NOT_REQUIRED"
+  },
+  "baseline": {
+    "git_head": "2f71dcb346cc527d0dd39bb5293029c2fe16ae92",
+    "remote_head": "2f71dcb346cc527d0dd39bb5293029c2fe16ae92",
+    "match": true,
+    "ci_run": 41383487439,
+    "ci_conclusion": "success",
+    "py311": {
+      "collected": 1730,
+      "nonintegration": 1342,
+      "integration": 388,
+      "passed": 1667,
+      "skipped": 63,
+      "failed": 0,
+      "errors": 0
+    },
+    "py313": {
+      "collected": 1730,
+      "nonintegration": 1342,
+      "integration": 388,
+      "passed": 1667,
+      "skipped": 63,
+      "failed": 0,
+      "errors": 0
+    }
+  },
+  "freeze": {
+    "freeze_id": "p7-fresh-web-smoke-v1-6bf94e733bd7",
+    "freeze_sha256": "6bf94e733bd7804123126d55eb34c3e856353ac3c363bf8cbe9dbc74d37af925",
+    "source_commit": "2f71dcb346cc527d0dd39bb5293029c2fe16ae92",
+    "source_manifest_sha256": "1548da51310d09e4f9ac4af854e456a1209a8dc218908bcef2d0729d7b0116fc",
+    "cases_sha256": "4ca243d70d5b90c5c07c00793efe2dc8e4eb0f0077279f3f263f656a3f27113d",
+    "gold_sha256": "26056d43ed34aa591e0a8d4a59b2e3d26d078369a4b9d5464e74cff993c98df2",
+    "definitions_sha256": "f578927d62d067eb823b092ccd5c1bc341ae3c88d099a9fce1bb7925919f5c14",
+    "budget_sha256": "e40301aacb8cccff3bf62f1aca16fc573f62ed6782999d3bcf84bd5553c16f82"
+  },
+  "web_live_audit": {
+    "mode_flag": "supported: datapilot-web launch --mode live",
+    "settings_mode": "live",
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "native_transport": "NativeTransport",
+    "gateway_ledger": "per-Run BudgetLedger + DurableLedger",
+    "mcp_env_has_api_key": false,
+    "sdk_max_retries": 0,
+    "fake_fallback": false,
+    "preapproval_model_calls": "none: ChatService is rule-only"
+  },
+  "config": {
+    "max_output_tokens": 1200,
+    "max_model_calls": 8,
+    "max_total_tokens": 18000,
+    "model_timeout_seconds": 30,
+    "max_parallel_workers_current": 2,
+    "max_parallel_workers_required": 1,
+    "campaign_cap_enforced": false,
+    "campaign_time_cap_enforced": false,
+    "permit_gate": false
+  },
+  "data": {
+    "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+    "dataset_version": 1,
+    "dataset_name": "smoke-fresh-202609",
+    "dataset_source_sha256": "dd197a51b949a0e19f38eae9583215cc5c4a824c4a2963cd7e58d29b9f095c6a",
+    "row_count": 6,
+    "corpus_id": "3fd3e8c1-1105-4c43-bc59-2913786a4f53",
+    "index_version": "223be2d08a0fd76803c4aabf61ad7a4548db411b466d4a7bb2b017f76459de88",
+    "document_name": "refund-policy-2026.md",
+    "document_source_sha256": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+    "chunk_id": "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31",
+    "line_span": [
+      1,
+      7
+    ],
+    "bge_model_sha256": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38",
+    "bge_tokenizer_sha256": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26",
+    "embedding_fixture": false
+  },
+  "cases": [
+    {
+      "case_id": "fresh-web-01",
+      "kind": "sql_only",
+      "question": "计算 2026-09-01 至 2026-10-01（结束不含）的已支付账单收入，只统计 payment_status=paid 且 currency=CNY 的账单，以 CNY 元返回。",
+      "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+      "dataset_version": 1,
+      "metric_id": "paid_invoice_revenue",
+      "metric_version": "PENDING CONFIRMATION",
+      "window": {
+        "start": "2026-09-01",
+        "end_exclusive": "2026-10-01"
+      },
+      "expected": {
+        "business_completion": "completed",
+        "value": "803.35",
+        "unit": "CNY",
+        "p3_verified": true,
+        "citations_required": false,
+        "causal_claim_required": false
+      },
+      "legal_refusal": [
+        "if metric mapping/definition is unconfirmed, return clarification/no run",
+        "if P3 rejects, do not substitute LLM arithmetic"
+      ],
+      "blocked_by": "semantic and metric confirmation for fresh dataset"
+    },
+    {
+      "case_id": "fresh-web-02",
+      "kind": "rag_only",
+      "question": "请依据授权文档说明企业版退款申请的审核时限，并给出原文定位；不要推断个人版。",
+      "conversation_id": "d4d07c6f-7f5e-406c-b8b2-073ac203075a",
+      "goal_message_id": "94c80f8e-7889-4313-b297-27c0bb8f79ec",
+      "goal_status": "pending_confirmation",
+      "corpus_id": "3fd3e8c1-1105-4c43-bc59-2913786a4f53",
+      "purpose": "facts",
+      "required_fact": {
+        "fact_id": "fact_1",
+        "description": "企业版退款申请的审核时限"
+      },
+      "expected": {
+        "business_completion": "completed",
+        "answer": "7 个工作日",
+        "citation_chunk_id": "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31",
+        "citation_line_span": "1-7",
+        "source_id": "2c794fb60592a71e5e6d7335e01327e77de933f2297e00750c189eaa227ef51c",
+        "p3_verified": "NA"
+      },
+      "legal_refusal": [
+        "if only personal 3-day statement is cited, not correct",
+        "if no authorized exact quote, unavailable/partial; do not invent",
+        "Goal confirmation and execution approval must both be explicit"
+      ],
+      "blocked_by": "Goal confirmation pending; execution approval not requested"
+    },
+    {
+      "case_id": "fresh-web-03",
+      "kind": "sql_rag",
+      "question": "计算 2026-09-01 至 2026-10-01（结束不含）的已支付账单收入（CNY），并依据授权退款政策原文说明企业版退款审核时限；不要把文档当作收入或因果证明。",
+      "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+      "dataset_version": 1,
+      "metric_id": "paid_invoice_revenue",
+      "metric_version": "PENDING CONFIRMATION",
+      "window": {
+        "start": "2026-09-01",
+        "end_exclusive": "2026-10-01"
+      },
+      "corpus_id": "3fd3e8c1-1105-4c43-bc59-2913786a4f53",
+      "purpose": "facts",
+      "required_fact": {
+        "fact_id": "fact_1",
+        "description": "企业版退款申请的审核时限"
+      },
+      "expected": {
+        "business_completion": "completed",
+        "value": "803.35",
+        "unit": "CNY",
+        "p3_verified": true,
+        "answer": "7 个工作日",
+        "citation_chunk_id": "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31",
+        "source_id": "2c794fb60592a71e5e6d7335e01327e77de933f2297e00750c189eaa227ef51c",
+        "causal_conclusion_verified": false
+      },
+      "legal_refusal": [
+        "if metric or fact fails verification, use partial/unavailable and expose missing requirement",
+        "do not convert document background into causal claim"
+      ],
+      "blocked_by": "semantic and metric confirmation plus Goal confirmation; execution approval not requested"
+    }
+  ],
+  "gold": {
+    "sql_only": {
+      "query": "SELECT COALESCE(SUM(amount_cents),0) FROM uploads.u_ea9efaf0854f52878d42cca8ca0efaf1_v1_t1 WHERE payment_status='paid' AND currency='CNY' AND invoice_date >= DATE '2026-09-01' AND invoice_date < DATE '2026-10-01'",
+      "result_cents": 80335,
+      "result": "803.35",
+      "unit": "CNY",
+      "excluded": [
+        "unpaid",
+        "currency != CNY",
+        "invoice_date >= 2026-10-01"
+      ],
+      "window": {
+        "start": "2026-09-01",
+        "end_exclusive": "2026-10-01"
+      }
+    },
+    "rag_only": {
+      "source_id": "2c794fb60592a71e5e6d7335e01327e77de933f2297e00750c189eaa227ef51c",
+      "document_id": "5d60eb04b8bf637c7b9a60b21533b8c90e9ded5bca92451ceaff10c972af4a33",
+      "corpus_id": "3fd3e8c1-1105-4c43-bc59-2913786a4f53",
+      "index_version": "223be2d08a0fd76803c4aabf61ad7a4548db411b466d4a7bb2b017f76459de88",
+      "source_sha256": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+      "chunk_id": "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31",
+      "line_start": 1,
+      "line_end": 7,
+      "quote_line": 3,
+      "quote": "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。",
+      "expected": "7 个工作日",
+      "distractors": [
+        "个人版退款申请须在 3 个工作日内完成审核。"
+      ],
+      "embedding_sha256": "882c137ae33ff7d60db2e8b1794b3161363c7072dfa84856dcbf306572ee8ae4"
+    }
+  },
+  "definitions": {
+    "status": "pending_user_approval",
+    "semantic_draft": {
+      "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+      "dataset_version": 1,
+      "domain_version": "saas-1",
+      "entities": [
+        {
+          "entity": "invoices",
+          "table_id": "table_1",
+          "fields": {
+            "record_id": "invoice_id",
+            "amount": "amount_cents",
+            "invoice_date": "invoice_date",
+            "payment_status": "payment_status",
+            "currency": "currency"
+          },
+          "grain": [
+            "invoice_id"
+          ],
+          "coverage_start": "2026-09-01",
+          "coverage_end_exclusive": "2026-10-01",
+          "history_complete": false,
+          "subscription_identity": "unknown",
+          "amount_storage": "minor",
+          "currency_constant": null,
+          "timezone": "UTC",
+          "null_policy": "reject_required"
+        }
+      ]
+    },
+    "semantic_draft_sha256": "087f8470a7767a63e02adcef3267d80c5676f9510101d346a4b10819dabde61e",
+    "metric_draft": {
+      "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+      "dataset_version": 1,
+      "semantic_version": 1,
+      "metric_id": "paid_invoice_revenue",
+      "policy": "saas_metrics_v1",
+      "currency": "CNY",
+      "paid_values": [
+        "paid"
+      ],
+      "churn_values": [
+        "churned"
+      ],
+      "non_churn_end_values": [
+        "downgraded",
+        "plan_change"
+      ],
+      "feature": null
+    },
+    "metric_draft_sha256": "e143653681bff867e8fb68f69a4370cf092348bc7dee00b4ac308f16e0dae7ed",
+    "approval_checklist": [
+      "Confirm invoices entity mapping for record_id/invoice_date/amount/payment_status/currency",
+      "Confirm amount_cents is minor CNY (divide by 100 for exact CNY)",
+      "Confirm paid_values=['paid'] and currency=CNY",
+      "Confirm coverage [2026-09-01, 2026-10-01) and no hidden rows",
+      "Confirm Metric paid_invoice_revenue v1 under the new dataset/semantic version",
+      "Confirm all three Goal contracts and execute approvals separately in the browser"
+    ]
+  },
+  "goal_confirmation": {
+    "rag_only": {
+      "conversation_id": "d4d07c6f-7f5e-406c-b8b2-073ac203075a",
+      "message_id": "94c80f8e-7889-4313-b297-27c0bb8f79ec",
+      "status": "pending_confirmation",
+      "contract_sha256": "ba277b5e2601e7163a90e3d4b2a94118968264b036d3fdfb0181e3058a703c84",
+      "can_confirm": true,
+      "purpose": "facts",
+      "required_fact": "企业版退款申请的审核时限"
+    },
+    "sql_only": "blocked until semantic/metric confirmation",
+    "sql_rag": "blocked until semantic/metric confirmation"
+  },
+  "preflight": {
+    "schema": "fresh-web-smoke-preflight/v1",
+    "checked_at": "2026-11-02T05:50:00Z",
+    "baseline": {
+      "git_head": "2f71dcb346cc527d0dd39bb5293029c2fe16ae92",
+      "remote_head": "2f71dcb346cc527d0dd39bb5293029c2fe16ae92",
+      "match": true,
+      "ci_run": 41383487439,
+      "ci_conclusion": "success",
+      "py311": {
+        "collected": 1730,
+        "nonintegration": 1342,
+        "integration": 388,
+        "passed": 1667,
+        "skipped": 63,
+        "failed": 0,
+        "errors": 0
+      },
+      "py313": {
+        "collected": 1730,
+        "nonintegration": 1342,
+        "integration": 388,
+        "passed": 1667,
+        "skipped": 63,
+        "failed": 0,
+        "errors": 0
+      }
+    },
+    "web_live_path": {
+      "mode_flag": "supported: datapilot-web launch --mode live",
+      "settings_mode": "live",
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "native_transport": "NativeTransport",
+      "gateway_ledger": "per-Run BudgetLedger + DurableLedger",
+      "mcp_env_has_api_key": false,
+      "sdk_max_retries": 0,
+      "fake_fallback": false,
+      "preapproval_model_calls": "none: ChatService is rule-only"
+    },
+    "config": {
+      "max_output_tokens": 1200,
+      "max_model_calls": 8,
+      "max_total_tokens": 18000,
+      "model_timeout_seconds": 30,
+      "max_parallel_workers_current": 2,
+      "max_parallel_workers_required": 1,
+      "campaign_cap_enforced": false,
+      "campaign_time_cap_enforced": false,
+      "permit_gate": false
+    },
+    "data": {
+      "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+      "dataset_version": 1,
+      "dataset_source_sha256": "dd197a51b949a0e19f38eae9583215cc5c4a824c4a2963cd7e58d29b9f095c6a",
+      "dataset_rows": 6,
+      "csv_sha256": "dd197a51b949a0e19f38eae9583215cc5c4a824c4a2963cd7e58d29b9f095c6a",
+      "corpus_id": "3fd3e8c1-1105-4c43-bc59-2913786a4f53",
+      "index_version": "223be2d08a0fd76803c4aabf61ad7a4548db411b466d4a7bb2b017f76459de88",
+      "document_source_sha256": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+      "embedding_fixture": false,
+      "bge_model_sha256": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38",
+      "bge_tokenizer_sha256": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26"
+    },
+    "gold": {
+      "sql_only": {
+        "value": "803.35",
+        "unit": "CNY",
+        "cents": 80335,
+        "method": "independent SQL SUM / 100 using Decimal"
+      },
+      "rag_only": {
+        "answer": "7 个工作日",
+        "chunk_id": "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31",
+        "line_start": 1,
+        "line_end": 7,
+        "quote": "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。"
+      }
+    },
+    "definitions": {
+      "status": "pending_user_approval",
+      "semantic_draft_sha256": "087f8470a7767a63e02adcef3267d80c5676f9510101d346a4b10819dabde61e",
+      "metric_draft_sha256": "e143653681bff867e8fb68f69a4370cf092348bc7dee00b4ac308f16e0dae7ed",
+      "confirmed": false
+    },
+    "goal_confirmation": {
+      "rag_only_conversation_id": "d4d07c6f-7f5e-406c-b8b2-073ac203075a",
+      "rag_only_message_id": "94c80f8e-7889-4313-b297-27c0bb8f79ec",
+      "rag_only_status": "pending_confirmation",
+      "rag_only_can_confirm": true,
+      "sql_and_combined": "blocked until definitions confirmed"
+    },
+    "safety": {
+      "new_campaign_runs_created": 0,
+      "paid_model_calls": 0,
+      "historical_holdout_rerun": false,
+      "historical_stop_touched": false,
+      "pending_unknown_resumed": false,
+      "permit_template_authorized": false
+    },
+    "checks": [
+      {
+        "name": "git baseline",
+        "status": "PASS"
+      },
+      {
+        "name": "CI #29 current source",
+        "status": "PASS"
+      },
+      {
+        "name": "Web live transport/gateway/ledger",
+        "status": "PASS"
+      },
+      {
+        "name": "credential isolation from MCP",
+        "status": "PASS"
+      },
+      {
+        "name": "fresh dataset/corpus pins",
+        "status": "PASS"
+      },
+      {
+        "name": "independent SQL/RAG Gold",
+        "status": "PASS"
+      },
+      {
+        "name": "semantic/metric definitions",
+        "status": "PENDING"
+      },
+      {
+        "name": "Goal confirmation",
+        "status": "PENDING"
+      },
+      {
+        "name": "campaign permit/global cap/time cap",
+        "status": "BLOCKED"
+      },
+      {
+        "name": "concurrency=1",
+        "status": "MISMATCH (default 2; env override available)"
+      }
+    ],
+    "blockers": [
+      "No Web-side one-shot permit/admission gate; 3-run, 24-call, 54k-token, 1800s campaign bounds are not technically enforced.",
+      "New dataset semantic mapping and Metric v1 are not user-confirmed; SQL-only and SQL+RAG candidates cannot be generated.",
+      "RAG-only Goal is pending confirmation; execution approval has not been requested.",
+      "Default max_parallel_workers=2; proposed concurrency=1 needs an explicit config override and freeze.",
+      "Fee is an estimate only; provider billing is not reconciled and must not be represented as a guarantee."
+    ],
+    "status": "BLOCKED",
+    "readiness": "NO"
+  },
+  "budget": {
+    "schema": "fresh-web-smoke-budget/v1",
+    "per_run": {
+      "max_model_calls": 8,
+      "max_token_units": 18000,
+      "max_output_tokens": 1200,
+      "model_timeout_seconds": 30,
+      "temperature": 0,
+      "thinking": "disabled",
+      "sdk_retries": 0,
+      "outer_retries": 0
+    },
+    "campaign": {
+      "max_runs": 3,
+      "max_calls": 24,
+      "max_token_units": 54000,
+      "concurrency_requested": 1,
+      "task_timeout_seconds": 180,
+      "campaign_timeout_seconds": 1800,
+      "sequential": true
+    },
+    "current_contract": {
+      "settings_max_model_calls": 8,
+      "settings_max_total_tokens": 18000,
+      "settings_max_output_tokens": 1200,
+      "settings_max_parallel_workers": 2,
+      "host_max_workers": 1,
+      "host_max_pending": 20,
+      "host_ttl_seconds": 86400,
+      "web_campaign_permit": false,
+      "web_global_call_cap": false,
+      "web_global_token_cap": false,
+      "web_campaign_timeout": false
+    },
+    "compatibility": {
+      "per_run_budget": "MATCH",
+      "output_token_cap": "MATCH",
+      "retries": "MATCH (SDK 0; existing bounded tool repair remains inside 8 calls)",
+      "concurrency": "MISMATCH default max_parallel_workers=2; planned env override=1 is available but not current config",
+      "campaign_calls_tokens": "NOT ENFORCED by Web",
+      "campaign_timeout": "NOT ENFORCED by Web",
+      "permit_gate": "ABSENT; no Web-side permit/campaign admission"
+    },
+    "cost": {
+      "provider": "DeepSeek",
+      "model": "deepseek-flash",
+      "official_pricing_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "retrieved_at": "2026-11-02",
+      "peak_usd_per_million": {
+        "cache_hit_input": 0.006,
+        "cache_miss_input": 0.3,
+        "output": 1.2
+      },
+      "off_peak_half": true,
+      "token_units_cap": 54000,
+      "worst_case_estimate_usd": "0.0648",
+      "basis": "54,000 token units x highest published output rate $1.2/1M; upper bound only, not a bill guarantee",
+      "not_reconciled": true
+    }
+  },
+  "fee": {
+    "official_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "retrieved_at": "2026-11-02",
+    "model_alias": "deepseek-flash",
+    "model_version_reported": "DeepSeek-V4.1-Flash-1017",
+    "peak_usd_per_million": {
+      "cache_hit_input": 0.006,
+      "cache_miss_input": 0.3,
+      "output": 1.2
+    },
+    "off_peak_half": true,
+    "estimate_usd_cap": 0.0648,
+    "basis": "54,000 token units x highest published output rate 1.2 USD/1M",
+    "reconciled": false
+  },
+  "authorization_template": {
+    "schema": "datapilot-web-smoke-authorization/v1",
+    "authorized": false,
+    "kind": "one-shot-web-smoke",
+    "campaign_id": "p7-fresh-web-smoke-v1",
+    "freeze_id": "p7-fresh-web-smoke-v1-6bf94e733bd7",
+    "freeze_sha256": "6bf94e733bd7804123126d55eb34c3e856353ac3c363bf8cbe9dbc74d37af925",
+    "case_ids": [
+      "fresh-web-01",
+      "fresh-web-02",
+      "fresh-web-03"
+    ],
+    "run_ids": [],
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "base_url": "https://api.deepseek.com",
+    "thinking": "disabled",
+    "temperature": 0,
+    "max_output_tokens_per_attempt": 1200,
+    "max_runs": 3,
+    "calls_per_run": 8,
+    "tokens_per_run": 18000,
+    "campaign_calls": 24,
+    "campaign_token_units": 54000,
+    "concurrency": 1,
+    "task_timeout_seconds": 180,
+    "campaign_timeout_seconds": 1800,
+    "sdk_retries": 0,
+    "outer_retries": 0,
+    "automatic_reruns": false,
+    "estimated_usd_cap": 0.0648,
+    "approved_by_role": null,
+    "source_user_authorization_ref": null,
+    "authorized_at": null,
+    "expires_at": null,
+    "stop_conditions": [
+      "permission/source mismatch",
+      "forged or unverifiable citation",
+      "False Completion",
+      "identity drift",
+      "budget/ledger anomaly",
+      "provider/network unknown outcome",
+      "recovery conflict",
+      "timeout above bounds",
+      "rate/price change",
+      "any unapproved data scope"
+    ],
+    "requires": {
+      "business_definition_confirmation": true,
+      "goal_confirmation_per_case": true,
+      "independent_execution_approval_per_case": true,
+      "host_permit_gate": true
+    },
+    "notes": "Template only. Not a permit. No paid call is authorized."
+  },
+  "authorization_request_text": "授权 DataPilot Pro Campaign `p7-fresh-web-smoke-v1` / Freeze `p7-fresh-web-smoke-v1-6bf94e733bd7`，仅执行 fresh-web-01、fresh-web-02、fresh-web-03 各一次，使用隔离 Dataset `ea9efaf0-854f-5287-8d42-cca8ca0efaf1` v1 / Corpus `3fd3e8c1-1105-4c43-bc59-2913786a4f53`。\nProvider DeepSeek，端点 https://api.deepseek.com，模型 deepseek-flash，thinking disabled，temperature 0，max_output_tokens 1200/attempt，SDK 与外层自动重试 0，并发 1。\n最多 3 个业务 Run；每 Run 最多 8 次模型调用尝试 / 18,000 Token 计账单位；Campaign 最多 24 次 / 54,000 单位；单任务 180 秒、Campaign 1800 秒；按 2026-11-02 官方峰值费率的估算费用上界 0.0648 USD，非实际账单保证。\n有效期：负责人批准后 2 小时，一次性；不重跑、不续跑、不挪用剩余额度。\n数据范围：仅上述合成 Dataset/Corpus、用户问题、授权文档片段、工具结果及审批/版本元数据；不发送其他 Dataset/Corpus、历史 Holdout/Gold、API Key、数据库凭据。\n执行入口：真实 Web 页面；目标确认与执行审批分离，均由页面真实点击完成，不使用 API 审批兜底。\n停止条件：权限/来源/版本/hash 异常、伪造引用、False Completion、身份漂移、预算/账本异常、Provider/网络未知结果、恢复冲突、超时或费率变化。unknown-outcome 保持保守预留，不自动重发。\n该授权仅适用于本 Campaign/Freeze/上述三条案例；不适用于其他模型、数据、Prompt、Scorer、Holdout、Gate 3 或后续阶段。",
+  "blockers": [
+    "No Web-side one-shot permit/admission gate; 3-run, 24-call, 54k-token, 1800s campaign bounds are not technically enforced.",
+    "New dataset semantic mapping and Metric v1 are not user-confirmed; SQL-only and SQL+RAG candidates cannot be generated.",
+    "RAG-only Goal is pending confirmation; execution approval has not been requested.",
+    "Default max_parallel_workers=2; proposed concurrency=1 needs an explicit config override and freeze.",
+    "Fee is an estimate only; provider billing is not reconciled and must not be represented as a guarantee."
+  ],
+  "minimal_next_steps": [
+    "Owner confirms the exact SemanticDraft and MetricDraft for the fresh dataset through the existing Registry/confirm endpoints; do not auto-confirm.",
+    "Owner confirms the RAG Goal contract and separately approves each execution in the page; SQL/SQL+RAG Goal contracts are created only after definitions are confirmed.",
+    "Add a minimal host-bound one-shot Web permit/admission gate (reuse existing Store/Outbox, no new runner/ledger) or obtain a written operational waiver with equivalent hard controls; current Web has no campaign cap/permit.",
+    "Freeze DATAPILOT_MAX_PARALLEL_WORKERS=1 for this campaign, re-publish host settings hash, and start Web in live mode only after approval.",
+    "Re-check official price and provider/model before the one and only execution; stop if changed or usage/budget becomes unknown."
+  ],
+  "gates": {
+    "browser_only_web_entry": "READY_TO_TEST (Fake path verified; Live needs approval)",
+    "paid_live_smoke": "NOT_RUN",
+    "independent_business_quality": "PENDING",
+    "deepseek_live_gate": "PENDING"
+  },
+  "live_boot_check": {
+    "host_owner": "smoke-livecheck",
+    "api_host": "127.0.0.1:8000",
+    "ui_origin": "http://127.0.0.1:8501",
+    "health": {
+      "status": "ready",
+      "mode": "live",
+      "durable": true,
+      "telemetry": "off"
+    },
+    "runs_created": 0,
+    "provider_calls": 0,
+    "fake_host_restored": true,
+    "checked_at": "2026-11-02T05:38:27.921540+00:00"
+  }
+}

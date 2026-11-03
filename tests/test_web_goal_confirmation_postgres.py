@@ -62,15 +62,41 @@ def host(portable_pg, tmp_path_factory):
         yield c, app, portable_pg, metric, response.json()
 
 
-def candidate(host, *, text=QUESTION, purpose="summary", facts=None, cid=None, supersedes=None):
-    c, _, _, _, corpus = host
+def candidate(
+    host,
+    *,
+    text=QUESTION,
+    purpose="summary",
+    facts=None,
+    cid=None,
+    supersedes=None,
+    independent=False,
+    metric=False,
+    corpus_id=None,
+    window=None,
+):
+    c, _, _, metric_record, corpus = host
     cid = cid or conversation(c)
     body = {
         "text": text,
-        "selection": {"corpus_ids": [corpus["corpus_id"]], "document_purpose": purpose},
+        "selection": {
+            "corpus_ids": [corpus_id or corpus["corpus_id"]],
+            "document_purpose": purpose,
+        },
     }
     if facts:
         body["selection"]["required_facts"] = facts
+    if independent:
+        body["selection"]["document_facts_independent"] = True
+    if metric:
+        record = metric_record["metrics"][0]
+        body["selection"].update(
+            dataset_id=record["dataset_id"],
+            dataset_version=record["dataset_version"],
+            metric_id=record["metric_id"],
+            metric_version=record["metric_version"],
+            window=window or {"start": "2025-10-01", "end_exclusive": "2025-11-01"},
+        )
     if supersedes:
         body["supersedes"] = supersedes
     m = request(c, f"/conversations/{cid}/messages", body)
@@ -211,6 +237,126 @@ def test_real_rag_completed_restart_and_confirmation_withdrawal(host):
         ).status_code
         == 403
     )
+
+
+def test_independent_document_facts_are_scoped_apart_from_metric(host):
+    combined = (
+        "计算 2026 年 9 月已支付账单收入（CNY），并依据授权退款政策原文说明企业版退款审核时限；"
+        "不要把文档当作收入或因果证明。"
+    )
+    quote = "已支付账单收入仅计入状态为paid的账单，以CNY整数分存储；"
+    cid, m = candidate(
+        host,
+        text=combined,
+        purpose="facts",
+        independent=True,
+        metric=True,
+        facts=[
+            {
+                "fact_id": "paid_rule",
+                "description": "已支付账单收入的计入规则",
+                "quotation": quote,
+            }
+        ],
+    )
+    request = m["goal_contract"]["review"]["request"]
+    assert request["question"] == combined
+    assert request["metrics"]
+    assert request["documents"]["question"].startswith("请依据授权文档核验以下事实：")
+    assert request["documents"]["question"] != request["question"]
+    assert request["documents"]["metric_goals"] == ["metric_1"]
+    assert request["documents"]["independent_facts"] is True
+    assert request["documents"]["required_facts"][0]["quotation"] == quote
+    assert m["goal_contract"]["can_confirm"] is True
+
+
+def test_independent_facts_full_path_completes(host):
+    c, app, settings, metric_record, _ = host
+    record = metric_record["metrics"][0]
+    quote = "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。"
+    combined = (
+        "计算 2025 年 10 月已支付账单收入（CNY），并依据授权退款政策原文说明企业版退款审核时限；"
+        "不要把文档当作收入或因果证明。"
+    )
+    refund = (
+        "公开合成退款政策：企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。"
+        "个人版退款申请须在 3 个工作日内完成审核。本文件仅用于工程验证。"
+    ).encode()
+    response = c.post(
+        f"/api/v1/datasets/{record['dataset_id']}/versions/{record['dataset_version']}/documents",
+        files={"file": ("refund-policy.md", refund)},
+        data={"reviewed": "true"},
+    )
+    assert response.status_code == 200, response.text
+    corpus = response.json()
+    cid, m = candidate(
+        host,
+        text=combined,
+        purpose="facts",
+        independent=True,
+        metric=True,
+        corpus_id=corpus["corpus_id"],
+        window={"start": "2025-10-01", "end_exclusive": "2025-11-01"},
+        facts=[
+            {
+                "fact_id": "refund_turnaround",
+                "description": "企业版退款申请的审核时限",
+                "quotation": quote,
+            }
+        ],
+    )
+    assert m["goal_contract"]["can_confirm"] is True
+    request = m["goal_contract"]["review"]["request"]
+    assert request["documents"]["independent_facts"] is True
+    assert request["documents"]["question"].startswith("请依据授权文档核验以下事实：")
+    assert request["documents"]["metric_goals"] == ["metric_1"]
+    id_ = confirm(host, cid, m)
+    approve_and_run(
+        c,
+        app,
+        settings,
+        id_,
+        transport=ReportDecisions("请依据授权文档核验以下事实：企业版退款申请的审核时限"),
+    )
+    state = c.get(f"/api/v1/tasks/{id_}").json()
+    assert state["status"] == "completed"
+    assert state["business_completion"]["status"] == "completed"
+    report = c.get(f"/api/v1/tasks/{id_}/report").json()
+    assert report["facts"] and report["facts"][0]["value"]["unit"] == "CNY"
+    assert report["citations"]
+    citation = report["citations"][0]["citation"]
+    assert citation["document_id"]
+    assert citation["source_id"]
+    assert citation["chunk_id"]
+    assert citation["source_sha256"] == __import__("hashlib").sha256(refund).hexdigest()
+
+
+def test_independent_facts_missing_quotation_remains_unavailable(host):
+    c, app, settings, metric_record, _ = host
+    combined = (
+        "计算 2025 年 10 月已支付账单收入（CNY），并依据授权退款政策原文说明企业版退款审核时限；"
+        "不要把文档当作收入或因果证明。"
+    )
+    cid, m = candidate(
+        host,
+        text=combined,
+        purpose="facts",
+        independent=True,
+        metric=True,
+        window={"start": "2025-10-01", "end_exclusive": "2025-11-01"},
+        facts=[{"fact_id": "refund_turnaround", "description": "企业版退款申请的审核时限"}],
+    )
+    assert m["goal_contract"]["can_confirm"] is True
+    id_ = confirm(host, cid, m)
+    approve_and_run(
+        c,
+        app,
+        settings,
+        id_,
+        transport=ReportDecisions("请依据授权文档核验以下事实：企业版退款申请的审核时限"),
+    )
+    state = c.get(f"/api/v1/tasks/{id_}").json()
+    assert state["business_completion"]["status"] in {"partial", "unavailable"}
 
 
 def test_quoted_fact_is_host_pinned_and_report_completes(host):

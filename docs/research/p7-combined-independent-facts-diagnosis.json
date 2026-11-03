@@ -1,0 +1,128 @@
+{
+  "schema": "p7-combined-independent-facts-diagnosis/v1",
+  "date": "2026-11-03",
+  "campaign": "p7-combined-repair-single-v1",
+  "original_run": "304ca32e-70ff-40af-bea2-d7b54094a3d9",
+  "source": {
+    "freeze_id": "p7-combined-repair-independent-fix-2fc42e0ef101",
+    "freeze_sha256": "2fc42e0ef10106b64ac646bd29ff92f2d5b60964723b610d9985fe48bc030f82",
+    "base_commit": "4cf867ee56b837a170a60b0d2abe2534394bb520",
+    "source_status": "WORKTREE_UNCOMMITTED_INDEPENDENT_DOC_FACTS_FIX",
+    "changed_files": [
+      "src/datapilot/web/admission.py",
+      "tests/test_web_smoke_admission.py",
+      "src/datapilot/web/chat_contracts.py",
+      "src/datapilot/web/contracts.py",
+      "src/datapilot/web/chat.py",
+      "src/datapilot/web/ui_components.py",
+      "src/datapilot/web/ui_chat.py",
+      "src/datapilot/web/goal_confirmation.py",
+      "src/datapilot/web/service.py",
+      "src/datapilot/reporting/contracts.py",
+      "src/datapilot/reporting/service.py",
+      "tests/test_web_goal_confirmation_postgres.py",
+      "tests/test_goal_scope_integrity.py"
+    ],
+    "source_manifest_sha256": "3c431bb9bb92c5bfcb23aff4b2c875445f2200fe9d08289aa94ed998fbd4bb30",
+    "full_ci": "NOT_RUN"
+  },
+  "old_live_result": {
+    "ci": "PASS",
+    "live": "partial/unavailable",
+    "acceptance": "NOT_MET",
+    "model_calls": 5,
+    "tokens": 9436,
+    "estimated_peak_usd": "0.00185022",
+    "actual_bill": "not_reconciled",
+    "unknown_calls": 0,
+    "retries": 0,
+    "second_run": false
+  },
+  "first_failure": {
+    "worker_goal_question": "计算 2026 年 9 月已支付账单收入（CNY），并依据授权退款政策原文说明企业版退款审核时限；不要把文档当作收入或因果证明。",
+    "document_goal": {
+      "question": "计算 2026 年 9 月已支付账单收入（CNY），并依据授权退款政策原文说明企业版退款审核时限；不要把文档当作收入或因果证明。",
+      "metric_goals": [
+        "metric_1"
+      ],
+      "purpose": "facts",
+      "fact_1": {
+        "quotation": "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。",
+        "citation": "present"
+      }
+    },
+    "sequence": [
+      "search_documents(full combined question) -> 1 document",
+      "read_context(document) -> full authorized text",
+      "search_documents('2026年9月 已支付账单 收入 金额 CNY 账单明细') -> 0 documents",
+      "submit_rag_result(outcome=insufficient, artifact_ids=[documents artifact])"
+    ],
+    "earlier_complete": false,
+    "tool_rejection": false,
+    "relevant_chunk_ids": "[] written by tools for insufficient; not proof of empty retrieval",
+    "report_after": "matching_document_or_metric_evidence_missing",
+    "confirmed_root": "DocumentGoal.question and metric_goals couple the independent refund fact to the P3 metric; RAG worker is asked to satisfy the combined metric question and submits insufficient. Report's metric_topics_match also requires document text to match metric topics."
+  },
+  "fix": {
+    "concept": "Explicit independent document facts: preserve overall question and metric_goals association, but give the RAG/document goal a fact-scoped question and mark DocumentGoal.independent_facts. Report skips metric-topic matching only for this explicit flag; citations/facts still verified. Guarded paths (no flag) retain old coupling and causal/metric checks.",
+    "files": [
+      "src/datapilot/web/admission.py",
+      "tests/test_web_smoke_admission.py",
+      "src/datapilot/web/chat_contracts.py",
+      "src/datapilot/web/contracts.py",
+      "src/datapilot/web/chat.py",
+      "src/datapilot/web/ui_components.py",
+      "src/datapilot/web/ui_chat.py",
+      "src/datapilot/web/goal_confirmation.py",
+      "src/datapilot/web/service.py",
+      "src/datapilot/reporting/contracts.py",
+      "src/datapilot/reporting/service.py",
+      "tests/test_web_goal_confirmation_postgres.py"
+    ],
+    "new_contract": "documents.question='请依据授权文档核验以下事实：企业版退款申请的审核时限'; document_facts_independent=true; metric_goals remains [metric_1]; required fact/quotation still host-resolved.",
+    "not_executed_live": true,
+    "permit_created": false,
+    "paid_calls": 0
+  },
+  "validation": {
+    "admission_py311": "15 passed",
+    "admission_py313": "15 passed",
+    "independent_contract_py311": "1 passed",
+    "independent_contract_py313": "1 passed",
+    "full_path_fake_py311": "1 passed",
+    "full_path_fake_py313": "1 passed",
+    "missing_fact_py311": "1 passed",
+    "missing_fact_py313": "1 passed",
+    "tamper_causal_py311": "22 passed",
+    "tamper_causal_py313": "24 passed",
+    "ruff_format": "PASS",
+    "full_local_pytest": "NOT_RUN",
+    "real_pg_mcp": "PASS",
+    "ci_31": {
+      "status": "PASS",
+      "scope": "baseline 4cf867 only",
+      "note": "not coverage for working tree fix"
+    }
+  },
+  "condition": {
+    "ready_for_new_combined_live": false,
+    "reason": "Fake Worker full path passes with real PG/MCP, but no new full CI, no new Freeze/Permit, and no new paid Live.",
+    "preconditions": [
+      "new full CI PASS for working tree",
+      "new source Freeze/Permit and authorization",
+      "new combined Goal with independent_facts=true and fact-scoped question",
+      "preserve P3/citation/fact/budget/unknown guards"
+    ]
+  },
+  "old_results_preserved": true,
+  "stopped": true,
+  "stopped_reason": "diagnosis and targeted non-paid validation only",
+  "full_path": {
+    "status": "PASS_WITH_FAKE_WORKER",
+    "sql": "verified CNY fact",
+    "document": "refund-only public synthetic text with exact quotation",
+    "business_completion": "completed",
+    "citation": "source/document/chunk/source_sha256 present",
+    "scenario_window": "2025-10 sample used by isolated fixture; not a Live 2026 run"
+  }
+}

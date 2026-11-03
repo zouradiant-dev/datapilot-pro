@@ -1,0 +1,230 @@
+{
+  "schema": "combined-repair-single-live-results/v1",
+  "campaign_id": "p7-combined-repair-single-v1",
+  "case_id": "combined-repair-01",
+  "freeze": {
+    "id": "p7-combined-repair-single-v1-24eb34471e69",
+    "sha256": "24eb34471e69f843da8676bacedc06eec5dee5e1632fcefb398477dd44dcbfa4",
+    "source_status": "WORKTREE_UNCOMMITTED_SINGLE_CASE_ADMISSION_FIX",
+    "base_commit": "4cf867ee56b837a170a60b0d2abe2534394bb520",
+    "source_diff": [
+      "src/datapilot/web/admission.py",
+      "tests/test_web_smoke_admission.py"
+    ],
+    "source_manifest_sha256": "429696900f0deb513aa8a7fbe047079f737873aad029e445a217d96d48d63f02"
+  },
+  "candidate": {
+    "sha256": "a89143a800c7ed8f0b197edbcb4ec681fe1d2492c502f027de9c293710d7dba6",
+    "question": "计算 2026 年 9 月已支付账单收入（CNY），并依据授权退款政策原文说明企业版退款审核时限；不要把文档当作收入或因果证明。",
+    "quotation": "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。",
+    "quotation_is_proof": false,
+    "status": "UNCONFIRMED_PREPARED_BEFORE_RUN"
+  },
+  "permit": {
+    "digest": "c179efe58c1ad6363c0f0a77dff7ff73494ed638b3a89aee6c62f8374309b8fa",
+    "approved_at": "2026-11-03T03:23:40.732315+00:00",
+    "expires_at": "2026-11-04T03:09:43+00:00",
+    "max_runs": 1,
+    "campaign_calls": 8,
+    "campaign_token_units": 18000
+  },
+  "approval": {
+    "agent_operated": true,
+    "checkbox_checked": true,
+    "button_enabled": true,
+    "status_before_click": "awaiting_review",
+    "fake_control": {
+      "conversation_id": "18c4ed72-4122-47cd-8428-665a140ca7e4",
+      "run_id": "3985b3bd-33db-43fc-9cfc-6a0a346292f9",
+      "checkbox_checked": true,
+      "button_enabled_before_click": true,
+      "fake": true,
+      "paid_calls": 0,
+      "status_before_click": "awaiting_review",
+      "final": "completed"
+    },
+    "root_cause": "Previous label click did not reliably toggle the checkbox; correct role-based checkbox check and wait-for-enabled works."
+  },
+  "run": {
+    "id": "304ca32e-70ff-40af-bea2-d7b54094a3d9",
+    "status": "unavailable",
+    "execution_status": "unavailable",
+    "business_completion": {
+      "schema_version": "business-completion-1",
+      "status": "partial",
+      "required_goals": [
+        "metric_1",
+        "documents"
+      ],
+      "verified_goals": [
+        "metric_1"
+      ],
+      "missing_evidence": {
+        "documents": [
+          "matching_document_or_metric_evidence_missing"
+        ]
+      },
+      "unconfirmed_claims": [],
+      "limited_results_visible": true
+    },
+    "tasks": [
+      {
+        "task_id": "metric_1",
+        "worker": "sql",
+        "status": "succeeded",
+        "plan_version": 1
+      },
+      {
+        "task_id": "documents",
+        "worker": "rag",
+        "status": "unavailable",
+        "plan_version": 1
+      },
+      {
+        "task_id": "report",
+        "worker": "report",
+        "status": "succeeded",
+        "plan_version": 1
+      }
+    ],
+    "error": null
+  },
+  "report": {
+    "business_completion": {
+      "schema_version": "business-completion-1",
+      "status": "partial",
+      "required_goals": [
+        "metric_1",
+        "documents"
+      ],
+      "verified_goals": [
+        "metric_1"
+      ],
+      "missing_evidence": {
+        "documents": [
+          "matching_document_or_metric_evidence_missing"
+        ]
+      },
+      "unconfirmed_claims": [],
+      "limited_results_visible": true
+    },
+    "facts": [
+      {
+        "value": "803.3500000000000000",
+        "unit": "CNY",
+        "evidence_id": "e78b3659-7904-483a-aa5c-ec33ee3e50c3",
+        "verification_id": "d43acb2d-818e-44f4-b0cd-014ea8c85d3b"
+      }
+    ],
+    "citations": [],
+    "missing_requirements": [
+      {
+        "code": "matching_document_or_metric_evidence_missing",
+        "message": "缺少满足检索要求且与指标匹配的授权文档，或关联指标尚未通过验证",
+        "fields": [
+          "document_source",
+          "metric_evidence"
+        ]
+      }
+    ],
+    "markdown": "# SaaS 可验证报告\n\n业务状态：partial\n\n- paid_invoice_revenue: 803.3500000000000000 CNY; Evidence e78b3659-7904-483a-aa5c-ec33ee3e50c3; Verification d43acb2d-818e-44f4-b0cd-014ea8c85d3b\n- 待补证据：matching_document_or_metric_evidence_missing"
+  },
+  "usage": {
+    "calls": 5,
+    "input_tokens": 8853,
+    "output_tokens": 583,
+    "cache_read_tokens": 5120,
+    "total_tokens": 9436,
+    "estimated_peak_usd": "0.00185022",
+    "bill_status": "not_reconciled"
+  },
+  "failure": {
+    "code": "RAG_INSUFFICIENT",
+    "observed": "RAG documents task unavailable; model submitted outcome=insufficient after search/read; relevant_chunk_ids=[]; business partial.",
+    "likely_cause": "Combined Goal links document goal to metric_1; the refund-policy document does not match metric topics required by Report, and the RAG model submitted insufficient. No retry per authorization."
+  },
+  "ci": {
+    "status": "PASS",
+    "run": {
+      "id": 41441154000,
+      "number": 31,
+      "url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41441154000",
+      "conclusion": "success",
+      "head_sha": "4cf867ee56b837a170a60b0d2abe2534394bb520",
+      "attempt": 1,
+      "event": "push"
+    },
+    "scope": "baseline source 4cf867; working-tree single-case admission fix NOT covered by full CI",
+    "new_source_full_ci": "NOT_RUN",
+    "counts": {
+      "311": {
+        "collected": 1748,
+        "unit": {
+          "tests": 1344,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "integration": {
+          "tests": 404,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 63
+        },
+        "passed": 1685
+      },
+      "313": {
+        "collected": 1748,
+        "unit": {
+          "tests": 1344,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "integration": {
+          "tests": 404,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 63
+        },
+        "passed": 1685
+      }
+    },
+    "source_hash_match": "27/27 baseline freeze"
+  },
+  "tests": {
+    "admission_py311": "15 passed",
+    "admission_py313": "15 passed",
+    "fake_approval": "completed (0 paid calls)",
+    "ruff_format": "PASS",
+    "note": "Focused tests only; no full local pytest."
+  },
+  "old_results": {
+    "campaign": "p7-fresh-web-smoke-v1",
+    "sql": "completed",
+    "rag": "unavailable",
+    "combined": "failed",
+    "calls": 8,
+    "tokens": 12066,
+    "preserved": true
+  },
+  "stop": {
+    "host_stopped": true,
+    "stop_file": "artifacts/p7/combined-repair-single-v1/private/live/STOP",
+    "stop_time": "2026-11-03T03:32:46Z",
+    "retry": false,
+    "second_run": false
+  },
+  "summary": {
+    "ci": "PASS",
+    "live": "partial/unavailable",
+    "acceptance": "NOT_MET",
+    "model_calls": 5,
+    "tokens": 9436,
+    "estimated_peak_usd": "0.00185022",
+    "actual_bill": "not_reconciled",
+    "unknown_calls": 0,
+    "retries": 0,
+    "second_run": false
+  }
+}

@@ -310,5 +310,159 @@
     "final_source_full_ci": "NOT_RUN",
     "ready_for_live_authorization": "NO",
     "paid_model_calls": 0
+  },
+  "append": {
+    "recorded_at": "2026-11-02",
+    "snapshot_preserved": "Sections/status above are the pre-CI frozen preparation snapshot; this append records later authorized definition registration, Goal preparation and CI #30 PASS.",
+    "definitions": {
+      "authorized": true,
+      "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+      "dataset_version": 1,
+      "source_sha256": "dd197a51b949a0e19f38eae9583215cc5c4a824c4a2963cd7e58d29b9f095c6a",
+      "semantic_version": 1,
+      "semantic_definition_sha256": "2da3a80810a17f679aa9c67e8d32d01772866cd4927651187c3e1dbf019f1364",
+      "metric_version": 1,
+      "metric_definition_sha256": "f2178982580185dbd47994e8c6d9ff1e80656292c915efcb834be80f7ef6e9a1",
+      "metric_semantic_sha256": "2da3a80810a17f679aa9c67e8d32d01772866cd4927651187c3e1dbf019f1364",
+      "draft_sha256": {
+        "semantic": "087f8470a7767a63e02adcef3267d80c5676f9510101d346a4b10819dabde61e",
+        "metric": "e143653681bff867e8fb68f69a4370cf092348bc7dee00b4ac308f16e0dae7ed"
+      },
+      "registered_content_equals_approved_draft": true,
+      "duplicate_reuse": {
+        "semantic": 1,
+        "metric": 1,
+        "same_sha": true
+      }
+    },
+    "goals": {
+      "sql_only": {
+        "type": "metric_only_candidate",
+        "question": "计算 2026 年 9 月已支付账单收入，按 CNY 元返回；仅统计 payment_status=paid 且 currency=CNY 的账单。",
+        "conversation_id": "6441c9ad-8247-459e-babc-184304ee7451",
+        "message_id": "5943ab03-fc1b-44e3-a6ed-6f899cb94e4c",
+        "status": "candidate_pending_submission",
+        "goal_contract": null,
+        "run_id": null,
+        "authorization_sha256": "af1f8265cfde13195afd794f9b8fb216c5052147193c8690312eeb89ad679f2a"
+      },
+      "rag_only": {
+        "question": "请依据授权文档说明企业版退款申请的审核时限，并给出原文定位；不要推断个人版。",
+        "conversation_id": "94a2c266-e00c-4afa-b6eb-df5836782044",
+        "message_id": "f05694cb-1e77-4a62-b1e6-d6138ff5a192",
+        "status": "pending_confirmation",
+        "contract_sha256": "880cccb5c6415311fcd4e3f32d2541a1e6e5fccb0f71f0ffabece4c60f872a53",
+        "can_confirm": true,
+        "run_id": null
+      },
+      "sql_rag": {
+        "question": "计算 2026 年 9 月已支付账单收入（CNY），并依据授权退款政策原文说明企业版退款审核时限；不要把文档当作收入或因果证明。",
+        "conversation_id": "2df8270b-e38e-4f33-80c2-00e77521e11e",
+        "message_id": "d5d39f24-13a9-4a3d-a6e8-d85c273d70e1",
+        "status": "pending_confirmation",
+        "contract_sha256": "eedd353f943253534a1a6671aa037e0a10ce21a73faa99a266ee5128eb505472",
+        "can_confirm": true,
+        "run_id": null
+      },
+      "host_binding_note": "Prepared under current Fake Host; final Live Host will change host settings hash (llm_mode=live, max_parallel_workers=1), so these preparation contracts must be regenerated/reviewed under the final Live Host before confirmation."
+    },
+    "ci_30": {
+      "url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41416548492",
+      "number": 30,
+      "head_sha": "cccd829f7240b9ff56b7d3817c7b716c39616108",
+      "attempt": 1,
+      "conclusion": "PASS",
+      "counts": {
+        "3.11": {
+          "unit": {
+            "tests": 1342,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "integration": {
+            "tests": 402,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 63
+          },
+          "collected": 1744,
+          "passed": 1681,
+          "skip_reasons": {
+            "Explicit real CUDA Qwen test opt-in required": 10,
+            "Explicit real Qwen CUDA opt-in required": 18,
+            "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials": 1,
+            "Explicit local Qwen integration opt-in required; never substitutes vectors": 20,
+            "Explicit real CUDA test opt-in required": 13,
+            "Explicit local CUDA opt-in required": 1
+          },
+          "required60": {
+            "present": 60,
+            "not_passed": []
+          },
+          "admission": {
+            "count": 14,
+            "not_passed": []
+          }
+        },
+        "3.13": {
+          "unit": {
+            "tests": 1342,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          },
+          "integration": {
+            "tests": 402,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 63
+          },
+          "collected": 1744,
+          "passed": 1681,
+          "skip_reasons": {
+            "Explicit real CUDA Qwen test opt-in required": 10,
+            "Explicit real Qwen CUDA opt-in required": 18,
+            "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials": 1,
+            "Explicit local Qwen integration opt-in required; never substitutes vectors": 20,
+            "Explicit real CUDA test opt-in required": 13,
+            "Explicit local CUDA opt-in required": 1
+          },
+          "required60": {
+            "present": 60,
+            "not_passed": []
+          },
+          "admission": {
+            "count": 14,
+            "not_passed": []
+          }
+        }
+      },
+      "required60": "60/60 passed",
+      "admission14": "14/14 passed",
+      "migration": "0009",
+      "source_manifest_match": "21/21, 0 mismatch",
+      "artifacts": {
+        "311": {
+          "name": "datapilot-checks-py3.11-41416548492-1",
+          "digest": "sha256:45fe757289e2218d3f252aabb20dbceb95e6ce2a1b564f56aa72a8f0fcb40bd9",
+          "file_sha256": "45fe757289e2218d3f252aabb20dbceb95e6ce2a1b564f56aa72a8f0fcb40bd9"
+        },
+        "313": {
+          "name": "datapilot-checks-py3.13-41416548492-1",
+          "digest": "sha256:b8d845107319f5fbb6d1ef95bc66c367a05e34e674dd597bec843669b97b969a",
+          "file_sha256": "b8d845107319f5fbb6d1ef95bc66c367a05e34e674dd597bec843669b97b969a"
+        }
+      },
+      "verification_record": "artifacts/ci30/verification.json"
+    },
+    "post_append_status": {
+      "business_definitions": "REGISTERED",
+      "goal_confirmation": "PENDING",
+      "execution_approval": "PENDING",
+      "final_source_full_ci": "PASS",
+      "ready_for_live_authorization": "NO",
+      "paid_model_calls": 0
+    }
   }
 }

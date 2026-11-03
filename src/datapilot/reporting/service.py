@@ -529,7 +529,7 @@ class ReportService:
                             artifact_id=ref.artifact_id, citation=doc.citation, excerpt=doc.text
                         )
                     )
-            metric_topics_match = all(
+            metric_topics_match = goal.independent_facts or all(
                 any(
                     any(term in d.excerpt.lower() for term in TOPICS[self.requests[g].metric_id])
                     for d in docs

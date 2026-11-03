@@ -1,0 +1,797 @@
+{
+  "schema": "fresh-deepseek-web-smoke-results/v1",
+  "campaign_id": "p7-fresh-web-smoke-v1",
+  "authorization_ref": "owner-message-2026-11-02T18:08:56+08:00",
+  "commit": "cccd829f7240b9ff56b7d3817c7b716c39616108",
+  "ci": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41416548492",
+  "freeze_id": "p7-fresh-web-smoke-admission-v1-483bc675998f",
+  "freeze_sha256": "483bc675998fa4c2e6c2df4a9c95b972c2c05b064f9c2768cd5e52a7a858a841",
+  "permit_digest": "0d1c322ea833784cbaaddf88c1229a42cc1aa8ca429010a716cffd275bd2e903",
+  "permit_expires": "2026-11-02T12:10:49.316218+00:00",
+  "campaign_start": "2026-11-02T10:16:10.655715+00:00",
+  "campaign_deadline": "2026-11-02T10:46:10.655715+00:00",
+  "last_terminal": "2026-11-02T10:31:12.427838+00:00",
+  "provider": {
+    "id": "deepseek",
+    "model": "deepseek-flash",
+    "endpoint": "https://api.deepseek.com",
+    "thinking": "disabled",
+    "temperature": 0,
+    "max_output_tokens": 1200,
+    "sdk_retries": 0,
+    "observed_model_names": [
+      "deepseek-flash"
+    ],
+    "adapter_label": "openai (LangChain adapter label only)"
+  },
+  "data": {
+    "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+    "dataset_version": 1,
+    "source_sha256": "dd197a51b949a0e19f38eae9583215cc5c4a824c4a2963cd7e58d29b9f095c6a",
+    "semantic_version": 1,
+    "semantic_definition_sha256": "2da3a80810a17f679aa9c67e8d32d01772866cd4927651187c3e1dbf019f1364",
+    "metric_id": "paid_invoice_revenue",
+    "metric_version": 1,
+    "metric_definition_sha256": "f2178982580185dbd47994e8c6d9ff1e80656292c915efcb834be80f7ef6e9a1",
+    "corpus_id": "3fd3e8c1-1105-4c43-bc59-2913786a4f53",
+    "index_version": "223be2d08a0fd76803c4aabf61ad7a4548db411b466d4a7bb2b017f76459de88"
+  },
+  "cases": {
+    "fresh-web-01": {
+      "case_id": "fresh-web-01",
+      "kind": "sql_only",
+      "conversation_id": "de28484d-09fd-41c1-9e2b-303f88769b57",
+      "message_id": "cd0155d9-e626-4db5-a2ae-74b76a81a763",
+      "run_id": "e3af5452-f18c-440e-8d3f-99d6016500c1",
+      "goal_or_candidate": "metric_only_candidate",
+      "contract_sha256": null,
+      "candidate_sha256": "cc77714fde34f0cdd22e77cf936e7777f0e4bc69d950f5d28615891c3b2fb6b6",
+      "approval_method": "browser-click; no API approve",
+      "status": "completed",
+      "execution_status": "succeeded",
+      "business_completion": "completed",
+      "error": null,
+      "usage": {
+        "calls": 1,
+        "total_tokens": 615,
+        "reported_tokens": 615,
+        "usage_complete": true
+      },
+      "tasks": [
+        {
+          "task_id": "metric_1",
+          "worker": "sql",
+          "status": "succeeded",
+          "plan_version": 1
+        },
+        {
+          "task_id": "report",
+          "worker": "report",
+          "status": "succeeded",
+          "plan_version": 1
+        }
+      ],
+      "report": {
+        "business_completion": {
+          "schema_version": "business-completion-1",
+          "status": "completed",
+          "required_goals": [
+            "metric_1"
+          ],
+          "verified_goals": [
+            "metric_1"
+          ],
+          "missing_evidence": {},
+          "unconfirmed_claims": [],
+          "limited_results_visible": true
+        },
+        "facts": [
+          {
+            "value": "803.3500000000000000",
+            "unit": "CNY",
+            "evidence_id": "3a90d2cc-8786-49fc-b406-2ff94a614086",
+            "verification_id": "06fae87f-ecb2-481a-b323-e2255995dfc2"
+          }
+        ],
+        "citations": [],
+        "missing_requirements": [],
+        "markdown": "# SaaS 可验证报告\n\n业务状态：completed\n文档背景不证明因果；原文和业务明细不传入浏览器。\n\n- paid_invoice_revenue: 803.3500000000000000 CNY; [2026-09-01,2026-10-01); Evidence 3a90d2cc-8786-49fc-b406-2ff94a614086; Verification 06fae87f-ecb2-481a-b323-e2255995dfc2"
+      },
+      "report_error": null,
+      "calls": [
+        {
+          "kind": "model",
+          "account": "root",
+          "tool_name": null,
+          "model_name": "deepseek-flash",
+          "finish_reason": "stop",
+          "response_id": "7f402d14-d5b9-4d73-b944-966d2af88206",
+          "tool_calls": [],
+          "usage": {
+            "input_tokens": 506,
+            "total_tokens": 615,
+            "output_tokens": 109,
+            "input_token_details": {
+              "cache_read": 256
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 1250.0
+        },
+        {
+          "kind": "tool",
+          "account": "1:metric_1",
+          "tool_name": "p3_metric_execution",
+          "model_name": null,
+          "finish_reason": null,
+          "response_id": null,
+          "tool_calls": null,
+          "usage": null,
+          "elapsed_ms": 1983.9999999385327
+        },
+        {
+          "kind": "tool",
+          "account": "1:report",
+          "tool_name": "verified_report_projection",
+          "model_name": null,
+          "finish_reason": null,
+          "response_id": null,
+          "tool_calls": null,
+          "usage": null,
+          "elapsed_ms": 15.999999828636646
+        }
+      ],
+      "ledger": {
+        "state": {
+          "pending": {},
+          "accounts": {
+            "root": {
+              "usage": {
+                "calls": 1,
+                "total_tokens": 615,
+                "usage_complete": true,
+                "reported_tokens": 615
+              },
+              "limits": {
+                "calls": 8,
+                "tokens": 18000
+              },
+              "parent": null
+            },
+            "1:report": {
+              "usage": {
+                "calls": 0,
+                "total_tokens": 0,
+                "usage_complete": true,
+                "reported_tokens": 0
+              },
+              "limits": {
+                "calls": 4,
+                "tokens": 18000
+              },
+              "parent": "root"
+            },
+            "1:metric_1": {
+              "usage": {
+                "calls": 0,
+                "total_tokens": 0,
+                "usage_complete": true,
+                "reported_tokens": 0
+              },
+              "limits": {
+                "calls": 4,
+                "tokens": 18000
+              },
+              "parent": "root"
+            }
+          },
+          "receipts": {
+            "70c9c4e4-f216-4dbf-9b33-da5d248f5658": [
+              "settled",
+              615,
+              3455
+            ]
+          }
+        },
+        "sha256": "214db0b5e7d929a2a29c5b2652eb2d37d4b1e0cdbe6bfea3f43adae0c6c0436c"
+      }
+    },
+    "fresh-web-02": {
+      "case_id": "fresh-web-02",
+      "kind": "rag_only",
+      "conversation_id": "e3d2a83f-64a1-4775-99af-db30da630f5c",
+      "message_id": "506e7bc8-22ba-459f-8e22-ce76ae4c8ba0",
+      "run_id": "cc12be91-1f1f-486e-8fdb-d513857b8640",
+      "goal_or_candidate": "goal_contract",
+      "contract_sha256": "e38f2e25cd2a72eb01b6f632c3a7f5b81672e16766eb0f64de81fd6db6f304e1",
+      "candidate_sha256": null,
+      "approval_method": "browser-click; no API approve",
+      "status": "unavailable",
+      "execution_status": "succeeded",
+      "business_completion": "unavailable",
+      "error": null,
+      "usage": {
+        "calls": 3,
+        "total_tokens": 4332,
+        "reported_tokens": 4332,
+        "usage_complete": true
+      },
+      "tasks": [
+        {
+          "task_id": "documents",
+          "worker": "rag",
+          "status": "succeeded",
+          "plan_version": 1
+        },
+        {
+          "task_id": "report",
+          "worker": "report",
+          "status": "succeeded",
+          "plan_version": 1
+        }
+      ],
+      "report": {
+        "business_completion": {
+          "schema_version": "business-completion-1",
+          "status": "unavailable",
+          "required_goals": [
+            "documents"
+          ],
+          "verified_goals": [],
+          "missing_evidence": {
+            "documents": [
+              "matching_document_or_metric_evidence_missing",
+              "required_document_source_missing",
+              "document_fact_unverified:fact_1"
+            ]
+          },
+          "unconfirmed_claims": [],
+          "limited_results_visible": false
+        },
+        "facts": [],
+        "citations": [],
+        "missing_requirements": [
+          {
+            "code": "matching_document_or_metric_evidence_missing",
+            "message": "缺少满足原始问题证据要求的授权文档",
+            "fields": [
+              "document_source"
+            ]
+          }
+        ],
+        "markdown": "# SaaS 可验证报告\n\n业务状态：unavailable\n文档引述仅说明来源明确记载的内容，不证明业务数值或因果。\n\n- 待补证据：matching_document_or_metric_evidence_missing\n- 待补证据：required_document_source_missing\n- 待补证据：document_fact_unverified:fact_1"
+      },
+      "report_error": null,
+      "calls": [
+        {
+          "kind": "model",
+          "account": "1:documents",
+          "tool_name": null,
+          "model_name": "deepseek-flash",
+          "finish_reason": "tool_calls",
+          "response_id": "d05d4b1e-e215-4aac-9085-d74391c13497",
+          "tool_calls": [
+            {
+              "name": "search_documents",
+              "id": "call_00_WTTh6NsLOqvpHoE4WxCA2179"
+            }
+          ],
+          "usage": {
+            "input_tokens": 1547,
+            "total_tokens": 1634,
+            "output_tokens": 87,
+            "input_token_details": {
+              "cache_read": 0
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 1078.0000002123415
+        },
+        {
+          "kind": "model",
+          "account": "1:documents",
+          "tool_name": null,
+          "model_name": "deepseek-flash",
+          "finish_reason": "tool_calls",
+          "response_id": "81fe34b5-e359-415d-8cf7-fea06255f6b6",
+          "tool_calls": [
+            {
+              "name": "submit_rag_result",
+              "id": "call_00_jz3CE6yYSQRLQMB4Pf147043"
+            }
+          ],
+          "usage": {
+            "input_tokens": 2008,
+            "total_tokens": 2117,
+            "output_tokens": 109,
+            "input_token_details": {
+              "cache_read": 1536
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 827.9999999795109
+        },
+        {
+          "kind": "model",
+          "account": "root",
+          "tool_name": null,
+          "model_name": "deepseek-flash",
+          "finish_reason": "stop",
+          "response_id": "27ad476d-40da-4b46-97ad-beeeca1b6bbd",
+          "tool_calls": [],
+          "usage": {
+            "input_tokens": 499,
+            "total_tokens": 581,
+            "output_tokens": 82,
+            "input_token_details": {
+              "cache_read": 256
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 1235.0000001024455
+        },
+        {
+          "kind": "tool",
+          "account": "1:documents",
+          "tool_name": "submit_rag_result",
+          "model_name": null,
+          "finish_reason": null,
+          "response_id": null,
+          "tool_calls": null,
+          "usage": null,
+          "elapsed_ms": 47.0000000204891
+        },
+        {
+          "kind": "tool",
+          "account": "1:documents",
+          "tool_name": "search_documents",
+          "model_name": null,
+          "finish_reason": null,
+          "response_id": null,
+          "tool_calls": null,
+          "usage": null,
+          "elapsed_ms": 577.9999999795109
+        },
+        {
+          "kind": "tool",
+          "account": "1:report",
+          "tool_name": "verified_report_projection",
+          "model_name": null,
+          "finish_reason": null,
+          "response_id": null,
+          "tool_calls": null,
+          "usage": null,
+          "elapsed_ms": 16.00000006146729
+        }
+      ],
+      "ledger": {
+        "state": {
+          "pending": {},
+          "accounts": {
+            "root": {
+              "usage": {
+                "calls": 3,
+                "total_tokens": 4332,
+                "usage_complete": true,
+                "reported_tokens": 4332
+              },
+              "limits": {
+                "calls": 8,
+                "tokens": 18000
+              },
+              "parent": null
+            },
+            "1:report": {
+              "usage": {
+                "calls": 0,
+                "total_tokens": 0,
+                "usage_complete": true,
+                "reported_tokens": 0
+              },
+              "limits": {
+                "calls": 4,
+                "tokens": 18000
+              },
+              "parent": "root"
+            },
+            "1:documents": {
+              "usage": {
+                "calls": 2,
+                "total_tokens": 3751,
+                "usage_complete": true,
+                "reported_tokens": 3751
+              },
+              "limits": {
+                "calls": 4,
+                "tokens": 18000
+              },
+              "parent": "root"
+            }
+          },
+          "receipts": {
+            "22a7fc25-f85b-4ee5-bfa3-2dedfe5f8405": [
+              "settled",
+              1634,
+              6507
+            ],
+            "5195aaae-79fe-40f1-8633-3357c2573273": [
+              "settled",
+              2117,
+              8963
+            ],
+            "e320f809-1a72-424d-977a-9eaa318631ba": [
+              "settled",
+              581,
+              3507
+            ]
+          }
+        },
+        "sha256": "567991d06ad8ed9f2a090cf89a4ccb68bf4ea87f3cff11dd7bd1ba1572f21261"
+      },
+      "diagnostic": {
+        "search_returned_documents": 1,
+        "search_document_id": "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31",
+        "goal_pinned_document_id": "5d60eb04b8bf637c7b9a60b21533b8c90e9ded5bca92451ceaff10c972af4a33",
+        "result": "Report required_document_source_missing; Worker submit complete did not become business completed"
+      }
+    },
+    "fresh-web-03": {
+      "case_id": "fresh-web-03",
+      "kind": "sql_rag",
+      "conversation_id": "f29358d5-6c16-48b4-aca8-941e2a1b06b2",
+      "message_id": "8898d9a1-5609-4f83-b652-425fda4a0aff",
+      "run_id": "fc2201a1-f88e-4661-b9ec-24c654a0c08d",
+      "goal_or_candidate": "goal_contract",
+      "contract_sha256": "795ad4b582719401d6f231cc707407ac53d3af9c0c643b7e99f899c5beffc008",
+      "candidate_sha256": null,
+      "approval_method": "browser-click; no API approve",
+      "status": "failed",
+      "execution_status": "failed",
+      "business_completion": "blocked",
+      "error": {
+        "code": "BUDGET_EXCEEDED",
+        "message": "执行未完成；请检查模型或工具状态",
+        "retryable": false,
+        "manual_action_required": false
+      },
+      "usage": {
+        "calls": 4,
+        "total_tokens": 7119,
+        "reported_tokens": 7119,
+        "usage_complete": true
+      },
+      "tasks": [
+        {
+          "task_id": "metric_1",
+          "worker": "sql",
+          "status": "succeeded",
+          "plan_version": 1
+        },
+        {
+          "task_id": "documents",
+          "worker": "rag",
+          "status": "failed",
+          "plan_version": 1
+        },
+        {
+          "task_id": "report",
+          "worker": "report",
+          "status": "succeeded",
+          "plan_version": 1
+        }
+      ],
+      "report": null,
+      "report_error": {
+        "code": "REPORT_NOT_READY",
+        "message": "请求被拒绝或证据无法校验；请检查授权、版本与确认状态",
+        "retryable": false,
+        "manual_action_required": false
+      },
+      "calls": [
+        {
+          "kind": "model",
+          "account": "1:documents",
+          "tool_name": null,
+          "model_name": "deepseek-flash",
+          "finish_reason": "tool_calls",
+          "response_id": "ca1e37bb-9ad8-453c-b24c-20fc92096fef",
+          "tool_calls": [
+            {
+              "name": "search_documents",
+              "id": "call_00_nTD105JN1DDTLuxPyLZ86732"
+            }
+          ],
+          "usage": {
+            "input_tokens": 2474,
+            "total_tokens": 2547,
+            "output_tokens": 73,
+            "input_token_details": {
+              "cache_read": 2048
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 1125.0
+        },
+        {
+          "kind": "model",
+          "account": "1:documents",
+          "tool_name": null,
+          "model_name": "deepseek-flash",
+          "finish_reason": "tool_calls",
+          "response_id": "99226d34-7d97-4b92-bafd-9b32761cb414",
+          "tool_calls": [
+            {
+              "name": "search_documents",
+              "id": "call_00_UoH3gH2CIR0HgKTLNSEa7088"
+            }
+          ],
+          "usage": {
+            "input_tokens": 1578,
+            "total_tokens": 1679,
+            "output_tokens": 101,
+            "input_token_details": {
+              "cache_read": 0
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 1266.0000000614673
+        },
+        {
+          "kind": "model",
+          "account": "1:documents",
+          "tool_name": null,
+          "model_name": "deepseek-flash",
+          "finish_reason": "tool_calls",
+          "response_id": "4a84d4ab-68a8-4d77-b91f-72e6e4efc693",
+          "tool_calls": [
+            {
+              "name": "read_context",
+              "id": "call_00_B6RtDhfarOFrdjtdbCyG6450"
+            }
+          ],
+          "usage": {
+            "input_tokens": 2037,
+            "total_tokens": 2173,
+            "output_tokens": 136,
+            "input_token_details": {
+              "cache_read": 1664
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 1265.9999998286366
+        },
+        {
+          "kind": "model",
+          "account": "root",
+          "tool_name": null,
+          "model_name": "deepseek-flash",
+          "finish_reason": "stop",
+          "response_id": "e8b56b19-aea2-459e-9d5f-279bc2b616d3",
+          "tool_calls": [],
+          "usage": {
+            "input_tokens": 565,
+            "total_tokens": 720,
+            "output_tokens": 155,
+            "input_token_details": {
+              "cache_read": 384
+            },
+            "output_token_details": {}
+          },
+          "elapsed_ms": 1702.999999979511
+        },
+        {
+          "kind": "tool",
+          "account": "1:documents",
+          "tool_name": "read_context",
+          "model_name": null,
+          "finish_reason": null,
+          "response_id": null,
+          "tool_calls": null,
+          "usage": null,
+          "elapsed_ms": 30.999999959021807
+        },
+        {
+          "kind": "tool",
+          "account": "1:documents",
+          "tool_name": "search_documents",
+          "model_name": null,
+          "finish_reason": null,
+          "response_id": null,
+          "tool_calls": null,
+          "usage": null,
+          "elapsed_ms": 62.00000015087426
+        },
+        {
+          "kind": "tool",
+          "account": "1:documents",
+          "tool_name": "search_documents",
+          "model_name": null,
+          "finish_reason": null,
+          "response_id": null,
+          "tool_calls": null,
+          "usage": null,
+          "elapsed_ms": 327.9999999795109
+        },
+        {
+          "kind": "tool",
+          "account": "1:metric_1",
+          "tool_name": "p3_metric_execution",
+          "model_name": null,
+          "finish_reason": null,
+          "response_id": null,
+          "tool_calls": null,
+          "usage": null,
+          "elapsed_ms": 2202.999999979511
+        },
+        {
+          "kind": "tool",
+          "account": "1:report",
+          "tool_name": "verified_report_projection",
+          "model_name": null,
+          "finish_reason": null,
+          "response_id": null,
+          "tool_calls": null,
+          "usage": null,
+          "elapsed_ms": 31.00000019185245
+        }
+      ],
+      "ledger": {
+        "state": {
+          "pending": {},
+          "accounts": {
+            "root": {
+              "usage": {
+                "calls": 4,
+                "total_tokens": 7119,
+                "usage_complete": true,
+                "reported_tokens": 7119
+              },
+              "limits": {
+                "calls": 8,
+                "tokens": 18000
+              },
+              "parent": null
+            },
+            "1:report": {
+              "usage": {
+                "calls": 0,
+                "total_tokens": 0,
+                "usage_complete": true,
+                "reported_tokens": 0
+              },
+              "limits": {
+                "calls": 4,
+                "tokens": 18000
+              },
+              "parent": "root"
+            },
+            "1:metric_1": {
+              "usage": {
+                "calls": 0,
+                "total_tokens": 0,
+                "usage_complete": true,
+                "reported_tokens": 0
+              },
+              "limits": {
+                "calls": 4,
+                "tokens": 18000
+              },
+              "parent": "root"
+            },
+            "1:documents": {
+              "usage": {
+                "calls": 3,
+                "total_tokens": 6399,
+                "usage_complete": true,
+                "reported_tokens": 6399
+              },
+              "limits": {
+                "calls": 4,
+                "tokens": 18000
+              },
+              "parent": "root"
+            }
+          },
+          "receipts": {
+            "51f1459a-43a7-4e15-827f-0ff5789db93c": [
+              "settled",
+              2547,
+              11365
+            ],
+            "913d1757-1804-44a3-a8d2-e28ebdf56cb9": [
+              "settled",
+              1679,
+              6615
+            ],
+            "ca147c23-2ceb-446c-a1d5-7584f5c4609f": [
+              "settled",
+              720,
+              3741
+            ],
+            "f6737279-f49f-436e-b7e8-db6e8cf6c154": [
+              "settled",
+              2173,
+              9088
+            ]
+          }
+        },
+        "sha256": "e5be14325da69eae804920e24017df5cec634b3b7b9761278e2755aee20c40c3"
+      },
+      "diagnostic": {
+        "sql_task": "succeeded",
+        "rag_task": "failed",
+        "report_task": "succeeded_but_report_not_ready",
+        "budget_event": {
+          "calls_before_next": 4,
+          "tokens_before_next": 7119,
+          "root_limit_tokens": 18000,
+          "remaining_tokens": 10881,
+          "compressed_estimated_input_tokens": 12131,
+          "output_reserved_tokens": 1200,
+          "required_reservation_tokens": 13331,
+          "decision": "BUDGET_EXCEEDED before next model call"
+        },
+        "unknown_usage": false
+      }
+    }
+  },
+  "totals": {
+    "calls": 8,
+    "input_tokens": 11214,
+    "output_tokens": 852,
+    "cache_read_tokens": 6144,
+    "cache_miss_tokens": 5070,
+    "estimated_peak_usd": "0.002580264",
+    "actual_bill": "not_reconciled"
+  },
+  "admissions": [
+    {
+      "case_id": "fresh-web-01",
+      "run_id": "e3af5452-f18c-440e-8d3f-99d6016500c1",
+      "message_id": "cd0155d9-e626-4db5-a2ae-74b76a81a763",
+      "permit_sha256": "0d1c322ea833784cbaaddf88c1229a42cc1aa8ca429010a716cffd275bd2e903",
+      "freeze_sha256": "483bc675998fa4c2e6c2df4a9c95b972c2c05b064f9c2768cd5e52a7a858a841",
+      "admitted_at": "2026-11-02 10:16:10.655715+00:00",
+      "expires_at": "2026-11-02 12:10:49.316218+00:00"
+    },
+    {
+      "case_id": "fresh-web-02",
+      "run_id": "cc12be91-1f1f-486e-8fdb-d513857b8640",
+      "message_id": "506e7bc8-22ba-459f-8e22-ce76ae4c8ba0",
+      "permit_sha256": "0d1c322ea833784cbaaddf88c1229a42cc1aa8ca429010a716cffd275bd2e903",
+      "freeze_sha256": "483bc675998fa4c2e6c2df4a9c95b972c2c05b064f9c2768cd5e52a7a858a841",
+      "admitted_at": "2026-11-02 10:19:43.864761+00:00",
+      "expires_at": "2026-11-02 12:10:49.316218+00:00"
+    },
+    {
+      "case_id": "fresh-web-03",
+      "run_id": "fc2201a1-f88e-4661-b9ec-24c654a0c08d",
+      "message_id": "8898d9a1-5609-4f83-b652-425fda4a0aff",
+      "permit_sha256": "0d1c322ea833784cbaaddf88c1229a42cc1aa8ca429010a716cffd275bd2e903",
+      "freeze_sha256": "483bc675998fa4c2e6c2df4a9c95b972c2c05b064f9c2768cd5e52a7a858a841",
+      "admitted_at": "2026-11-02 10:22:17.998029+00:00",
+      "expires_at": "2026-11-02 12:10:49.316218+00:00"
+    }
+  ],
+  "summary": {
+    "planned": 3,
+    "run": 3,
+    "not_run": 0,
+    "engineering_chain_success": 2,
+    "business_completed": 1,
+    "business_unavailable": 1,
+    "execution_failed": 1,
+    "evidence_valid": 1,
+    "strict_correct": 1,
+    "unknown_calls": 0,
+    "retries": 0
+  },
+  "limitations": [
+    "Single-run 180s is not a hard kill; only provider 30s timeout and original cancellation.",
+    "Campaign deadline is shared from earliest admission; no provider hard-stop guarantee.",
+    "RAG-only report rejected source identity/fact coverage despite Worker complete.",
+    "Combined run hit root budget reservation after context compression; no fourth call was issued.",
+    "Actual provider bill not reconciled."
+  ],
+  "stop_created": "artifacts/p7/fresh-web-smoke-v1/private/live/STOP"
+}

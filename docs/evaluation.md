@@ -28,3 +28,19 @@
 原始逐任务文件保存在 `artifacts/p7/business/`；收入空窗口的 missing code 为 metric_verification_rejected，本轮没有为了提升分数修改 SQL/P3。该问题与畸形 usage 一并作为后续独立修复候选，不能偷偷修复后覆盖旧分数。
 
 推送前工程历史快照：Gate 2B 工程准入通过，等待独立 Live 授权；适用回归两版本各 262 passed、2 deselected，真实 PG/MCP + Fake/Mock/确定性执行。此前 173 项、各 5 项诊断及所有失败保留，SQL Decimal 边界修复形成新 Freeze。此段不再表示当前未运行 Live；当前已授权尝试及安全中止见页首，不进入 Gate 3，不提交推送。
+
+
+## P7 Final Evaluation Prep（2026-11-03）
+
+当前源码（HEAD `4cf867…` + 未提交 independent facts/single-case admission/current Formal 入口与宿主确认绑定）的完整 CI 仍为 **NOT_RUN**；基线 CI #31 只覆盖 committed 4cf867。
+
+已发生的非付费/有界进展（不得回写成“P7 已验收”）：
+
+- 19 条公开合成 supplement 已封存；与 retained 31 条合并为 Final 50 清单并物化到 `datapilot_p7_current`。
+- Final 50 v3 已部分执行后 STOP：18 评分 / 10 严格正确 / 8 严格失败 / 31 未执行；详见 [v3 结果](research/p7-final-50-v3-results.md) 与 [封存与下一步](research/p7-final-50-closure-and-next.md)。
+- 八条评分器标记的 `rag_retrieval_failure` 经只读拆分：检索均命中，真实缺口为 Formal runner 未调用 `confirm_finite_scope`（`goal_scope_not_attested`）；原分数保留，不改 Gold/Scorer 重测。
+- 064/077 口径错配已裁定；017 版本身份 blocked 保留；不静默重映射。
+- Combined 独立文档事实修复后有一次有界 Live 业务 completed，但 Freeze 原始字节治理 FAIL，完整 CI 仍 NOT_RUN。
+- 畸形 usage 的 Journal `RECOVERY_CORRUPT` 类型化已在统一回归中落地；隔离故障矩阵整表对当前工作区仍为 NOT_RUN。
+
+旧计划中的 `FREEZE_INVALIDATED: runtime/build closure differs` 描述的是再绑定前的 v3 product snapshot 状态；current Formal 入口与源码快照已另建，**不能**把该句当作“19 条尚未建立”的当前事实。分组预算与授权边界仍见 [最终评测计划](research/p7-final-evaluation-plan.md)；任何续跑须新 Permit。

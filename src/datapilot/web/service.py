@@ -390,6 +390,7 @@ class ProductService:
                     DocumentFact(fact_id=f.fact_id, description=f.description)
                     for f in request.documents.required_facts
                 ],
+                independent_facts=request.documents.independent_facts,
             )
         report = ReportScope(
             owner=self.policy.owner,

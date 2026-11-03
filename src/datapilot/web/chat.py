@@ -473,6 +473,18 @@ class ChatService:
                         purpose=selection.document_purpose,
                         required_facts=[f.model_dump() for f in selection.required_facts],
                     )
+                    if selection.document_facts_independent:
+                        descriptions = "；".join(
+                            f.description.strip() for f in selection.required_facts
+                        )
+                        doc_question = "请依据授权文档核验以下事实：" + descriptions
+                        if len(doc_question) > 512:
+                            raise AgentFailure(
+                                "WEB_SCOPE",
+                                "独立文档事实过多，请拆分为更小的合同",
+                            )
+                        body["documents"]["question"] = doc_question
+                        body["documents"]["independent_facts"] = True
                     draft.request = CreateTask.model_validate_json(json_value(body))
             if draft.request:
                 try:

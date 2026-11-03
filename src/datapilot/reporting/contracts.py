@@ -50,6 +50,7 @@ class DocumentGoal(Contract):
     metric_goals: list[str] = Field(max_length=6)
     purpose: Literal["locate", "summary", "facts", "conclusion"] | None = None
     required_facts: list[DocumentFact] = Field(default_factory=list, max_length=8)
+    independent_facts: bool = False
 
     @model_validator(mode="after")
     def explicit_business_requirements(self):
@@ -57,6 +58,8 @@ class DocumentGoal(Contract):
             raise ValueError("Fact extraction requires explicit host fact requirements")
         if self.required_facts and self.purpose not in {"facts", "conclusion"}:
             raise ValueError("Facts cannot be silently added to an unconfirmed/summary goal")
+        if self.independent_facts and (self.purpose != "facts" or not self.required_facts):
+            raise ValueError("Independent facts require a facts purpose and facts")
         if len({f.fact_id for f in self.required_facts}) != len(self.required_facts):
             raise ValueError("Required fact identities must be unique")
         return self
@@ -68,6 +71,8 @@ class DocumentGoal(Contract):
             value.pop("purpose", None)
         if not self.required_facts:
             value.pop("required_facts", None)
+        if not self.independent_facts:
+            value.pop("independent_facts", None)
         return value
 
 

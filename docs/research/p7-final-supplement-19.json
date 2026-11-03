@@ -1,0 +1,57 @@
+{
+  "schema": "p7-final-supplement-19/v1",
+  "created_at": "2026-11-03T05:55:16.186468+00:00",
+  "case_count": 19,
+  "lanes": {
+    "sql_only": 7,
+    "rag_only": 7,
+    "sql_rag": 5
+  },
+  "statuses": {
+    "completed": 15,
+    "unavailable": 3,
+    "partial": 1
+  },
+  "case_ids": [
+    "p7-holdout-v3-061",
+    "p7-holdout-v3-062",
+    "p7-holdout-v3-063",
+    "p7-holdout-v3-064",
+    "p7-holdout-v3-065",
+    "p7-holdout-v3-066",
+    "p7-holdout-v3-067",
+    "p7-holdout-v3-068",
+    "p7-holdout-v3-069",
+    "p7-holdout-v3-070",
+    "p7-holdout-v3-071",
+    "p7-holdout-v3-072",
+    "p7-holdout-v3-073",
+    "p7-holdout-v3-074",
+    "p7-holdout-v3-075",
+    "p7-holdout-v3-076",
+    "p7-holdout-v3-077",
+    "p7-holdout-v3-078",
+    "p7-holdout-v3-079"
+  ],
+  "inputs": "artifacts\\p7\\final-evaluation-v1\\supplement-19\\inputs.jsonl",
+  "gold": "artifacts\\p7\\final-evaluation-v1\\supplement-19\\private\\gold.jsonl",
+  "assets": "artifacts\\p7\\final-evaluation-v1\\supplement-19\\assets",
+  "pins": "artifacts\\p7\\final-evaluation-v1\\supplement-19\\pins.json",
+  "launch_configs": "artifacts\\p7\\final-evaluation-v1\\supplement-19\\launch-configs.json",
+  "oracle": "artifacts\\p7\\final-evaluation-v1\\supplement-19\\private\\oracle.json",
+  "contract_validation": "artifacts\\p7\\final-evaluation-v1\\supplement-19\\private\\contract-validation.json",
+  "seal": "artifacts\\p7\\final-evaluation-v1\\supplement-19\\SEAL.json",
+  "seal_sha256": "2ee42be4970570032179ff19bbfdd09afc6db8bb9e64f8cb826170001fb65d11",
+  "oracle_all_ok": true,
+  "contract_all_ok": true,
+  "authoring": "AI-assisted public synthetic authoring; not independent human blind review",
+  "data_identity": "v3 public synthetic Dataset/Corpus/Source versions reused; new case IDs 061-079",
+  "existing_31_untouched": true,
+  "executed": "not_run",
+  "paid_calls": 0,
+  "pending": [
+    "materialize v3 public Dataset/Corpus pins into current isolated PG for 19 new tasks",
+    "merge 31 retained + 19 new for 50-case admission",
+    "run 50-case admission after materialization"
+  ]
+}

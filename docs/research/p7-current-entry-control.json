@@ -1,0 +1,36 @@
+{
+  "schema": "p7-current-entry-control/v3",
+  "source_manifest_lf": "cfacd0bd0e23e31a06ac669375eaf266885c74afc92cd0b018fcf16123cdf13f",
+  "tests": "5 passed",
+  "control": [
+    {
+      "case_id": "probe-v3-completed",
+      "run_id": "de7f7c1f-5e62-4243-8c5c-fb99506e028c",
+      "status": "completed",
+      "strict_correct": true,
+      "failure_class": null,
+      "replay": true
+    },
+    {
+      "case_id": "probe-v3-partial",
+      "run_id": "2d9fa8c8-0c13-4d90-9a44-918217963a6c",
+      "status": "partial",
+      "strict_correct": true,
+      "failure_class": null,
+      "replay": true
+    },
+    {
+      "case_id": "probe-v3-unavailable",
+      "run_id": "62020c54-656c-41e5-8094-ac181e978129",
+      "status": "unavailable",
+      "strict_correct": true,
+      "failure_class": null,
+      "replay": true
+    }
+  ],
+  "image": "datapilot-current:local",
+  "network": "datapilot-p7-current-v1_default",
+  "database": "datapilot_p7_current",
+  "provider_calls": 0,
+  "paid_permit": false
+}

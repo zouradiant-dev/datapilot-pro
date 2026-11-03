@@ -1,0 +1,414 @@
+{
+  "schema": "fresh-web-smoke-v2-preparation/v1",
+  "created_at": "2026-11-02T11:51:00.077466+00:00",
+  "campaign_id": "p7-fresh-web-smoke-repair-v2",
+  "status": "PREPARED_NOT_EXECUTABLE_PENDING_CI_AND_NEW_PERMIT",
+  "source_commit": "434dc1870925b4740b51078804703f287f058dcd",
+  "workspace_head": "4cf867ee56b837a170a60b0d2abe2534394bb520",
+  "base_commit": "cccd829f7240b9ff56b7d3817c7b716c39616108",
+  "remote_head": "cccd829f7240b9ff56b7d3817c7b716c39616108",
+  "ahead": 2,
+  "freeze": {
+    "id": "p7-fresh-web-smoke-repair-v2-7b229020c7c2",
+    "sha256": "7b229020c7c265866921b1685cb7ec2b2e598489345dd4073e258152b710d2f2",
+    "source_manifest_sha256": "81f7badfc63b936bd5a51e3758e3efa4f6054b9e5a77a94a7e5a826ec67c0964",
+    "parent": {
+      "id": "p7-fresh-web-smoke-admission-v1-483bc675998f",
+      "sha256": "483bc675998fa4c2e6c2df4a9c95b972c2c05b064f9c2768cd5e52a7a858a841"
+    }
+  },
+  "data": {
+    "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+    "dataset_version": 1,
+    "dataset_source_sha256": "dd197a51b949a0e19f38eae9583215cc5c4a824c4a2963cd7e58d29b9f095c6a",
+    "corpus_id": "3fd3e8c1-1105-4c43-bc59-2913786a4f53",
+    "index_version": "223be2d08a0fd76803c4aabf61ad7a4548db411b466d4a7bb2b017f76459de88",
+    "document_source_sha256": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+    "chunk_id": "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31",
+    "source_id": "2c794fb60592a71e5e6d7335e01327e77de933f2297e00750c189eaa227ef51c",
+    "document_id": "5d60eb04b8bf637c7b9a60b21533b8c90e9ded5bca92451ceaff10c972af4a33"
+  },
+  "definitions": {
+    "semantic_version": 1,
+    "semantic_definition_sha256": "2da3a80810a17f679aa9c67e8d32d01772866cd4927651187c3e1dbf019f1364",
+    "metric_id": "paid_invoice_revenue",
+    "metric_version": 1,
+    "metric_definition_sha256": "f2178982580185dbd47994e8c6d9ff1e80656292c915efcb834be80f7ef6e9a1",
+    "semantic_content": {
+      "entities": [
+        {
+          "grain": [
+            "invoice_id"
+          ],
+          "entity": "invoices",
+          "fields": {
+            "amount": "amount_cents",
+            "currency": "currency",
+            "record_id": "invoice_id",
+            "invoice_date": "invoice_date",
+            "payment_status": "payment_status"
+          },
+          "table_id": "table_1",
+          "timezone": "UTC",
+          "null_policy": "reject_required",
+          "amount_storage": "minor",
+          "coverage_start": "2026-09-01",
+          "history_complete": false,
+          "currency_constant": null,
+          "subscription_identity": "unknown",
+          "coverage_end_exclusive": "2026-10-01"
+        }
+      ],
+      "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+      "domain_version": "saas-1",
+      "dataset_version": 1
+    },
+    "metric_content": {
+      "policy": "saas_metrics_v1",
+      "feature": null,
+      "currency": "CNY",
+      "metric_id": "paid_invoice_revenue",
+      "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+      "paid_values": [
+        "paid"
+      ],
+      "churn_values": [
+        "churned"
+      ],
+      "dataset_version": 1,
+      "semantic_version": 1,
+      "non_churn_end_values": [
+        "downgraded",
+        "plan_change"
+      ]
+    }
+  },
+  "bge": {
+    "model": "BAAI/bge-small-zh-v1.5/Qdrant-onnx",
+    "revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+    "dimensions": 512,
+    "recipe": "cls-l2-query-prefix-1/ort-1.31.0/tokenizers-0.23.3",
+    "model_sha256": "1294ea4b6331115a353d81f96b85e8c8d7fdcc284453d5b2fab5b016230aad38",
+    "tokenizer_sha256": "48cea5d44424912a6fd1ea647bf4fe50b55ab8b1e5879c3275f80e339e8fae26",
+    "chunker": {
+      "chars": 192,
+      "overlap": 32,
+      "version": "unicode-window-1"
+    },
+    "retriever": "pg-cosine-exact-1"
+  },
+  "cases": [
+    {
+      "case_id": "repair-web-01",
+      "kind": "sql_only",
+      "candidate_sha256": "517e2332f106f7e9a2b684f128af3f91717b7d5a4605cf0e83fa49814ba9f159",
+      "question": "计算 2026 年 9 月已支付账单收入，按 CNY 元返回；仅统计 payment_status=paid 且 currency=CNY 的账单。",
+      "selection": {
+        "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+        "dataset_version": 1,
+        "metric_id": "paid_invoice_revenue",
+        "metric_version": 1,
+        "window": {
+          "start": "2026-09-01",
+          "end_exclusive": "2026-10-01"
+        }
+      },
+      "status": "UNCONFIRMED_PREPARED",
+      "run_id": null,
+      "goal_contract_sha256": null
+    },
+    {
+      "case_id": "repair-web-02",
+      "kind": "rag_only",
+      "candidate_sha256": "897840e987af918c163b25b7a23a4f9f39609140c627c8a8cd8287e452b557aa",
+      "question": "请依据授权文档说明企业版退款申请的审核时限，并给出原文定位；不要推断个人版。",
+      "selection": {
+        "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+        "dataset_version": 1,
+        "corpus_ids": [
+          "3fd3e8c1-1105-4c43-bc59-2913786a4f53"
+        ],
+        "document_purpose": "facts",
+        "required_facts": [
+          {
+            "fact_id": "refund_turnaround",
+            "description": "企业版退款申请的审核时限",
+            "quotation": "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。"
+          }
+        ],
+        "required_source_ids": [
+          "2c794fb60592a71e5e6d7335e01327e77de933f2297e00750c189eaa227ef51c"
+        ]
+      },
+      "status": "UNCONFIRMED_PREPARED",
+      "run_id": null,
+      "goal_contract_sha256": null
+    },
+    {
+      "case_id": "repair-web-03",
+      "kind": "sql_rag",
+      "candidate_sha256": "6a6aaac65deabd5684b15836ff211cc03e13282e10fa95853b9ff6b784c39c32",
+      "question": "计算 2026 年 9 月已支付账单收入（CNY），并依据授权退款政策原文说明企业版退款审核时限；不要把文档当作收入或因果证明。",
+      "selection": {
+        "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+        "dataset_version": 1,
+        "metric_id": "paid_invoice_revenue",
+        "metric_version": 1,
+        "window": {
+          "start": "2026-09-01",
+          "end_exclusive": "2026-10-01"
+        },
+        "corpus_ids": [
+          "3fd3e8c1-1105-4c43-bc59-2913786a4f53"
+        ],
+        "document_purpose": "facts",
+        "required_facts": [
+          {
+            "fact_id": "refund_turnaround",
+            "description": "企业版退款申请的审核时限",
+            "quotation": "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。"
+          }
+        ],
+        "required_source_ids": [
+          "2c794fb60592a71e5e6d7335e01327e77de933f2297e00750c189eaa227ef51c"
+        ]
+      },
+      "status": "UNCONFIRMED_PREPARED",
+      "run_id": null,
+      "goal_contract_sha256": null
+    }
+  ],
+  "gold": {
+    "sql_only": {
+      "query": "SELECT COALESCE(SUM(amount_cents),0) FROM uploads.u_ea9efaf0854f52878d42cca8ca0efaf1_v1_t1 WHERE payment_status='paid' AND currency='CNY' AND invoice_date >= DATE '2026-09-01' AND invoice_date < DATE '2026-10-01'",
+      "result_cents": 80335,
+      "result": "803.35",
+      "unit": "CNY",
+      "excluded": [
+        "unpaid",
+        "currency != CNY",
+        "invoice_date >= 2026-10-01"
+      ],
+      "window": {
+        "start": "2026-09-01",
+        "end_exclusive": "2026-10-01"
+      }
+    },
+    "rag_only": {
+      "source_id": "2c794fb60592a71e5e6d7335e01327e77de933f2297e00750c189eaa227ef51c",
+      "document_id": "5d60eb04b8bf637c7b9a60b21533b8c90e9ded5bca92451ceaff10c972af4a33",
+      "corpus_id": "3fd3e8c1-1105-4c43-bc59-2913786a4f53",
+      "index_version": "223be2d08a0fd76803c4aabf61ad7a4548db411b466d4a7bb2b017f76459de88",
+      "source_sha256": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+      "chunk_id": "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31",
+      "line_start": 1,
+      "line_end": 7,
+      "quote_line": 3,
+      "quote": "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。",
+      "expected": "7 个工作日",
+      "distractors": [
+        "个人版退款申请须在 3 个工作日内完成审核。"
+      ],
+      "embedding_sha256": "882c137ae33ff7d60db2e8b1794b3161363c7072dfa84856dcbf306572ee8ae4"
+    },
+    "hashes": {
+      "csv_sha256": "dd197a51b949a0e19f38eae9583215cc5c4a824c4a2963cd7e58d29b9f095c6a",
+      "doc_sha256": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+      "dataset_sha256": "dd197a51b949a0e19f38eae9583215cc5c4a824c4a2963cd7e58d29b9f095c6a",
+      "dataset_id": "ea9efaf0-854f-5287-8d42-cca8ca0efaf1",
+      "dataset_version": 1,
+      "corpus_id": "3fd3e8c1-1105-4c43-bc59-2913786a4f53",
+      "index_version": "223be2d08a0fd76803c4aabf61ad7a4548db411b466d4a7bb2b017f76459de88"
+    },
+    "campaign_id": "p7-fresh-web-smoke-repair-v2",
+    "gold_injection": "FORBIDDEN; acceptance only",
+    "quotation_disclosure": "quotation is a user-review input, not a verified proof"
+  },
+  "budget": {
+    "schema": "fresh-web-smoke-budget/v2",
+    "per_run": {
+      "max_model_calls": 8,
+      "max_token_units": 18000,
+      "max_output_tokens": 1200,
+      "model_timeout_seconds": 30,
+      "temperature": 0,
+      "thinking": "disabled",
+      "sdk_retries": 0,
+      "outer_retries": 0
+    },
+    "campaign": {
+      "max_runs": 3,
+      "max_calls": 24,
+      "max_token_units": 54000,
+      "concurrency_requested": 1,
+      "max_parallel_workers_required": 1,
+      "task_timeout_seconds": 180,
+      "campaign_timeout_seconds": 1800,
+      "sequential": true,
+      "automatic_retry": false
+    },
+    "cost": {
+      "provider": "DeepSeek",
+      "model": "deepseek-flash",
+      "official_model_version": "DeepSeek-V4.1-Flash-1017 (official page; no API probe)",
+      "official_pricing_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "retrieved_at": "2026-11-02",
+      "peak_usd_per_million": {
+        "cache_hit_input": 0.006,
+        "cache_miss_input": 0.3,
+        "output": 1.2
+      },
+      "off_peak_half": true,
+      "worst_case_estimate_usd": "0.0648",
+      "basis": "54,000 token units x highest published output rate $1.2/1M; upper bound only",
+      "bill_status": "not_reconciled"
+    }
+  },
+  "permit_template": {
+    "path": "artifacts\\p7\\fresh-web-smoke-repair-v2\\private\\permit-template.json",
+    "sha256": "5ab7908df66435c3d87cad64421bc034e6d10adf21cfc6f9e37ef5d6244c4295",
+    "authorized": false,
+    "signature": "",
+    "approved_at": null,
+    "expires_at": null,
+    "host_settings_hash": null,
+    "executable": false
+  },
+  "authorization_draft": {
+    "path": "artifacts\\p7\\fresh-web-smoke-repair-v2\\private\\authorization-draft.md",
+    "sha256": "17736afac27297264875a21e5a35b0566ca6b9a86429ec6e3939bae8a20ebf8b"
+  },
+  "execution_order": {
+    "path": "artifacts\\p7\\fresh-web-smoke-repair-v2\\private\\execution-order.md",
+    "sha256": "c4572a43a58f70a7b93b609ec34edbaa14f9d5c8598d63c6f640f2500cc85225"
+  },
+  "ci": {
+    "status": "PENDING_NEW_COMMIT_CI_NOT_RUN",
+    "new_source_commit": "434dc1870925b4740b51078804703f287f058dcd",
+    "old_ci": {
+      "run": 30,
+      "url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41416548492",
+      "commit": "cccd829f7240b9ff56b7d3817c7b716c39616108",
+      "conclusion": "success",
+      "scope": "old source only"
+    },
+    "planned_tests": 1748,
+    "planned_nonintegration": 1344,
+    "planned_pg": 404,
+    "blocks_execution": true
+  },
+  "pending": {
+    "ci": "PENDING_NEW_COMMIT_CI_NOT_RUN",
+    "host_settings_hash": "PENDING_FINAL_LIVE_HOST",
+    "goal_contracts": "PENDING_FINAL_LIVE_HOST",
+    "permit": "UNSIGNED_TEMPLATE_ONLY",
+    "goal_confirmation": "NOT_CONFIRMED",
+    "execution_approval": "NOT_REQUESTED"
+  },
+  "old_results": {
+    "campaign": "p7-fresh-web-smoke-v1",
+    "sql": "completed",
+    "rag": "unavailable",
+    "combined": "failed",
+    "calls": 8,
+    "tokens": 12066,
+    "preserved": true,
+    "results_doc_sha256": "d7b3f48493162b7a12cb0bc5b9ede85193af65e98b9ef37595b95146020c9ca6",
+    "old_stop_sha256": "8eea643db12f6421e70fe55edec2c41dffefa0e77c0e10d1db04a7aa89616945"
+  },
+  "preflight": {
+    "schema": "fresh-web-smoke-preparation-preflight/v2",
+    "checked_at": "2026-11-02T11:50:46.582461+00:00",
+    "campaign_id": "p7-fresh-web-smoke-repair-v2",
+    "freeze_id": "p7-fresh-web-smoke-repair-v2-7b229020c7c2",
+    "freeze_sha256": "7b229020c7c265866921b1685cb7ec2b2e598489345dd4073e258152b710d2f2",
+    "source_commit": "434dc1870925b4740b51078804703f287f058dcd",
+    "workspace_head": "4cf867ee56b837a170a60b0d2abe2534394bb520",
+    "remote_head": "cccd829f7240b9ff56b7d3817c7b716c39616108",
+    "ahead": 2,
+    "ci_status": "PENDING_NEW_COMMIT_CI_NOT_RUN",
+    "checks": [
+      {
+        "name": "head",
+        "ok": true
+      },
+      {
+        "name": "source commit exists",
+        "ok": true
+      },
+      {
+        "name": "source worktree clean",
+        "ok": true
+      },
+      {
+        "name": "source file hashes",
+        "ok": true
+      },
+      {
+        "name": "freeze hash",
+        "ok": true
+      },
+      {
+        "name": "quotation exact in source",
+        "ok": true
+      },
+      {
+        "name": "old admissions preserved",
+        "ok": true
+      },
+      {
+        "name": "no new campaign admissions",
+        "ok": true
+      },
+      {
+        "name": "old STOP preserved",
+        "ok": true
+      },
+      {
+        "name": "old results preserved",
+        "ok": true
+      },
+      {
+        "name": "permit template unsigned",
+        "ok": true
+      },
+      {
+        "name": "no active web host",
+        "ok": true
+      },
+      {
+        "name": "candidate count",
+        "ok": true
+      },
+      {
+        "name": "candidate run ids null",
+        "ok": true
+      }
+    ],
+    "all_checks_pass": true,
+    "old_admissions": [
+      {
+        "case_id": "fresh-web-01",
+        "run_id": "e3af5452-f18c-440e-8d3f-99d6016500c1"
+      },
+      {
+        "case_id": "fresh-web-02",
+        "run_id": "cc12be91-1f1f-486e-8fdb-d513857b8640"
+      },
+      {
+        "case_id": "fresh-web-03",
+        "run_id": "fc2201a1-f88e-4661-b9ec-24c654a0c08d"
+      }
+    ],
+    "new_campaign_admissions": [],
+    "paid_model_calls": 0,
+    "new_permit_created": false,
+    "notes": [
+      "No CI wait; CI status is recorded separately.",
+      "Preparation is not executable until new CI PASS and a signed Permit exist.",
+      "No source changes, no model calls."
+    ]
+  },
+  "paid_model_calls": 0,
+  "source_modified": false
+}

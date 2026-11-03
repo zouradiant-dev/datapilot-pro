@@ -177,6 +177,8 @@ def clarification(api, cid, message, datasets):
                         document_purpose=requirements["purpose"],
                         required_facts=requirements["required_facts"],
                     )
+                    if requirements["independent"]:
+                        selection["document_facts_independent"] = True
                     if required_sources:
                         selection["required_source_ids"] = required_sources
                 body = {"text": revised, "selection": selection}

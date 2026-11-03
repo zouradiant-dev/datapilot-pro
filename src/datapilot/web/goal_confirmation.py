@@ -27,7 +27,9 @@ async def proposal(product, request, payload, selection):
     """
     scope = ReportScope.model_validate_json(json.dumps(payload["report_scope"]))
     rag = RagScope.model_validate_json(json.dumps(payload["rag_scope"]))
-    if len(scope.question) > 512 or scope.document_goal.question != scope.question:
+    if len(scope.question) > 512 or (
+        not scope.document_goal.independent_facts and scope.document_goal.question != scope.question
+    ):
         deny("GOAL_INPUT_LIMIT", "请将完整文档问题限定在512字符内，不会截断原目标后确认")
     sources = []
     async with rag_session(product.settings, rag, goal=scope.document_goal.question) as tools:

@@ -1,0 +1,1177 @@
+{
+  "schema": "p7-final-evaluation-plan/v2",
+  "created_at": "2026-11-03T05:01:10.932330+00:00",
+  "status": "CURRENT_ENTRY_BOUND_CONTROL_PASS_50_TASKS_NOT_READY",
+  "identity_audit": {
+    "v3_campaign": "p7-business-independent-v3-first-live",
+    "v3_observed": 29,
+    "v3_not_run": 31,
+    "v3_strict_observed": "20/29",
+    "v3_outcome": "BENCHMARK INVALID — FREEZE / EVALUATION INTEGRITY",
+    "v3_note": "The historical v3 campaign is not a 60-case fresh set. Only cases 031-060 (31) were not executed; 001-030 were observed. Observed cases are history/regression only.",
+    "fresh_v3_cases": [
+      "p7-holdout-v3-050",
+      "p7-holdout-v3-011",
+      "p7-holdout-v3-031",
+      "p7-holdout-v3-051",
+      "p7-holdout-v3-012",
+      "p7-holdout-v3-032",
+      "p7-holdout-v3-052",
+      "p7-holdout-v3-013",
+      "p7-holdout-v3-033",
+      "p7-holdout-v3-053",
+      "p7-holdout-v3-014",
+      "p7-holdout-v3-034",
+      "p7-holdout-v3-054",
+      "p7-holdout-v3-015",
+      "p7-holdout-v3-035",
+      "p7-holdout-v3-055",
+      "p7-holdout-v3-016",
+      "p7-holdout-v3-036",
+      "p7-holdout-v3-056",
+      "p7-holdout-v3-017",
+      "p7-holdout-v3-037",
+      "p7-holdout-v3-057",
+      "p7-holdout-v3-018",
+      "p7-holdout-v3-038",
+      "p7-holdout-v3-058",
+      "p7-holdout-v3-019",
+      "p7-holdout-v3-039",
+      "p7-holdout-v3-059",
+      "p7-holdout-v3-020",
+      "p7-holdout-v3-040",
+      "p7-holdout-v3-060"
+    ],
+    "fresh_old_gate2b_cases": [
+      "bh2-032",
+      "bh2-033",
+      "bh2-034",
+      "bh2-035",
+      "bh2-036",
+      "bh2-037",
+      "bh2-038",
+      "bh2-039",
+      "bh2-040",
+      "bh2-041",
+      "bh2-042",
+      "bh2-043",
+      "bh2-044",
+      "bh2-045",
+      "bh2-046",
+      "bh2-047",
+      "bh2-048",
+      "bh2-049",
+      "bh2-050"
+    ],
+    "old_gate2b_unrun_total": 29,
+    "insufficient_alone": "31 < 50. Supplement requires either the 19 selected old Gate2B unrun cases under a new cross-set protocol or a newly authored independent set. Do not relabel observed v3 cases.",
+    "not_read_gold": true,
+    "fresh_v3_lanes": {
+      "sql_only": 10,
+      "rag_only": 10,
+      "sql_rag": 11
+    }
+  },
+  "source": {
+    "schema": "p7-final-candidate-source-identity/v1",
+    "created_at": "2026-11-03T04:51:44.915836+00:00",
+    "head": "4cf867ee56b837a170a60b0d2abe2534394bb520",
+    "rule": "canonical LF SHA256 for execution; Git blob and raw SHA256 preserved for audit",
+    "file_count": 141,
+    "files": [
+      {
+        "path": "Dockerfile",
+        "git_blob": "0b2c9358b645876be0271d126d5afec9c1da0b52",
+        "raw_sha256": "95f5f45ca8805d071f3f1288b1c17d5722089f47f4da84fcf008603b876ae654",
+        "lf_sha256": "95f5f45ca8805d071f3f1288b1c17d5722089f47f4da84fcf008603b876ae654",
+        "line_ending": "LF"
+      },
+      {
+        "path": "alembic.ini",
+        "git_blob": "635305e156ee97a696d3c80f3123685dc6caef43",
+        "raw_sha256": "e7955a0ffb9c32a9c5067d7885ee9197328f17a4a12fb4a5bb556c2b85763aa2",
+        "lf_sha256": "e7955a0ffb9c32a9c5067d7885ee9197328f17a4a12fb4a5bb556c2b85763aa2",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/test_v3_contracts.py",
+        "git_blob": "d3b979407fde02c85b4ae655708f7980868f9929",
+        "raw_sha256": "6a1d6426260a8773e13aaa3c7278c44bbc2b8902e3706eb82b5ba65c66a4bb70",
+        "lf_sha256": "6a1d6426260a8773e13aaa3c7278c44bbc2b8902e3706eb82b5ba65c66a4bb70",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/v3_common.py",
+        "git_blob": "d8d20411199c799856532c3fc1b59ec0bcfe70cd",
+        "raw_sha256": "e82f9be4304b9150414b7f7e07c6684ea67b5ecfef848496e05f6d21da11e091",
+        "lf_sha256": "e82f9be4304b9150414b7f7e07c6684ea67b5ecfef848496e05f6d21da11e091",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/v3_gate.py",
+        "git_blob": "5e4cf9bcf70ec4eeebaefcd1be3887ccaa5b5c89",
+        "raw_sha256": "e64dbd75234863e375086114073bb72f85772a10d0388209fc0fae60e2247f0c",
+        "lf_sha256": "e64dbd75234863e375086114073bb72f85772a10d0388209fc0fae60e2247f0c",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/v3_oracle.py",
+        "git_blob": "634c0b6ba102dd970f1fd1ac729093237eb87738",
+        "raw_sha256": "7c0ea677c5f63843fc8169d91884f35e2e14f8915a5a8820a73e984a17634d63",
+        "lf_sha256": "7c0ea677c5f63843fc8169d91884f35e2e14f8915a5a8820a73e984a17634d63",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/v3_prepare.py",
+        "git_blob": "848dcb91f3aa34472d5cda52468fb13655cddc58",
+        "raw_sha256": "4a4718fce0118cd01766d35214c609db9bc225a09c3762e74c729bbafb324b82",
+        "lf_sha256": "4a4718fce0118cd01766d35214c609db9bc225a09c3762e74c729bbafb324b82",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/v3_probe.py",
+        "git_blob": "9b6a4b3c2e6096899a566e8e7db08e1649d0fe8c",
+        "raw_sha256": "be7a4a2443ea6e7c4767550fb6ad67acaafd7e0e679000945bfab0c240850e1b",
+        "lf_sha256": "be7a4a2443ea6e7c4767550fb6ad67acaafd7e0e679000945bfab0c240850e1b",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/v3_repair_sources.py",
+        "git_blob": "7226198529d56b2e4338e198f94f87dc523eb9e0",
+        "raw_sha256": "1792ed6f3071827a8971f6c965bf91af48984d6fff706012bf37611e7ae48ef6",
+        "lf_sha256": "1792ed6f3071827a8971f6c965bf91af48984d6fff706012bf37611e7ae48ef6",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/v3_runner.py",
+        "git_blob": "f504ee6d3e3ec2a66d829183fc1fbd871a7d4e58",
+        "raw_sha256": "6b8e90aef76f7f9129e8a56152fc07f8b49bf9ea100d57f4fb0146886c023fd6",
+        "lf_sha256": "6b8e90aef76f7f9129e8a56152fc07f8b49bf9ea100d57f4fb0146886c023fd6",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/v3_score.py",
+        "git_blob": "147258792eb88e373a6f740f7f939ad86ce7cd1b",
+        "raw_sha256": "d2d110b43c207fc81c58b65f96d58e36ac16557f7aade885c40e2c2b77d6e7ed",
+        "lf_sha256": "d2d110b43c207fc81c58b65f96d58e36ac16557f7aade885c40e2c2b77d6e7ed",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/v3_seal.py",
+        "git_blob": "9a99686118c0f997b6be883fc3b759bc1996c62b",
+        "raw_sha256": "f56de0a3ab317521740b3f1c2d2a4a7fcce1d176de905ea031a2ac11ea71e481",
+        "lf_sha256": "f56de0a3ab317521740b3f1c2d2a4a7fcce1d176de905ea031a2ac11ea71e481",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/v3_sources.py",
+        "git_blob": "32f2b823c65d4b0cb05d64c96db8ce8773e92a61",
+        "raw_sha256": "d23290086609a311c2eaa85591bc9e618ff8632127f21624f5b15492cb1ac2db",
+        "lf_sha256": "d23290086609a311c2eaa85591bc9e618ff8632127f21624f5b15492cb1ac2db",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/v3_validate.py",
+        "git_blob": "3441dfdd3f617ad2f46412ae4c76ceeaa0dd1983",
+        "raw_sha256": "ac10edad87ee8ab2ab6edd63d8cf2cc6580d8b7a56de208835cb4f42a151cf4c",
+        "lf_sha256": "ac10edad87ee8ab2ab6edd63d8cf2cc6580d8b7a56de208835cb4f42a151cf4c",
+        "line_ending": "LF"
+      },
+      {
+        "path": "evaluation/p7_v3/v3_worker.py",
+        "git_blob": "5698c6b3b364193c52993cecc147acafdd62d3ca",
+        "raw_sha256": "e1693d4fc48135727d3bb165dd654e04dd459dabd9faf6714148d05e75fa745d",
+        "lf_sha256": "e1693d4fc48135727d3bb165dd654e04dd459dabd9faf6714148d05e75fa745d",
+        "line_ending": "LF"
+      },
+      {
+        "path": "migrations/env.py",
+        "git_blob": "5598a84daf15221b7bcef66e2911c4728e0a4f14",
+        "raw_sha256": "e7e106b02069ab7c2432de838b4aa2fb75acce89effe874b6b428f5c7f3999c0",
+        "lf_sha256": "e7e106b02069ab7c2432de838b4aa2fb75acce89effe874b6b428f5c7f3999c0",
+        "line_ending": "LF"
+      },
+      {
+        "path": "migrations/versions/0001_business_and_vectors.py",
+        "git_blob": "479bf7e1eec4deb5f552f8fe79db97d3e2aaf8a0",
+        "raw_sha256": "43c2ee3428f8bd39648309ddee6218ae85828ef21573af4a04650d8f2da7afc8",
+        "lf_sha256": "a91900b4ce239deb48d749d20ddb7c02e0a2bff41d52d0ea9ba9b97b34453f49",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "migrations/versions/0002_dataset_catalog.py",
+        "git_blob": "6ef6c05943e5210fecb7c726c8e2136dabc09d29",
+        "raw_sha256": "499e7ea97910b2a4fa55c71f3fed53ca09f61112015c93603a8d58ec043e110c",
+        "lf_sha256": "8dd70eacc3e221dd115e3fa11117a30d6c49350476eb97c307f6db72d571376c",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "migrations/versions/0003_semantics_and_evidence.py",
+        "git_blob": "29968e63e549ceb14916279bf8f4bf021b877463",
+        "raw_sha256": "6b709140e9a284e8cf2eb8e2a17e4638ee0edae684a25b9ea9239db26d0174e4",
+        "lf_sha256": "e6714de83bb6561c7e550bfb12cdcb7030c13f22b23ec9a60edd1fcd7b2af35b",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "migrations/versions/0004_durable_execution.py",
+        "git_blob": "6425eaf4be3b83642356c9f6f8d8de491cfdc926",
+        "raw_sha256": "38e71b3eac58dd51e55038914f69f3097a7cf4d5c3cef1dd48c5f4d5bcec07f1",
+        "lf_sha256": "38e71b3eac58dd51e55038914f69f3097a7cf4d5c3cef1dd48c5f4d5bcec07f1",
+        "line_ending": "LF"
+      },
+      {
+        "path": "migrations/versions/0005_scoped_rag.py",
+        "git_blob": "4943186b0b06b4fa8c7dd3f87f997340c0b29d3b",
+        "raw_sha256": "a254b76b0793b284599548d211100d1bcf133879ba2988f253591f419f401cd1",
+        "lf_sha256": "a254b76b0793b284599548d211100d1bcf133879ba2988f253591f419f401cd1",
+        "line_ending": "LF"
+      },
+      {
+        "path": "migrations/versions/0006_web_product.py",
+        "git_blob": "4cba081361956b461cec67055dbd7bcc82a2e463",
+        "raw_sha256": "3ddbe43d7f0c9ad6a3e9c77dda665adeaa08c8fc0c63ec8d163430ecf3d85828",
+        "lf_sha256": "3ddbe43d7f0c9ad6a3e9c77dda665adeaa08c8fc0c63ec8d163430ecf3d85828",
+        "line_ending": "LF"
+      },
+      {
+        "path": "migrations/versions/0007_chat_conversations.py",
+        "git_blob": "74ab2bee728267c0a4e27352f737c1486dbf6760",
+        "raw_sha256": "3dae40e6ce503d7ddcbd96ea778d0113ac9d4f8b126039fffecdfbbb5164489c",
+        "lf_sha256": "3dae40e6ce503d7ddcbd96ea778d0113ac9d4f8b126039fffecdfbbb5164489c",
+        "line_ending": "LF"
+      },
+      {
+        "path": "migrations/versions/0008_qwen_vectors.py",
+        "git_blob": "cf67fbd58bfb3579a9a853525d53ba89413b7570",
+        "raw_sha256": "6cdc23af4f444c72b06682532fcb78e36b1178171930f5533cc99c4ddcd89c78",
+        "lf_sha256": "6cdc23af4f444c72b06682532fcb78e36b1178171930f5533cc99c4ddcd89c78",
+        "line_ending": "LF"
+      },
+      {
+        "path": "migrations/versions/0009_web_smoke_admission.py",
+        "git_blob": "14e77f73cce3c4580608596454cbf93b51c8ee7b",
+        "raw_sha256": "8e07ce90279b6b3d74adba892a471e1107b9f024f67a6dad2ac5099257b36f71",
+        "lf_sha256": "8e07ce90279b6b3d74adba892a471e1107b9f024f67a6dad2ac5099257b36f71",
+        "line_ending": "LF"
+      },
+      {
+        "path": "pyproject.toml",
+        "git_blob": "3dcd5462250263a244b9b7ab867d9a4dcaac6e98",
+        "raw_sha256": "082ff8d9de6cd7d5f133078d46550560d6f6c5890545d3f46348741cda888d9c",
+        "lf_sha256": "082ff8d9de6cd7d5f133078d46550560d6f6c5890545d3f46348741cda888d9c",
+        "line_ending": "LF"
+      },
+      {
+        "path": "scripts/p7_business_runtime.py",
+        "git_blob": "3feb362f3ac94c494fbf56de1cb7ad17f3855e00",
+        "raw_sha256": "0edb36d9212115ed788e791f9e49d530887abefd32b513a73ac92254f247726d",
+        "lf_sha256": "0edb36d9212115ed788e791f9e49d530887abefd32b513a73ac92254f247726d",
+        "line_ending": "LF"
+      },
+      {
+        "path": "scripts/report_recovery_probe.py",
+        "git_blob": "7cfbe8f2ff41756a67913c92e78fdc526a31e876",
+        "raw_sha256": "34cbcd04dd06828c8d2fbf72299ff3188caae190ffae98b2115890d26515a05f",
+        "lf_sha256": "34cbcd04dd06828c8d2fbf72299ff3188caae190ffae98b2115890d26515a05f",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/__init__.py",
+        "git_blob": "d4f771ff27d082548698d71966293173ebf665a9",
+        "raw_sha256": "f8f2ff1b042653d3022b3e778796eb7910456b27a509f40b7504bbd90c13784e",
+        "lf_sha256": "f8f2ff1b042653d3022b3e778796eb7910456b27a509f40b7504bbd90c13784e",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/agents/__init__.py",
+        "git_blob": "430652fc20c211ef1d80f559f4c7a2fbe0522ae9",
+        "raw_sha256": "9937274c647ca03d8286e43b31bb7106843a6631532a44ee354529b7d14af8c7",
+        "lf_sha256": "9937274c647ca03d8286e43b31bb7106843a6631532a44ee354529b7d14af8c7",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/agents/sql.py",
+        "git_blob": "8024bb04f56ffb342f236e48243ac65d5388d198",
+        "raw_sha256": "978826d024d99b3785178bc7cf5b3975c85d47714e382d250fb0d0ca19600d4d",
+        "lf_sha256": "978826d024d99b3785178bc7cf5b3975c85d47714e382d250fb0d0ca19600d4d",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/agents/supervisor.py",
+        "git_blob": "d2b77ab0d447a035cba53102c6fd84f9e3537d4b",
+        "raw_sha256": "9ba744439d5edac3e9576a795fa3c6da2987424c850fffd2c26f7b5b7598d8a7",
+        "lf_sha256": "cab9c8c20df2780356ea1f35e3385903214440cc59a7755f9d1999ab3267a050",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "src/datapilot/cli.py",
+        "git_blob": "b9328b83947dec84b062c8ffc44eddb454154862",
+        "raw_sha256": "9e1eb877e2ce443f053bc92cae850272057240957c5668b5c5089614fcf376f8",
+        "lf_sha256": "9e1eb877e2ce443f053bc92cae850272057240957c5668b5c5089614fcf376f8",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/config.py",
+        "git_blob": "3516d0822c0a7c370d83a9602abed7a01d2b7a0b",
+        "raw_sha256": "c9fe5b671ae771f93593be8addedc84a383008e4906791a88be9b03361909b70",
+        "lf_sha256": "c9fe5b671ae771f93593be8addedc84a383008e4906791a88be9b03361909b70",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/contracts.py",
+        "git_blob": "86c930f94202f561dfb98f7894e9731058862680",
+        "raw_sha256": "de83f400b002b4f01b28fae351e2693617c57cd88bf58512108fc5831a48fe64",
+        "lf_sha256": "de83f400b002b4f01b28fae351e2693617c57cd88bf58512108fc5831a48fe64",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/data/__init__.py",
+        "git_blob": "1ef5ed769d26b1f341106d087798555407d23250",
+        "raw_sha256": "0a3a4777da834cf433dc5e93edb1b7c84378d7b2a24105cee37dfc70c2b78b6a",
+        "lf_sha256": "0a3a4777da834cf433dc5e93edb1b7c84378d7b2a24105cee37dfc70c2b78b6a",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/data/generator.py",
+        "git_blob": "ba9370e47c8a08d60420084b0f4ca73d2801e2cb",
+        "raw_sha256": "88cbfeec8d08c5288e647f45f2e3f68e5c3c16b47558b6ea8b3ac726ec40bf96",
+        "lf_sha256": "88cbfeec8d08c5288e647f45f2e3f68e5c3c16b47558b6ea8b3ac726ec40bf96",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/data/semantic_demo.py",
+        "git_blob": "b070e1b585233a5e245fcd361c200e842a8861c1",
+        "raw_sha256": "747b25d79dabb01cc99b3d40edabf5695999905510519da807f9b58505e2db5b",
+        "lf_sha256": "747b25d79dabb01cc99b3d40edabf5695999905510519da807f9b58505e2db5b",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/datasets/__init__.py",
+        "git_blob": "e5442e9d8200dd3219df026acb0ee00b4a06a754",
+        "raw_sha256": "7323c26e1890fe6a161adf67b869bbb4ec4a5bbab9eb2630dd17f09e0696ed10",
+        "lf_sha256": "7323c26e1890fe6a161adf67b869bbb4ec4a5bbab9eb2630dd17f09e0696ed10",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/datasets/cli.py",
+        "git_blob": "67461af69ce600ef603f7d58e22ca0248b93284e",
+        "raw_sha256": "77c304cf02a5effeb86871c52c80858778fa8ac06596ba430edd291f2a2a40af",
+        "lf_sha256": "77c304cf02a5effeb86871c52c80858778fa8ac06596ba430edd291f2a2a40af",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/datasets/contracts.py",
+        "git_blob": "c4586dd8709ac86b9589aaad1f1485b73a12e87b",
+        "raw_sha256": "3a9a3fdd00036e82d100507339daac2f85b47da35f475a697718c4eeed9d6aab",
+        "lf_sha256": "3a9a3fdd00036e82d100507339daac2f85b47da35f475a697718c4eeed9d6aab",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/datasets/repository.py",
+        "git_blob": "a83aedb33f1f35dc4dfee66870d96e5b05016391",
+        "raw_sha256": "7ccd6034887ea93c2ef515f73ee7e1d7c61cdbec37a32e0e65c4b84f2ef4023e",
+        "lf_sha256": "7ccd6034887ea93c2ef515f73ee7e1d7c61cdbec37a32e0e65c4b84f2ef4023e",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/db/__init__.py",
+        "git_blob": "d4f7af7e6f6e2e855621194e63a0807050115832",
+        "raw_sha256": "50064e5e21a863f062aafe9df24726d430412925945d33d1997d12848fc9823c",
+        "lf_sha256": "50064e5e21a863f062aafe9df24726d430412925945d33d1997d12848fc9823c",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/db/catalog.py",
+        "git_blob": "0e7c8eef3600e6da59ddbcb8a3774184861b5d13",
+        "raw_sha256": "ce0c956965572682d2db73f9c66c03c50659e29b418570f0ef39e57613827627",
+        "lf_sha256": "ce0c956965572682d2db73f9c66c03c50659e29b418570f0ef39e57613827627",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/db/health.py",
+        "git_blob": "e45f95b047a3ce722ee1576f2af4d289bf28c4b4",
+        "raw_sha256": "efd3ff3e3bad77a2cacd94abe4895ecd8f6b86628a3a9079c395595332723cd6",
+        "lf_sha256": "efd3ff3e3bad77a2cacd94abe4895ecd8f6b86628a3a9079c395595332723cd6",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/db/management.py",
+        "git_blob": "0e8cc0c567ced669313e45f9eb1665469e8a848e",
+        "raw_sha256": "8dffc51c65df6892be0090553a0cda4d6b4c0b03bd17040f759b96ff4a57a02f",
+        "lf_sha256": "8dffc51c65df6892be0090553a0cda4d6b4c0b03bd17040f759b96ff4a57a02f",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/db/schema.py",
+        "git_blob": "2e21924c76a0aceb248164415a0800d7cc3f0bd9",
+        "raw_sha256": "248e1e5e0d77a26354d5e9726d01a5b0225d0d70a619f684ea661e6a9b391935",
+        "lf_sha256": "248e1e5e0d77a26354d5e9726d01a5b0225d0d70a619f684ea661e6a9b391935",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/db/semantic_schema.py",
+        "git_blob": "6d9839938b40644b0e20554d3a116e44848f38a6",
+        "raw_sha256": "7e2c1ffdbbd9126f78faaa1c48f194f740cc1f8da579947351a12e89793b2f5d",
+        "lf_sha256": "7e2c1ffdbbd9126f78faaa1c48f194f740cc1f8da579947351a12e89793b2f5d",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/evaluation.py",
+        "git_blob": "2eca982113a6aa8794a0a44fa1e165848989660d",
+        "raw_sha256": "4ef0662c6165d1167532f9f0883e55a02366294687a6dcc1387a14eb30b4cce6",
+        "lf_sha256": "4ef0662c6165d1167532f9f0883e55a02366294687a6dcc1387a14eb30b4cce6",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/graph.py",
+        "git_blob": "3915a05a79dc91ee45d89fd5c2eb3dadf295784d",
+        "raw_sha256": "56785c355de1d06dd2df5faad41afdf889c23fa7545621c4f46112ea94ab0f47",
+        "lf_sha256": "56785c355de1d06dd2df5faad41afdf889c23fa7545621c4f46112ea94ab0f47",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/harness/__init__.py",
+        "git_blob": "a44ff476e142792c51acdd7a44e4c079a2e59f8e",
+        "raw_sha256": "e4513ad6246fec3b6a855675307fe19911e24ab439728b8724b4e53e436eee61",
+        "lf_sha256": "e4513ad6246fec3b6a855675307fe19911e24ab439728b8724b4e53e436eee61",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/harness/budget.py",
+        "git_blob": "6e943c555fef0df2f8eb7b3d21dfedbd9d783930",
+        "raw_sha256": "aad1cc93e0e920408e754fd85132d180362b03113d8e3bc1d0760e2fcdb9df3a",
+        "lf_sha256": "aad1cc93e0e920408e754fd85132d180362b03113d8e3bc1d0760e2fcdb9df3a",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/harness/context.py",
+        "git_blob": "a9aa70812145e05eb278a93dcc7295793843c48d",
+        "raw_sha256": "95c12ed8d81af5eb407fd7fb930251de9a7c5119d8c330ebf7b0a38dca67b935",
+        "lf_sha256": "95c12ed8d81af5eb407fd7fb930251de9a7c5119d8c330ebf7b0a38dca67b935",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/harness/metric_verification.py",
+        "git_blob": "7518a723b0768319d3877b64c7ab586d02983221",
+        "raw_sha256": "6a76c9f49e0e99e46da6527d6f4f4f62d61c5d6090aa589b5da7d25eb907d841",
+        "lf_sha256": "6a76c9f49e0e99e46da6527d6f4f4f62d61c5d6090aa589b5da7d25eb907d841",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/harness/verification.py",
+        "git_blob": "5651a7b7f33d0fc12275d88b983c1f6dde2361fb",
+        "raw_sha256": "8ddeb2aa8475263754c2c0267ab8c10568b69a5b61aceca77a61b3f9c3071607",
+        "lf_sha256": "8ddeb2aa8475263754c2c0267ab8c10568b69a5b61aceca77a61b3f9c3071607",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/ingestion/__init__.py",
+        "git_blob": "672d93a7af4cb226e638e670ab132b3cfaee9b71",
+        "raw_sha256": "0e8bdca9d0b632726bc07bd3d4faaa09ea5a6f8c23237239ce08fc160baace2e",
+        "lf_sha256": "0e8bdca9d0b632726bc07bd3d4faaa09ea5a6f8c23237239ce08fc160baace2e",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/ingestion/cli.py",
+        "git_blob": "4523ce9dfb8c8fec8780f34d1e818fa44cadf15f",
+        "raw_sha256": "0ab48c082d7bde5793b096429eba92c77ecfa9d779e4cf71234e526d51b3a6a2",
+        "lf_sha256": "0ab48c082d7bde5793b096429eba92c77ecfa9d779e4cf71234e526d51b3a6a2",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/ingestion/common.py",
+        "git_blob": "27efd98fbe1800b386e112aa26be9b7c45b83df1",
+        "raw_sha256": "f960d697960b242894b0aef5457e92121d634fbbce7c5167d7b31b9104314047",
+        "lf_sha256": "f960d697960b242894b0aef5457e92121d634fbbce7c5167d7b31b9104314047",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/ingestion/confirmation.py",
+        "git_blob": "ceb23bd90804fa5c8bd62bda04995dced86eb4b1",
+        "raw_sha256": "458a79ec1e88d763a39a230c91354e2e8d4604a4eb23f8e882af63a76f1ec96a",
+        "lf_sha256": "458a79ec1e88d763a39a230c91354e2e8d4604a4eb23f8e882af63a76f1ec96a",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/ingestion/contracts.py",
+        "git_blob": "9db59874d9ac5ff64e374e3348afdc32d56b2cc2",
+        "raw_sha256": "bfefb55bc7792cfff7e1d5e26203344d14cc628347db7176e22131fa7e95df6c",
+        "lf_sha256": "bfefb55bc7792cfff7e1d5e26203344d14cc628347db7176e22131fa7e95df6c",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/ingestion/parser.py",
+        "git_blob": "66794c4dd8af1cc5119c10ac3f2d6c89a65233f5",
+        "raw_sha256": "ee9be4c179ea7cb48b9aa3753be08c709dad3ac7a337409acdbeb32648762e98",
+        "lf_sha256": "ee9be4c179ea7cb48b9aa3753be08c709dad3ac7a337409acdbeb32648762e98",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/ingestion/profiling.py",
+        "git_blob": "b1a7f0c9a6305081d4c5c4dff650b989ea55ddcc",
+        "raw_sha256": "57713feacf5f6d5b3004bde71c9b7637c3309ea2ce59d05a54d7e1470a5a1bed",
+        "lf_sha256": "57713feacf5f6d5b3004bde71c9b7637c3309ea2ce59d05a54d7e1470a5a1bed",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/ingestion/service.py",
+        "git_blob": "800d98b7418ec779f65dfab0606061dbbba1feb7",
+        "raw_sha256": "e16f0f265d1734e3a3ad00a8c28bccdf575fa6cb2229233b9e96d000606b644e",
+        "lf_sha256": "e16f0f265d1734e3a3ad00a8c28bccdf575fa6cb2229233b9e96d000606b644e",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/ingestion/types.py",
+        "git_blob": "5c0248d898e5cea5e2b657e6d0e903fc68695135",
+        "raw_sha256": "65433d36861db8722d3d4cc829c7ca6ff73c4ffa0afe0fc658149733da574b18",
+        "lf_sha256": "65433d36861db8722d3d4cc829c7ca6ff73c4ffa0afe0fc658149733da574b18",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/ingestion/xlsx.py",
+        "git_blob": "a69e646d7f68c753e955d61e2ae8c14f49f31eb4",
+        "raw_sha256": "2b2a69a90a6b5bd1f472c51ab4e360e61d2c217fc1ab7092d0d15376c78d919a",
+        "lf_sha256": "2b2a69a90a6b5bd1f472c51ab4e360e61d2c217fc1ab7092d0d15376c78d919a",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/llm/__init__.py",
+        "git_blob": "be6427b5e31f57f91bbfd741e620071cab68733b",
+        "raw_sha256": "5a86aee5fed38f6a61862bb06c4f65bfb495ea406aff96acfbc18d90417b3d63",
+        "lf_sha256": "5a86aee5fed38f6a61862bb06c4f65bfb495ea406aff96acfbc18d90417b3d63",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/llm/client.py",
+        "git_blob": "5aab77f5d96d77c060464e24b2cb01d1dd82f050",
+        "raw_sha256": "4945779fe9e6cdc683e0adabb21498f7b88c4deea00aba2a2d03faf0483e207f",
+        "lf_sha256": "4945779fe9e6cdc683e0adabb21498f7b88c4deea00aba2a2d03faf0483e207f",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/llm/fake.py",
+        "git_blob": "ca72303c9cf6f6dfce7c7bea639ca03d2cc4279e",
+        "raw_sha256": "e90fcd168c4eb4b179cc23fbaf2fce79628a15cfff901eb4e442261b760c9039",
+        "lf_sha256": "e90fcd168c4eb4b179cc23fbaf2fce79628a15cfff901eb4e442261b760c9039",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/llm/provider.py",
+        "git_blob": "fb61950eed00286e9d9023057a072f775f693538",
+        "raw_sha256": "b3b89b0ab08dd4c3b78df209ce6dd32c3e15a4b03a1f3b608c524b1911d1254c",
+        "lf_sha256": "b3b89b0ab08dd4c3b78df209ce6dd32c3e15a4b03a1f3b608c524b1911d1254c",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/orchestration/__init__.py",
+        "git_blob": "10f4317e457198e8e2ae4aa63a6450493e7066aa",
+        "raw_sha256": "33e7d162280bc460d0fdecdcd58a8d20da840c2ded9099bd355594fa1115d821",
+        "lf_sha256": "33e7d162280bc460d0fdecdcd58a8d20da840c2ded9099bd355594fa1115d821",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/orchestration/budget.py",
+        "git_blob": "3ea9719b715710fb593934d9582eae7f600aaec3",
+        "raw_sha256": "25ebefd1ce292833ab7ef65f7d3b07ed095182f26ca444dc0c87856f77abe588",
+        "lf_sha256": "25ebefd1ce292833ab7ef65f7d3b07ed095182f26ca444dc0c87856f77abe588",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/orchestration/completion.py",
+        "git_blob": "a1187ab2b70dcd746d69346fa416b140458c3356",
+        "raw_sha256": "c94b90d3715394441f5fe2ea237c3dd0911621636b22b6f11c5af2d897f76648",
+        "lf_sha256": "c94b90d3715394441f5fe2ea237c3dd0911621636b22b6f11c5af2d897f76648",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/orchestration/context.py",
+        "git_blob": "7c0a243be726608306d268dd12ed4f7d0e3c009d",
+        "raw_sha256": "c6bc4da98082d84eeeabb20fe1d1986cb4069338f20251959a7d48e2106b234f",
+        "lf_sha256": "7e9c876452f0d65d0073e2d5a9a05de9c21486b6fc364b66819c781a56d4931b",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "src/datapilot/orchestration/context_contracts.py",
+        "git_blob": "b72f075b20c0c8f0258a6538413f45607e724be6",
+        "raw_sha256": "b918b2fc3901ce681b71133d5d34dbca4f095779fdb6fc1abc77dca5bccaf389",
+        "lf_sha256": "b918b2fc3901ce681b71133d5d34dbca4f095779fdb6fc1abc77dca5bccaf389",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/orchestration/contracts.py",
+        "git_blob": "a6a3f6508ba2554a8ecbddcdab57c66d3c40c964",
+        "raw_sha256": "7cc2b2ae3c12ea26b3434829e1d3894118d4b31700a658281f65bf3d981484cf",
+        "lf_sha256": "7cc2b2ae3c12ea26b3434829e1d3894118d4b31700a658281f65bf3d981484cf",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/orchestration/coordinator.py",
+        "git_blob": "1c8174f6e2646233eb6086354d2b7e13f217270c",
+        "raw_sha256": "019a2b3fd02601c8dbc40a5c064d9ab50e3009769f2468dd38d547f3a6ce38e8",
+        "lf_sha256": "90f0b9c7ffbfe84e33bcb5182068146c9c15dbfc501f692cd1d25820995f0218",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "src/datapilot/orchestration/loop.py",
+        "git_blob": "4fa13c9a139cff2a036b12a868fb71c988f60522",
+        "raw_sha256": "2d6c3d6ac7b79ea84f8ee7a747c66172ffd42ef469edda73937686218c36b510",
+        "lf_sha256": "2d6c3d6ac7b79ea84f8ee7a747c66172ffd42ef469edda73937686218c36b510",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/orchestration/memory.py",
+        "git_blob": "16f119ff61d7177036064b67938715d9aeb56e44",
+        "raw_sha256": "cd9cc76015156200e0be29ffc9cd9bdca3dd05ac015a68226904163a4eac9c7b",
+        "lf_sha256": "cd9cc76015156200e0be29ffc9cd9bdca3dd05ac015a68226904163a4eac9c7b",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/orchestration/model.py",
+        "git_blob": "8771a02dec74814b874f7d7d6382f50e74b08177",
+        "raw_sha256": "5363ab5e31937d972432285fe6452fc5e42e3f6c842df2e019798b0a5764de40",
+        "lf_sha256": "5363ab5e31937d972432285fe6452fc5e42e3f6c842df2e019798b0a5764de40",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/orchestration/rag_completion.py",
+        "git_blob": "bbc06533607de575306e08177ac8033e14a96195",
+        "raw_sha256": "6dc25f624ccdabc81b4951d6c6bd9e0a495271eb9c16b56499ac525952371cab",
+        "lf_sha256": "6dc25f624ccdabc81b4951d6c6bd9e0a495271eb9c16b56499ac525952371cab",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/orchestration/runtime.py",
+        "git_blob": "c1a1eb9afe461bf8184d312611e3b4d4e2cf8de8",
+        "raw_sha256": "f7c1293f38cd97bdf3d248a905165aec22aa9f564bada4d859845eece20268b7",
+        "lf_sha256": "f7c1293f38cd97bdf3d248a905165aec22aa9f564bada4d859845eece20268b7",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/orchestration/tools.py",
+        "git_blob": "090351e35f6c75ffeebed4bf934d000111d0cf07",
+        "raw_sha256": "86f828b704d24c8da3e9eeae64c705be2e999011619b7d3a352384744f31416d",
+        "lf_sha256": "86f828b704d24c8da3e9eeae64c705be2e999011619b7d3a352384744f31416d",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/persistence/__init__.py",
+        "git_blob": "1c9dab66f5380d123e0cbb1e3f6bf00cdc48d30b",
+        "raw_sha256": "66abf10b539393d79cc98c184facee6e5bf00130e7b16274df9a7969f58a442c",
+        "lf_sha256": "66abf10b539393d79cc98c184facee6e5bf00130e7b16274df9a7969f58a442c",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/persistence/backend.py",
+        "git_blob": "2e4fe71bbda5f5d3d307597efe8d28f94b414b92",
+        "raw_sha256": "80fbfdef668e09f72da96d2fc0662d2f53f5cb7d225c7399f0a39fa0b31bb72f",
+        "lf_sha256": "80fbfdef668e09f72da96d2fc0662d2f53f5cb7d225c7399f0a39fa0b31bb72f",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/persistence/inspection.py",
+        "git_blob": "8f713024aa8317ef66f08af5cdb382b182612418",
+        "raw_sha256": "0d1dbdb054a7285e19940f9d936d836fc88793b5c8390618a73551b87ccff052",
+        "lf_sha256": "0d1dbdb054a7285e19940f9d936d836fc88793b5c8390618a73551b87ccff052",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/persistence/journal.py",
+        "git_blob": "2e24c5ebd81986a28b6cd24faaa7aa8dd539c5e0",
+        "raw_sha256": "4f0a6956b4b1355121769e1537fd25d710200d0180ba4a5aea54e77e1cf0f20f",
+        "lf_sha256": "4f0a6956b4b1355121769e1537fd25d710200d0180ba4a5aea54e77e1cf0f20f",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/persistence/management.py",
+        "git_blob": "35adc4f51a3674903f3c71e55719961f4ff162dc",
+        "raw_sha256": "491214cbd85e05fe96ce0dbe88e60af8dd58205fb7bc8edebc456dddcc2fffc1",
+        "lf_sha256": "491214cbd85e05fe96ce0dbe88e60af8dd58205fb7bc8edebc456dddcc2fffc1",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/persistence/retention.py",
+        "git_blob": "af8a6e23d0c8a68c97eb9701f0235a973fefc5ad",
+        "raw_sha256": "b5865691c779cbe6fb029f8eca6280853c8d3a291c9a7da423886f77d00b5efb",
+        "lf_sha256": "b5865691c779cbe6fb029f8eca6280853c8d3a291c9a7da423886f77d00b5efb",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/persistence/session.py",
+        "git_blob": "27a3aac423588155ab17a040f086279c35f95f0f",
+        "raw_sha256": "0788013b99e6d146558e05b19cfd7450815130f0c636013772f74df25792aa88",
+        "lf_sha256": "0788013b99e6d146558e05b19cfd7450815130f0c636013772f74df25792aa88",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/rag/__init__.py",
+        "git_blob": "74dd9b95ed23bfe6073da9d53f2c8fe94aef127c",
+        "raw_sha256": "25c0f80c47ec5e069b6c49e89b964db2dc696fd485f5e665d0b426da96b546e8",
+        "lf_sha256": "25c0f80c47ec5e069b6c49e89b964db2dc696fd485f5e665d0b426da96b546e8",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/rag/cli.py",
+        "git_blob": "8e11752713bc6cbf139b4156120c7f06ee1bd7da",
+        "raw_sha256": "aba1fd585f7aa7e947087894bf3ae70420f924a0b9f8ccd97ededdc81344687b",
+        "lf_sha256": "aba1fd585f7aa7e947087894bf3ae70420f924a0b9f8ccd97ededdc81344687b",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/rag/contracts.py",
+        "git_blob": "dbb1a68ede88641fd1979dd9e6d0dc7c1d92a892",
+        "raw_sha256": "416ae25f179ff1e2c559a6ffefd4754b22eb301dccb10fc2a02101c0d802282f",
+        "lf_sha256": "416ae25f179ff1e2c559a6ffefd4754b22eb301dccb10fc2a02101c0d802282f",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/rag/lifecycle.py",
+        "git_blob": "ee94cc740448ba17fff1e3158a4707b1f0cf0f25",
+        "raw_sha256": "8148d4eafe7e17ed01f4cc59196ceda95b2776d6389b9745e95ba3ae3c7cf461",
+        "lf_sha256": "8148d4eafe7e17ed01f4cc59196ceda95b2776d6389b9745e95ba3ae3c7cf461",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/rag/mcp.py",
+        "git_blob": "4f15ad67acd40f8fc865e226cc8093bfbd8f5462",
+        "raw_sha256": "410ae076a52357a170ce650cbcfc4699033785dbaa28140cbd05ea6044416006",
+        "lf_sha256": "410ae076a52357a170ce650cbcfc4699033785dbaa28140cbd05ea6044416006",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/rag/models.py",
+        "git_blob": "3ed53183e26d29fd1bdeb15abb3d8aeb2d83a882",
+        "raw_sha256": "9442de6eac44426a6846d5cf9436f5f1a59489f984dc457a4e0c4ce77550b3d6",
+        "lf_sha256": "9442de6eac44426a6846d5cf9436f5f1a59489f984dc457a4e0c4ce77550b3d6",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/rag/parsing.py",
+        "git_blob": "ef683471cc2493b3f80e4a4b5d638c275cea6c10",
+        "raw_sha256": "b9700c61bec61e0398ef7599a6d1727b799de2848010c016a2f1b6a650629eec",
+        "lf_sha256": "b9700c61bec61e0398ef7599a6d1727b799de2848010c016a2f1b6a650629eec",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/rag/qwen.py",
+        "git_blob": "9640b7b65ef68e4715619291898b64f24076ba58",
+        "raw_sha256": "9e2423ec4c4566f395df424a7692c1580e6b6ffb28e62cdabf807b0d8c893cc9",
+        "lf_sha256": "9e2423ec4c4566f395df424a7692c1580e6b6ffb28e62cdabf807b0d8c893cc9",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/rag/qwen_runtime.py",
+        "git_blob": "352d545ad20b71fb4c9ebc0eb83e12af2bc2a0db",
+        "raw_sha256": "6331be08c2454bec8c2d91e0e83a338a3d76077805288968b49267dea7f4a100",
+        "lf_sha256": "6331be08c2454bec8c2d91e0e83a338a3d76077805288968b49267dea7f4a100",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/rag/storage.py",
+        "git_blob": "d71508597146d2b034841edea0545a010988ed7f",
+        "raw_sha256": "026e9a311d05d4dd82d8b0e1d133a65f0a6bf5e4580b4fb613c504537dab8af9",
+        "lf_sha256": "026e9a311d05d4dd82d8b0e1d133a65f0a6bf5e4580b4fb613c504537dab8af9",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/reporting/__init__.py",
+        "git_blob": "08ee99b603781604ccefecb0184e32760297c801",
+        "raw_sha256": "802606b5132ad3fdf0ea0fa77eb04425c33a99990a145a7401e38692a7e93729",
+        "lf_sha256": "802606b5132ad3fdf0ea0fa77eb04425c33a99990a145a7401e38692a7e93729",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/reporting/adapter.py",
+        "git_blob": "7580df56fad62a844e54d1ba8d3941de0cf57360",
+        "raw_sha256": "1a45c19d39255d59e54885f480daec7cdbcffccfff24d196ea5ffba0a1caeb86",
+        "lf_sha256": "1a45c19d39255d59e54885f480daec7cdbcffccfff24d196ea5ffba0a1caeb86",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/reporting/contracts.py",
+        "git_blob": "b4697222d2fc893021774e1c42e7bf879f4ced2b",
+        "raw_sha256": "007841a7f940f9140db01dfb6ccac0e3b74592cafb1309387348d5320f669e78",
+        "lf_sha256": "007841a7f940f9140db01dfb6ccac0e3b74592cafb1309387348d5320f669e78",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/reporting/service.py",
+        "git_blob": "8e27bd0f8c2a1219cf8c93171ca0bf610854669b",
+        "raw_sha256": "20c6e6e8a23755a5679a7b8bdb39fc621a8c3a0b44820143e15e5a428c131eaa",
+        "lf_sha256": "20c6e6e8a23755a5679a7b8bdb39fc621a8c3a0b44820143e15e5a428c131eaa",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/runtime/__init__.py",
+        "git_blob": "d74f32b411045071f1699480d7e86ab01cf6ed18",
+        "raw_sha256": "5fad38d64b28c13488d281a583fd368928d47104bd5cd8d51b012271ec1ba60e",
+        "lf_sha256": "5fad38d64b28c13488d281a583fd368928d47104bd5cd8d51b012271ec1ba60e",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/runtime/mcp_client.py",
+        "git_blob": "5515366343d2b3e92a2eaad4700cffc805ce3909",
+        "raw_sha256": "7a78c49e5a82ac14ce277d9183d9e9864e9988bbb20c7a2e27b192c64a970955",
+        "lf_sha256": "7a78c49e5a82ac14ce277d9183d9e9864e9988bbb20c7a2e27b192c64a970955",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/runtime/mcp_server.py",
+        "git_blob": "7fa81f79a8e50a5be0626ca44d7b913573380c56",
+        "raw_sha256": "6bf4e6e3f24a59ec7b6afdc88aafc47eaacffa6036acc27ca00b626294de1c09",
+        "lf_sha256": "6bf4e6e3f24a59ec7b6afdc88aafc47eaacffa6036acc27ca00b626294de1c09",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/runtime/owned_process.py",
+        "git_blob": "cd6a052d3f25126165a3c58d1dfafb6d97eeab0c",
+        "raw_sha256": "4227a9bd467a10be6d2b1e100021dffadb488614d44c4d8d76681ae0f58796ba",
+        "lf_sha256": "4227a9bd467a10be6d2b1e100021dffadb488614d44c4d8d76681ae0f58796ba",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/semantics/__init__.py",
+        "git_blob": "cbb90de3aa233ebfac2ab740185ea4c43c41a8ff",
+        "raw_sha256": "313f858a760a79b160e0af8ac94251c018e72616def7b195fcf9d3202c2f56d3",
+        "lf_sha256": "313f858a760a79b160e0af8ac94251c018e72616def7b195fcf9d3202c2f56d3",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/semantics/cli.py",
+        "git_blob": "9fca53b09d1e0e8406a1ce4789fcbcbbc04972bf",
+        "raw_sha256": "08a80ed164e486b0436f15ff42c6bcab466050c811b4aeb3e76edc09b1c1a83b",
+        "lf_sha256": "08a80ed164e486b0436f15ff42c6bcab466050c811b4aeb3e76edc09b1c1a83b",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/semantics/contracts.py",
+        "git_blob": "046e5d237d972579c2db9e60374ca69fb45b5f41",
+        "raw_sha256": "25c98372dcd234436f348ad82f7e8c564cba390991dddbc2f1e5a1e9b0945af6",
+        "lf_sha256": "25c98372dcd234436f348ad82f7e8c564cba390991dddbc2f1e5a1e9b0945af6",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/semantics/recipes.py",
+        "git_blob": "ff2bb7b7e445fc68bdeca5f677f4a8a8915e1055",
+        "raw_sha256": "8f51086ae57e0dcea0b6056e1b60d0d58de2fbd7e65d723ec8ac41d2c8f86b96",
+        "lf_sha256": "8f51086ae57e0dcea0b6056e1b60d0d58de2fbd7e65d723ec8ac41d2c8f86b96",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/semantics/recompute.py",
+        "git_blob": "95a2975c6d024225bc7ebd4eaceed932d6f200cb",
+        "raw_sha256": "92a464b354fdd9e0e02421fa9eb0b122886573956c4d8317a8b0e08f2cde2935",
+        "lf_sha256": "92a464b354fdd9e0e02421fa9eb0b122886573956c4d8317a8b0e08f2cde2935",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/semantics/registry.py",
+        "git_blob": "2bc1e03cc13b00dc4a4dbe7b4c1686f56ddc712f",
+        "raw_sha256": "3d309e05261af7a20879240d732da34f81fef16bb99f4ae28b947b39596225ba",
+        "lf_sha256": "3d309e05261af7a20879240d732da34f81fef16bb99f4ae28b947b39596225ba",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/semantics/repository.py",
+        "git_blob": "8367ebb332244f4c6b1483a2a802c11f83a1f17e",
+        "raw_sha256": "2fafba5e10b128ba2483d0f053f3eeb1c54e3c8ba54ef978dadf0b9036d4d974",
+        "lf_sha256": "2fafba5e10b128ba2483d0f053f3eeb1c54e3c8ba54ef978dadf0b9036d4d974",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/semantics/service.py",
+        "git_blob": "f70c1bf86b05940b10c94a8914da79eefc062cfe",
+        "raw_sha256": "6c3d3c1dab3fcf0a744b461234e7c14a333b2da940fc0873245e32b1868eeeac",
+        "lf_sha256": "6c3d3c1dab3fcf0a744b461234e7c14a333b2da940fc0873245e32b1868eeeac",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/state.py",
+        "git_blob": "8ed072cb990790a0f0a5f362d1e82016b95e489b",
+        "raw_sha256": "bf9734be6e5e7299b693a499db03db8631ae20107f2873abaf1da1e7bd94e6ab",
+        "lf_sha256": "bf9734be6e5e7299b693a499db03db8631ae20107f2873abaf1da1e7bd94e6ab",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/tools/__init__.py",
+        "git_blob": "70f550c9750300897fa9a6b6fe12118e5787b87b",
+        "raw_sha256": "8cef07acd7addeca09f2c1411a422af05a3f46c1f915d2d7dac0c2e9360175af",
+        "lf_sha256": "8cef07acd7addeca09f2c1411a422af05a3f46c1f915d2d7dac0c2e9360175af",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/tools/sql.py",
+        "git_blob": "af4fdb04809b8d077b49234b44f446b8b206dec9",
+        "raw_sha256": "9dcb80eb3259fa3fc6529024ea7b139ebae1457dfce25b5110f867c168c7442b",
+        "lf_sha256": "9dcb80eb3259fa3fc6529024ea7b139ebae1457dfce25b5110f867c168c7442b",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/__init__.py",
+        "git_blob": "06a2b719b4c06b9288943ac56fbd3fa1f158c04b",
+        "raw_sha256": "4a7b44ee89e78a1e9f4e54de45927776344f7cf77119c070f86c3f661b8c6610",
+        "lf_sha256": "4a7b44ee89e78a1e9f4e54de45927776344f7cf77119c070f86c3f661b8c6610",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/admission.py",
+        "git_blob": "c91275a5601e4cf411972094f963b1cce428a075",
+        "raw_sha256": "895125d14a5d84c2fd1f2693b3db7cc098859aa5218315c8da860cdcb6151dd0",
+        "lf_sha256": "895125d14a5d84c2fd1f2693b3db7cc098859aa5218315c8da860cdcb6151dd0",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/app.py",
+        "git_blob": "2119a5ff075e5260f9fa39df7110e94507e237c1",
+        "raw_sha256": "d5887833ed754421cf54b5b308cc88e35e744dcd74312287fc90abb9a5509fba",
+        "lf_sha256": "c4fd334b52d68413044d8a0566a1ff4c15d2b8cd7d77379316fc0b52eee2b7d8",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "src/datapilot/web/body_limit.py",
+        "git_blob": "0d24b99d69b702861b6adeb18d3b2c0817ff841c",
+        "raw_sha256": "84980187c7bd90cd30760e9474b0ddd69af2f46c3d0d899f2ebed725938acc9d",
+        "lf_sha256": "84980187c7bd90cd30760e9474b0ddd69af2f46c3d0d899f2ebed725938acc9d",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/chat.py",
+        "git_blob": "799e9a325aba096ba053fe732d4e29e1e399a633",
+        "raw_sha256": "0795ba676a3290a79ff88b246994eaf2d248ccfd43755a4f8f7c5884b000ebf9",
+        "lf_sha256": "0795ba676a3290a79ff88b246994eaf2d248ccfd43755a4f8f7c5884b000ebf9",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/chat_contracts.py",
+        "git_blob": "f8e5ef0e4dedb4aa4dbfb7e1e3d97b1e4a5031c8",
+        "raw_sha256": "38764b8e4494bc5b7869c0f53aeaf3a5005818b1848ec3d7073a98765b23b52e",
+        "lf_sha256": "38764b8e4494bc5b7869c0f53aeaf3a5005818b1848ec3d7073a98765b23b52e",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/chat_routes.py",
+        "git_blob": "7f2bed1e7ef822d985241e8569af75f1b28fdce4",
+        "raw_sha256": "fb910eae6e7a6db3fef5e8c4645262870b58fd0733090d187764bc8db088a5ba",
+        "lf_sha256": "fb910eae6e7a6db3fef5e8c4645262870b58fd0733090d187764bc8db088a5ba",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/cli.py",
+        "git_blob": "bf79b3c2f82fcbb4e50f633f7f9a70be84cd25d2",
+        "raw_sha256": "825240fcda8bd3917e68ad3622974a0eeddc70edf5ecf95492b38a06dd85ce2e",
+        "lf_sha256": "825240fcda8bd3917e68ad3622974a0eeddc70edf5ecf95492b38a06dd85ce2e",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/client.py",
+        "git_blob": "10b8f54d30c07eae7e5f260c55280f791debf408",
+        "raw_sha256": "3a64c84a3c8ef6400c4d2bcfc820921af0bcb26fbaa71693cbfe12b38c1930dc",
+        "lf_sha256": "3a64c84a3c8ef6400c4d2bcfc820921af0bcb26fbaa71693cbfe12b38c1930dc",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/config.py",
+        "git_blob": "ad5c50a8cd6aad4b1978845476c3800e84122346",
+        "raw_sha256": "6ee8a465b031e20c80c455e5d3c20321b8110d4f14c0bae3813099ebe91e1d1f",
+        "lf_sha256": "6ee8a465b031e20c80c455e5d3c20321b8110d4f14c0bae3813099ebe91e1d1f",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/contracts.py",
+        "git_blob": "15b6399a4c5183c99812bf432618243edc425ec0",
+        "raw_sha256": "1f924c42ab23a8a6a739cee7cfdcb0bbf59c3d5b01632fe512aac9ff2b566d46",
+        "lf_sha256": "5f324b2e23e545a0402bc8f84c26ad0664d8945bd03638c2a1310e09297769c0",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "src/datapilot/web/goal_confirmation.py",
+        "git_blob": "94398433f5dc974d17bc596c3fddec97e4bcdc04",
+        "raw_sha256": "49c9e21de9590a2fa3876b6dfd9da98ede169964df28dcf2789153339c7eefae",
+        "lf_sha256": "945cde2ae1595740a17732c44940627555a276c0526f5549a366b2fce8101de2",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "src/datapilot/web/intent.py",
+        "git_blob": "81cf977d4e735881c21c59e67c189a9fa0748fe8",
+        "raw_sha256": "7e6dfbc4f549f372f4a61d200590b919780821707d46ef9baef76227fce73f92",
+        "lf_sha256": "7e6dfbc4f549f372f4a61d200590b919780821707d46ef9baef76227fce73f92",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/semantic_intent.py",
+        "git_blob": "e14053da8da54261d51720984d91cbf6d2f2fdcc",
+        "raw_sha256": "69f50309f35eb41b22650c20bccee8cb4fc581549c1bc26e7457305a54a8da68",
+        "lf_sha256": "715eb25baf799295d4ce4f5622c362275693ae4cff126c0e91842519e26775f5",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "src/datapilot/web/service.py",
+        "git_blob": "8b16212d4e7b41adfa9a02b997cb26eb23e21cfc",
+        "raw_sha256": "543d809b2763a29fed1500a8ba0c71fb0c36f246f0c650a7de3e828e6b190e30",
+        "lf_sha256": "ea07c4159ba8c38833601fd3e474e1b7607482dd52e774221a1f84a004b95313",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "src/datapilot/web/store.py",
+        "git_blob": "e439612f2c1775a1d5f6698922f756584c9d1cbb",
+        "raw_sha256": "40d8d15a96fb805300c4ea373016508a918e8c25cbecc4418738cbebad199c1b",
+        "lf_sha256": "d2e7575e3764591deaa5f4030e06d6f853f820136c392f33a981437b4a41a20d",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "src/datapilot/web/telemetry.py",
+        "git_blob": "25c9baef2299bb6441a6572568dcda7a442b77ac",
+        "raw_sha256": "738ea473a6ae772b33e86b421d964e212cf99288b59de32d507f3facf4b921b2",
+        "lf_sha256": "6e4ee8b0288db33cfee8620e36350559031474ca219611bb98757ed01bea7311",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "src/datapilot/web/ui.py",
+        "git_blob": "78c6a8df9679ea057e51314bf4d053084a5bb4ca",
+        "raw_sha256": "201231fd484348262e6a24138bbfe59dd7eb3d105565e64ee9c7cff55baceb38",
+        "lf_sha256": "201231fd484348262e6a24138bbfe59dd7eb3d105565e64ee9c7cff55baceb38",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/ui_chat.py",
+        "git_blob": "ad12c06fa88f89d3685d1e16b1143fc9ca4b5fd1",
+        "raw_sha256": "f17fb385887c5597556d4dab67b8c03efaff78baf419e4dcc4eebc9b13d76502",
+        "lf_sha256": "f17fb385887c5597556d4dab67b8c03efaff78baf419e4dcc4eebc9b13d76502",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/ui_components.py",
+        "git_blob": "e0b678ad3a0fa245666f34e260e13b04cffb837c",
+        "raw_sha256": "bd1b509b3b1b54eedc5926d7942a3ddea09641290b1cecf6e0e6ae071a7a6bea",
+        "lf_sha256": "bd1b509b3b1b54eedc5926d7942a3ddea09641290b1cecf6e0e6ae071a7a6bea",
+        "line_ending": "LF"
+      },
+      {
+        "path": "src/datapilot/web/ui_management.py",
+        "git_blob": "eb5a95f070dbb9febc0035c973a74b0029910710",
+        "raw_sha256": "44b5f072663012b39b1b2368d9f9df3f81ef2e2891f88a6fe69c9d28c195cb02",
+        "lf_sha256": "277a7096eca88c9d06f5a16099363638983f4ea7ee050672cc035e7c335c034c",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "src/datapilot/web/worker.py",
+        "git_blob": "b222d9327c3bf1aa2d8bf5694b5ba46532196cb1",
+        "raw_sha256": "121d1473148addfa81a088e639f3c2772b3a8804bc29c0f9070f9a50b2d3211b",
+        "lf_sha256": "5a2986abd8b83a473a384faf7aadb54fc458ef3f10b31cc69f06bec7f09b5977",
+        "line_ending": "CRLF"
+      },
+      {
+        "path": "uv.lock",
+        "git_blob": "2aed1292d63b6bcf496fbad418accbbb38587868",
+        "raw_sha256": "bc2ad9b153bd9cec30cf83d6081cee546175afc3d906b84cdeba88aecdbc848c",
+        "lf_sha256": "bc2ad9b153bd9cec30cf83d6081cee546175afc3d906b84cdeba88aecdbc848c",
+        "line_ending": "LF"
+      }
+    ],
+    "manifest_lf_sha256": "ff698f8452a6672ddb37e3903f0ca54ff5d02fd20e5652e854a6889205a46b36",
+    "manifest_raw_sha256": "b53c5970f8439955fcb6db5a0e9dff624595c3ea0dd97bd80a90796ac2b3a1d0",
+    "git_blob_manifest_sha256": "bd80172d6b4b9c05748bada31a2b605903766158f1fe4f3ea2b8f3ba57aa9d1a",
+    "crlf_files": [
+      "migrations/versions/0001_business_and_vectors.py",
+      "migrations/versions/0002_dataset_catalog.py",
+      "migrations/versions/0003_semantics_and_evidence.py",
+      "src/datapilot/agents/supervisor.py",
+      "src/datapilot/orchestration/context.py",
+      "src/datapilot/orchestration/coordinator.py",
+      "src/datapilot/web/app.py",
+      "src/datapilot/web/contracts.py",
+      "src/datapilot/web/goal_confirmation.py",
+      "src/datapilot/web/semantic_intent.py",
+      "src/datapilot/web/service.py",
+      "src/datapilot/web/store.py",
+      "src/datapilot/web/telemetry.py",
+      "src/datapilot/web/ui_management.py",
+      "src/datapilot/web/worker.py"
+    ],
+    "prior_freeze": {
+      "id": "p7-combined-repair-independent-fix-2fc42e0ef101",
+      "sha256": "2fc42e0ef10106b64ac646bd29ff92f2d5b60964723b610d9985fe48bc030f82",
+      "note": "Prior Live used a new raw-byte freeze 658e... because 7 files were CRLF-only; that governance deviation is preserved and not rewritten."
+    },
+    "git_worktree_uncommitted": true,
+    "ci_status": "NOT_RUN"
+  },
+  "blocker": {
+    "code": "NINETEEN_NEW_TASKS_AND_CURRENT_PACK",
+    "detail": "Current-source entry is bound and the three public controls passed. The 50-case package is not built: only 31 fresh v3 cases exist; 19 new public synthetic tasks (7 SQL / 7 RAG / 5 combined) with independent Gold and launch configs do not yet exist. Old Gate2B supplement was explicitly rejected.",
+    "paid_request_paused": true
+  },
+  "main_group": {
+    "name": "v3-fresh-31",
+    "cases": 31,
+    "runtime_runs": 25,
+    "host_preflight_rejects": 6,
+    "model_attempts": 200,
+    "token_units": 450000,
+    "estimated_peak_usd": "0.54",
+    "note": "Only available fresh subset; not a 50-case package."
+  },
+  "supplement_option": {
+    "status": "NOT_BUILT",
+    "required": {
+      "sql_only": 7,
+      "rag_only": 7,
+      "sql_rag": 5
+    },
+    "note": "New public synthetic tasks, Gold, launch configs and pack seal not yet authored."
+  },
+  "combined_if_authorized": {
+    "status": "NOT_AVAILABLE",
+    "note": "No 50-case budget can be submitted until 19 tasks and configs exist."
+  },
+  "ablation": {
+    "status": "NOT_RUN",
+    "arms": [
+      "Base SQL",
+      "Worker/Planner",
+      "P3",
+      "Context L0-L4",
+      "Memory/Recovery",
+      "RAG/Report"
+    ],
+    "detail": "No validated six-arm runner. P3 cannot be disabled; Memory is in-memory; Recovery requires fault injection; Context requires frozen runner. No 10x6 budget is claimed.",
+    "paid_budget": "0"
+  },
+  "fault_groups": {
+    "status": "PARTIAL_HISTORICAL_ONLY",
+    "existing": "provider 13 pass/1 fail (malformed usage); PG restart 5 assertions with explicit Fake double; not full matrix",
+    "current_source": "NOT_RUN",
+    "paid": "0"
+  },
+  "pricing": {
+    "checked_at": "2026-11-03T12:49:50+08:00",
+    "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "model": "deepseek-flash",
+    "peak_output_usd_per_m": "1.2",
+    "note": "Conservative 18,000 units/run; no paid call this turn"
+  },
+  "authorization": {
+    "paid_calls": 0,
+    "permit": null,
+    "new_smoke": false,
+    "commit_push": false
+  },
+  "budget_actual_tasks": {
+    "cases": 31,
+    "runtime_runs": 25,
+    "model_attempts": 200,
+    "token_units": 450000,
+    "estimated_peak_usd": "0.54",
+    "paid_authorization_requested": false
+  },
+  "current_entry": {
+    "entry": "evaluation/p7_v3_current/current_binding.py",
+    "status": "PASS_3_FAKE_CONTROLS",
+    "source_manifest_lf": "cfacd0bd0e23e31a06ac669375eaf266885c74afc92cd0b018fcf16123cdf13f",
+    "run_ids": [
+      "de7f7c1f-5e62-4243-8c5c-fb99506e028c",
+      "2d9fa8c8-0c13-4d90-9a44-918217963a6c",
+      "62020c54-656c-41e5-8094-ac181e978129"
+    ],
+    "scorer": "current adapter; 5 tests passed"
+  }
+}

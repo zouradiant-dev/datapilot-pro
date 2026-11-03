@@ -20,6 +20,7 @@ from datapilot.reporting.contracts import ReportScope, confirm_finite_scope
         "question",
         "subgoal",
         "fact",
+        "independent",
         "dataset",
         "source",
         "contract_hash",
@@ -42,6 +43,8 @@ def test_changed_contract_or_physical_authority_rejects(settings, mutation):
         scope.document_goal.question += " more"
     elif mutation == "fact":
         scope.document_goal.required_facts[0].description = "A different fact contract"
+    elif mutation == "independent":
+        scope.document_goal.independent_facts = True
     elif mutation == "dataset":
         scope.datasets.bindings.append(
             DatasetBinding(dataset_id="00000000-0000-4000-8000-000000000002", version=1)
@@ -73,6 +76,19 @@ def test_old_successful_report_cannot_supply_missing_host_confirmation(settings)
     assert denied.business_completion.status == "unavailable"
     with pytest.raises(AgentFailure):
         service.verify_report(old, pairs, retrieval)
+
+
+def test_independent_facts_do_not_verify_causality(settings):
+    service, pairs, retrieval = public_case(settings, DATA[0])
+    scope = service.scope.model_copy(deep=True)
+    scope.causal_requested = True
+    scope.document_goal.independent_facts = True
+    scope = confirm_finite_scope(
+        scope, retrieval.scope, confirmation_ref="independent-facts-causal-negative"
+    )
+    service.scope = scope
+    report = service.build(pairs, retrieval, source_statuses={"documents": "succeeded"})
+    assert report.business_completion.status in {"partial", "unavailable"}
 
 
 def test_explicit_confirmation_does_not_approve_exhaustiveness(settings):

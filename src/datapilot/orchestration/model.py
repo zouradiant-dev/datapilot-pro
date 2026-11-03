@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from openai import APIError, APIStatusError
 
 from datapilot.agents.sql import SYSTEM as SQL_SYSTEM
 from datapilot.contracts import AgentFailure, SQLProposal
@@ -184,7 +185,18 @@ class Gateway:
                     self.ledger.settle(ticket, None)
                 if isinstance(exc, (asyncio.CancelledError, AgentFailure)):
                     raise
-                raise AgentFailure("MODEL_ERROR", "Async model provider failed") from exc
+                diagnostic = "Async model provider failed"
+                if isinstance(exc, APIError):
+                    diagnostic += f" ({type(exc).__name__}"
+                    if isinstance(exc, APIStatusError):
+                        diagnostic += f", HTTP {exc.status_code}"
+                        request_id = exc.request_id
+                        if request_id and re.fullmatch(
+                            r"[a-zA-Z0-9][a-zA-Z0-9_.:-]{0,127}", request_id
+                        ):
+                            diagnostic += f", request_id={request_id}"
+                    diagnostic += ")"
+                raise AgentFailure("MODEL_ERROR", diagnostic) from exc
             usage = (
                 (response.usage_metadata or {}).get("total_tokens")
                 if isinstance(response, AIMessage)

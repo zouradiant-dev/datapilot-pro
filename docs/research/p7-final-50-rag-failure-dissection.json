@@ -1,0 +1,98 @@
+{
+  "schema": "p7-final-50-rag-failure-dissection/v1",
+  "campaign": "p7-final-50-v3",
+  "paid_calls": 0,
+  "scorer_failure_class": "rag_retrieval_failure",
+  "finding": "All eight strict failures recalled the authorized chunk (recall_at_k=1.0). Report missing_evidence was goal_scope_not_attested because the Formal current_worker did not call confirm_finite_scope.",
+  "cases": [
+    {
+      "case_id": "p7-holdout-v3-031",
+      "status": "unavailable",
+      "purpose": "facts",
+      "chunk_recall_at_k": 1.0,
+      "missing_evidence": {"documents": ["goal_scope_not_attested"]},
+      "gold_business_completion": "partial",
+      "gold_missing_fact_ids": ["fact_2"],
+      "category": ["host_attestation_missing", "retrieval_hit", "intentional_missing_fact"]
+    },
+    {
+      "case_id": "p7-holdout-v3-032",
+      "status": "unavailable",
+      "purpose": "facts",
+      "chunk_recall_at_k": 1.0,
+      "missing_evidence": {"documents": ["goal_scope_not_attested"]},
+      "gold_business_completion": "partial",
+      "gold_missing_fact_ids": ["fact_2"],
+      "category": ["host_attestation_missing", "retrieval_hit", "intentional_missing_fact"]
+    },
+    {
+      "case_id": "p7-holdout-v3-033",
+      "status": "unavailable",
+      "purpose": "facts",
+      "chunk_recall_at_k": 1.0,
+      "missing_evidence": {"documents": ["goal_scope_not_attested"]},
+      "gold_business_completion": "unavailable",
+      "gold_missing_fact_ids": ["fact_1"],
+      "category": ["host_attestation_missing", "retrieval_hit", "intentional_missing_fact"]
+    },
+    {
+      "case_id": "p7-holdout-v3-035",
+      "status": "unavailable",
+      "purpose": "conclusion",
+      "chunk_recall_at_k": 1.0,
+      "missing_evidence": {"documents": ["goal_scope_not_attested"]},
+      "unconfirmed_claims": ["causal_conclusion_not_verified"],
+      "gold_business_completion": "partial",
+      "causal": true,
+      "category": ["host_attestation_missing", "retrieval_hit", "causal_boundary"]
+    },
+    {
+      "case_id": "p7-holdout-v3-051",
+      "status": "partial",
+      "purpose": "facts",
+      "chunk_recall_at_k": 1.0,
+      "missing_evidence": {
+        "metric_1": ["amount_unit_unconfirmed"],
+        "documents": ["goal_scope_not_attested"]
+      },
+      "gold_business_completion": "partial",
+      "category": ["host_attestation_missing", "retrieval_hit", "metric_expected_unavailable"]
+    },
+    {
+      "case_id": "p7-holdout-v3-052",
+      "status": "partial",
+      "purpose": "facts",
+      "chunk_recall_at_k": 1.0,
+      "missing_evidence": {
+        "metric_2": ["history_unconfirmed"],
+        "documents": ["goal_scope_not_attested"]
+      },
+      "gold_business_completion": "partial",
+      "category": ["host_attestation_missing", "retrieval_hit", "metric_expected_unavailable"]
+    },
+    {
+      "case_id": "p7-holdout-v3-053",
+      "status": "partial",
+      "purpose": "facts",
+      "chunk_recall_at_k": 1.0,
+      "missing_evidence": {"documents": ["goal_scope_not_attested"]},
+      "gold_business_completion": "partial",
+      "gold_missing_fact_ids": ["fact_2"],
+      "category": ["host_attestation_missing", "retrieval_hit", "intentional_missing_fact"]
+    },
+    {
+      "case_id": "p7-holdout-v3-054",
+      "status": "blocked",
+      "purpose": "facts",
+      "chunk_recall_at_k": 1.0,
+      "missing_evidence": {"documents": ["goal_scope_not_attested"]},
+      "unconfirmed_claims": ["causal_conclusion_not_verified"],
+      "gold_business_completion": "partial",
+      "causal": true,
+      "category": ["host_attestation_missing", "retrieval_hit", "causal_boundary"]
+    }
+  ],
+  "harness_fix": "evaluation/p7_v3_current/current_worker.py::host_confirm_reviewed_scope",
+  "frozen_scores_unchanged": true,
+  "gold_scorer_unchanged": true
+}

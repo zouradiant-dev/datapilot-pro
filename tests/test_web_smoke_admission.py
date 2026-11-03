@@ -99,11 +99,11 @@ def make_permit(policy, store, settings, path, *, cases=None, expires=None, owne
         "provider": "deepseek",
         "model": "deepseek-flash",
         "thinking": "disabled",
-        "max_runs": 3,
+        "max_runs": len(cases),
         "calls_per_run": 8,
         "tokens_per_run": 18000,
-        "campaign_calls": 24,
-        "campaign_token_units": 54000,
+        "campaign_calls": 8 * len(cases),
+        "campaign_token_units": 18000 * len(cases),
         "concurrency": 1,
         "automatic_retries": 0,
         "max_output_tokens": 1200,
@@ -327,7 +327,25 @@ def test_http_approval_cannot_bypass_admission(pg_settings, tmp_path, monkeypatc
     app.state.store.close()
 
 
-def test_permit_must_bind_exactly_three_cases(admission):
+def test_single_case_permit_admits_only_that_case(admission):
+    policy, store, settings, path = admission
+    make_permit(
+        policy,
+        store,
+        settings,
+        path,
+        cases=[make_case("case-both", BOTH_Q, "both")],
+    )
+    gate = AdmissionGate(policy, store, settings)
+    gate.validate()
+    assert reserve(gate, make_payload(BOTH_Q, "both"), str(uuid4()))
+    assert_code(
+        "SMOKE_NOT_ADMITTED",
+        lambda: reserve(gate, make_payload(SQL_Q, "sql"), str(uuid4())),
+    )
+
+
+def test_permit_supports_one_to_three_cases_and_rejects_four(admission):
     policy, store, settings, path = admission
     four = [make_case(f"case-{i}", f"question {i}", "sql") for i in range(4)]
     make_permit(policy, store, settings, path, cases=four)

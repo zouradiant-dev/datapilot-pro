@@ -39,6 +39,7 @@ class ChatSelection(DTO):
     document_purpose: Literal["locate", "summary", "facts", "conclusion"] | None = None
     required_facts: list[FactRequirement] = Field(default_factory=list, max_length=8)
     required_source_ids: list[Digest] = Field(default_factory=list, max_length=8)
+    document_facts_independent: bool = False
 
     @model_serializer(mode="wrap")
     def legacy_projection(self, handler):
@@ -49,6 +50,8 @@ class ChatSelection(DTO):
             value.pop("required_facts", None)
         if not self.required_source_ids:
             value.pop("required_source_ids", None)
+        if not self.document_facts_independent:
+            value.pop("document_facts_independent", None)
         return value
 
     @field_validator("window", mode="before")
@@ -74,6 +77,10 @@ class ChatSelection(DTO):
             raise ValueError("Duplicate required source")
         if self.required_facts and self.document_purpose not in {"facts", "conclusion"}:
             raise ValueError("Choose a fact/conclusion purpose before specifying facts")
+        if self.document_facts_independent and (
+            self.document_purpose != "facts" or not self.required_facts
+        ):
+            raise ValueError("Independent document facts require a facts purpose and facts")
         if len({f.fact_id for f in self.required_facts}) != len(self.required_facts):
             raise ValueError("Duplicate fact requirement")
         return self

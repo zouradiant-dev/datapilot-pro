@@ -118,11 +118,8 @@ class AdmissionGate:
         if stop and Path(stop).exists():
             deny("SMOKE_STOPPED", "Smoke admission stop file exists")
         if (
-            permit.get("max_runs") != 3
-            or permit.get("calls_per_run") != 8
+            permit.get("calls_per_run") != 8
             or permit.get("tokens_per_run") != 18000
-            or permit.get("campaign_calls") != 24
-            or permit.get("campaign_token_units") != 54000
             or permit.get("concurrency") != 1
             or permit.get("automatic_retries") != 0
             or permit.get("max_output_tokens") != 1200
@@ -131,10 +128,16 @@ class AdmissionGate:
         ):
             deny("SMOKE_ADMISSION_BUDGET", "Smoke admission budget is not the approved budget")
         cases = permit.get("cases")
-        if not isinstance(cases, list) or len(cases) != 3:
-            deny("SMOKE_ADMISSION_CASES", "Smoke admission must bind exactly three cases")
-        if len({c.get("case_id") for c in cases if isinstance(c, dict)}) != 3:
+        if not isinstance(cases, list) or not 1 <= len(cases) <= 3:
+            deny("SMOKE_ADMISSION_CASES", "Smoke admission must bind one to three cases")
+        if len({c.get("case_id") for c in cases if isinstance(c, dict)}) != len(cases):
             deny("SMOKE_ADMISSION_CASES", "Smoke admission cases are not unique")
+        if (
+            permit.get("max_runs") != len(cases)
+            or permit.get("campaign_calls") != 8 * len(cases)
+            or permit.get("campaign_token_units") != 18000 * len(cases)
+        ):
+            deny("SMOKE_ADMISSION_BUDGET", "Smoke admission campaign caps must match case count")
         for case in cases:
             if not isinstance(case, dict) or not isinstance(case.get("case_id"), str):
                 deny("SMOKE_ADMISSION_CASES", "Smoke admission case is malformed")

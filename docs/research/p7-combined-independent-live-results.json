@@ -1,0 +1,161 @@
+{
+  "schema": "combined-independent-live-results/v1",
+  "campaign_id": "combined-independent-live-v1",
+  "case_id": "combined-repair-independent-01",
+  "run_id": "17f5dc8a-74cb-4e27-b976-711d54614ece",
+  "status": "PASS_BUSINESS",
+  "execution_status": "succeeded",
+  "business_completion": {
+    "schema_version": "business-completion-1",
+    "status": "completed",
+    "required_goals": [
+      "metric_1",
+      "documents"
+    ],
+    "verified_goals": [
+      "metric_1",
+      "documents"
+    ],
+    "missing_evidence": {},
+    "unconfirmed_claims": [],
+    "limited_results_visible": true
+  },
+  "contract": {
+    "independent_facts": true,
+    "document_question": "请依据授权文档核验以下事实：企业版退款申请的审核时限",
+    "overall_question": "计算 2026 年 9 月已支付账单收入（CNY），并依据授权退款政策原文说明企业版退款审核时限；不要把文档当作收入或因果证明。",
+    "metric_goals": [
+      "metric_1"
+    ],
+    "required_fact": {
+      "fact_id": "fact_1",
+      "description": "企业版退款申请的审核时限",
+      "quotation": "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。"
+    },
+    "confirmation_ref": "host-generated confirmation recorded in contract-confirmed.json"
+  },
+  "approval": {
+    "agent_operated": true,
+    "conversation_id": "d4d07c6f-7f5e-406c-b8b2-073ac203075a",
+    "run_id": "17f5dc8a-74cb-4e27-b976-711d54614ece",
+    "checkbox_checked": true,
+    "button_enabled": true,
+    "status_before_click": "awaiting_review"
+  },
+  "sql": {
+    "value": "803.3500000000000000",
+    "unit": "CNY",
+    "evidence_id": "52e0bb24-150b-4ae9-8594-4120b277e45d",
+    "verification_id": "b4f86f5a-66c6-4dde-b6a3-eff5dfe112ed"
+  },
+  "rag": {
+    "outcome": "complete",
+    "verdict": "semantic_retrieval",
+    "relevant_chunk_ids": [
+      "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31"
+    ],
+    "citation": {
+      "chunk_id": "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31",
+      "start": 0,
+      "end": 137,
+      "line_start": 1,
+      "line_end": 7,
+      "sha256": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+      "corpus_id": "3fd3e8c1-1105-4c43-bc59-2913786a4f53",
+      "index_version": "223be2d08a0fd76803c4aabf61ad7a4548db411b466d4a7bb2b017f76459de88",
+      "source_id": "2c794fb60592a71e5e6d7335e01327e77de933f2297e00750c189eaa227ef51c",
+      "document_id": "5d60eb04b8bf637c7b9a60b21533b8c90e9ded5bca92451ceaff10c972af4a33",
+      "version": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+      "source_sha256": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+      "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+      "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+      "retriever": "pg-cosine-exact-1",
+      "score": 0.6978118835575511,
+      "goal_sha256": "3fbe12236556d81103d57731dcaf974585282d8bac80980d18263d34f23549b3",
+      "goal_score": 0.6978118419647217,
+      "page": null
+    },
+    "quote": "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。"
+  },
+  "usage": {
+    "calls": 3,
+    "input_tokens": 4038,
+    "output_tokens": 327,
+    "cache_read_tokens": 1792,
+    "total_tokens": 4365,
+    "estimated_peak_usd": "0.001076952",
+    "usage_complete": true,
+    "bill_status": "not_reconciled",
+    "concurrency": 1,
+    "automatic_retries": 0
+  },
+  "permit": {
+    "digest": "efc19fb461263fffa8fd7d75580aa7b06783c1c51f042f77f29a52317f11853d",
+    "expires_at": "2026-11-04T02:16:33.447686+00:00",
+    "max_runs": 1,
+    "campaign_calls": 8,
+    "campaign_token_units": 18000
+  },
+  "admission": {
+    "case_id": "combined-repair-independent-01",
+    "run_id": "17f5dc8a-74cb-4e27-b976-711d54614ece",
+    "message_id": "6501ee60-fdac-411c-a613-715924b52d74",
+    "admitted_at": "2026-11-03 04:30:57.154819+00:00",
+    "expires_at": "2026-11-04 02:16:33.447686+00:00",
+    "permit_sha256": "efc19fb461263fffa8fd7d75580aa7b06783c1c51f042f77f29a52317f11853d"
+  },
+  "source": {
+    "freeze_id": "combined-independent-live-658e27e7e5ab",
+    "freeze_sha256": "658e27e7e5ab8839790f5e4b21523dbd9b76a063109d4eef792c847c70baf9e9",
+    "source_manifest_sha256": "dc1b2a44336218386339c7ad892d670fd7a8e29e07c15471e7ef14daa58b51ac",
+    "source_status": "WORKTREE_UNCOMMITTED_INDEPENDENT_FACTS_FIX",
+    "ci": "NOT_RUN_FOR_WORKTREE",
+    "verification": "canonical LF content equality to prior freeze; raw hash drift is CRLF only",
+    "authorized_freeze_id": "p7-combined-repair-independent-fix-2fc42e0ef101",
+    "authorized_freeze_sha256": "2fc42e0ef10106b64ac646bd29ff92f2d5b60964723b610d9985fe48bc030f82",
+    "raw_hash_match": "24/31",
+    "canonical_lf_match": "31/31",
+    "deviation": "actual working-tree bytes differ only by CRLF for 7 files; a new raw-byte Live Freeze 658e... was created. This was not the pre-authorized freeze SHA."
+  },
+  "ci": {
+    "baseline_run": 31,
+    "baseline_status": "PASS",
+    "new_source_full_ci": "NOT_RUN",
+    "note": "not rewritten as PASS"
+  },
+  "pricing": {
+    "checked_at": "2026-11-03T04:08:33.462229+00:00",
+    "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "model": "deepseek-flash",
+    "peak": {
+      "cache_hit_input_usd_per_m": 0.006,
+      "cache_miss_input_usd_per_m": 0.3,
+      "output_usd_per_m": 1.2
+    },
+    "off_peak": {
+      "cache_hit_input_usd_per_m": 0.003,
+      "cache_miss_input_usd_per_m": 0.15,
+      "output_usd_per_m": 0.6
+    },
+    "max_token_units": 18000,
+    "max_cost_at_peak_output_usd": "0.0216",
+    "max_cost_check": "18,000 token units * $1.2/M = $0.0216, still holds under peak output rate",
+    "decision": "PASS"
+  },
+  "stop": {
+    "host_stopped": true,
+    "stop_file": "D:\\桌面\\llm-learning\\datapilot-pro\\artifacts\\p7\\combined-independent-live-v1\\private\\live\\STOP",
+    "stop_time": "2026-11-03T04:36:50Z",
+    "retry": false,
+    "second_run": false
+  },
+  "scope": {
+    "old_campaign_unchanged": true,
+    "no_3of3_merge": true,
+    "human_confirmed_smoke_not_independent_business_quality": true
+  },
+  "business_status": "PASS",
+  "governance_status": "FAIL_SOURCE_FREEZE_RAW_MISMATCH",
+  "compliant_pass": false,
+  "summary": "Business PASS completed; full CI NOT_RUN; source-freeze governance FAIL because the authorized raw SHA did not match working-tree bytes (canonical content matched 31/31) and a new freeze was used."
+}
