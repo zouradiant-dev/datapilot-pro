@@ -6,6 +6,7 @@ import json
 import re
 from pathlib import Path
 
+
 def permit_valid(permit, binding):
     if permit.get("kind") != "p7-current-final-50-permit-1" or permit.get("authorized") is not True:
         raise ValueError("current permit authorization required")
