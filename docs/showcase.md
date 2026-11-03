@@ -155,5 +155,6 @@ DataPilot Pro 是一个面向 SaaS 经营分析的 **Evidence-driven AI Agent**�
 ## 事实边界
 
 - 本页所有数字来自仓库文档与冻结记录：[Demo 验收](releases/p7-engineering-candidate-v1/frozen/p7-demo-acceptance.md)、[Gate 2B Live](p7-gate2b-live.md)、[评测索引](evaluation.md)、[CI 恢复记录](research/p7-full-ci-recovery.md)。
+- Final 50 v3 为**部分结果**（19 采集 / 18 评分 / 10 严格正确 / 31 未跑；`gate2_fully_accepted=false`），不得宣传为业务质量验收通过；见 [evaluation.md](evaluation.md) 追加段。
 - 没有提交浏览器截图、真实模型调用截图或"业务成功率"；Demo 中的 10 次 Fake 调用与 1 次合成 unknown 调用不是 Provider 实际 Token。
 - 引用历史失败、STOP、`NOT_VERIFIED` 与 `not_run` 时保持原值，不做美化。

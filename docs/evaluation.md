@@ -44,3 +44,24 @@
 - 畸形 usage 的 Journal `RECOVERY_CORRUPT` 类型化已在统一回归中落地；隔离故障矩阵整表对当前工作区仍为 NOT_RUN。
 
 旧计划中的 `FREEZE_INVALIDATED: runtime/build closure differs` 描述的是再绑定前的 v3 product snapshot 状态；current Formal 入口与源码快照已另建，**不能**把该句当作“19 条尚未建立”的当前事实。分组预算与授权边界仍见 [最终评测计划](research/p7-final-evaluation-plan.md)；任何续跑须新 Permit。
+
+## Final 50 v3 现状对齐（追加于封存之后；HEAD `2628b61`）
+
+上节保留封存时的工作区快照措辞。本段对齐**当前基线** `p7-engineering-candidate-v1` @ `2628b61`（含 independent facts / Formal 宿主确认 / Final 50 封存提交），**不改写**上文 Gate 2B 31/60、意图 Holdout、48/50 等历史分数。
+
+| 项 | 真实状态 |
+|---|---|
+| Final 50 v3 执行/采集 | **19** |
+| 已评分 | **18** |
+| 严格正确 | **10** |
+| 严格失败 | **8** |
+| 本批次未跑 | **31**（含历史 unknown 边界的 050/075 等） |
+| `gate2_fully_accepted` | **false** |
+| 基线 `2628b61` 双版本 CI | **Actions #33 PASS**（[run 41629097042](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41629097042)） |
+| 历史双版本 CI（非本基线） | Actions #31 / `4cf867e`（见 [repair-v2](research/p7-fresh-web-smoke-repair-v2-results.md)）；更早 #28 / `b06cc52` 保留 |
+| 017 | 身份不一致停跑（usage v3 vs 物化 v1）；`blocked` 保留 |
+| 064 / 077 | 口径错配已裁定；原失败/禁止派发保留 |
+| 畸形 usage | 根因已修（`RECOVERY_CORRUPT`）；整表隔离复验仍 NOT_RUN |
+| 空收入 Decimal | 根因已修；business-001/006 **未**重跑闭环，48/50 历史记录保留 |
+
+**合法空收入误拒（根因说明，不覆盖旧成绩）**：MCP `_serialize_cell` 对 PostgreSQL `NUMERIC` 曾用 `str(Decimal)`，空窗口收入在 `/100` 后出现高 scale 零值（如 `0E-20`），被 `scalar()` 拒绝 → `metric_verification_rejected`。已改为定点 `format(..., "f")`（见 [NUMERIC 修复](p7-numeric-serialization-fix.md)）；非法科学计数法输入仍拒绝。business-001/006 观测与 Gold **保持原历史记录**。

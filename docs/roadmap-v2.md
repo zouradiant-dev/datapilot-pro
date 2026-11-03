@@ -162,3 +162,23 @@ Gate 0 三路径已有真实单次 Smoke；本轮按用户最新收紧，仅完�
 2026-10-25 最新：已授权的 [NUMERIC 定点序列化最小修复](p7-numeric-serialization-fix.md) 已通过三个新 P3 定向结果及两版本各 262 项适用回归。旧 rejected、旧实现 SHA、v1/v2 Seal 均保留；新 implementation freeze 对应唯一 SQL Decimal 边界变化。Gate 2B ready_for_live_authorization=true、live_allowed=false，54 个 Runtime 配置尚未正式执行；不自动进入业务 Live 或 Gate 3。
 
 2026-10-25 后续独立授权：[正式业务 Live](p7-gate2b-live.md) 使用该 Freeze 首次执行，在 bh2-031 原预算预留失败后停止，28 个 Runtime + 3 个宿主拒绝，共观测 31/60；严格通过 25、未通过 6、not_run 29。实际 61 次调用 / 77,897 Token，估算 USD 0.009241476，非实际账单。SQL+RAG 无本次观测；RAG 冻结汇总的版本键不匹配单独披露，原分数不改。上段是授权前历史快照；当前完整 Gate 2B 未验收，不修改候选/Gold/评分器、不自动续跑或进入 Gate 3、不提交推送。
+
+## P7 Final 50 v3 现状对齐（2026-11-03；追加，不覆盖上文分数）
+
+基线工作区：`p7-engineering-candidate-v1` @ `2628b61`。`gate2_fully_accepted=false` 不变。本基线双版本 CI：**Actions #33 PASS**（[run 41629097042](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41629097042)，HEAD `2628b61`）。历史 #31 / `4cf867e`（见 [repair-v2 结果](research/p7-fresh-web-smoke-repair-v2-results.md)）与更早 #28 / `b06cc52` 保留，**不**作为本基线证明。
+
+| Final 50 v3 | 值 |
+|---|---:|
+| 计划 | 50 |
+| 执行/采集 | 19 |
+| 评分 | 18 |
+| 严格正确 | 10 |
+| 严格失败 | 8 |
+| 本批次未跑 | 31 |
+
+- **017**：身份不一致停跑（usage v3 vs 物化 v1）；原 `blocked` 保留，禁止评分器静默重映射。
+- **064 / 077**：口径错配已裁定（全功能 Gold vs `export_batch` 定义）；原失败/未派发保留，不改 Gold/Registry。
+- **usage**：Journal 缓存畸形响应已类型化为 `RECOVERY_CORRUPT`；隔离故障矩阵整表对当前源码仍为 NOT_RUN。
+- **空收入 Decimal**：`0E-20` 序列化根因已修（见 NUMERIC 定点修复）；开发集 business-001/006 **未**重跑闭环，48/50 历史观测原样保留。
+
+本批次已 STOP 封存为部分结果；不续跑、不换 key、不提高预算、不进入 Gate 3。完整记录见 [v3 结果](research/p7-final-50-v3-results.md)、[封存与下一步](research/p7-final-50-closure-and-next.md)、[评测索引](evaluation.md)。

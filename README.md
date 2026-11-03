@@ -5,12 +5,12 @@
 | 验收维度 | 当前状态 |
 |---|---|
 | Engineering Demo Candidate | **ACCEPTED**（本地单用户、合成数据、脚本 Worker） |
-| Python 3.11 / 3.13 完整 CI | **PASS**（[Actions #28](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41299832252)，提交 `b06cc52`） |
-| Independent Business Quality | **PENDING** |
+| Python 3.11 / 3.13 完整 CI | **PASS**（基线 `2628b61`：[Actions #33](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41629097042)；另：历史 [Actions #31](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41441154000) / `4cf867e` 与更早 #28 / `b06cc52`——**均非**本基线证明） |
+| Independent Business Quality | **PENDING**（Final 50 v3 **部分结果**：19 采集 / 18 评分 / 10 严格正确 / 8 严格失败 / 31 未跑；`gate2_fully_accepted=false`） |
 | DeepSeek Live Gate | **PENDING** |
 | 独立人工合同语义审查 | **NOT_VERIFIED** |
 
-分支：`p7-engineering-candidate-v1`。公开交付索引见 [P7 工程候选](docs/releases/p7-engineering-candidate-v1/README.md)；架构速览见 [architecture-overview.md](docs/architecture-overview.md)；面试材料见 [showcase.md](docs/showcase.md)；英文概览见 [README.en.md](README.en.md)。
+分支：`p7-engineering-candidate-v1`（基线 HEAD `2628b61`）。公开交付索引见 [P7 工程候选](docs/releases/p7-engineering-candidate-v1/README.md)；架构速览见 [architecture-overview.md](docs/architecture-overview.md)；面试材料见 [showcase.md](docs/showcase.md)；英文概览见 [README.en.md](README.en.md)。
 
 ## 30 秒了解
 
@@ -115,8 +115,21 @@ flowchart LR
 ### 真实模型与业务评测（未完成，保持原值）
 
 - 意图：59 条 Holdout 上 Rule-only 46/59、LLM-only 58/59、Hybrid 57/59（67 次真实调用 / 59,640 Token）。
-- 业务：60 条计划中观测 31 条、严格通过 25、未通过 6、`not_run` 29；因 `bh2-031` 预算预留失败安全停止，61 次真实调用全部结算、无 unknown。这是**固定顺序的前缀样本**，不能当无偏成功率。见 [Gate 2B Live](docs/p7-gate2b-live.md)。
-- 50 条开发目标在脚本决策 + 真实 PG/MCP 下为 48/50，不是真实模型成绩。
+- 业务：60 条计划中观测 31 条、严格通过 25、未通过 6、`not_run` 29；因 `bh2-031` 预算预留失败安全停止，61 次真实调用全部结算、无 unknown。这是**固定顺序的前缀样本**，不能当无偏成功率。见 [Gate 2B Live](docs/p7-gate2b-live.md)。`gate2_fully_accepted=false`（见 [gate2-validation](docs/research/p7-gate2-validation.json)）。
+- 50 条开发目标在脚本决策 + 真实 PG/MCP 下为 48/50，不是真实模型成绩；其中 business-001/006 合法空收入误拒的历史观测原样保留。
+
+### Final 50 v3（2026-11-03，部分结果；追加，不覆盖上表）
+
+| 指标 | 值 |
+|---|---:|
+| 计划 | 50 |
+| 执行/采集 | 19 |
+| 评分 | 18 |
+| 严格正确 | 10 |
+| 严格失败 | 8 |
+| 本批次未跑 | 31 |
+
+批次在 `017` 评分身份校验处 STOP（冻结要求 usage v3，物化执行 usage v1）。064/077 口径错配（全功能 Gold vs `export_batch` 定义）已裁定，不改 Gold/Registry。畸形 usage 已类型化为 `RECOVERY_CORRUPT`；空收入 Decimal 根因（`0E-20` 序列化）已修，但 business-001/006 **未**重跑闭环，48/50 历史分母不变。详见 [v3 结果](docs/research/p7-final-50-v3-results.md)、[封存与下一步](docs/research/p7-final-50-closure-and-next.md)、[评测索引](docs/evaluation.md)。**不得**把 10/18 或 10/50 写成业务质量验收通过。
 
 **这些数字证明什么**：工程链路、权限边界、证据链与恢复机制可运行且可复核。
 **不证明什么**：DeepSeek 自主完成经营分析的业务质量、自然语言成功率、生产 SLA 或多租户安全。

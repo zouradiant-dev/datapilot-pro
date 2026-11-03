@@ -5,9 +5,10 @@
 | 维度 | 状态 |
 |---|---|
 | Engineering Demo Candidate | **ACCEPTED**，限定本地单用户、公开合成数据、脚本 Worker |
-| Independent Business Quality | **PENDING** |
+| Independent Business Quality | **PENDING**（Final 50 v3 部分：19 采集 / 18 评分 / 10 严格正确 / 31 未跑；`gate2_fully_accepted=false`；见 [evaluation.md](../../evaluation.md)） |
 | DeepSeek Live Gate | **PENDING** |
 | 独立人工合同语义审查 | **NOT_VERIFIED** |
+| Python 3.11 / 3.13 完整 CI（仓库可证实） | **PASS**：本基线 Actions #33 / `2628b61`；历史 #31 / `4cf867e` 与更早 #28 / `b06cc52` 保留且非本基线证明 |
 
 ## 工程与 Demo
 

@@ -41,3 +41,16 @@
 ## P7 Final Evaluation Prep（2026-11-03）
 
 本轮不重跑旧故障矩阵，也不把旧结果提升为当前源码证据。已确认的历史结果：旧 Provider HTTP 测试曾 13 passed / 1 failed（畸形 usage）；随后统一回归将 Journal 缓存畸形响应类型化为 `RECOVERY_CORRUPT`，并移除对该项的 xfail（见 [统一回归](p7-unified-regression.md)）。旧隔离 PG 重启只完成 5 类只读断言且是显式 Fake 模型 double，不是完整实例矩阵。当前工作区源码的完整故障注入整表仍为 **NOT_RUN**，需新隔离 PG 与本地 Provider Mock；不以 `pg_terminate_backend` 代替全实例重启。对照、Final 50 部分封存与授权边界见 [最终评测计划](research/p7-final-evaluation-plan.md) 与 [封存与下一步](research/p7-final-50-closure-and-next.md)。
+
+### 现状对齐（追加；上表「畸形 usage 1 项失败」仍为修复前历史观测）
+
+| 项 | 状态 |
+|---|---|
+| Final 50 v3 | 19 采集 / 18 评分 / 10 严格正确 / 31 未跑；017 身份 STOP |
+| `gate2_fully_accepted` | **false** |
+| 基线 `2628b61` 双版本 CI | Actions #33 PASS（[run 41629097042](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41629097042)）；#31/`4cf867e` 为历史记录，非本基线 |
+| 畸形 usage 根因 | **已修**（`RECOVERY_CORRUPT` / 有界解码）；整表隔离复验仍 NOT_RUN |
+| 空收入 Decimal 根因 | **已修**（NUMERIC 定点 `format(..., "f")`）；business-001/006 **未闭环** |
+| 064 / 077 | 口径错配已裁定；不改 Gold；原失败/未派发保留，不重刷评分分母 |
+
+隔离复验须新建 disposable compose project/volume，**禁止**对生产或既有业务卷执行 `docker compose down -v`。
