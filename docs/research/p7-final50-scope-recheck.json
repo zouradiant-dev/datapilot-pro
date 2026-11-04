@@ -1,0 +1,327 @@
+{
+  "date": "2026-11-04",
+  "mode": "real_pg_mcp_bge_with_fake_decisions",
+  "strict_pass": 3,
+  "strict_fail": 5,
+  "blocked_preflight": 2,
+  "runtime_cases": 8,
+  "all_runtime_terminal_states_match_gold": true,
+  "fake_model_calls": 24,
+  "paid_calls": 0,
+  "unknown": 0,
+  "source_gold_hashes_unchanged": true,
+  "new_collection_hmac_verified": true,
+  "cases": [
+    {
+      "case_id": "p7-holdout-v3-031",
+      "status": "partial",
+      "strict_correct": true,
+      "expected_status": "partial",
+      "root_cause": "strict_pass",
+      "run_id": "b91e009a-93a9-5208-b498-c189a9a61186",
+      "false_dimensions": [],
+      "extra_document_ids": [],
+      "attested": true,
+      "fact_coverage": {
+        "fact_1": true,
+        "fact_2": false
+      },
+      "dimensions": {
+        "business": true,
+        "p3_numeric": null,
+        "evidence": true,
+        "p3_semantics": true,
+        "citations": true,
+        "fact_coverage": true,
+        "authorization": true,
+        "protocol": true,
+        "completion": true,
+        "budget": true,
+        "durable": true,
+        "business_refusal": true,
+        "causal": true,
+        "chart_units": true,
+        "retrieval_contract": true
+      },
+      "evidence": "artifacts\\p7\\final50-scope-recheck-20261104\\case-031\\score.json",
+      "collection": "artifacts\\p7\\final50-scope-recheck-20261104\\case-031\\signed-collection.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-032",
+      "status": "partial",
+      "strict_correct": true,
+      "expected_status": "partial",
+      "root_cause": "strict_pass",
+      "run_id": "a7cf216e-b980-563d-b76b-1344c40fb349",
+      "false_dimensions": [],
+      "extra_document_ids": [],
+      "attested": true,
+      "fact_coverage": {
+        "fact_1": true,
+        "fact_2": false
+      },
+      "dimensions": {
+        "business": true,
+        "p3_numeric": null,
+        "evidence": true,
+        "p3_semantics": true,
+        "citations": true,
+        "fact_coverage": true,
+        "authorization": true,
+        "protocol": true,
+        "completion": true,
+        "budget": true,
+        "durable": true,
+        "business_refusal": true,
+        "causal": true,
+        "chart_units": true,
+        "retrieval_contract": true
+      },
+      "evidence": "artifacts\\p7\\final50-scope-recheck-20261104\\case-032\\score.json",
+      "collection": "artifacts\\p7\\final50-scope-recheck-20261104\\case-032\\signed-collection.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-033",
+      "status": "unavailable",
+      "strict_correct": false,
+      "expected_status": "unavailable",
+      "root_cause": "additional_authorized_documents_outside_gold_relevant_set",
+      "run_id": "605e8133-aef5-5361-8c83-54a9ef5abcdf",
+      "false_dimensions": [
+        "citations"
+      ],
+      "extra_document_ids": [
+        "c68e1f8481b3dcfad6c598a7ff262dce781548806e17e27da4c5215052b4fa15"
+      ],
+      "attested": true,
+      "fact_coverage": {
+        "fact_1": false
+      },
+      "dimensions": {
+        "business": true,
+        "p3_numeric": null,
+        "evidence": true,
+        "p3_semantics": true,
+        "citations": false,
+        "fact_coverage": true,
+        "authorization": true,
+        "protocol": true,
+        "completion": true,
+        "budget": true,
+        "durable": true,
+        "business_refusal": true,
+        "causal": true,
+        "chart_units": true,
+        "retrieval_contract": true
+      },
+      "evidence": "artifacts\\p7\\final50-scope-recheck-20261104\\case-033\\score.json",
+      "collection": "artifacts\\p7\\final50-scope-recheck-20261104\\case-033\\signed-collection.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-035",
+      "status": "partial",
+      "strict_correct": false,
+      "expected_status": "partial",
+      "root_cause": "additional_authorized_documents_outside_gold_relevant_set",
+      "run_id": "fd8c1b45-3cc6-56f0-b4a4-9b7e7112b930",
+      "false_dimensions": [
+        "citations"
+      ],
+      "extra_document_ids": [
+        "dac61e3d8a77141604c9163badab7ebcb7d7f6a084c0c6a5946e606dc4736342"
+      ],
+      "attested": true,
+      "fact_coverage": {},
+      "dimensions": {
+        "business": true,
+        "p3_numeric": null,
+        "evidence": true,
+        "p3_semantics": true,
+        "citations": false,
+        "fact_coverage": true,
+        "authorization": true,
+        "protocol": true,
+        "completion": true,
+        "budget": true,
+        "durable": true,
+        "business_refusal": true,
+        "causal": true,
+        "chart_units": true,
+        "retrieval_contract": true
+      },
+      "evidence": "artifacts\\p7\\final50-scope-recheck-20261104\\case-035\\score.json",
+      "collection": "artifacts\\p7\\final50-scope-recheck-20261104\\case-035\\signed-collection.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-051",
+      "status": "blocked_preflight",
+      "strict_correct": null,
+      "expected_status": "partial",
+      "root_cause": "report_rag_dataset_scope_mismatch",
+      "model_calls": 0,
+      "evidence": "artifacts\\p7\\final50-scope-recheck-20261104\\case-051\\preflight-blocked.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-052",
+      "status": "blocked_preflight",
+      "strict_correct": null,
+      "expected_status": "partial",
+      "root_cause": "report_rag_dataset_scope_mismatch",
+      "model_calls": 0,
+      "evidence": "artifacts\\p7\\final50-scope-recheck-20261104\\case-052\\preflight-blocked.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-053",
+      "status": "partial",
+      "strict_correct": false,
+      "expected_status": "partial",
+      "root_cause": "additional_authorized_documents_outside_gold_relevant_set",
+      "run_id": "19ee4352-d2e4-53c8-97e4-6c90d3c7be6b",
+      "false_dimensions": [
+        "citations"
+      ],
+      "extra_document_ids": [
+        "5012b1daabf2632fd1a130e8650ec844e650bb19f501e5248fbbb5f1937d7288"
+      ],
+      "attested": true,
+      "fact_coverage": {
+        "fact_1": true,
+        "fact_2": false
+      },
+      "dimensions": {
+        "business": true,
+        "p3_numeric": true,
+        "evidence": true,
+        "p3_semantics": true,
+        "citations": false,
+        "fact_coverage": true,
+        "authorization": true,
+        "protocol": true,
+        "completion": true,
+        "budget": true,
+        "durable": true,
+        "business_refusal": true,
+        "causal": true,
+        "chart_units": true,
+        "retrieval_contract": true
+      },
+      "evidence": "artifacts\\p7\\final50-scope-recheck-20261104\\case-053\\score.json",
+      "collection": "artifacts\\p7\\final50-scope-recheck-20261104\\case-053\\signed-collection.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-054",
+      "status": "partial",
+      "strict_correct": true,
+      "expected_status": "partial",
+      "root_cause": "strict_pass",
+      "run_id": "213485b3-79de-5d6e-9145-b88f04ea6362",
+      "false_dimensions": [],
+      "extra_document_ids": [],
+      "attested": true,
+      "fact_coverage": {},
+      "dimensions": {
+        "business": true,
+        "p3_numeric": true,
+        "evidence": true,
+        "p3_semantics": true,
+        "citations": true,
+        "fact_coverage": true,
+        "authorization": true,
+        "protocol": true,
+        "completion": true,
+        "budget": true,
+        "durable": true,
+        "business_refusal": true,
+        "causal": true,
+        "chart_units": true,
+        "retrieval_contract": true
+      },
+      "evidence": "artifacts\\p7\\final50-scope-recheck-20261104\\case-054\\score.json",
+      "collection": "artifacts\\p7\\final50-scope-recheck-20261104\\case-054\\signed-collection.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-068",
+      "status": "completed",
+      "strict_correct": false,
+      "expected_status": "completed",
+      "root_cause": "additional_authorized_documents_outside_gold_relevant_set",
+      "run_id": "9f459e9f-a59c-59ed-a9c9-8781c7f76908",
+      "false_dimensions": [
+        "citations"
+      ],
+      "extra_document_ids": [
+        "1abdac06b607db0a6e0fca8ef9f3f1ef675483b34ec1e27215839f2adb01ba84"
+      ],
+      "attested": true,
+      "fact_coverage": {
+        "fact_1": true
+      },
+      "dimensions": {
+        "business": true,
+        "p3_numeric": null,
+        "evidence": true,
+        "p3_semantics": true,
+        "citations": false,
+        "fact_coverage": true,
+        "authorization": true,
+        "protocol": true,
+        "completion": true,
+        "budget": true,
+        "durable": true,
+        "business_refusal": true,
+        "causal": true,
+        "chart_units": true,
+        "retrieval_contract": true
+      },
+      "evidence": "artifacts\\p7\\final50-scope-recheck-20261104\\case-068\\score.json",
+      "collection": "artifacts\\p7\\final50-scope-recheck-20261104\\case-068\\signed-collection.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-069",
+      "status": "completed",
+      "strict_correct": false,
+      "expected_status": "completed",
+      "root_cause": "additional_authorized_documents_outside_gold_relevant_set",
+      "run_id": "d2f99c4f-0049-59ce-8f91-3626f8dba538",
+      "false_dimensions": [
+        "citations"
+      ],
+      "extra_document_ids": [
+        "9e5cb63d51f34e75686ca6f210e517d03d5e4c700993e183661a45f3ead55d60"
+      ],
+      "attested": true,
+      "fact_coverage": {
+        "fact_1": true
+      },
+      "dimensions": {
+        "business": true,
+        "p3_numeric": null,
+        "evidence": true,
+        "p3_semantics": true,
+        "citations": false,
+        "fact_coverage": true,
+        "authorization": true,
+        "protocol": true,
+        "completion": true,
+        "budget": true,
+        "durable": true,
+        "business_refusal": true,
+        "causal": true,
+        "chart_units": true,
+        "retrieval_contract": true
+      },
+      "evidence": "artifacts\\p7\\final50-scope-recheck-20261104\\case-069\\score.json",
+      "collection": "artifacts\\p7\\final50-scope-recheck-20261104\\case-069\\signed-collection.json"
+    }
+  ],
+  "collection_sha256": {
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-031\\signed-collection.json": "9653a88a0a52161d1b1ed54cf8d14ed4291581789c163f6ce38b4e74deeb2538",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-032\\signed-collection.json": "f02fff327e9c6622fc6d20d58c9ea6ac32a4ecff5fc5bf9e3a1d3be2d1301e87",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-033\\signed-collection.json": "1cc602310cc9d2d6cb09d62987c3df83e7b067e2ced1f4a72f3a4179fd674d94",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-035\\signed-collection.json": "15ddb770a44987549f6f3591155ef4b4e81efbcfaf689673292b66c9abcb3471",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-053\\signed-collection.json": "856f4b817cd048e59442286e9d5f0be230c03737112c5a9749a88780715f7237",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-054\\signed-collection.json": "17e800ef916af1c03a9fa39e538328c5ab82725389ccaaf8a20d2a0f8eb53cd6",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-068\\signed-collection.json": "3a2e864cb81153cc281733c8c33a407085657dbe315e27b6b1b434d77d3a0605",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-069\\signed-collection.json": "f87ab81f4dd076e6b13e3fada7582b4332fa4e2b64442f039b1d1051c5d26d64"
+  }
+}

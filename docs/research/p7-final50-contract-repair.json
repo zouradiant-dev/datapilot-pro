@@ -1,0 +1,281 @@
+{
+  "campaign": "p7-final50-contract-repair-051-052-v1",
+  "mode": "real_pg_mcp_bge_fake_worker",
+  "scorer_version": "p7-current-authorized-citations-v2",
+  "planned": 2,
+  "strict_pass": 2,
+  "paid_calls": 0,
+  "unknown": 0,
+  "cases": [
+    {
+      "case_id": "p7-holdout-v3-051",
+      "run_id": "3893c23e-3dba-5407-852f-ac7b6a1419d2",
+      "strict_correct": true,
+      "dimensions": {
+        "business": true,
+        "p3_numeric": true,
+        "evidence": true,
+        "p3_semantics": true,
+        "citations": true,
+        "fact_coverage": true,
+        "authorization": true,
+        "protocol": true,
+        "completion": true,
+        "budget": true,
+        "durable": true,
+        "business_refusal": true,
+        "causal": true,
+        "chart_units": true,
+        "retrieval_contract": true
+      },
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "required_goals": [
+          "metric_1",
+          "metric_2",
+          "documents"
+        ],
+        "verified_goals": [
+          "metric_2",
+          "documents"
+        ],
+        "missing_evidence": {
+          "metric_1": [
+            "amount_unit_unconfirmed"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "expected_status": "partial",
+      "fake_model_calls": 3,
+      "paid_calls": 0,
+      "claims": [
+        {
+          "goal_id": "metric_1",
+          "kind": "unavailable",
+          "value": null,
+          "codes": [
+            "amount_unit_unconfirmed"
+          ],
+          "fact_coverage": {},
+          "document_ids": []
+        },
+        {
+          "goal_id": "metric_2",
+          "kind": "metric",
+          "value": {
+            "value": "205",
+            "unit": "events",
+            "numerator": null,
+            "denominator": null,
+            "window_days": 29
+          },
+          "codes": [],
+          "fact_coverage": {},
+          "document_ids": []
+        },
+        {
+          "goal_id": "documents",
+          "kind": "context",
+          "value": null,
+          "codes": [],
+          "fact_coverage": {
+            "fact_1": true
+          },
+          "document_ids": [
+            "d13eedec820bfb6a8d6aeaa603b2f09b5320c79d7f59fef6cfb00d9d4d0efd32"
+          ]
+        }
+      ],
+      "p3_evidence": [
+        {
+          "evidence_id": "41090583-a2e7-46ba-83e8-b13d7fe4f75a",
+          "evidence_sha256": "96f2ede7d571a7d73580754d9c6f30ba71aa0dda3a2fe875983de70932994be9",
+          "verification_sha256": "d159b82f41b02f73897ef125a302276d3450fcb339d2b9c806da1a5680ee6b4f",
+          "verification_id": "b0c3be2a-472f-4e97-bd93-87123d0924bb"
+        }
+      ],
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": true,
+        "source_pins_valid": true,
+        "published_document_count": 1,
+        "extra_authorized_document_ids": [],
+        "document_precision": 1.0,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      }
+    },
+    {
+      "case_id": "p7-holdout-v3-052",
+      "run_id": "68cfa0f7-c59d-522f-9283-9916d069f4e6",
+      "strict_correct": true,
+      "dimensions": {
+        "business": true,
+        "p3_numeric": true,
+        "evidence": true,
+        "p3_semantics": true,
+        "citations": true,
+        "fact_coverage": true,
+        "authorization": true,
+        "protocol": true,
+        "completion": true,
+        "budget": true,
+        "durable": true,
+        "business_refusal": true,
+        "causal": true,
+        "chart_units": true,
+        "retrieval_contract": true
+      },
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "required_goals": [
+          "metric_1",
+          "metric_2",
+          "documents"
+        ],
+        "verified_goals": [
+          "metric_1",
+          "documents"
+        ],
+        "missing_evidence": {
+          "metric_2": [
+            "history_unconfirmed"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "expected_status": "partial",
+      "fake_model_calls": 3,
+      "paid_calls": 0,
+      "claims": [
+        {
+          "goal_id": "metric_1",
+          "kind": "metric",
+          "value": {
+            "value": "744.3300000000000000",
+            "unit": "CNY",
+            "numerator": null,
+            "denominator": null,
+            "window_days": 29
+          },
+          "codes": [],
+          "fact_coverage": {},
+          "document_ids": []
+        },
+        {
+          "goal_id": "metric_2",
+          "kind": "unavailable",
+          "value": null,
+          "codes": [
+            "history_unconfirmed"
+          ],
+          "fact_coverage": {},
+          "document_ids": []
+        },
+        {
+          "goal_id": "documents",
+          "kind": "context",
+          "value": null,
+          "codes": [],
+          "fact_coverage": {
+            "fact_1": true
+          },
+          "document_ids": [
+            "5012b1daabf2632fd1a130e8650ec844e650bb19f501e5248fbbb5f1937d7288",
+            "ae32f15f8706696cb1a6129c0a1dff3e71089870bc73423169560590b41d6859"
+          ]
+        }
+      ],
+      "p3_evidence": [
+        {
+          "evidence_id": "8d8a9af6-7dbc-496d-88a7-f3e70da6b474",
+          "evidence_sha256": "24c32197bd36669be340bffee9810bc33b22f7139c5491405c0485d63641c530",
+          "verification_sha256": "5c63fffc33fd2ed970e39f6dff65d6343fe32d653755e3bee1dc5fad4357d8aa",
+          "verification_id": "a41b971e-9ac0-401e-a6db-2bd8aaa6f47e"
+        }
+      ],
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": false,
+        "source_pins_valid": true,
+        "published_document_count": 2,
+        "extra_authorized_document_ids": [
+          "ae32f15f8706696cb1a6129c0a1dff3e71089870bc73423169560590b41d6859"
+        ],
+        "document_precision": 0.5,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      }
+    }
+  ],
+  "051_collection_only_after_capture_failure": true,
+  "unit_tests": {
+    "311": {
+      "tests": 166,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "313": {
+      "tests": 166,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "new_public_tests": 10,
+  "new_model_calls_fake": 6,
+  "new_token_units_fake": 90,
+  "new_collection_hmac_verified": true,
+  "collection_sha256": {
+    "p7-holdout-v3-051": "f79039001f8891135634f14667b1e7746c88268fda27961018a3c002c7ce6e56",
+    "p7-holdout-v3-052": "f044e63b630446a0a541c016dc7825c423fcda8b6a474838e6b7e20b79195d95"
+  },
+  "file_identity_checks": {
+    "artifacts/p7/independent-holdout-v3/sealed/inputs.jsonl": "541cbb22d39d02085cd5e9ce0ea5c262909cfebac207820c0382535e0f223866",
+    "artifacts/p7/independent-holdout-v3/sealed/gold.jsonl": "7ab3a96c2e519cad0cf7b04a324f025d5ced856168f7d8d9f00a1b5b62804048",
+    "artifacts/p7/final-evaluation-v1/supplement-19/inputs.jsonl": "2eb1db89a4d8738d14f30461d4b77f6f6bd49f73fe47338bd6533f9c1f56e2a4",
+    "artifacts/p7/final-evaluation-v1/supplement-19/private/gold.jsonl": "1f72791d896bd90885161268bbf5f608d7a1a39950baeadbdfb2029a9e1ae9d6",
+    "artifacts/p7/independent-holdout-v3/sealed/pins.json": "815426881e0df16972cab1a17046faac9f047838b89fce01b5a5af84ff33ad52",
+    "src/datapilot/reporting/service.py": "754a12f88a8803800509bc2637ad6019874fffcf18a6913dd9f7b3df6fdcc234",
+    "evaluation/p7_v3_current/final50_scope_repair.py": "8b0c0b6d5939064b84be5d22880755869e868630b3c8e88f7fbd33e32d199096",
+    "evaluation/p7_v3_current/scorer.py": "4f241cff47502bf4240cf9c8762ac77259581a22d442d86a1366c7b70ef1d4e8",
+    "tests/test_cross_dataset_document_facts.py": {
+      "execution_sha256": "e5fe07d6cd4b32a924df8e22791397b181b207cb086a23397a6c90884cbafa74",
+      "final_formatted_sha256": "27fefe9b29e8b9863e052e1fd2a31b655f917e194ee25d7b1585562ed7e306a6",
+      "change": "import order only; final tests rerun"
+    },
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-051\\preflight-blocked.json": "ff44773a88342259816e7466bc4b40c750551be266f54fd26001bc6292208c27",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-052\\preflight-blocked.json": "2e8684b3f38dc4fb1c0b68f6e765eeda233d9d24b28f48441e415643b1ecb655"
+  },
+  "harness_capture_failure": {
+    "type": "TypeError",
+    "phase": "saving already executed 051 approval return",
+    "original_log": "execution.log",
+    "recovery": "051 collect-only; 052 dispatched once",
+    "old_partial_file_preserved": true
+  },
+  "full_ci": "NOT_RUN",
+  "new_deepseek_live": "NOT_RUN",
+  "static_checks": {
+    "ruff": "PASS",
+    "format": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "product_change": "ReportService permits explicitly confirmed independent facts across Dataset pins already authorized by the report; default same-dataset association retained",
+  "delivery_sha256": {
+    "docs\\research\\p7-final50-contract-repair.md": "b4fd389583438f01f993efd5f6745d1fb9bf0dd20fbe21e247a2f9bef3a49f37",
+    "src\\datapilot\\reporting\\service.py": "754a12f88a8803800509bc2637ad6019874fffcf18a6913dd9f7b3df6fdcc234",
+    "evaluation\\p7_v3_current\\final50_scope_repair.py": "8b0c0b6d5939064b84be5d22880755869e868630b3c8e88f7fbd33e32d199096",
+    "tests\\test_cross_dataset_document_facts.py": "27fefe9b29e8b9863e052e1fd2a31b655f917e194ee25d7b1585562ed7e306a6",
+    "artifacts\\p7\\final50-contract-repair-20261104\\final-py311.xml": "50144535a989fd390df1b71e9627291cef68c6f9ee209a4e1c1fed3acf7c4a5d",
+    "artifacts\\p7\\final50-contract-repair-20261104\\final-py311.log": "7841fab2f7568d7a308bc3a02351bc1a3b27083854c05e7891c4bd5f303378dc",
+    "artifacts\\p7\\final50-contract-repair-20261104\\final-py313.xml": "dd956babe5aef1266b386ba54a89732b3b6b5b68944349f98ff9364da9020ccc",
+    "artifacts\\p7\\final50-contract-repair-20261104\\final-py313.log": "f807e5187b11517f66b50777e941c8cf7d1141f3d323afe54d18f63bcd0c212d"
+  }
+}

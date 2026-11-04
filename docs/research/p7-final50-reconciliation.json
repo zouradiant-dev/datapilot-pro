@@ -1,0 +1,3167 @@
+{
+  "schema": "p7-final50-evidence-reconciliation-v1",
+  "date": "2026-11-04",
+  "timezone": "Asia/Singapore",
+  "planned": 50,
+  "lanes": {
+    "sql_rag": 16,
+    "sql_only": 17,
+    "rag_only": 17
+  },
+  "historical_counts": {
+    "unknown": 8,
+    "strict_pass": 16,
+    "strict_fail": 10,
+    "collected_without_formal_score": 2,
+    "host_preflight_pass": 6,
+    "not_run": 8
+  },
+  "reconciliation_counts": {
+    "unknown_requires_separate_disposition": 8,
+    "historical_strict_pass": 16,
+    "shared_defect_needs_case_verification": 10,
+    "revised_followup_pass": 3,
+    "host_preflight_pass": 6,
+    "missing_business_evidence": 7
+  },
+  "historical_runtime_scored": 26,
+  "historical_runtime_strict_pass": 16,
+  "new_followup_pass": 3,
+  "pooled_quality_rate": null,
+  "reason_no_pooled_rate": "Historical versions, unscored diagnoses, host preflight and revised case contracts have different evidence roles.",
+  "historical_hmac_signatures": "NOT_REVERIFIED; signing keys were not loaded",
+  "stored_signed_payload_digests": "verified",
+  "new_model_calls": 0,
+  "new_database_calls": 0,
+  "rescored_cases": 0,
+  "current_source_full_ci": "NOT_RUN",
+  "cases": [
+    {
+      "case_id": "p7-holdout-v3-050",
+      "lane": "sql_rag",
+      "historical_outcome": "unknown",
+      "reconciliation_status": "unknown_requires_separate_disposition",
+      "root_cause": "unsettled_provider_outcome",
+      "primary_evidence": {
+        "batch": "live-final-50-v2",
+        "runner_status": "unknown",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v2/summary.json",
+        "run_id": "ab92c6c1-c232-439f-b94f-9945f869b437",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v2/p7-holdout-v3-050/collect-process.json",
+        "score": null,
+        "capture_check": "process_stdout",
+        "snapshot_unknown": true,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 3741,
+          "reported_tokens": 0,
+          "usage_complete": false
+        },
+        "report_status": null,
+        "missing_evidence": {},
+        "error_code": "MODEL_ERROR",
+        "provider_http_503": false,
+        "scope_attested": false
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v2",
+          "runner_status": "unknown",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v2/summary.json",
+          "run_id": "ab92c6c1-c232-439f-b94f-9945f869b437",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v2/p7-holdout-v3-050/collect-process.json",
+          "score": null,
+          "capture_check": "process_stdout",
+          "snapshot_unknown": true,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 3741,
+            "reported_tokens": 0,
+            "usage_complete": false
+          },
+          "report_status": null,
+          "missing_evidence": {},
+          "error_code": "MODEL_ERROR",
+          "provider_http_503": false,
+          "scope_attested": false
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-011",
+      "lane": "sql_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "partial",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "5ac7a080-74cf-4845-add2-33480902fbec",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-011/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-011/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 645,
+          "reported_tokens": 645,
+          "usage_complete": true
+        },
+        "report_status": "partial",
+        "missing_evidence": {
+          "metric_2": [
+            "mrr_definition_missing"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "partial",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "5ac7a080-74cf-4845-add2-33480902fbec",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-011/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-011/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 645,
+            "reported_tokens": 645,
+            "usage_complete": true
+          },
+          "report_status": "partial",
+          "missing_evidence": {
+            "metric_2": [
+              "mrr_definition_missing"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-031",
+      "lane": "rag_only",
+      "historical_outcome": "strict_fail",
+      "reconciliation_status": "shared_defect_needs_case_verification",
+      "root_cause": "host_scope_attestation_missing",
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "unavailable",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "59464b89-b9c8-4e4b-8b94-c3d176871c98",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-031/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-031/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 4,
+          "total_tokens": 6520,
+          "reported_tokens": 6520,
+          "usage_complete": true
+        },
+        "report_status": "unavailable",
+        "missing_evidence": {
+          "documents": [
+            "goal_scope_not_attested"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": false,
+        "failure_class": "rag_retrieval_failure",
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "unavailable",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "59464b89-b9c8-4e4b-8b94-c3d176871c98",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-031/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-031/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 4,
+            "total_tokens": 6520,
+            "reported_tokens": 6520,
+            "usage_complete": true
+          },
+          "report_status": "unavailable",
+          "missing_evidence": {
+            "documents": [
+              "goal_scope_not_attested"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": false,
+          "failure_class": "rag_retrieval_failure",
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-051",
+      "lane": "sql_rag",
+      "historical_outcome": "strict_fail",
+      "reconciliation_status": "shared_defect_needs_case_verification",
+      "root_cause": "host_scope_attestation_missing",
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "partial",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "7c178803-a2b5-437c-a1ee-9fbe8a98da1c",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-051/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-051/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 5,
+          "total_tokens": 8715,
+          "reported_tokens": 8715,
+          "usage_complete": true
+        },
+        "report_status": "partial",
+        "missing_evidence": {
+          "metric_1": [
+            "amount_unit_unconfirmed"
+          ],
+          "documents": [
+            "goal_scope_not_attested"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": false,
+        "failure_class": "rag_retrieval_failure",
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "partial",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "7c178803-a2b5-437c-a1ee-9fbe8a98da1c",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-051/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-051/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 5,
+            "total_tokens": 8715,
+            "reported_tokens": 8715,
+            "usage_complete": true
+          },
+          "report_status": "partial",
+          "missing_evidence": {
+            "metric_1": [
+              "amount_unit_unconfirmed"
+            ],
+            "documents": [
+              "goal_scope_not_attested"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": false,
+          "failure_class": "rag_retrieval_failure",
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-012",
+      "lane": "sql_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "partial",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "73ff8b11-98e8-4015-b95a-f2a2d7a5c65e",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-012/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-012/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 646,
+          "reported_tokens": 646,
+          "usage_complete": true
+        },
+        "report_status": "partial",
+        "missing_evidence": {
+          "metric_2": [
+            "currency_unsupported"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "partial",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "73ff8b11-98e8-4015-b95a-f2a2d7a5c65e",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-012/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-012/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 646,
+            "reported_tokens": 646,
+            "usage_complete": true
+          },
+          "report_status": "partial",
+          "missing_evidence": {
+            "metric_2": [
+              "currency_unsupported"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-032",
+      "lane": "rag_only",
+      "historical_outcome": "strict_fail",
+      "reconciliation_status": "shared_defect_needs_case_verification",
+      "root_cause": "host_scope_attestation_missing",
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "unavailable",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "14f9b9fb-acaf-499b-b76e-faa4ab22b6a8",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-032/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-032/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 5,
+          "total_tokens": 8530,
+          "reported_tokens": 8530,
+          "usage_complete": true
+        },
+        "report_status": "unavailable",
+        "missing_evidence": {
+          "documents": [
+            "goal_scope_not_attested"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": false,
+        "failure_class": "rag_retrieval_failure",
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "unavailable",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "14f9b9fb-acaf-499b-b76e-faa4ab22b6a8",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-032/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-032/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 5,
+            "total_tokens": 8530,
+            "reported_tokens": 8530,
+            "usage_complete": true
+          },
+          "report_status": "unavailable",
+          "missing_evidence": {
+            "documents": [
+              "goal_scope_not_attested"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": false,
+          "failure_class": "rag_retrieval_failure",
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-052",
+      "lane": "sql_rag",
+      "historical_outcome": "strict_fail",
+      "reconciliation_status": "shared_defect_needs_case_verification",
+      "root_cause": "host_scope_attestation_missing",
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "partial",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "b75f9d6c-535d-48e0-8232-aecb04b03141",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-052/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-052/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 5,
+          "total_tokens": 9074,
+          "reported_tokens": 9074,
+          "usage_complete": true
+        },
+        "report_status": "partial",
+        "missing_evidence": {
+          "metric_2": [
+            "history_unconfirmed"
+          ],
+          "documents": [
+            "goal_scope_not_attested"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": false,
+        "failure_class": "rag_retrieval_failure",
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "partial",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "b75f9d6c-535d-48e0-8232-aecb04b03141",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-052/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-052/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 5,
+            "total_tokens": 9074,
+            "reported_tokens": 9074,
+            "usage_complete": true
+          },
+          "report_status": "partial",
+          "missing_evidence": {
+            "metric_2": [
+              "history_unconfirmed"
+            ],
+            "documents": [
+              "goal_scope_not_attested"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": false,
+          "failure_class": "rag_retrieval_failure",
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-013",
+      "lane": "sql_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "unavailable",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "c5e053ec-2b00-4ca3-969a-85b12afb7d70",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-013/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-013/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 585,
+          "reported_tokens": 585,
+          "usage_complete": true
+        },
+        "report_status": "unavailable",
+        "missing_evidence": {
+          "metric_1": [
+            "history_unconfirmed"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "unavailable",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "c5e053ec-2b00-4ca3-969a-85b12afb7d70",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-013/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-013/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 585,
+            "reported_tokens": 585,
+            "usage_complete": true
+          },
+          "report_status": "unavailable",
+          "missing_evidence": {
+            "metric_1": [
+              "history_unconfirmed"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-033",
+      "lane": "rag_only",
+      "historical_outcome": "strict_fail",
+      "reconciliation_status": "shared_defect_needs_case_verification",
+      "root_cause": "host_scope_attestation_missing",
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "unavailable",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "fc7e05ec-a75d-4949-8c09-afde873a697c",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-033/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-033/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 5,
+          "total_tokens": 8467,
+          "reported_tokens": 8467,
+          "usage_complete": true
+        },
+        "report_status": "unavailable",
+        "missing_evidence": {
+          "documents": [
+            "goal_scope_not_attested"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": false,
+        "failure_class": "rag_retrieval_failure",
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "unavailable",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "fc7e05ec-a75d-4949-8c09-afde873a697c",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-033/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-033/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 5,
+            "total_tokens": 8467,
+            "reported_tokens": 8467,
+            "usage_complete": true
+          },
+          "report_status": "unavailable",
+          "missing_evidence": {
+            "documents": [
+              "goal_scope_not_attested"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": false,
+          "failure_class": "rag_retrieval_failure",
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-053",
+      "lane": "sql_rag",
+      "historical_outcome": "strict_fail",
+      "reconciliation_status": "shared_defect_needs_case_verification",
+      "root_cause": "host_scope_attestation_missing",
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "partial",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "4b3f085b-37a8-4bcc-b7ff-73c3b5c65227",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-053/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-053/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 4,
+          "total_tokens": 6743,
+          "reported_tokens": 6743,
+          "usage_complete": true
+        },
+        "report_status": "partial",
+        "missing_evidence": {
+          "documents": [
+            "goal_scope_not_attested"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": false,
+        "failure_class": "rag_retrieval_failure",
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "partial",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "4b3f085b-37a8-4bcc-b7ff-73c3b5c65227",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-053/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-053/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 4,
+            "total_tokens": 6743,
+            "reported_tokens": 6743,
+            "usage_complete": true
+          },
+          "report_status": "partial",
+          "missing_evidence": {
+            "documents": [
+              "goal_scope_not_attested"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": false,
+          "failure_class": "rag_retrieval_failure",
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-014",
+      "lane": "sql_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "unavailable",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "8a3eabcf-25e4-4eac-9a2e-e87c5315130d",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-014/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-014/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 599,
+          "reported_tokens": 599,
+          "usage_complete": true
+        },
+        "report_status": "unavailable",
+        "missing_evidence": {
+          "metric_1": [
+            "amount_unit_unconfirmed"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "unavailable",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "8a3eabcf-25e4-4eac-9a2e-e87c5315130d",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-014/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-014/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 599,
+            "reported_tokens": 599,
+            "usage_complete": true
+          },
+          "report_status": "unavailable",
+          "missing_evidence": {
+            "metric_1": [
+              "amount_unit_unconfirmed"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-034",
+      "lane": "rag_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "unavailable",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "ee452922-258b-4f4c-a757-4de6d3fe6fdc",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-034/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-034/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 3,
+          "total_tokens": 4608,
+          "reported_tokens": 4608,
+          "usage_complete": true
+        },
+        "report_status": "unavailable",
+        "missing_evidence": {
+          "documents": [
+            "goal_scope_not_attested"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "unavailable",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "ee452922-258b-4f4c-a757-4de6d3fe6fdc",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-034/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-034/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 3,
+            "total_tokens": 4608,
+            "reported_tokens": 4608,
+            "usage_complete": true
+          },
+          "report_status": "unavailable",
+          "missing_evidence": {
+            "documents": [
+              "goal_scope_not_attested"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-054",
+      "lane": "sql_rag",
+      "historical_outcome": "strict_fail",
+      "reconciliation_status": "shared_defect_needs_case_verification",
+      "root_cause": "host_scope_attestation_missing",
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "blocked",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "e827e559-5361-455a-b77c-4175f10225a6",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-054/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-054/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 5,
+          "total_tokens": 8992,
+          "reported_tokens": 8992,
+          "usage_complete": true
+        },
+        "report_status": "blocked",
+        "missing_evidence": {
+          "documents": [
+            "goal_scope_not_attested"
+          ]
+        },
+        "error_code": "RAG_COMPLETION_REPAIR_EXHAUSTED",
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": false,
+        "failure_class": "rag_retrieval_failure",
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "blocked",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "e827e559-5361-455a-b77c-4175f10225a6",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-054/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-054/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 5,
+            "total_tokens": 8992,
+            "reported_tokens": 8992,
+            "usage_complete": true
+          },
+          "report_status": "blocked",
+          "missing_evidence": {
+            "documents": [
+              "goal_scope_not_attested"
+            ]
+          },
+          "error_code": "RAG_COMPLETION_REPAIR_EXHAUSTED",
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": false,
+          "failure_class": "rag_retrieval_failure",
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-015",
+      "lane": "sql_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "partial",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "b7cc18aa-cdde-4d97-badd-33f9912765cb",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-015/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-015/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 666,
+          "reported_tokens": 666,
+          "usage_complete": true
+        },
+        "report_status": "partial",
+        "missing_evidence": {
+          "metric_2": [
+            "duplicate_record_grain"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "partial",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "b7cc18aa-cdde-4d97-badd-33f9912765cb",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-015/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-015/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 666,
+            "reported_tokens": 666,
+            "usage_complete": true
+          },
+          "report_status": "partial",
+          "missing_evidence": {
+            "metric_2": [
+              "duplicate_record_grain"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-035",
+      "lane": "rag_only",
+      "historical_outcome": "strict_fail",
+      "reconciliation_status": "shared_defect_needs_case_verification",
+      "root_cause": "host_scope_attestation_missing",
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "unavailable",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "be1dd0f8-14c3-45e3-be7b-935e3ca59d28",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-035/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-035/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 5,
+          "total_tokens": 8568,
+          "reported_tokens": 8568,
+          "usage_complete": true
+        },
+        "report_status": "unavailable",
+        "missing_evidence": {
+          "documents": [
+            "goal_scope_not_attested"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": false,
+        "failure_class": "rag_retrieval_failure",
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "unavailable",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "be1dd0f8-14c3-45e3-be7b-935e3ca59d28",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-035/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-035/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 5,
+            "total_tokens": 8568,
+            "reported_tokens": 8568,
+            "usage_complete": true
+          },
+          "report_status": "unavailable",
+          "missing_evidence": {
+            "documents": [
+              "goal_scope_not_attested"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": false,
+          "failure_class": "rag_retrieval_failure",
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-055",
+      "lane": "sql_rag",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "partial",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "7d418315-c053-4ff4-b1ee-9edaef8fac96",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-055/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-055/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 4,
+          "total_tokens": 7234,
+          "reported_tokens": 7234,
+          "usage_complete": true
+        },
+        "report_status": "partial",
+        "missing_evidence": {
+          "documents": [
+            "snapshot_not_attested"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "partial",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "7d418315-c053-4ff4-b1ee-9edaef8fac96",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-055/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-055/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 4,
+            "total_tokens": 7234,
+            "reported_tokens": 7234,
+            "usage_complete": true
+          },
+          "report_status": "partial",
+          "missing_evidence": {
+            "documents": [
+              "snapshot_not_attested"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-016",
+      "lane": "sql_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "partial",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "8a952844-c0ed-42ef-8396-28ad064616cc",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-016/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-016/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 636,
+          "reported_tokens": 636,
+          "usage_complete": true
+        },
+        "report_status": "partial",
+        "missing_evidence": {
+          "metric_1": [
+            "data_not_verifiable"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "partial",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "8a952844-c0ed-42ef-8396-28ad064616cc",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-016/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-016/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 636,
+            "reported_tokens": 636,
+            "usage_complete": true
+          },
+          "report_status": "partial",
+          "missing_evidence": {
+            "metric_1": [
+              "data_not_verifiable"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-036",
+      "lane": "rag_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "unavailable",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "19a96b39-e9e2-4c57-947b-bac4ff80af28",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-036/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-036/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 4,
+          "total_tokens": 6405,
+          "reported_tokens": 6405,
+          "usage_complete": true
+        },
+        "report_status": "unavailable",
+        "missing_evidence": {
+          "documents": [
+            "snapshot_not_attested"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0.5
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "unavailable",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "19a96b39-e9e2-4c57-947b-bac4ff80af28",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-036/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-036/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 4,
+            "total_tokens": 6405,
+            "reported_tokens": 6405,
+            "usage_complete": true
+          },
+          "report_status": "unavailable",
+          "missing_evidence": {
+            "documents": [
+              "snapshot_not_attested"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0.5
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-056",
+      "lane": "sql_rag",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "partial",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "196d7786-6ddd-4867-8eb8-06a630e6ce92",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-056/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-056/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 3,
+          "total_tokens": 4269,
+          "reported_tokens": 4269,
+          "usage_complete": true
+        },
+        "report_status": "partial",
+        "missing_evidence": {
+          "documents": [
+            "goal_scope_not_attested"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "partial",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "196d7786-6ddd-4867-8eb8-06a630e6ce92",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-056/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-056/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 3,
+            "total_tokens": 4269,
+            "reported_tokens": 4269,
+            "usage_complete": true
+          },
+          "report_status": "partial",
+          "missing_evidence": {
+            "documents": [
+              "goal_scope_not_attested"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-017",
+      "lane": "sql_only",
+      "historical_outcome": "collected_without_formal_score",
+      "reconciliation_status": "revised_followup_pass",
+      "root_cause": "executed_metric_version_differs_from_frozen_case",
+      "primary_evidence": {
+        "batch": "live-final-50-v3",
+        "runner_status": "blocked",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+        "run_id": "ca37576a-c4a1-4390-a5cc-f0668976efb6",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-017/collect-process.json",
+        "score": null,
+        "capture_check": "process_stdout",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 654,
+          "reported_tokens": 654,
+          "usage_complete": true
+        },
+        "report_status": "partial",
+        "missing_evidence": {
+          "metric_1": [
+            "zero_denominator"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v3",
+          "runner_status": "blocked",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json",
+          "run_id": "ca37576a-c4a1-4390-a5cc-f0668976efb6",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-017/collect-process.json",
+          "score": null,
+          "capture_check": "process_stdout",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 654,
+            "reported_tokens": 654,
+            "usage_complete": true
+          },
+          "report_status": "partial",
+          "missing_evidence": {
+            "metric_1": [
+              "zero_denominator"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false
+        }
+      ],
+      "revised_followup": {
+        "case_id": "p7-final50-admit-017",
+        "run_id": "4bdd4c27-64ca-529b-8a7f-f724c55fbb85",
+        "report_status": "partial",
+        "strict_correct": true,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 649,
+          "reported_tokens": 649,
+          "usage_complete": true
+        },
+        "metric_output": [
+          {
+            "goal_id": "metric_2",
+            "value": "596",
+            "unit": "events"
+          }
+        ],
+        "config": "artifacts/p7/final50-admission-handoff-20261104/077-contract-v2/live-01/p7-final50-admit-017/config.json",
+        "collection": "artifacts/p7/final50-admission-handoff-20261104/077-contract-v2/live-01/p7-final50-admit-017/collection.json",
+        "score": "artifacts/p7/final50-admission-handoff-20261104/077-contract-v2/live-01/p7-final50-admit-017/score.json",
+        "mapping": "new case identity and contract; historical score retained"
+      },
+      "historical_offline_diagnosis": {
+        "path": "artifacts/p7/final-evaluation-v1/live-final-50-v3/017-offline-rescore.json",
+        "strict_correct": true,
+        "safety_violation": false,
+        "scoring_mapping_applied": true,
+        "counts_as_new_live": false
+      }
+    },
+    {
+      "case_id": "p7-holdout-v3-037",
+      "lane": "rag_only",
+      "historical_outcome": "unknown",
+      "reconciliation_status": "unknown_requires_separate_disposition",
+      "root_cause": "provider_http_503",
+      "primary_evidence": {
+        "batch": "live-final-50-v4",
+        "runner_status": "unknown",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v4/summary.json",
+        "run_id": "a794b4dd-5b09-417a-a4e1-bceec6aaf3ed",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v4/p7-holdout-v3-037/collect-process.json",
+        "score": null,
+        "capture_check": "process_stdout",
+        "snapshot_unknown": true,
+        "usage": {
+          "calls": 2,
+          "total_tokens": 6486,
+          "reported_tokens": 568,
+          "usage_complete": false
+        },
+        "report_status": null,
+        "missing_evidence": {},
+        "error_code": "MODEL_ERROR",
+        "provider_http_503": true,
+        "scope_attested": false
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v4",
+          "runner_status": "unknown",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v4/summary.json",
+          "run_id": "a794b4dd-5b09-417a-a4e1-bceec6aaf3ed",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v4/p7-holdout-v3-037/collect-process.json",
+          "score": null,
+          "capture_check": "process_stdout",
+          "snapshot_unknown": true,
+          "usage": {
+            "calls": 2,
+            "total_tokens": 6486,
+            "reported_tokens": 568,
+            "usage_complete": false
+          },
+          "report_status": null,
+          "missing_evidence": {},
+          "error_code": "MODEL_ERROR",
+          "provider_http_503": true,
+          "scope_attested": false
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-057",
+      "lane": "sql_rag",
+      "historical_outcome": "unknown",
+      "reconciliation_status": "unknown_requires_separate_disposition",
+      "root_cause": "provider_http_503",
+      "primary_evidence": {
+        "batch": "live-final-50-v5",
+        "runner_status": "unknown",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+        "run_id": "bfde0062-50d0-4db0-b152-6f1c88e5e739",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v5/p7-holdout-v3-057/signed-collection.json",
+        "score": null,
+        "runner_reason": "provider_http_503",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": true,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 3630,
+          "reported_tokens": 0,
+          "usage_complete": false
+        },
+        "report_status": null,
+        "missing_evidence": {},
+        "error_code": "MODEL_ERROR",
+        "provider_http_503": true,
+        "scope_attested": false
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v5",
+          "runner_status": "unknown",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+          "run_id": "bfde0062-50d0-4db0-b152-6f1c88e5e739",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v5/p7-holdout-v3-057/signed-collection.json",
+          "score": null,
+          "runner_reason": "provider_http_503",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": true,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 3630,
+            "reported_tokens": 0,
+            "usage_complete": false
+          },
+          "report_status": null,
+          "missing_evidence": {},
+          "error_code": "MODEL_ERROR",
+          "provider_http_503": true,
+          "scope_attested": false
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-018",
+      "lane": "sql_only",
+      "historical_outcome": "host_preflight_pass",
+      "reconciliation_status": "host_preflight_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v5",
+        "runner_status": "expected_host_rejection",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+        "run_id": null,
+        "collection": null,
+        "score": null,
+        "preflight_code": "REPORT_SCOPE_INVALID",
+        "preflight_strict_correct": true
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "expected_host_rejection",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null,
+          "preflight_code": "REPORT_SCOPE_INVALID",
+          "preflight_strict_correct": null
+        },
+        {
+          "batch": "live-final-50-v5",
+          "runner_status": "expected_host_rejection",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null,
+          "preflight_code": "REPORT_SCOPE_INVALID",
+          "preflight_strict_correct": true
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-038",
+      "lane": "rag_only",
+      "historical_outcome": "unknown",
+      "reconciliation_status": "unknown_requires_separate_disposition",
+      "root_cause": "provider_http_503",
+      "primary_evidence": {
+        "batch": "live-final-50-v5",
+        "runner_status": "unknown",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+        "run_id": "2289a89f-fbb3-426c-a189-f4945c1784a7",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v5/p7-holdout-v3-038/signed-collection.json",
+        "score": null,
+        "runner_reason": "provider_http_503",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": true,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 3489,
+          "reported_tokens": 0,
+          "usage_complete": false
+        },
+        "report_status": null,
+        "missing_evidence": {},
+        "error_code": "MODEL_ERROR",
+        "provider_http_503": true,
+        "scope_attested": false
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v5",
+          "runner_status": "unknown",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+          "run_id": "2289a89f-fbb3-426c-a189-f4945c1784a7",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v5/p7-holdout-v3-038/signed-collection.json",
+          "score": null,
+          "runner_reason": "provider_http_503",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": true,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 3489,
+            "reported_tokens": 0,
+            "usage_complete": false
+          },
+          "report_status": null,
+          "missing_evidence": {},
+          "error_code": "MODEL_ERROR",
+          "provider_http_503": true,
+          "scope_attested": false
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-058",
+      "lane": "sql_rag",
+      "historical_outcome": "unknown",
+      "reconciliation_status": "unknown_requires_separate_disposition",
+      "root_cause": "provider_http_503",
+      "primary_evidence": {
+        "batch": "live-final-50-v5",
+        "runner_status": "unknown",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+        "run_id": "fb7c0352-aa42-49cc-bc35-179e2c3046a0",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v5/p7-holdout-v3-058/signed-collection.json",
+        "score": null,
+        "runner_reason": "provider_http_503",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": true,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 3642,
+          "reported_tokens": 0,
+          "usage_complete": false
+        },
+        "report_status": null,
+        "missing_evidence": {},
+        "error_code": "MODEL_ERROR",
+        "provider_http_503": true,
+        "scope_attested": false
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v5",
+          "runner_status": "unknown",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+          "run_id": "fb7c0352-aa42-49cc-bc35-179e2c3046a0",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v5/p7-holdout-v3-058/signed-collection.json",
+          "score": null,
+          "runner_reason": "provider_http_503",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": true,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 3642,
+            "reported_tokens": 0,
+            "usage_complete": false
+          },
+          "report_status": null,
+          "missing_evidence": {},
+          "error_code": "MODEL_ERROR",
+          "provider_http_503": true,
+          "scope_attested": false
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-019",
+      "lane": "sql_only",
+      "historical_outcome": "host_preflight_pass",
+      "reconciliation_status": "host_preflight_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v5",
+        "runner_status": "expected_host_rejection",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+        "run_id": null,
+        "collection": null,
+        "score": null,
+        "preflight_code": "VERSION_NOT_AUTHORIZED",
+        "preflight_strict_correct": true
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "expected_host_rejection",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null,
+          "preflight_code": "VERSION_NOT_AUTHORIZED",
+          "preflight_strict_correct": null
+        },
+        {
+          "batch": "live-final-50-v5",
+          "runner_status": "expected_host_rejection",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null,
+          "preflight_code": "VERSION_NOT_AUTHORIZED",
+          "preflight_strict_correct": true
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-039",
+      "lane": "rag_only",
+      "historical_outcome": "host_preflight_pass",
+      "reconciliation_status": "host_preflight_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v5",
+        "runner_status": "expected_host_rejection",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+        "run_id": null,
+        "collection": null,
+        "score": null,
+        "preflight_code": "DOCUMENT_NOT_AUTHORIZED",
+        "preflight_strict_correct": true
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "expected_host_rejection",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null,
+          "preflight_code": "EXPECTED_HOST_REJECTION",
+          "preflight_strict_correct": null
+        },
+        {
+          "batch": "live-final-50-v5",
+          "runner_status": "expected_host_rejection",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null,
+          "preflight_code": "DOCUMENT_NOT_AUTHORIZED",
+          "preflight_strict_correct": true
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-059",
+      "lane": "sql_rag",
+      "historical_outcome": "host_preflight_pass",
+      "reconciliation_status": "host_preflight_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v5",
+        "runner_status": "expected_host_rejection",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+        "run_id": null,
+        "collection": null,
+        "score": null,
+        "preflight_code": "DOCUMENT_NOT_AUTHORIZED",
+        "preflight_strict_correct": true
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "expected_host_rejection",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null,
+          "preflight_code": "EXPECTED_HOST_REJECTION",
+          "preflight_strict_correct": null
+        },
+        {
+          "batch": "live-final-50-v5",
+          "runner_status": "expected_host_rejection",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null,
+          "preflight_code": "DOCUMENT_NOT_AUTHORIZED",
+          "preflight_strict_correct": true
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-020",
+      "lane": "sql_only",
+      "historical_outcome": "unknown",
+      "reconciliation_status": "unknown_requires_separate_disposition",
+      "root_cause": "model_timeout",
+      "primary_evidence": {
+        "batch": "live-final-50-v5",
+        "runner_status": "unknown",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+        "run_id": "4479de27-7c51-4cbd-b530-b48e99e3a832",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v5/p7-holdout-v3-020/collect-process.json",
+        "score": null,
+        "capture_check": "process_stdout",
+        "snapshot_unknown": true,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 3454,
+          "reported_tokens": 0,
+          "usage_complete": false
+        },
+        "report_status": null,
+        "missing_evidence": {},
+        "error_code": "MODEL_TIMEOUT",
+        "provider_http_503": false,
+        "scope_attested": false
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v5",
+          "runner_status": "unknown",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json",
+          "run_id": "4479de27-7c51-4cbd-b530-b48e99e3a832",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v5/p7-holdout-v3-020/collect-process.json",
+          "score": null,
+          "capture_check": "process_stdout",
+          "snapshot_unknown": true,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 3454,
+            "reported_tokens": 0,
+            "usage_complete": false
+          },
+          "report_status": null,
+          "missing_evidence": {},
+          "error_code": "MODEL_TIMEOUT",
+          "provider_http_503": false,
+          "scope_attested": false
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-040",
+      "lane": "rag_only",
+      "historical_outcome": "host_preflight_pass",
+      "reconciliation_status": "host_preflight_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v6",
+        "runner_status": "expected_host_rejection",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json",
+        "run_id": null,
+        "collection": null,
+        "score": null,
+        "preflight_code": "DOCUMENT_NOT_AUTHORIZED",
+        "preflight_strict_correct": true
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "expected_host_rejection",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null,
+          "preflight_code": "EXPECTED_HOST_REJECTION",
+          "preflight_strict_correct": null
+        },
+        {
+          "batch": "live-final-50-v6",
+          "runner_status": "expected_host_rejection",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null,
+          "preflight_code": "DOCUMENT_NOT_AUTHORIZED",
+          "preflight_strict_correct": true
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-060",
+      "lane": "sql_rag",
+      "historical_outcome": "host_preflight_pass",
+      "reconciliation_status": "host_preflight_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v6",
+        "runner_status": "expected_host_rejection",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json",
+        "run_id": null,
+        "collection": null,
+        "score": null,
+        "preflight_code": "DOCUMENT_NOT_AUTHORIZED",
+        "preflight_strict_correct": true
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "expected_host_rejection",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null,
+          "preflight_code": "EXPECTED_HOST_REJECTION",
+          "preflight_strict_correct": null
+        },
+        {
+          "batch": "live-final-50-v6",
+          "runner_status": "expected_host_rejection",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null,
+          "preflight_code": "DOCUMENT_NOT_AUTHORIZED",
+          "preflight_strict_correct": true
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-061",
+      "lane": "sql_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v6",
+        "runner_status": "completed",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json",
+        "run_id": "93073ec4-0e2c-46ec-b2c2-5f988a4a9561",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-061/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-061/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 581,
+          "reported_tokens": 581,
+          "usage_complete": true
+        },
+        "report_status": "completed",
+        "missing_evidence": {},
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v6",
+          "runner_status": "completed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json",
+          "run_id": "93073ec4-0e2c-46ec-b2c2-5f988a4a9561",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-061/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-061/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 581,
+            "reported_tokens": 581,
+            "usage_complete": true
+          },
+          "report_status": "completed",
+          "missing_evidence": {},
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-062",
+      "lane": "sql_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v6",
+        "runner_status": "completed",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json",
+        "run_id": "a27c8224-5a3e-4c3d-a19c-eb55f13bb03a",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-062/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-062/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 578,
+          "reported_tokens": 578,
+          "usage_complete": true
+        },
+        "report_status": "completed",
+        "missing_evidence": {},
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v6",
+          "runner_status": "completed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json",
+          "run_id": "a27c8224-5a3e-4c3d-a19c-eb55f13bb03a",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-062/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-062/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 578,
+            "reported_tokens": 578,
+            "usage_complete": true
+          },
+          "report_status": "completed",
+          "missing_evidence": {},
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-063",
+      "lane": "sql_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v6",
+        "runner_status": "completed",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json",
+        "run_id": "1dbbd676-a012-46bf-bb91-4bdea4936d6f",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-063/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-063/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 573,
+          "reported_tokens": 573,
+          "usage_complete": true
+        },
+        "report_status": "completed",
+        "missing_evidence": {},
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v6",
+          "runner_status": "completed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json",
+          "run_id": "1dbbd676-a012-46bf-bb91-4bdea4936d6f",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-063/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-063/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 573,
+            "reported_tokens": 573,
+            "usage_complete": true
+          },
+          "report_status": "completed",
+          "missing_evidence": {},
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-064",
+      "lane": "sql_only",
+      "historical_outcome": "collected_without_formal_score",
+      "reconciliation_status": "revised_followup_pass",
+      "root_cause": "full_usage_gold_vs_export_batch_definition",
+      "primary_evidence": {
+        "batch": "live-final-50-v6",
+        "runner_status": "unknown",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json",
+        "run_id": "54e92e07-ed69-4ec4-9253-af42669b399c",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-064/collect-process.json",
+        "score": null,
+        "capture_check": "process_stdout",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 599,
+          "reported_tokens": 599,
+          "usage_complete": true
+        },
+        "report_status": "completed",
+        "missing_evidence": {},
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v6",
+          "runner_status": "unknown",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json",
+          "run_id": "54e92e07-ed69-4ec4-9253-af42669b399c",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-064/collect-process.json",
+          "score": null,
+          "capture_check": "process_stdout",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 599,
+            "reported_tokens": 599,
+            "usage_complete": true
+          },
+          "report_status": "completed",
+          "missing_evidence": {},
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false
+        }
+      ],
+      "revised_followup": {
+        "case_id": "p7-final50-admit-064",
+        "run_id": "d4dfd8c5-d9fc-5e7a-b663-a7e4033defe1",
+        "report_status": "completed",
+        "strict_correct": true,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 581,
+          "reported_tokens": 581,
+          "usage_complete": true
+        },
+        "metric_output": [
+          {
+            "goal_id": "metric_1",
+            "value": "213",
+            "unit": "events"
+          }
+        ],
+        "config": "artifacts/p7/final50-admission-handoff-20261104/064-diagnostic-v1/live-01/p7-final50-admit-064/config.json",
+        "collection": "artifacts/p7/final50-admission-handoff-20261104/064-diagnostic-v1/live-01/p7-final50-admit-064/collection.json",
+        "score": "artifacts/p7/final50-admission-handoff-20261104/064-diagnostic-v1/live-01/p7-final50-admit-064/score.json",
+        "mapping": "new case identity and contract; historical score retained"
+      },
+      "historical_offline_diagnosis": {
+        "path": "artifacts/p7/final-evaluation-v1/live-final-50-v6/064-offline-stop-diagnosis.json",
+        "strict_correct": false,
+        "safety_violation": true,
+        "scoring_mapping_applied": false,
+        "counts_as_new_live": false
+      },
+      "first_followup_unknown": {
+        "run_id": "bb48eda1-e1d1-5c0c-ba5a-281fac5f2ba2",
+        "usage": {
+          "calls": 1,
+          "total_tokens": 3424,
+          "reported_tokens": 0,
+          "usage_complete": false
+        },
+        "collection": "artifacts/p7/final50-admission-handoff-20261104/077-contract-v2/live-01/p7-final50-admit-064/collection.json",
+        "status": "unknown"
+      }
+    },
+    {
+      "case_id": "p7-holdout-v3-065",
+      "lane": "sql_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v7",
+        "runner_status": "unavailable",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json",
+        "run_id": "7172c0e4-6441-4154-87c4-f6e74f41a224",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-065/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-065/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 597,
+          "reported_tokens": 597,
+          "usage_complete": true
+        },
+        "report_status": "unavailable",
+        "missing_evidence": {
+          "metric_1": [
+            "history_unconfirmed"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v7",
+          "runner_status": "unavailable",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json",
+          "run_id": "7172c0e4-6441-4154-87c4-f6e74f41a224",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-065/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-065/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 597,
+            "reported_tokens": 597,
+            "usage_complete": true
+          },
+          "report_status": "unavailable",
+          "missing_evidence": {
+            "metric_1": [
+              "history_unconfirmed"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-066",
+      "lane": "sql_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v7",
+        "runner_status": "unavailable",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json",
+        "run_id": "5baf19c5-7a1e-42e4-85cc-742880125c8e",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-066/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-066/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 602,
+          "reported_tokens": 602,
+          "usage_complete": true
+        },
+        "report_status": "unavailable",
+        "missing_evidence": {
+          "metric_1": [
+            "amount_unit_unconfirmed"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v7",
+          "runner_status": "unavailable",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json",
+          "run_id": "5baf19c5-7a1e-42e4-85cc-742880125c8e",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-066/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-066/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 602,
+            "reported_tokens": 602,
+            "usage_complete": true
+          },
+          "report_status": "unavailable",
+          "missing_evidence": {
+            "metric_1": [
+              "amount_unit_unconfirmed"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-067",
+      "lane": "sql_only",
+      "historical_outcome": "strict_pass",
+      "reconciliation_status": "historical_strict_pass",
+      "root_cause": null,
+      "primary_evidence": {
+        "batch": "live-final-50-v7",
+        "runner_status": "unavailable",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json",
+        "run_id": "eda10d31-ac86-44e6-a45e-2950266192ea",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-067/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-067/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 594,
+          "reported_tokens": 594,
+          "usage_complete": true
+        },
+        "report_status": "unavailable",
+        "missing_evidence": {
+          "metric_1": [
+            "outside_coverage"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": true,
+        "failure_class": null,
+        "safety_violation": false,
+        "chunk_recall": 0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v7",
+          "runner_status": "unavailable",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json",
+          "run_id": "eda10d31-ac86-44e6-a45e-2950266192ea",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-067/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-067/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 594,
+            "reported_tokens": 594,
+            "usage_complete": true
+          },
+          "report_status": "unavailable",
+          "missing_evidence": {
+            "metric_1": [
+              "outside_coverage"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": true,
+          "failure_class": null,
+          "safety_violation": false,
+          "chunk_recall": 0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-068",
+      "lane": "rag_only",
+      "historical_outcome": "strict_fail",
+      "reconciliation_status": "shared_defect_needs_case_verification",
+      "root_cause": "host_scope_attestation_missing",
+      "primary_evidence": {
+        "batch": "live-final-50-v7",
+        "runner_status": "blocked",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json",
+        "run_id": "2d6cac27-f6eb-4853-b585-47d3c0fc394b",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-068/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-068/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 5,
+          "total_tokens": 8758,
+          "reported_tokens": 8758,
+          "usage_complete": true
+        },
+        "report_status": "blocked",
+        "missing_evidence": {
+          "documents": [
+            "goal_scope_not_attested"
+          ]
+        },
+        "error_code": "RAG_COMPLETION_REPAIR_EXHAUSTED",
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": false,
+        "failure_class": "rag_retrieval_failure",
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v7",
+          "runner_status": "blocked",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json",
+          "run_id": "2d6cac27-f6eb-4853-b585-47d3c0fc394b",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-068/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-068/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 5,
+            "total_tokens": 8758,
+            "reported_tokens": 8758,
+            "usage_complete": true
+          },
+          "report_status": "blocked",
+          "missing_evidence": {
+            "documents": [
+              "goal_scope_not_attested"
+            ]
+          },
+          "error_code": "RAG_COMPLETION_REPAIR_EXHAUSTED",
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": false,
+          "failure_class": "rag_retrieval_failure",
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-069",
+      "lane": "rag_only",
+      "historical_outcome": "strict_fail",
+      "reconciliation_status": "shared_defect_needs_case_verification",
+      "root_cause": "host_scope_attestation_missing",
+      "primary_evidence": {
+        "batch": "live-final-50-v7",
+        "runner_status": "unavailable",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json",
+        "run_id": "db4b84a2-a128-43cd-b400-90e2b4a73fe7",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-069/signed-collection.json",
+        "score": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-069/score.json",
+        "capture_check": "stored_payload_digest_verified",
+        "snapshot_unknown": false,
+        "usage": {
+          "calls": 5,
+          "total_tokens": 8428,
+          "reported_tokens": 8428,
+          "usage_complete": true
+        },
+        "report_status": "unavailable",
+        "missing_evidence": {
+          "documents": [
+            "goal_scope_not_attested"
+          ]
+        },
+        "error_code": null,
+        "provider_http_503": false,
+        "scope_attested": false,
+        "strict_correct": false,
+        "failure_class": "rag_retrieval_failure",
+        "safety_violation": false,
+        "chunk_recall": 1.0
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v7",
+          "runner_status": "unavailable",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json",
+          "run_id": "db4b84a2-a128-43cd-b400-90e2b4a73fe7",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-069/signed-collection.json",
+          "score": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-069/score.json",
+          "capture_check": "stored_payload_digest_verified",
+          "snapshot_unknown": false,
+          "usage": {
+            "calls": 5,
+            "total_tokens": 8428,
+            "reported_tokens": 8428,
+            "usage_complete": true
+          },
+          "report_status": "unavailable",
+          "missing_evidence": {
+            "documents": [
+              "goal_scope_not_attested"
+            ]
+          },
+          "error_code": null,
+          "provider_http_503": false,
+          "scope_attested": false,
+          "strict_correct": false,
+          "failure_class": "rag_retrieval_failure",
+          "safety_violation": false,
+          "chunk_recall": 1.0
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-070",
+      "lane": "rag_only",
+      "historical_outcome": "unknown",
+      "reconciliation_status": "unknown_requires_separate_disposition",
+      "root_cause": "model_timeout",
+      "primary_evidence": {
+        "batch": "live-final-50-v7",
+        "runner_status": "unknown",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json",
+        "run_id": "3964650f-a002-4235-9af2-98f33f5dbee4",
+        "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-070/collect-process.json",
+        "score": null,
+        "capture_check": "process_stdout",
+        "snapshot_unknown": true,
+        "usage": {
+          "calls": 1,
+          "total_tokens": 3447,
+          "reported_tokens": 0,
+          "usage_complete": false
+        },
+        "report_status": null,
+        "missing_evidence": {},
+        "error_code": "MODEL_TIMEOUT",
+        "provider_http_503": false,
+        "scope_attested": false
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        },
+        {
+          "batch": "live-final-50-v7",
+          "runner_status": "unknown",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json",
+          "run_id": "3964650f-a002-4235-9af2-98f33f5dbee4",
+          "collection": "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-070/collect-process.json",
+          "score": null,
+          "capture_check": "process_stdout",
+          "snapshot_unknown": true,
+          "usage": {
+            "calls": 1,
+            "total_tokens": 3447,
+            "reported_tokens": 0,
+            "usage_complete": false
+          },
+          "report_status": null,
+          "missing_evidence": {},
+          "error_code": "MODEL_TIMEOUT",
+          "provider_http_503": false,
+          "scope_attested": false
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-071",
+      "lane": "rag_only",
+      "historical_outcome": "not_run",
+      "reconciliation_status": "missing_business_evidence",
+      "root_cause": "no_runtime_evidence",
+      "primary_evidence": {
+        "batch": "live-final-50",
+        "runner_status": "failed",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+        "run_id": null,
+        "collection": null,
+        "score": null
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-072",
+      "lane": "rag_only",
+      "historical_outcome": "not_run",
+      "reconciliation_status": "missing_business_evidence",
+      "root_cause": "no_runtime_evidence",
+      "primary_evidence": {
+        "batch": "live-final-50",
+        "runner_status": "failed",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+        "run_id": null,
+        "collection": null,
+        "score": null
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-073",
+      "lane": "rag_only",
+      "historical_outcome": "not_run",
+      "reconciliation_status": "missing_business_evidence",
+      "root_cause": "no_runtime_evidence",
+      "primary_evidence": {
+        "batch": "live-final-50",
+        "runner_status": "failed",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+        "run_id": null,
+        "collection": null,
+        "score": null
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-074",
+      "lane": "rag_only",
+      "historical_outcome": "not_run",
+      "reconciliation_status": "missing_business_evidence",
+      "root_cause": "no_runtime_evidence",
+      "primary_evidence": {
+        "batch": "live-final-50",
+        "runner_status": "failed",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+        "run_id": null,
+        "collection": null,
+        "score": null
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "failed",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-075",
+      "lane": "sql_rag",
+      "historical_outcome": "unknown",
+      "reconciliation_status": "unknown_requires_separate_disposition",
+      "root_cause": "historical_dispatch_timeout",
+      "primary_evidence": {
+        "batch": "live-final-50",
+        "runner_status": "unknown",
+        "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+        "run_id": null,
+        "collection": null,
+        "score": null
+      },
+      "history": [
+        {
+          "batch": "live-final-50",
+          "runner_status": "unknown",
+          "summary": "artifacts/p7/final-evaluation-v1/live-final-50/summary.json",
+          "run_id": null,
+          "collection": null,
+          "score": null
+        }
+      ],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-076",
+      "lane": "sql_rag",
+      "historical_outcome": "not_run",
+      "reconciliation_status": "missing_business_evidence",
+      "root_cause": "no_runtime_evidence",
+      "primary_evidence": null,
+      "history": [],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-077",
+      "lane": "sql_rag",
+      "historical_outcome": "not_run",
+      "reconciliation_status": "revised_followup_pass",
+      "root_cause": "scope_mismatch_prevented_dispatch",
+      "primary_evidence": null,
+      "history": [],
+      "revised_followup": {
+        "case_id": "p7-final50-admit-077",
+        "run_id": "520701a6-3fef-5ba0-b7b6-0a2403f42456",
+        "report_status": "completed",
+        "strict_correct": true,
+        "usage": {
+          "calls": 4,
+          "total_tokens": 6595,
+          "reported_tokens": 6595,
+          "usage_complete": true
+        },
+        "metric_output": [
+          {
+            "goal_id": "metric_1",
+            "value": "596",
+            "unit": "events"
+          }
+        ],
+        "config": "artifacts/p7/final50-admission-handoff-20261104/077-followup-v1/live-01/p7-final50-admit-077/config.json",
+        "collection": "artifacts/p7/final50-admission-handoff-20261104/077-followup-v1/live-01/p7-final50-admit-077/collection.json",
+        "score": "artifacts/p7/final50-admission-handoff-20261104/077-followup-v1/live-01/p7-final50-admit-077/score.json",
+        "mapping": "new case identity and contract; historical score retained"
+      }
+    },
+    {
+      "case_id": "p7-holdout-v3-078",
+      "lane": "sql_rag",
+      "historical_outcome": "not_run",
+      "reconciliation_status": "missing_business_evidence",
+      "root_cause": "no_runtime_evidence",
+      "primary_evidence": null,
+      "history": [],
+      "revised_followup": null
+    },
+    {
+      "case_id": "p7-holdout-v3-079",
+      "lane": "sql_rag",
+      "historical_outcome": "not_run",
+      "reconciliation_status": "missing_business_evidence",
+      "root_cause": "no_runtime_evidence",
+      "primary_evidence": null,
+      "history": [],
+      "revised_followup": null
+    }
+  ],
+  "source_sha256": {
+    "artifacts/p7/final-evaluation-v1/total-50/manifest.json": "135de293bbb81c7ba193a5dd847297b467e642585fb25db29476368764df0814",
+    "artifacts/p7/independent-holdout-v3/sealed/inputs.jsonl": "541cbb22d39d02085cd5e9ce0ea5c262909cfebac207820c0382535e0f223866",
+    "artifacts/p7/final-evaluation-v1/supplement-19/inputs.jsonl": "2eb1db89a4d8738d14f30461d4b77f6f6bd49f73fe47338bd6533f9c1f56e2a4",
+    "artifacts/p7/final-evaluation-v1/live-final-50/summary.json": "ffe7837e2f62999115a85fdd7e328afdc8db3a51ac45f56cddcacd4f6131d50e",
+    "artifacts/p7/final-evaluation-v1/live-final-50/STOP": "bba24908aa4a3ddadfd51b55dd529c2fa6f142ac5059401027a2784e4a6883a1",
+    "artifacts/p7/final-evaluation-v1/live-final-50/state.json": "000a0f42fe49dc8b6884aa30f983e98550c4635d72479cc724da8ed56d92276c",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v2/summary.json": "e346edcec6b680cbfa64fb996e8f045a59f530405536999d0220d3f023b104f0",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v2/STOP": "e714793e52584420f6cef0b345dc39b5f9f5b9b46bc0b6d644816842e9afc590",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v2/state.json": "0e8fb062bedc122628d152923d6f45545107e5e791b4ec38598ca76527782d05",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v2/stop-audit.json": "c2d3f82b08a2607a9633ff40b87efb6cf16d590bece505549ae04cc13363f148",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v2/p7-holdout-v3-050/collect-process.json": "2f6e2b3e9943b69b76d25ef8d8a4f57096f0d623d77a940eab4dff00e1c4b5f9",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/summary.json": "342613d2e56a6a6bee6fc47cd0425544eaf6290cd09cb7d605529931be611ae9",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/STOP": "2f49854829182a97262faf27962ebb4ccb0f960ec860c715fe3bce9b81fd3cca",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/state.json": "c98f087cdb6d936ebbd3bcf183044bce13ec169833a6e9c700c17204717f1491",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-011/signed-collection.json": "e22b4155131035ef5c68fac5bbc539fb13c3034659159fd06c8d720acedc364d",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-011/score.json": "ade95e8974b2c09772d3f580ca70c3fc7057c69a0c4b376ab38911d8e0c04d11",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-031/signed-collection.json": "1b809da72136d75acda6a7794b18f665f8009aa6c7cdb3adbb94afa0298e9c47",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-031/score.json": "f888fbd10d7c036f5f1d6a5b848d82ad432f99ba77f97edd450b04e222337c14",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-051/signed-collection.json": "90e65bf9de1de36546552ba9566fbd710222fa3af657a70951b08289e188cc87",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-051/score.json": "1ce6a1b58272ab36736b560e424438179bc933f6c6b264825021337dbd593ab1",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-012/signed-collection.json": "7340cf5872a5a9f0d473b6f55373972291f732495f5a73cd290b012ee954d0b5",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-012/score.json": "5a873d278296ff0a59f5b3588320698e08962cf2850c58286db85bf6c8be1cd1",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-032/signed-collection.json": "1d7a71114e1504c32507ad07b992b820ebecf1e4fad625188f3857fa7d37a436",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-032/score.json": "038b52e39582f1010de521a54f5f849153fa1bf768bdd21b8f661d59fa55e5a9",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-052/signed-collection.json": "df158a4f59e306a478d486264f76d8e6047e80d2655fc73c81dbdefe97a85b72",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-052/score.json": "c9b5e578d2529eb913061c56b824be5421e7fde67c5d566a91f7657faaf0de81",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-013/signed-collection.json": "bdaa626f9304c3a9c0642e56d5b3490304d6de30d2005c4aa046336965312cbf",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-013/score.json": "bc1e3de41cd4e970b85663f78f955a7d6aa698162c0287410a4ea84bb3a737d3",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-033/signed-collection.json": "6c49d8e0842ecee7942536b3a21f94d2a2a07331ffbb041a27e899ebd8c0e05f",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-033/score.json": "7e2498d6b5b9bbd61bd4ccac654f7b4991421cf4e26f4da3816fab1205ac3142",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-053/signed-collection.json": "d7228e031100ac6e4e4a58c0626c8b9d168cd7bfaa45f030740123a29d831eab",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-053/score.json": "d1b3d6012543ee0518e195d27fc446bcf5de3240877e9ceef2b2340859f91b14",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-014/signed-collection.json": "0ee249673ca149fd812d1dac5976ee3bc8f2fa9770f1e3f53b471e43b1065fa4",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-014/score.json": "a8cc8313856d159fba3fd0047b98e3b3c055eb2c244b0a30907641314f5ab031",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-034/signed-collection.json": "c251649cb7ce815ff5f73fb369e45303e87e666aa41001b74bc5ac017bea47db",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-034/score.json": "9fafa033fdac65eda1c411ac3e0dffcd4cc047ef278ce7a9b998e621553b542b",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-054/signed-collection.json": "c03b4cf8c6a0dc0301c24e81c5a8c47f983a5c113cda59a5a0ec7ae3fb3f9fb8",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-054/score.json": "e0de350764d3385d06be3efa582f16b78c09ee5a084af022aece78d69004fb15",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-015/signed-collection.json": "7e0c1e0f70bb59bd4cef56ef6ba3fb43c8837e9ae19c0af1026715ab9e513829",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-015/score.json": "1b9ba1a23ed946cddd034399f9034bde7d1cc80e255dab3f8b02cf8108688e02",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-035/signed-collection.json": "52b4f0e60b863483717c4103cfc2dd781a1124c5829fbd5cb3d96cafdb30ac64",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-035/score.json": "f0e06e66d4f6fee42f51a86b0e52ff09953fe2daf8c847fa65aad5f9229767fa",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-055/signed-collection.json": "758cd0f3121501ce271464e9fcb2544965da2cf018878b0e13eb537f9678a9bf",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-055/score.json": "5d8398a9ba819e532f39528325a0fa31286ba960fefe3721b3f150f117701eb2",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-016/signed-collection.json": "ca75500c56fae0060fe87761f0bfdfc6873481015fc86f81d337d1311a8d3a1a",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-016/score.json": "b183318240f75a9d32ddf4803d73b24292aecd794566dd04a51988f1ec9fd4be",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-036/signed-collection.json": "7de5c85cfde9fe8f85725fa376ef10b7613696cde589ed92fd839ff361eb0900",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-036/score.json": "58043c4ab0af308acc8468f9a8a2e9f1d585233b7f8854568acad523037a5f42",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-056/signed-collection.json": "e832d9a1bc45459c7ba15a9c066f97e1ba919b328608f0c6dabf26e5a62da646",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-056/score.json": "2289f96106f41f787d8aa8eee6b8c4c44d62cf096701471e83dd84b1122f3c67",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/p7-holdout-v3-017/collect-process.json": "f197db4809a61ca98767c948863f67d03d8054d38b299d2d6d98c173097fb954",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v4/summary.json": "f7dc1ed3204cc3b1be12d48f92ee612bfc142988bf886b04adf972abd05074c3",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v4/STOP": "ae8735092aed7cf3ff61ecf0fc9bcdedd8118c917c13dbfa339b2edc7ef69d57",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v4/state.json": "35997ed20a983c13228db88ce6eb62b3564087082695cd00644edb0ea36461f4",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v4/stop-audit.json": "8d29291ca2753aaef80e9a59f541f6191177e1d3fa022d2e4a49b2ca23ca58fb",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v4/p7-holdout-v3-037/collect-process.json": "a2ad578f87a7dfc9d30ab12fcea29b3c258d7fc1b62bbf5ccec6bad4d4b59a06",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v5/summary.json": "8da79f957a058ef7433eae5f87a62b26e49b31c7f1bcefade4c6b782b1a41681",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v5/STOP": "bcc571b88b9cd47837e1820193b8ad8fdce4230a1542ea059749c6f8c29f3ccb",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v5/state.json": "69eb269d1f48a522880ca0792ec1ee3863fe156a38d4fc1d2d320f4502d9a6ae",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v5/stop-audit.json": "2cfcb7fa7081666a6ac58e33c439326a9b63c27f64c560911ec7d236d6c52038",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v5/p7-holdout-v3-057/signed-collection.json": "d680b231d582c4198a61d9a079d62099b6dc3a03665e70a16e32f5fbfbb5212b",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v5/p7-holdout-v3-038/signed-collection.json": "9ba38bea26ee798fb9b5bde5326da1a78980f48a9e3c1186dee8773a3faa1ad8",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v5/p7-holdout-v3-058/signed-collection.json": "5135edd9d9f044fdea0f5c9ab5009338d1389168f38c5edd4de195c4d9973a1c",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v5/p7-holdout-v3-020/collect-process.json": "cb5a4edb4f8b55fcf8ef82ca31bca7a9e237e58a9e8fa1fb2183ac3fcbaa53ee",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v6/summary.json": "452be877d7670e8a6db117383b9e67996a9569685274ad9b535c6414271ea22d",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v6/STOP": "a9b7602e967778bd6c6c3f8b78114ace1f6b94ba4b86e50e6b12eac631285f0e",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v6/state.json": "4f7bcf72d8440fe42dd8d8b2df80fc41c924de77f6228d88af319fac9fcbf0d4",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v6/stop-audit.json": "c99651a3dfb762f03c91da7823ff7af54356d17859f070169f807c4b20dfe5cb",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-061/signed-collection.json": "ace2237e27cb93d8d0f9178d558145ef74c1a6d1dea791b3727bae3a6de02ac9",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-061/score.json": "c923b2909e745e6214f518774f9118d9be03b6ea28e544336da0acb45c57a34d",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-062/signed-collection.json": "912f2e0e086cafe1cd6e5d679e95df1f402c26d484cd739959d51abbdce6dd54",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-062/score.json": "a3bd1243dfba3db6350ddddf24e32983a641bd3f4bd82760a32d20839598f4c5",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-063/signed-collection.json": "dfeb98007699f7cf4edf55602a089502e1bb37436e40ee1fbd59da0092946fd2",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-063/score.json": "866b32eadad7447fc1f79faeca6e940b03f812133fa68995d7b045fcc435ced5",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v6/p7-holdout-v3-064/collect-process.json": "4e14885145e6c5c99242abab97a86c78fe6b42de353a1598a6437df3b5564e04",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/summary.json": "2271d42fe8efa3ee66cf0c91274634b4b72616a18aa99f560efa960e55dfb641",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/STOP": "14f5ef26cdc67242e42384b7e46733d247434699b5084a159496171ad716c47e",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/state.json": "981e891278b5a5fec65b33358f3084191bab9317dac1d26f08402a882e394d64",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/stop-audit.json": "f9bbcc5f15bbf4d58c238f4c53eb86e47eb284f85ec333d731ed2a3fec921f41",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-065/signed-collection.json": "1905ca482864690ee9d77c26a70c34d93e0ae31263376c5c7ddb80389670f08d",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-065/score.json": "3c7fbe7e11c5edbbc4017b151b8a32b8599ca2653a92cb36f73086a61e341fd7",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-066/signed-collection.json": "f9340ea7b52c38baa33d223ec529f0d9e91cc77943e6f2816ab16960e85e3174",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-066/score.json": "dca1e4f4588014821e45f376320ad63a10926a98357bea30b17eb6da32502371",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-067/signed-collection.json": "2f47910f0715a24915b53716bdcf2fb173de4b88cbf621b383d213fe25c22453",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-067/score.json": "367ec9f35920540f09acdddf8f753318755fe7b951f6c7be85045fde5b0363ad",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-068/signed-collection.json": "aa41f0d2eb2ffa40eb675c39af7465293fdb72d179bff81529def009b396740d",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-068/score.json": "ac4673239b88662ad67f97a81d7ee9d35188f61ab281ec987d5cff9947b88fe0",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-069/signed-collection.json": "59fe5035e56d38737e3034e8165767adcb8e8fd5f792a587d72780f118e5e850",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-069/score.json": "374eb5f65cf22b410cabe84e2369186c923bc334c0c029b460b6ad0eb588a650",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v7/p7-holdout-v3-070/collect-process.json": "4ab92390efb08b96162e92fdd0c069c4c02f202b52596b5520a05d7efe241a2b",
+    "artifacts/p7/final-evaluation-v1/total-50/actual-preflight-six.json": "57bbc45ef07dbd9efc4256e0f83fced9a9b1a6b3a83c652ddf31e89dcb391713",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v3/017-offline-rescore.json": "a12f9a9ec3eeb485d1ca7c1bb794bf2dfab1904cc71f3c4dc2c4624248ed2dd6",
+    "artifacts/p7/final-evaluation-v1/live-final-50-v6/064-offline-stop-diagnosis.json": "662a6180c0fab336a5315a88d860f6166baa7b3456a354d6efdd7e17ae3515a3",
+    "docs/research/p7-final-50-rag-failure-dissection.json": "fdcb4a3a80ac7028fa26a416d7e4ddce69e20f044d0756c34539f236073aaef9",
+    "artifacts/p7/final50-admission-handoff-20261104/077-contract-v2/live-01/p7-final50-admit-017/config.json": "41b866e4cadbafd643226c5725b7390b2f3d053f9147e04660242ba6db387101",
+    "artifacts/p7/final50-admission-handoff-20261104/077-contract-v2/live-01/p7-final50-admit-017/collection.json": "43f332dfca1019d04acacfd52192ddfd4415adefc64aff3eea893e2770024650",
+    "artifacts/p7/final50-admission-handoff-20261104/077-contract-v2/live-01/p7-final50-admit-017/score.json": "e5e439543e4bb6f51188b4d1cc9fc2d26873d8573b408902e2477ecb7e98ed5f",
+    "artifacts/p7/final50-admission-handoff-20261104/064-diagnostic-v1/live-01/p7-final50-admit-064/config.json": "643160c4cbd05e6b96f9dd926edb5160d01668c03f1f13df663f48324edb6aff",
+    "artifacts/p7/final50-admission-handoff-20261104/064-diagnostic-v1/live-01/p7-final50-admit-064/collection.json": "e0e99684149b5261be1352e2c2ac12554b57c3918c29a27b0709b41792fec456",
+    "artifacts/p7/final50-admission-handoff-20261104/064-diagnostic-v1/live-01/p7-final50-admit-064/score.json": "3fc631ff2f0209bbe1a557515bcf13ff28ee1a67b392f5587c8db97ed4da02e6",
+    "artifacts/p7/final50-admission-handoff-20261104/064-diagnostic-v1/live-01/verified-result.json": "fd774ff0ec7ba1ea3f096c95f1b9a7da2ca49781380e65491c0dc2817b4520f2",
+    "artifacts/p7/final50-admission-handoff-20261104/077-followup-v1/live-01/p7-final50-admit-077/config.json": "9248e118ecf45df362e14773b7ce8778ec658468e384c8d3543fb81aa39ab137",
+    "artifacts/p7/final50-admission-handoff-20261104/077-followup-v1/live-01/p7-final50-admit-077/collection.json": "4974789a723b0dbf8c244250cd6b414721b46b59a9823b5a57b4b37ac25ae9f8",
+    "artifacts/p7/final50-admission-handoff-20261104/077-followup-v1/live-01/p7-final50-admit-077/score.json": "bd80d1c36c30e85dc8319a8e8dc259a0af3dceb1498a6b2e7205ac566a73e80c",
+    "artifacts/p7/final50-admission-handoff-20261104/077-followup-v1/live-01/verified-result.json": "38246464d60303ca8314b80095abb42812de5df7882a18466175e9b361356840",
+    "artifacts/p7/final50-admission-handoff-20261104/077-contract-v2/live-01/p7-final50-admit-064/collection.json": "866ff616296d5f25baef4c67d9e7bca5ee576dc68b21157f10e98a890f05b9bf"
+  }
+}

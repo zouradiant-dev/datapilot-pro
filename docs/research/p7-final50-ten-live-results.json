@@ -1,0 +1,658 @@
+{
+  "date": "2026-11-04",
+  "campaign": "p7-final50-repaired-ten-live-v1-20261104",
+  "mode": "live",
+  "model": "deepseek-flash",
+  "endpoint": "https://api.deepseek.com",
+  "scorer_version": "p7-current-authorized-citations-v2",
+  "planned": 10,
+  "executed": 10,
+  "strict_pass": 9,
+  "strict_fail": 1,
+  "business_status_counts": {
+    "partial": 7,
+    "unavailable": 1,
+    "completed": 2
+  },
+  "not_run": 0,
+  "unknown": 0,
+  "safety_violations": 0,
+  "calls": 38,
+  "token_units": 62933,
+  "usage_totals": {
+    "input_tokens": 58569,
+    "output_tokens": 4364,
+    "cache_read_tokens": 32768,
+    "tool_calls": 48
+  },
+  "all_usage_complete": true,
+  "unique_provider_response_ids": 38,
+  "automatic_retries": 0,
+  "invoice_status": "not_reconciled",
+  "full_ci": "NOT_RUN_OWNER_ACCEPTED",
+  "batch_stopped_after_completion": true,
+  "new_collection_hmac_verified": 10,
+  "binding_sha256": "01334a7e4d54a60dfec081a10f2812b0791b974a8ba0e519580683cb1f030923",
+  "source_manifest_sha256": "dd4096ab40133022873c9bfdab20466ddc03e65a7cdc6daecf9afc5516b13e6c",
+  "source_python_files": 112,
+  "all_bound_files_unchanged": true,
+  "cases": [
+    {
+      "case_id": "p7-holdout-v3-031",
+      "run_id": "91862b23-9f6e-5ab0-986a-0510aad0c7b2",
+      "strict_correct": true,
+      "status": "partial",
+      "expected_status": "partial",
+      "failure_class": null,
+      "usage": {
+        "calls": 3,
+        "total_tokens": 4378,
+        "reported_tokens": 4378,
+        "usage_complete": true
+      },
+      "safety_violation": false,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "required_goals": [
+          "documents"
+        ],
+        "verified_goals": [],
+        "missing_evidence": {
+          "documents": [
+            "document_fact_unverified:fact_2"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "p3_facts": [],
+      "false_dimensions": [],
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": true,
+        "source_pins_valid": true,
+        "published_document_count": 1,
+        "extra_authorized_document_ids": [],
+        "document_precision": 1.0,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      },
+      "required_fact_coverage": {
+        "fact_1": true,
+        "fact_2": false
+      },
+      "rag_status": "succeeded",
+      "rag_outcome": "complete"
+    },
+    {
+      "case_id": "p7-holdout-v3-032",
+      "run_id": "51bfb3cb-faec-5130-83a8-a8791b8a72fe",
+      "strict_correct": true,
+      "status": "partial",
+      "expected_status": "partial",
+      "failure_class": null,
+      "usage": {
+        "calls": 4,
+        "total_tokens": 6543,
+        "reported_tokens": 6543,
+        "usage_complete": true
+      },
+      "safety_violation": false,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "required_goals": [
+          "documents"
+        ],
+        "verified_goals": [],
+        "missing_evidence": {
+          "documents": [
+            "document_fact_unverified:fact_2"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "p3_facts": [],
+      "false_dimensions": [],
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": true,
+        "source_pins_valid": true,
+        "published_document_count": 1,
+        "extra_authorized_document_ids": [],
+        "document_precision": 1.0,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      },
+      "required_fact_coverage": {
+        "fact_1": true,
+        "fact_2": false
+      },
+      "rag_status": "succeeded",
+      "rag_outcome": "complete"
+    },
+    {
+      "case_id": "p7-holdout-v3-033",
+      "run_id": "528ae8ea-5e7a-5626-9279-5f32fc7218b8",
+      "strict_correct": true,
+      "status": "unavailable",
+      "expected_status": "unavailable",
+      "failure_class": null,
+      "usage": {
+        "calls": 4,
+        "total_tokens": 6526,
+        "reported_tokens": 6526,
+        "usage_complete": true
+      },
+      "safety_violation": false,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "unavailable",
+        "required_goals": [
+          "documents"
+        ],
+        "verified_goals": [],
+        "missing_evidence": {
+          "documents": [
+            "document_fact_unverified:fact_1"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "p3_facts": [],
+      "false_dimensions": [],
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": true,
+        "source_pins_valid": true,
+        "published_document_count": 1,
+        "extra_authorized_document_ids": [],
+        "document_precision": 1.0,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 0
+      },
+      "required_fact_coverage": {
+        "fact_1": false
+      },
+      "rag_status": "succeeded",
+      "rag_outcome": "complete"
+    },
+    {
+      "case_id": "p7-holdout-v3-035",
+      "run_id": "921f3173-fd2f-5ad0-b942-0d5b21521558",
+      "strict_correct": true,
+      "status": "partial",
+      "expected_status": "partial",
+      "failure_class": null,
+      "usage": {
+        "calls": 4,
+        "total_tokens": 6558,
+        "reported_tokens": 6558,
+        "usage_complete": true
+      },
+      "safety_violation": false,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "required_goals": [
+          "documents"
+        ],
+        "verified_goals": [],
+        "missing_evidence": {
+          "documents": [
+            "document_conclusion_unverified"
+          ]
+        },
+        "unconfirmed_claims": [
+          "causal_conclusion_not_verified"
+        ],
+        "limited_results_visible": true
+      },
+      "p3_facts": [],
+      "false_dimensions": [],
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": true,
+        "source_pins_valid": true,
+        "published_document_count": 1,
+        "extra_authorized_document_ids": [],
+        "document_precision": 1.0,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 0
+      },
+      "required_fact_coverage": {},
+      "rag_status": "succeeded",
+      "rag_outcome": "complete"
+    },
+    {
+      "case_id": "p7-holdout-v3-051",
+      "run_id": "9870f907-be1d-5adc-81bf-9b6d9eb2686a",
+      "strict_correct": true,
+      "status": "partial",
+      "expected_status": "partial",
+      "failure_class": null,
+      "usage": {
+        "calls": 4,
+        "total_tokens": 6652,
+        "reported_tokens": 6652,
+        "usage_complete": true
+      },
+      "safety_violation": false,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "required_goals": [
+          "metric_1",
+          "metric_2",
+          "documents"
+        ],
+        "verified_goals": [
+          "metric_2",
+          "documents"
+        ],
+        "missing_evidence": {
+          "metric_1": [
+            "amount_unit_unconfirmed"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "p3_facts": [
+        {
+          "goal_id": "metric_2",
+          "value": {
+            "value": "205",
+            "unit": "events",
+            "numerator": null,
+            "denominator": null,
+            "window_days": 29
+          },
+          "evidence_id": "d902cd96-c5b8-4d54-a31b-b63098c9176f",
+          "verification_id": "c022e32c-e78d-4c84-88a4-ab919ad745ac"
+        }
+      ],
+      "false_dimensions": [],
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": true,
+        "source_pins_valid": true,
+        "published_document_count": 1,
+        "extra_authorized_document_ids": [],
+        "document_precision": 1.0,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      },
+      "required_fact_coverage": {
+        "fact_1": true
+      },
+      "rag_status": "succeeded",
+      "rag_outcome": "complete"
+    },
+    {
+      "case_id": "p7-holdout-v3-052",
+      "run_id": "b26477ba-f6fe-55e4-9ae1-203c0657ee2e",
+      "strict_correct": true,
+      "status": "partial",
+      "expected_status": "partial",
+      "failure_class": null,
+      "usage": {
+        "calls": 4,
+        "total_tokens": 7099,
+        "reported_tokens": 7099,
+        "usage_complete": true
+      },
+      "safety_violation": false,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "required_goals": [
+          "metric_1",
+          "metric_2",
+          "documents"
+        ],
+        "verified_goals": [
+          "metric_1",
+          "documents"
+        ],
+        "missing_evidence": {
+          "metric_2": [
+            "history_unconfirmed"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "p3_facts": [
+        {
+          "goal_id": "metric_1",
+          "value": {
+            "value": "744.3300000000000000",
+            "unit": "CNY",
+            "numerator": null,
+            "denominator": null,
+            "window_days": 29
+          },
+          "evidence_id": "7809d563-0e96-44b7-8bb7-ad070c370eea",
+          "verification_id": "2c1e10ac-6841-4d73-aab3-67986ade9851"
+        }
+      ],
+      "false_dimensions": [],
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": false,
+        "source_pins_valid": true,
+        "published_document_count": 2,
+        "extra_authorized_document_ids": [
+          "ae32f15f8706696cb1a6129c0a1dff3e71089870bc73423169560590b41d6859"
+        ],
+        "document_precision": 0.5,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      },
+      "required_fact_coverage": {
+        "fact_1": true
+      },
+      "rag_status": "succeeded",
+      "rag_outcome": "complete"
+    },
+    {
+      "case_id": "p7-holdout-v3-053",
+      "run_id": "125d1d6b-fb5e-5015-b6b1-8e7afb375d4b",
+      "strict_correct": false,
+      "status": "partial",
+      "expected_status": "partial",
+      "failure_class": "rag_retrieval_failure",
+      "usage": {
+        "calls": 4,
+        "total_tokens": 7588,
+        "reported_tokens": 7588,
+        "usage_complete": true
+      },
+      "safety_violation": false,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "required_goals": [
+          "metric_1",
+          "documents"
+        ],
+        "verified_goals": [
+          "metric_1"
+        ],
+        "missing_evidence": {
+          "documents": [
+            "matching_document_or_metric_evidence_missing"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "p3_facts": [
+        {
+          "goal_id": "metric_1",
+          "value": {
+            "value": "744.3300000000000000",
+            "unit": "CNY",
+            "numerator": null,
+            "denominator": null,
+            "window_days": 29
+          },
+          "evidence_id": "dbf02c98-8bac-4ba6-a3be-d15401a50547",
+          "verification_id": "7c6d6968-1fd3-4545-8f30-83c60096084f"
+        }
+      ],
+      "false_dimensions": [
+        "business",
+        "citations",
+        "fact_coverage",
+        "retrieval_contract"
+      ],
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": false,
+        "source_pins_valid": true,
+        "published_document_count": 0,
+        "extra_authorized_document_ids": [],
+        "document_precision": null,
+        "relevant_cited_sources": 0,
+        "minimum_cited_sources": 1
+      },
+      "required_fact_coverage": {},
+      "rag_status": "unavailable",
+      "rag_outcome": "insufficient"
+    },
+    {
+      "case_id": "p7-holdout-v3-054",
+      "run_id": "00aceb76-fc17-5016-a479-fc9858ca3155",
+      "strict_correct": true,
+      "status": "partial",
+      "expected_status": "partial",
+      "failure_class": null,
+      "usage": {
+        "calls": 4,
+        "total_tokens": 6967,
+        "reported_tokens": 6967,
+        "usage_complete": true
+      },
+      "safety_violation": false,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "required_goals": [
+          "metric_1",
+          "metric_2",
+          "documents"
+        ],
+        "verified_goals": [
+          "metric_1",
+          "metric_2"
+        ],
+        "missing_evidence": {
+          "documents": [
+            "document_conclusion_unverified"
+          ]
+        },
+        "unconfirmed_claims": [
+          "causal_conclusion_not_verified"
+        ],
+        "limited_results_visible": true
+      },
+      "p3_facts": [
+        {
+          "goal_id": "metric_1",
+          "value": {
+            "value": "744.3300000000000000",
+            "unit": "CNY",
+            "numerator": null,
+            "denominator": null,
+            "window_days": 29
+          },
+          "evidence_id": "e16f6caa-0f0d-4ade-b4a8-1fea849001ff",
+          "verification_id": "ccf0a7a3-e96c-4f35-a0c1-f561bae94c94"
+        },
+        {
+          "goal_id": "metric_2",
+          "value": {
+            "value": "596",
+            "unit": "events",
+            "numerator": null,
+            "denominator": null,
+            "window_days": 29
+          },
+          "evidence_id": "1431be49-880e-4f69-a226-f59df76368b2",
+          "verification_id": "cf115107-f549-4ad7-8a32-4f5d767af8c1"
+        }
+      ],
+      "false_dimensions": [],
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": true,
+        "source_pins_valid": true,
+        "published_document_count": 1,
+        "extra_authorized_document_ids": [],
+        "document_precision": 1.0,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 0
+      },
+      "required_fact_coverage": {},
+      "rag_status": "succeeded",
+      "rag_outcome": "complete"
+    },
+    {
+      "case_id": "p7-holdout-v3-068",
+      "run_id": "81c533cb-1a01-57ff-ba81-9311224b1049",
+      "strict_correct": true,
+      "status": "completed",
+      "expected_status": "completed",
+      "failure_class": null,
+      "usage": {
+        "calls": 3,
+        "total_tokens": 4242,
+        "reported_tokens": 4242,
+        "usage_complete": true
+      },
+      "safety_violation": false,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "completed",
+        "required_goals": [
+          "documents"
+        ],
+        "verified_goals": [
+          "documents"
+        ],
+        "missing_evidence": {},
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "p3_facts": [],
+      "false_dimensions": [],
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": false,
+        "source_pins_valid": true,
+        "published_document_count": 2,
+        "extra_authorized_document_ids": [
+          "1abdac06b607db0a6e0fca8ef9f3f1ef675483b34ec1e27215839f2adb01ba84"
+        ],
+        "document_precision": 0.5,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      },
+      "required_fact_coverage": {
+        "fact_1": true
+      },
+      "rag_status": "succeeded",
+      "rag_outcome": "complete"
+    },
+    {
+      "case_id": "p7-holdout-v3-069",
+      "run_id": "21ee44d0-d35d-584b-ab6e-d10437bb010b",
+      "strict_correct": true,
+      "status": "completed",
+      "expected_status": "completed",
+      "failure_class": null,
+      "usage": {
+        "calls": 4,
+        "total_tokens": 6380,
+        "reported_tokens": 6380,
+        "usage_complete": true
+      },
+      "safety_violation": false,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "completed",
+        "required_goals": [
+          "documents"
+        ],
+        "verified_goals": [
+          "documents"
+        ],
+        "missing_evidence": {},
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "p3_facts": [],
+      "false_dimensions": [],
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": true,
+        "source_pins_valid": true,
+        "published_document_count": 1,
+        "extra_authorized_document_ids": [],
+        "document_precision": 1.0,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      },
+      "required_fact_coverage": {
+        "fact_1": true
+      },
+      "rag_status": "succeeded",
+      "rag_outcome": "complete"
+    }
+  ],
+  "artifact_sha256": {
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-031\\config.json": "f4e6dbec40461e102f490cb0a4c628a589a69a5c4cfb050854292f8d9624057b",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-031\\signed-collection.json": "e3fe69975a0dc9b2c8a9087226f2713e52bb649cf0b2e508c54d4fc1431ce6d4",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-031\\score.json": "09a4892dff27843dc6465d432e9c70be9b155d8bac6d7908ec95474cc3878de6",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-031\\result.json": "39fc4b59ed32c8ad51a5c5a54f5a615ea865b187b9745b9dad2853863b2ae048",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-031\\start.json": "996eddfabdfb2eb43ca9fd9f235370c234a7b4b9b1e4f8e336c76f4ff5efcb9d",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-032\\config.json": "3beb4e830b6f577dd29d69ca252b8a9f85f1d7a243a68a9d7d680ab09e93bc92",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-032\\signed-collection.json": "0899be3d2fdc4afb7a9fbf945e80602cf1626d822fcde90a7623cf5dbf163595",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-032\\score.json": "9606b78feab0d3cb5a657ebf97b7d20671811243f63593815b290cd8a9b41a51",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-032\\result.json": "dafd99fb6b475dfd9de4201cec52182b149b7c69d0c9152a11131dc9356b1e4c",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-032\\start.json": "817cd02cd50a41e05d94f6c923d51d730f90c62ce358738a564273bcb28c028a",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-033\\config.json": "673290a7079a0fe586b939030df44e9eb578f671efac88e8702ee68748d55693",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-033\\signed-collection.json": "2bce50f958989d97fb41379686ecb0ff089736aff85536f0ac53972bb9c8db55",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-033\\score.json": "a2a82fb25a4eaf8be7be2178ebc5f94ce9f73cb25571fac26094b9ffbd415163",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-033\\result.json": "933658a25422610d68bf92ae07c2b13c3b9ae7676e6b1a8019ba13fa0d0fe0c6",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-033\\start.json": "3212e3a7650fa1c9aad750e8d034134d17d714d393bca4c5592d8a5a68643fca",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-035\\config.json": "8c61437a508b26c4e3c95855dee9e783088823882294c62ef35ba259ad77b39f",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-035\\signed-collection.json": "233685e272b00280ef60fc7fb09b33013e51a76afc4ee129e6b78b1d12a67a79",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-035\\score.json": "9f5ef4e048d7c10a7a459fa447b5ebcdf2368616b8d926e2c1e3a31a3ef53ccc",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-035\\result.json": "8330af841e6cfd148dfb2562875150303eccf32130fbb52395686dbdbd3f2916",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-035\\start.json": "ca36ebcc2d209cd88b0358cd4ad9f14eb04a483326325c1a1634ae82c861edeb",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-051\\config.json": "61bce49d50405c8ce11cb9029f4130781a2b73fcffa28597ebaec7e0b3c98a46",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-051\\signed-collection.json": "f07db2cd93927dc65c37fb70b9c4de781b861606351ec95f21dbd66903ab0be9",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-051\\score.json": "a9a55684025a80dbd35c50aec264ae60f7084b04fd0a54858159fe52de3007a0",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-051\\result.json": "7e2802a755878300f60ceb906d87c7a89135639456d9a211045d46b8cb89cb1d",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-051\\start.json": "d8ada360b7d05d73a42a8d3959b75ccf4a4f0613dafa2545f2a1951c3c047653",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-052\\config.json": "e3b9696c60ce8e951829c31da5c40bf3c7b526ea3738c269004b7c04fe9544a8",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-052\\signed-collection.json": "e2178a2d7d40285932c86d8e16b7ed2d17bfb499c7d692481226e32abcba7ec2",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-052\\score.json": "3944b6463509c4821a366c857e371c7985d6c024770c7e9ba9a2f70224cf34d5",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-052\\result.json": "d8cfff939bfc3715cd1eb769af544cd807ed27fdb516118cb6bf44d9108fcd85",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-052\\start.json": "3603e495fc08baeed62c48ab58c1fc9bf5c27aa9797e07869879b3f53bd67893",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-053\\config.json": "be76d09d13f704cf176404f74c6e98d82b742f83d911e8367a0b100b023ee06c",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-053\\signed-collection.json": "e1889ad2914aadced3b4eaa3b80ef10f93a7f191c348c9671005041e2162f39c",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-053\\score.json": "28fcd4a137b124f86316262d5359cc34fb507ac6d59f0e3be6fa070ea4d940c4",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-053\\result.json": "1652334a1ca3ea878b26a9d5dfabe3a8c6ed31d6da5e6ae69d4dcd1725e54d7d",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-053\\start.json": "145a8c9052686bc3b20b73a8b97579e7baca8732ee1f9c3ac8fec11293d6592c",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-054\\config.json": "6369de7cbb34f9ae671b6a3a563cfbde17cb37f303f7d659ba3752d7ff86f64d",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-054\\signed-collection.json": "c35eafa5411c675471248deff56aef60e215986804a00f918a93aee3c3692cab",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-054\\score.json": "acf502a43867a431338505fc007dfcb7ed5bf14f694de00cb77ae19378ca43b3",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-054\\result.json": "3cf5da421a0669b8461da7c6bee01568b452839a0a727a1c0ebdbb57524cd92b",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-054\\start.json": "c7a2ff11cb988e5333a3b56fb1fe51f04685fa1c2bab1f9e02b7ca41381d10cd",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-068\\config.json": "1c5b92b28b82a546bda09045e7127d895691877d3925db0a6dbda91311a174c4",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-068\\signed-collection.json": "ee9e27e57fe578718d95fe37160d55aafabeaafd1d9691722f936d3b9247a2f3",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-068\\score.json": "06b4756f0731c222c74ae2d3aec57fa8fa08fa1fb4449f69b42f9dc860531eae",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-068\\result.json": "53dcd7f951aefffe8a4a273ade4df0613347d41651daf0a0edc9190953c4bd49",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-068\\start.json": "25dc6431abcf93a4cc955ed4bfcb8b096d3e80934aeb8fda7b0204363e454976",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-069\\config.json": "cd27da91f0260d5cf86a506368595f607ab518a96c0f2f814069d5e802d261a9",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-069\\signed-collection.json": "dcd74650968b494183bf674a7a6cac932f2b8ba277ab1dfa7a5eb21655316323",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-069\\score.json": "0ef6f47e337d49a1bde9f3a0c0004241eae471d92064b4d46bb9ec156ac0e38b",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-069\\result.json": "b3854bfe0e1817a988de4bbbacbc24d12d9521549f83621c40351c622b8c4b0e",
+    "artifacts\\p7\\final50-ten-live-20261104\\p7-holdout-v3-069\\start.json": "4bc56b67fff8f458e6100f27d0aa2bf3fbf740c79241a83ce212762aa221aeb2",
+    "artifacts\\p7\\final50-ten-live-20261104\\binding.json": "96462cec317e8cbe6cb677ab50145dee99368632cb162c4496dafed6c83f8a7b",
+    "artifacts\\p7\\final50-ten-live-20261104\\permit.json": "6179b8d4461037206fc3b6a063d42d70086228019e53135ce860764e5a0fd10c",
+    "artifacts\\p7\\final50-ten-live-20261104\\summary.json": "a22c6ff470aac185e6e27820ec6def11f9b2cfe5b0a0411e75bef338e97bf327",
+    "artifacts\\p7\\final50-ten-live-20261104\\STOP": "3cfe9c1c7dca8c601fad8ef7b3795a35a3f68a098261e061dad9fc388b338c46",
+    "artifacts\\p7\\final50-ten-live-20261104\\campaign.py": "412731bdab48365cb067c73387c247275112d09c5372e2a0ecae61e4ae6cc7d4",
+    "artifacts\\p7\\final50-ten-live-20261104\\execution.log": "373a1dca6004ecbd2e15b355643c3de76addb10b2b061dde58bbf828b731f1db"
+  },
+  "report_sha256": "a39e0c1808f87e281fd57f9bdb65d1de18dae9fea4bd9438a34077eceb32c549",
+  "verification_script_sha256": "97bff4e67d9d852d7d9c6109f0c1631b8152b6d6fb446beaeb3a90bd9756ada3"
+}

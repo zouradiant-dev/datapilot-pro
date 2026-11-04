@@ -129,7 +129,7 @@ def validate_permit(permit, manifest, mode):
         raise ValueError("permit continuation exclusion mismatch")
     if permit.get("manifest_sha256") != digest(manifest):
         raise ValueError("permit manifest mismatch")
-    if permit.get("evaluation_sha256") != digest(current_binding.MAN):
+    if permit.get("evaluation_sha256") != digest(current_binding.load_manifest()):
         raise ValueError("permit evaluation identity mismatch")
     if permit.get("approved_by_role") != "project_owner" or not permit.get("approval_ref"):
         raise ValueError("owner approval required")
@@ -305,7 +305,8 @@ def run_batch(
             binding = cfg["authorization_binding"]
             if (
                 binding["case_id"] != cid
-                or binding["source_manifest_lf"] != current_binding.MAN["source_manifest_lf"]
+                or binding["source_manifest_lf"]
+                != current_binding.load_manifest()["source_manifest_lf"]
             ):
                 raise ValueError("worker identity mismatch")
             if (

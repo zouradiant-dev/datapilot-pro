@@ -1,5 +1,7 @@
 # P7 评测状态索引
 
+**2026-11-04 当前状态：**见 [当前候选与验收进度](current-status.md)。新 60 条业务 Holdout（`g2-bh-*`）与下面旧 Gate 2B 的 60 条、Final 50 及消融题集分别计数。后续新执行使用补齐工程缺口的候选与修复后的评分；不把历史成绩改写成新版本成绩。以下原 Gate 2B 段落为历史记录。
+
 后续仅做 [Scorer v2 离线审计](scorer-audit.md)：修正当前 Plan 版本任务键，原 31 条响应从 v1 的 25/6 修订为 v2 的 26/5，仅 bh2-030 严格判定变化；原 v1 原样保留，29 条仍 not_run，没有新的模型调用。RAG 检索完成 8/11 与业务正确 8/11 的 Case 集合不同，不能混为一项成功率。下段为首次 Live 原冻结 v1 的记录；完整 Gate 2B 仍未验收，预算/其他产品问题只审计未修复。
 
 当前：[Gate 2B 正式业务 Live](p7-gate2b-live.md) 已按本轮明确授权执行，在 bh2-031 原预算预留失败后停止：60 条中观测 31 条，冻结评分严格通过 25 条、未通过 6 条，29 条 not_run。61 次真实调用 / 77,897 Token，费用估算 USD 0.009241476，未取得账单。源码/Gold/Scorer 未调优；RAG 结果键的评分汇总缺陷独立披露，不现场改分。**完整 Gate 2B、Gate 2 整体及 P7 均未验收**。下列旧准备/意图/CI 为各自历史记录，不自动继续 Live 或进入 Gate 3。
@@ -32,7 +34,7 @@
 
 ## P7 Final Evaluation Prep（2026-11-03）
 
-当前源码（HEAD `4cf867…` + 未提交 independent facts/single-case admission/current Formal 入口与宿主确认绑定）的完整 CI 仍为 **NOT_RUN**；基线 CI #31 只覆盖 committed 4cf867。
+该次准备时源码（HEAD `4cf867…` + 未提交 independent facts/single-case admission/current Formal 入口与宿主确认绑定）的完整 CI 为 **NOT_RUN**；基线 CI #31 只覆盖 committed 4cf867。此处为 11 月 3 日历史快照，后续候选见页首状态入口。
 
 已发生的非付费/有界进展（不得回写成“P7 已验收”）：
 
@@ -40,7 +42,7 @@
 - Final 50 v3 已部分执行后 STOP：18 评分 / 10 严格正确 / 8 严格失败 / 31 未执行；详见 [v3 结果](research/p7-final-50-v3-results.md) 与 [封存与下一步](research/p7-final-50-closure-and-next.md)。
 - 八条评分器标记的 `rag_retrieval_failure` 经只读拆分：检索均命中，真实缺口为 Formal runner 未调用 `confirm_finite_scope`（`goal_scope_not_attested`）；原分数保留，不改 Gold/Scorer 重测。
 - 064/077 口径错配已裁定；017 版本身份 blocked 保留；不静默重映射。
-- Combined 独立文档事实修复后有一次有界 Live 业务 completed，但 Freeze 原始字节治理 FAIL，完整 CI 仍 NOT_RUN。
+- Combined 独立文档事实：历史 Live `17f5dc8a…` 业务 completed 但 Freeze raw 治理 FAIL / 完整 CI 当时 NOT_RUN；随后 CI PASS 提交 `2628b61`（Actions #41629097042）上另一次有界 Live `c1946d22…` 业务 completed，Freeze raw 对齐与完整 CI 均 PASS，见 [ci2628b61 Live 结果](research/p7-combined-independent-ci2628b61-live-results.md)。不并入旧 3/3，不进入 Gate 3。
 - 畸形 usage 的 Journal `RECOVERY_CORRUPT` 类型化已在统一回归中落地；隔离故障矩阵整表对当前工作区仍为 NOT_RUN。
 
 旧计划中的 `FREEZE_INVALIDATED: runtime/build closure differs` 描述的是再绑定前的 v3 product snapshot 状态；current Formal 入口与源码快照已另建，**不能**把该句当作“19 条尚未建立”的当前事实。分组预算与授权边界仍见 [最终评测计划](research/p7-final-evaluation-plan.md)；任何续跑须新 Permit。

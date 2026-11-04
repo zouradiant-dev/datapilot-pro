@@ -61,7 +61,6 @@ jobs:
           set -euo pipefail
           mkdir -p artifacts/ci
           git rev-parse HEAD > artifacts/ci/commit.txt
-          printf '%s\n' '{"scope":"full-ci","full_ci":true,"planned_tests":1748,"planned_pg_tests":404,"planned_nonintegration_tests":1344}' > artifacts/ci/test-scope.json
           git ls-files -z | xargs -0 sha256sum -- > artifacts/ci/source-sha256.txt
       - uses: astral-sh/setup-uv@v6
         with:
@@ -78,7 +77,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          uv run --locked python -m pytest --collect-only -q -p no:cacheprovider 2>&1 | tee artifacts/ci/nodeids.txt
+          uv run --locked python scripts/collect_test_scope.py artifacts/ci/test-scope.json 2>&1 | tee artifacts/ci/nodeids.txt
       - name: Unit and protocol regressions
         if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
         shell: bash

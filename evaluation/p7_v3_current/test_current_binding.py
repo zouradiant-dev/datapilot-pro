@@ -4,11 +4,11 @@ from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path("evaluation/p7_v3").resolve()))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from current_binding import verify_current, verify_manifest
 
 
-def test_current_binding_accepts_current_lf_source():
+def test_current_binding_accepts_current_lf_source(synthetic_binding):
     assert verify_current() is True
 
 

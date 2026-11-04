@@ -1,0 +1,195 @@
+{
+  "scorer_version": "p7-current-partial-evidence-v3",
+  "unit_tests": {
+    "311": {
+      "tests": 144,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "313": {
+      "tests": 144,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    }
+  },
+  "pg_controls": [
+    {
+      "control": "insufficient",
+      "run_id": "86230b2c-6fb7-526c-a756-965fb7a436c3",
+      "expected_strict_correct": true,
+      "strict_correct": true,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "required_goals": [
+          "metric_1",
+          "documents"
+        ],
+        "verified_goals": [
+          "metric_1"
+        ],
+        "missing_evidence": {
+          "documents": [
+            "document_fact_unverified:fact_2",
+            "rag_task_insufficient"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "fact_coverage": {
+        "fact_1": true,
+        "fact_2": false
+      },
+      "partial_evidence_scoring": {
+        "policy": "partial-facts-v1",
+        "literal_evidence_valid": true,
+        "original_retrieval_expected": "complete",
+        "actual_retrieval_outcome": "insufficient",
+        "insufficient_compatible_with_partial": true,
+        "rag_worker_completed": false
+      },
+      "fake_usage": {
+        "calls": 3,
+        "total_tokens": 45,
+        "reported_tokens": 45,
+        "usage_complete": true
+      },
+      "paid_calls": 0,
+      "p3_evidence_id": "b42580f1-5850-488a-ad19-118736227b44",
+      "p3_verification_id": "1da9fe17-d4cf-4e61-9e18-568a7789da63"
+    },
+    {
+      "control": "complete",
+      "run_id": "1f883f95-d955-5966-86e8-dede51f8831a",
+      "expected_strict_correct": true,
+      "strict_correct": true,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "required_goals": [
+          "metric_1",
+          "documents"
+        ],
+        "verified_goals": [
+          "metric_1"
+        ],
+        "missing_evidence": {
+          "documents": [
+            "document_fact_unverified:fact_2"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "fact_coverage": {
+        "fact_1": true,
+        "fact_2": false
+      },
+      "partial_evidence_scoring": {
+        "policy": "partial-facts-v1",
+        "literal_evidence_valid": true,
+        "original_retrieval_expected": "complete",
+        "actual_retrieval_outcome": "complete",
+        "insufficient_compatible_with_partial": false,
+        "rag_worker_completed": true
+      },
+      "fake_usage": {
+        "calls": 3,
+        "total_tokens": 45,
+        "reported_tokens": 45,
+        "usage_complete": true
+      },
+      "paid_calls": 0,
+      "p3_evidence_id": "f62a0792-1dc3-45ae-81cc-3130e893c25f",
+      "p3_verification_id": "9e8f3107-9be3-420f-bcfa-02476257ffa2"
+    },
+    {
+      "control": "missing-proof",
+      "run_id": "5a0b3e2c-5b2d-59f7-b1bf-19c780a92af6",
+      "expected_strict_correct": false,
+      "strict_correct": false,
+      "business_completion": {
+        "schema_version": "business-completion-1",
+        "status": "partial",
+        "required_goals": [
+          "metric_1",
+          "documents"
+        ],
+        "verified_goals": [
+          "metric_1"
+        ],
+        "missing_evidence": {
+          "documents": [
+            "matching_document_or_metric_evidence_missing"
+          ]
+        },
+        "unconfirmed_claims": [],
+        "limited_results_visible": true
+      },
+      "fact_coverage": {},
+      "partial_evidence_scoring": {
+        "policy": "partial-facts-v1",
+        "literal_evidence_valid": true,
+        "original_retrieval_expected": "complete",
+        "actual_retrieval_outcome": "insufficient",
+        "insufficient_compatible_with_partial": false,
+        "rag_worker_completed": false
+      },
+      "fake_usage": {
+        "calls": 3,
+        "total_tokens": 45,
+        "reported_tokens": 45,
+        "usage_complete": true
+      },
+      "paid_calls": 0,
+      "p3_evidence_id": "efe27fca-35d9-48ca-854c-e4498eec0907",
+      "p3_verification_id": "174f0edd-fa07-4cb8-b9d8-597d42540d52"
+    }
+  ],
+  "controls_passed": 3,
+  "paid_calls": 0,
+  "unknown": 0,
+  "new_live": "NOT_RUN",
+  "full_ci": "NOT_RUN",
+  "new_live_binding_sha256": "761a41887ed86b32c22353f7685d2145e2c94e81d50550e10d6a000eae0d8417",
+  "new_live_run_id": "dd51cc3f-f7ca-5372-b86c-5c1f6334e130",
+  "old_live_053_still_failure": true,
+  "old_ten_case_strict_pass": 9,
+  "old_ten_case_planned": 10,
+  "original_gold_scores_stop_and_bound_files_unchanged": true,
+  "product_core_changes_this_turn": false,
+  "new_file_sha256": {
+    "evaluation/p7_v3_current/partial_evidence_scope.py": "5e0956202ad4b971bbc8a07b6deca679fd0ecf7b55da08c99e69d05fc71ba575",
+    "evaluation/p7_v3_current/partial_evidence_scorer.py": "0b9ad505fc18429911f16920ef8911b42fd044b0cac1f7328fc94bc374ffa325",
+    "tests/test_p7_partial_evidence_scoring.py": "63604c448164d6d858b75616b5e481ad29e100117d6e371baafd54e37532ea88"
+  },
+  "evidence_sha256": {
+    "artifacts\\p7\\053-partial-repair-20261104\\insufficient\\config.json": "b0938027f97620009a7b7b5d90949522cd3ad84e7b7ad0ae8073d08095cda772",
+    "artifacts\\p7\\053-partial-repair-20261104\\insufficient\\signed-collection.json": "8aa57e187b5474fe222f41c7338f0cdbd0572d529e246b9f09194a4098ec24db",
+    "artifacts\\p7\\053-partial-repair-20261104\\insufficient\\score-v3.json": "034a7c8acc3f2993bc516880f20da51938b4c4a4e1787514885cb6640620484d",
+    "artifacts\\p7\\053-partial-repair-20261104\\complete\\config.json": "db32f4e564ebfdb4f1fc4170bde323a2abc8cf4ce7df0343838ee29b9beb2e10",
+    "artifacts\\p7\\053-partial-repair-20261104\\complete\\signed-collection.json": "2cad24bbc4c0824a255aafde2e6ad8816a2ae68ac126e7ef3e02d3ab5fae4626",
+    "artifacts\\p7\\053-partial-repair-20261104\\complete\\score-v3.json": "dd593f041948960cab1e4eab4479dad7d90c0a49c42dedd6a8d3c9255894be18",
+    "artifacts\\p7\\053-partial-repair-20261104\\missing-proof\\config.json": "413e499d43c784c60719eefea3dd46303bfc6a2137d4786e8bc5295ee7c6f3fd",
+    "artifacts\\p7\\053-partial-repair-20261104\\missing-proof\\signed-collection.json": "fbb828ed4796d9794131580e38c584766e4d6a9bc2e92f9534edcef953e61bd4",
+    "artifacts\\p7\\053-partial-repair-20261104\\missing-proof\\score-v3.json": "48a22387ddeea6d08fb625fd1108fdf0f42886f24f00a24721ee63bd3bfd167f"
+  },
+  "development_notes": [
+    "Initial isolated test invocation had 15 fixture lookup errors because a reused fixture dependency was not imported; corrected test import only. Subsequent dual-version logs and JUnit are saved."
+  ],
+  "delivery_sha256": {
+    "docs\\research\\p7-053-partial-evidence-repair.md": "97c430c39bc85ea4cf6b4b01a9b4be046a68d1329b538ce841db67c102238fdb",
+    "artifacts\\p7\\053-partial-repair-20261104\\live-binding.json": "274bc475f83c7b65124fbd3a5389cec8c932bb1196ee05ccc191c8d6023aaa30",
+    "artifacts\\p7\\053-partial-repair-20261104\\live-config.json": "e98792757ab955b5ce2430c5bead9a1fa04788866326080242497bedabd19d7d",
+    "artifacts\\p7\\053-partial-repair-20261104\\permit-template.json": "c9a13530faa7f4508a164d9d934f907cf412832bef967947f59e132e37ace473",
+    "artifacts\\p7\\053-partial-repair-20261104\\summary.json": "1f9e92f1df0745d82087721cc6b7b95436c22a9df3cf545adaae205778bbfbf3",
+    "artifacts\\p7\\053-partial-repair-20261104\\pg-controls.log": "4e2df72136cc0f3c4f8b394900e21f7fe5fa91fb126627b77ade7c1e27ea4197",
+    "artifacts\\p7\\053-partial-repair-20261104\\py311.xml": "8eaaa057450f6ec48d20c75641840bf17b8db31c592658e44ecc489f5e72a9dd",
+    "artifacts\\p7\\053-partial-repair-20261104\\py311.log": "fd65ce526852e6aba6ebfa97daa0c83053b49f2c1c4ab49c209dee82df55f093",
+    "artifacts\\p7\\053-partial-repair-20261104\\py313.xml": "4e5a37f0a0da329003b351a2ddfd8bc53a9bc9bdd93a38266a0f33d06ad3dc51",
+    "artifacts\\p7\\053-partial-repair-20261104\\py313.log": "3d63af46d7ee3a1a7061de983bb373c2214e0a1a81f1c3bb5025390b0a06e7cf"
+  }
+}

@@ -5,7 +5,11 @@ from pathlib import Path
 
 ROOT = Path(".")
 BASE = Path("artifacts/p7/final-evaluation-v1")
-MAN = json.loads((BASE / "current-evaluation-manifest.json").read_text(encoding="utf-8"))
+
+
+def load_manifest():
+    """Read the legacy binding only at an explicit host verification/execution boundary."""
+    return json.loads((BASE / "current-evaluation-manifest.json").read_text(encoding="utf-8"))
 
 
 def verify_manifest(root, snapshot, manifest):
@@ -25,11 +29,13 @@ def verify_manifest(root, snapshot, manifest):
 
 
 def verify_current():
-    return verify_manifest(ROOT, ROOT / MAN["source_snapshot"], MAN)
+    manifest = load_manifest()
+    return verify_manifest(ROOT, ROOT / manifest["source_snapshot"], manifest)
 
 
 def run():
     verify_current()
+    manifest = load_manifest()
     sys.path.insert(0, str(ROOT))
     sys.path.insert(0, str(ROOT / "evaluation/p7_v3"))
     sys.path.insert(0, str(ROOT / "scripts"))
@@ -51,7 +57,7 @@ def run():
     v3_probe.parent_freeze = lambda: (
         {
             "freeze_id": "p7-current-evaluation-binding",
-            "manifest_sha256": MAN["source_manifest_lf"],
+            "manifest_sha256": manifest["source_manifest_lf"],
         },
         product,
     )

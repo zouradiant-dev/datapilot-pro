@@ -214,6 +214,26 @@ async def test_deepseek_errors_are_redacted_charged_and_not_sdk_retried(monkeypa
     assert not model.ledger.snapshot().usage_complete and not model.ledger.pending
 
 
+async def test_non_sdk_failure_records_type_and_stage_without_exception_text():
+    class BrokenTransport:
+        async def respond(self, messages, tools):
+            raise RuntimeError("private-key-and-request-body")
+
+    model = Gateway(
+        BrokenTransport(),
+        config(),
+        BudgetLedger(BudgetLimits(calls=8, tokens=18000)),
+        Cancellation(),
+    )
+    with pytest.raises(AgentFailure) as exc:
+        await model.invoke(MESSAGES, [], "root")
+    assert exc.value.error.code == "MODEL_ERROR"
+    assert "RuntimeError, stage=provider_await" in exc.value.error.message
+    assert "private-key-and-request-body" not in exc.value.error.message
+    assert model.ledger.snapshot().calls == 1
+    assert not model.ledger.snapshot().usage_complete
+
+
 async def test_deepseek_timeout_cancels_native_http_and_keeps_reservation(monkeypatch):
     cancelled = asyncio.Event()
 

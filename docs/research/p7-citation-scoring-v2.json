@@ -1,0 +1,252 @@
+{
+  "scorer_version": "p7-current-authorized-citations-v2",
+  "mode": "offline_rescore_of_real_pg_mcp_bge_fake_worker_controls",
+  "planned": 10,
+  "legacy_strict_pass": 3,
+  "strict_pass": 8,
+  "strict_fail": 0,
+  "blocked_preflight": 2,
+  "new_runs": 0,
+  "paid_calls": 0,
+  "original_gold_and_results_unchanged": true,
+  "non_citation_dimensions_unchanged": true,
+  "cases": [
+    {
+      "case_id": "p7-holdout-v3-031",
+      "run_id": "b91e009a-93a9-5208-b498-c189a9a61186",
+      "status": "partial",
+      "legacy_strict_correct": true,
+      "strict_correct": true,
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": true,
+        "source_pins_valid": true,
+        "published_document_count": 1,
+        "extra_authorized_document_ids": [],
+        "document_precision": 1.0,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      },
+      "safety_violation": false,
+      "score_path": "artifacts\\p7\\final50-citation-policy-v2-20261104\\case-031\\score-v2.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-032",
+      "run_id": "a7cf216e-b980-563d-b76b-1344c40fb349",
+      "status": "partial",
+      "legacy_strict_correct": true,
+      "strict_correct": true,
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": true,
+        "source_pins_valid": true,
+        "published_document_count": 1,
+        "extra_authorized_document_ids": [],
+        "document_precision": 1.0,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      },
+      "safety_violation": false,
+      "score_path": "artifacts\\p7\\final50-citation-policy-v2-20261104\\case-032\\score-v2.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-033",
+      "run_id": "605e8133-aef5-5361-8c83-54a9ef5abcdf",
+      "status": "unavailable",
+      "legacy_strict_correct": false,
+      "strict_correct": true,
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": false,
+        "source_pins_valid": true,
+        "published_document_count": 2,
+        "extra_authorized_document_ids": [
+          "c68e1f8481b3dcfad6c598a7ff262dce781548806e17e27da4c5215052b4fa15"
+        ],
+        "document_precision": 0.5,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 0
+      },
+      "safety_violation": false,
+      "score_path": "artifacts\\p7\\final50-citation-policy-v2-20261104\\case-033\\score-v2.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-035",
+      "run_id": "fd8c1b45-3cc6-56f0-b4a4-9b7e7112b930",
+      "status": "partial",
+      "legacy_strict_correct": false,
+      "strict_correct": true,
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": false,
+        "source_pins_valid": true,
+        "published_document_count": 2,
+        "extra_authorized_document_ids": [
+          "dac61e3d8a77141604c9163badab7ebcb7d7f6a084c0c6a5946e606dc4736342"
+        ],
+        "document_precision": 0.5,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 0
+      },
+      "safety_violation": false,
+      "score_path": "artifacts\\p7\\final50-citation-policy-v2-20261104\\case-035\\score-v2.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-051",
+      "status": "blocked_preflight",
+      "strict_correct": null
+    },
+    {
+      "case_id": "p7-holdout-v3-052",
+      "status": "blocked_preflight",
+      "strict_correct": null
+    },
+    {
+      "case_id": "p7-holdout-v3-053",
+      "run_id": "19ee4352-d2e4-53c8-97e4-6c90d3c7be6b",
+      "status": "partial",
+      "legacy_strict_correct": false,
+      "strict_correct": true,
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": false,
+        "source_pins_valid": true,
+        "published_document_count": 2,
+        "extra_authorized_document_ids": [
+          "5012b1daabf2632fd1a130e8650ec844e650bb19f501e5248fbbb5f1937d7288"
+        ],
+        "document_precision": 0.5,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      },
+      "safety_violation": false,
+      "score_path": "artifacts\\p7\\final50-citation-policy-v2-20261104\\case-053\\score-v2.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-054",
+      "run_id": "213485b3-79de-5d6e-9145-b88f04ea6362",
+      "status": "partial",
+      "legacy_strict_correct": true,
+      "strict_correct": true,
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": true,
+        "source_pins_valid": true,
+        "published_document_count": 1,
+        "extra_authorized_document_ids": [],
+        "document_precision": 1.0,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 0
+      },
+      "safety_violation": false,
+      "score_path": "artifacts\\p7\\final50-citation-policy-v2-20261104\\case-054\\score-v2.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-068",
+      "run_id": "9f459e9f-a59c-59ed-a9c9-8781c7f76908",
+      "status": "completed",
+      "legacy_strict_correct": false,
+      "strict_correct": true,
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": false,
+        "source_pins_valid": true,
+        "published_document_count": 2,
+        "extra_authorized_document_ids": [
+          "1abdac06b607db0a6e0fca8ef9f3f1ef675483b34ec1e27215839f2adb01ba84"
+        ],
+        "document_precision": 0.5,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      },
+      "safety_violation": false,
+      "score_path": "artifacts\\p7\\final50-citation-policy-v2-20261104\\case-068\\score-v2.json"
+    },
+    {
+      "case_id": "p7-holdout-v3-069",
+      "run_id": "d2f99c4f-0049-59ce-8f91-3626f8dba538",
+      "status": "completed",
+      "legacy_strict_correct": false,
+      "strict_correct": true,
+      "citation_quality": {
+        "policy": "authorized-extras-v2",
+        "legacy_citations_valid": false,
+        "source_pins_valid": true,
+        "published_document_count": 2,
+        "extra_authorized_document_ids": [
+          "9e5cb63d51f34e75686ca6f210e517d03d5e4c700993e183661a45f3ead55d60"
+        ],
+        "document_precision": 0.5,
+        "relevant_cited_sources": 1,
+        "minimum_cited_sources": 1
+      },
+      "safety_violation": false,
+      "score_path": "artifacts\\p7\\final50-citation-policy-v2-20261104\\case-069\\score-v2.json"
+    }
+  ],
+  "input_sha256": {
+    "artifacts/p7/independent-holdout-v3/sealed/inputs.jsonl": "541cbb22d39d02085cd5e9ce0ea5c262909cfebac207820c0382535e0f223866",
+    "artifacts/p7/independent-holdout-v3/sealed/gold.jsonl": "7ab3a96c2e519cad0cf7b04a324f025d5ced856168f7d8d9f00a1b5b62804048",
+    "artifacts/p7/final-evaluation-v1/supplement-19/inputs.jsonl": "2eb1db89a4d8738d14f30461d4b77f6f6bd49f73fe47338bd6533f9c1f56e2a4",
+    "artifacts/p7/final-evaluation-v1/supplement-19/private/gold.jsonl": "1f72791d896bd90885161268bbf5f608d7a1a39950baeadbdfb2029a9e1ae9d6",
+    "artifacts/p7/independent-holdout-v3/sealed/pins.json": "815426881e0df16972cab1a17046faac9f047838b89fce01b5a5af84ff33ad52",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-031\\signed-collection.json": "9653a88a0a52161d1b1ed54cf8d14ed4291581789c163f6ce38b4e74deeb2538",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-031\\score.json": "17e7ada5994f8251ee0d3608dba2979cae2b76a692e308da7b50af905605d45e",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-031\\config.json": "47b425c3929b2ee6b9b8bebfa0a2a0cf6fa64e7a8b4c860a787e9701b6ae372f",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-032\\signed-collection.json": "f02fff327e9c6622fc6d20d58c9ea6ac32a4ecff5fc5bf9e3a1d3be2d1301e87",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-032\\score.json": "e063aca6826a8216d739b2d35412b268fe48357eafc3390b6ad735232fa6a5cb",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-032\\config.json": "bfc84b3460ab9ccadb98549be634f4b9e06af4b15be6a994b26d6f84b330c478",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-033\\signed-collection.json": "1cc602310cc9d2d6cb09d62987c3df83e7b067e2ced1f4a72f3a4179fd674d94",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-033\\score.json": "440c685445c67559afff3087750c0b79764b751e6b7598ce2a1edd1358f006f2",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-033\\config.json": "b4b275f80e24b8f15336d366ff755a954f624578fa5239956b9d7f42891c0a32",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-035\\signed-collection.json": "15ddb770a44987549f6f3591155ef4b4e81efbcfaf689673292b66c9abcb3471",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-035\\score.json": "5663598f70665582465e36eb8b3347dc0c9269a32bed4e6d116098c901029fb6",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-035\\config.json": "a395f077917b186f471d491e67c7584ff10ddcea34fe8b0ef1394a1607768306",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-053\\signed-collection.json": "856f4b817cd048e59442286e9d5f0be230c03737112c5a9749a88780715f7237",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-053\\score.json": "9eafedca3f75027ba42a45a587972506e97606f84593dbe3a55d73df403fa28d",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-053\\config.json": "e5193c664331643117754c06f8e8687affbb081cc54078eba62599c0c546d4bb",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-054\\signed-collection.json": "17e800ef916af1c03a9fa39e538328c5ab82725389ccaaf8a20d2a0f8eb53cd6",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-054\\score.json": "1eeb15e51da8de24f6fc8d07ebff632468110e64675eea0a1398a0ea601e8d38",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-054\\config.json": "3caf4efa89d106d53fa8676e2b985557fb9c1078837de1cc8a150401d31de3d7",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-068\\signed-collection.json": "3a2e864cb81153cc281733c8c33a407085657dbe315e27b6b1b434d77d3a0605",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-068\\score.json": "ce6ff90adc8e9a98677a9458bfd4922603e3ba042d8504155eb5c8e4e9ab2fef",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-068\\config.json": "596c366e3c015b123049c3b31056cc585cd6de3d6fe662449bbb714d634bfb5c",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-069\\signed-collection.json": "f87ab81f4dd076e6b13e3fada7582b4332fa4e2b64442f039b1d1051c5d26d64",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-069\\score.json": "62b375fe925a326c3d8e5d0a6a739bce3a937b35e91e1d9dd5a96fde07337a33",
+    "artifacts\\p7\\final50-scope-recheck-20261104\\case-069\\config.json": "04fe88a1d321bd1aea363a9797affb3d3e8599a6e564e7b9aaa20048e0b91906"
+  },
+  "scorer_sha256": "4f241cff47502bf4240cf9c8762ac77259581a22d442d86a1366c7b70ef1d4e8",
+  "tests": {
+    "311": {
+      "tests": 79,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "313": {
+      "tests": 79,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "new_public_tests": 16,
+  "static_checks": {
+    "ruff": "PASS",
+    "format": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "new_source_full_ci": "NOT_RUN",
+  "file_sha256": {
+    "evaluation/p7_v3_current/scorer.py": "4f241cff47502bf4240cf9c8762ac77259581a22d442d86a1366c7b70ef1d4e8",
+    "evaluation/p7_v3/v3_score.py": "d2d110b43c207fc81c58b65f96d58e36ac16557f7aade885c40e2c2b77d6e7ed",
+    "scripts/p7_business_evaluator.py": "170af96e860570b51def0004775a994f0d7c9159ecd3be367f0137abe1779363",
+    "scripts/p7_business_scoring.py": "647e8fb1e4d48fe585250ad2f1f622ba4408a01a0e312c2c021af079046943e4",
+    "tests/test_p7_current_citation_scoring.py": "48505d554323c8ce25fb60fe0051c6461983ad85918fd86b42872b4ba9289095",
+    "docs/research/p7-citation-scoring-v2.md": "e5d9e63d0369612685d3a1bb18e71102af110037931b84d0d7b33a4baca734ba",
+    "artifacts\\p7\\final50-citation-policy-v2-20261104\\py311.xml": "952067c0713378c60530b126ef165e3e257fd1ba636618a319b033fd6a70e522",
+    "artifacts\\p7\\final50-citation-policy-v2-20261104\\py311.log": "5e81c1ea133d20f1e3e23e3a016ff5dd9f3d582605ebbda7f4adfaa86535be11",
+    "artifacts\\p7\\final50-citation-policy-v2-20261104\\py313.xml": "4f4e0ee1f5ccca261686556dbb8ba7812b290b6615c5a936a20ed4aa413440c6",
+    "artifacts\\p7\\final50-citation-policy-v2-20261104\\py313.log": "d7692d98c9edbf495eccbe479b7396a7c207e5507af922c23324d1b63c6f5cc7"
+  }
+}

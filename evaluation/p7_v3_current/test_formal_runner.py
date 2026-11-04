@@ -1,19 +1,82 @@
 import copy
 import json
 import sys
+from datetime import date
 from pathlib import Path
 
-sys.path.insert(0, str(Path("evaluation/p7_v3_current").resolve()))
+import pytest
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import formal_runner
 
-BASE = Path("artifacts/p7/final-evaluation-v1/supplement-19")
-ins = [
-    json.loads(x)
-    for x in (BASE / "inputs.jsonl").read_text(encoding="utf-8").splitlines()
-    if x.strip()
-]
-cfgs = json.loads((BASE / "launch-configs.json").read_text(encoding="utf-8"))
-bycfg = {c["case_id"]: c for c in cfgs}
+from datapilot.reporting.contracts import ReportScope
+
+ins = []
+bycfg = {}
+
+
+@pytest.fixture(autouse=True)
+def public_formal_inputs(synthetic_binding, monkeypatch):
+    root, _, _ = synthetic_binding
+    dataset_id = "00000000-0000-4000-8000-000000000001"
+    rows, configs = [], {}
+    for i, case_id in enumerate(ids(), 1):
+        scope = ReportScope.model_validate(
+            {
+                "owner": "public-runner-control",
+                "question": f"Public synthetic runner control number {i}.",
+                "datasets": {"bindings": [{"dataset_id": dataset_id, "version": 1}]},
+                "metrics": [
+                    {
+                        "goal_id": "metric_1",
+                        "dataset_id": dataset_id,
+                        "dataset_version": 1,
+                        "semantic_version": 1,
+                        "metric_id": "paid_invoice_revenue",
+                        "metric_version": 1,
+                        "window": {"start": date(2032, 1, 1), "end_exclusive": date(2032, 2, 1)},
+                    }
+                ],
+            }
+        )
+        row = {
+            key: value
+            for key, value in scope.model_dump(mode="json").items()
+            if key
+            in {"owner", "question", "datasets", "metrics", "document_goal", "causal_requested"}
+        }
+        row.update(case_id=case_id, lane="sql_only", objective=f"Public runner control {i}")
+        rows.append(row)
+        configs[case_id] = {
+            "case_id": case_id,
+            "run_id": "public-control-" + str(i),
+            "report_scope": scope.model_dump(mode="json"),
+            "rag_scope": None,
+        }
+    monkeypatch.setattr(sys.modules[__name__], "ins", rows)
+    monkeypatch.setattr(sys.modules[__name__], "bycfg", configs)
+    monkeypatch.setattr(formal_runner, "ROOT", root)
+    env = root / "artifacts/p7/current-pg/private/environment.json"
+    env.parent.mkdir(parents=True)
+    env.write_text("{}", encoding="utf-8")
+    material = root / "artifacts/p7/final-evaluation-v1/total-50/materialization.json"
+    material.parent.mkdir()
+    material.write_text(
+        json.dumps({"datasets": {"public": {"id": dataset_id, "version": 1}}}), encoding="utf-8"
+    )
+    monkeypatch.setattr(
+        formal_runner,
+        "load_gold",
+        lambda case_id: {
+            "case_id": case_id,
+            "business_completion": "completed",
+            "host_decision": "review_then_run",
+            "metrics": [],
+            "refusal_conditions": [],
+            "causal_claim_must_remain_unverified": True,
+        },
+    )
+    monkeypatch.setattr(formal_runner, "load_pins", lambda _: {})
 
 
 def ids():
@@ -191,7 +254,7 @@ def test_live_permit_requires_exact_budget_and_exclusion():
         "excluded_case_ids": excluded,
         "campaign_id": "p7-final-50-v7",
         "manifest_sha256": formal_runner.digest(manifest),
-        "evaluation_sha256": formal_runner.digest(formal_runner.current_binding.MAN),
+        "evaluation_sha256": formal_runner.digest(formal_runner.current_binding.load_manifest()),
     }
     formal_runner.validate_permit(permit, manifest, "live")
     with pytest.raises(ValueError, match="permit budget mismatch"):

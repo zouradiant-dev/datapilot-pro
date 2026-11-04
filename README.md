@@ -1,5 +1,7 @@
 # DataPilot Pro
 
+当前推进状态见 [current-status.md](docs/current-status.md)（2026-11-04）：整合工程修复与 v3 评分器、补齐默认评测测试，并为新 60 条业务 Holdout 另建绑定。下方 Demo、CI 和旧 Holdout 数字保留各自提交与批次属性。
+
 > 面向 SaaS 经营分析场景的 **Evidence-driven AI Agent**：模型可以参与规划与工具决策，但不能自行授予数据访问权限、批准业务合同或证明业务结论。
 
 | 验收维度 | 当前状态 |
@@ -177,7 +179,15 @@ uv run --locked datapilot rag model-fetch            # 仅使用 RAG 时需要�
 | [engineering-history.md](docs/engineering-history.md) | 分阶段实现、复现命令与历史验收（原 README 详版） |
 | [api-v1.md](docs/api-v1.md) · [api-v1-openapi.json](docs/api-v1-openapi.json) | 版本化 HTTP 契约 |
 | [product-demo.md](docs/product-demo.md) | Windows/Docker 部署、实际操作与验收 |
-| [AGENTS.md](AGENTS.md) | 开发约束与阶段边界（最严格的规则来源） |
+| [AGENTS.md](AGENTS.md) · [AGENTS.en.md](AGENTS.en.md) | 项目开发约束、阶段边界与智能体协作规范 |
+
+## 开发协作约定
+
+项目采用直接表达、持续完成已授权任务、最小正确改动和如实交付的协作方式：回答结论先行，减少套话；调查、实现和验证持续推进到任务完成；代码修改聚焦实际问题，避免无关重构；交付时说明实际改动与验证结果。
+
+错误处理应暴露真实问题，不用默认值、空结果或多层兜底掩盖必需配置缺失和内部契约错误。项目已有的输入校验、授权检查、超时、恢复协议和针对已证实故障的处理继续保留。
+
+完整约定见 [AGENTS.md](AGENTS.md)（项目约束与中文通用规范）和 [AGENTS.en.md](AGENTS.en.md)（英文通用规范）。通用部分可按项目需要调整，调整时同步相关中英文说明，并保留项目专属约束与阶段记录。
 
 ## 自动化验证
 

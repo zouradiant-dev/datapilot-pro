@@ -168,6 +168,7 @@ class Gateway:
             response = cached
         else:
             started = time.monotonic()
+            failure_stage = "provider_await"
             try:
                 response = await self.cancel.wait_for(
                     self.transport.respond(messages, tools),
@@ -175,6 +176,7 @@ class Gateway:
                     timeout_code="MODEL_TIMEOUT",
                 )
                 if self.durability:
+                    failure_stage = "response_commit"
                     self.durability.backend.hit("model_response")
             except BaseException as exc:
                 if self.durability:
@@ -196,6 +198,13 @@ class Gateway:
                         ):
                             diagnostic += f", request_id={request_id}"
                     diagnostic += ")"
+                else:
+                    # Class and stage only. Exception messages can contain credentials
+                    # or provider request bodies and must not enter persisted errors.
+                    error_type = type(exc).__name__
+                    if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]{0,63}", error_type):
+                        error_type = "Exception"
+                    diagnostic += f" ({error_type}, stage={failure_stage})"
                 raise AgentFailure("MODEL_ERROR", diagnostic) from exc
             usage = (
                 (response.usage_metadata or {}).get("total_tokens")

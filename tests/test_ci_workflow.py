@@ -1,5 +1,8 @@
 """CI failure preservation and isolated profile; never contacts GitHub or a provider."""
 
+import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -48,7 +51,7 @@ def test_failed_unit_step_does_not_hide_pg_or_static_evidence(workflow):
     assert "-m integration" in pg["run"] and "--cov-append" in pg["run"]
     unit = next(s for s in steps if "unit.xml" in s.get("run", ""))
     assert "not integration and not live" in unit["run"]
-    assert any("--collect-only" in s.get("run", "") for s in steps)
+    assert any("scripts/collect_test_scope.py" in s.get("run", "") for s in steps)
     for step in steps:
         if "ruff " in step.get("run", ""):
             assert "!cancelled()" in step["if"]
@@ -64,3 +67,38 @@ def test_upload_preserves_each_attempt_without_private_test_artifacts(workflow):
     assert options["if-no-files-found"] == "error"
     assert "matrix.python" in options["name"] and "github.run_attempt" in options["name"]
     assert options.get("overwrite", "false") == "false"
+
+
+def test_scope_collector_counts_marker_overlap_without_executing_tests(tmp_path):
+    (tmp_path / "pytest.ini").write_text(
+        "[pytest]\nmarkers =\n integration: local control\n live: collection only\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "test_public_scope.py").write_text(
+        "import pytest\n"
+        "def test_unit(): raise AssertionError('must only collect')\n"
+        "@pytest.mark.integration\n"
+        "def test_pg(): raise AssertionError('must only collect')\n"
+        "@pytest.mark.integration\n"
+        "@pytest.mark.live\n"
+        "def test_pg_live(): raise AssertionError('must only collect')\n"
+        "@pytest.mark.live\n"
+        "def test_live_only(): raise AssertionError('must only collect')\n",
+        encoding="utf-8",
+    )
+    output = tmp_path / "scope.json"
+    script = Path(__file__).resolve().parents[1] / "scripts/collect_test_scope.py"
+    result = subprocess.run(
+        [sys.executable, str(script), str(output)],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    scope = json.loads(output.read_text(encoding="utf-8"))
+    assert scope["planned_tests"] == 4
+    assert scope["planned_pg_tests"] == 2
+    assert scope["planned_nonintegration_tests"] == 1
+    assert scope["planned_live_only_tests"] == 1
+    assert scope["ci_result"] == "NOT_RUN"

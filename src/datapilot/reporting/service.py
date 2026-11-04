@@ -504,18 +504,19 @@ class ReportService:
                     if is_required and requested_names and source.name not in requested_names:
                         continue
                     target = manifest.target
-                    if (
-                        not self.scope.metrics
-                        and target.dataset_id
-                        and (target.dataset_id, target.dataset_version)
-                        not in {(b.dataset_id, b.version) for b in self.scope.datasets.bindings}
-                    ):
-                        reject("Document-only source escaped host Dataset/version")
+                    if target.dataset_id and (target.dataset_id, target.dataset_version) not in {
+                        (b.dataset_id, b.version) for b in self.scope.datasets.bindings
+                    }:
+                        reject("Document source escaped host Dataset/version")
                     for id_ in goal.metric_goals:
                         r = self.requests[id_]
-                        if target.dataset_id and (target.dataset_id, target.dataset_version) != (
-                            r.dataset_id,
-                            r.dataset_version,
+                        # Independent literal facts retain their own authorized Dataset pin;
+                        # they never become measurement evidence for an associated metric.
+                        if (
+                            not goal.independent_facts
+                            and target.dataset_id
+                            and (target.dataset_id, target.dataset_version)
+                            != (r.dataset_id, r.dataset_version)
                         ):
                             reject("Document source does not match the metric Dataset/version")
                     identity = (doc.citation.index_version, doc.citation.chunk_id)

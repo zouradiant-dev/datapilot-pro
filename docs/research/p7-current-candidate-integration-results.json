@@ -1,0 +1,102 @@
+{
+  "date": "2026-11-04",
+  "timezone": "Asia/Singapore",
+  "local_scope": {
+    "planned": 1828,
+    "unit": 1420,
+    "integration": 408
+  },
+  "unit_from_final_bundle": {
+    "311": {
+      "tests": 1420,
+      "passed": 1420,
+      "skipped": 0,
+      "failed": 0,
+      "errors": 0,
+      "skip_reasons": {}
+    },
+    "313": {
+      "tests": 1420,
+      "passed": 1420,
+      "skipped": 0,
+      "failed": 0,
+      "errors": 0,
+      "skip_reasons": {}
+    }
+  },
+  "integration": {
+    "3.11": {
+      "tests": 408,
+      "passed": 345,
+      "skipped": 63,
+      "failed": 0,
+      "errors": 0,
+      "skip_reasons": {
+        "Explicit real CUDA Qwen test opt-in required": 10,
+        "Explicit real Qwen CUDA opt-in required": 18,
+        "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials": 1,
+        "Explicit local Qwen integration opt-in required; never substitutes vectors": 20,
+        "Explicit real CUDA test opt-in required": 13,
+        "Explicit local CUDA opt-in required": 1
+      },
+      "mode": "initial run plus exact Temp ACL retry"
+    },
+    "3.13": {
+      "tests": 408,
+      "passed": 345,
+      "skipped": 63,
+      "failed": 0,
+      "errors": 0,
+      "skip_reasons": {
+        "Explicit real CUDA Qwen test opt-in required": 10,
+        "Explicit real Qwen CUDA opt-in required": 18,
+        "Live model inference requires DATAPILOT_RUN_LIVE_TESTS=1 and API credentials": 1,
+        "Explicit local Qwen integration opt-in required; never substitutes vectors": 20,
+        "Explicit real CUDA test opt-in required": 13,
+        "Explicit local CUDA opt-in required": 1
+      },
+      "mode": "single full run"
+    }
+  },
+  "initial_py311_setup_errors": {
+    "count": 223,
+    "cause": "Windows system Temp ACL",
+    "exact_retry_passed": 222,
+    "exact_retry_cuda_opt_in_skip": 1,
+    "historical_errors_preserved": true
+  },
+  "final_candidate": {
+    "manifest_sha256": "cdb520d5f97ba1159e6345b69690335a109411df762e882162a5228e3b992974",
+    "files": 425,
+    "live_allowed": false
+  },
+  "candidate_files": 425,
+  "protected_files_unchanged": 132,
+  "053": {
+    "status": "COLLECTED",
+    "run_id": "58a8b282-97dd-4b04-ab84-616f0354f033",
+    "strict_correct": true,
+    "scorer_version": "p7-current-partial-evidence-v3",
+    "business_completion": "partial",
+    "calls": 4,
+    "tokens": 7139,
+    "unknown": false
+  },
+  "053_permit_consumed": true,
+  "new60_formal_live": "DEFERRED_BY_OWNER",
+  "ablation_preparation": "DEFERRED_BY_OWNER",
+  "remote_ci": "NOT_RUN",
+  "commit_push": "NOT_PERFORMED",
+  "evidence_sha256": {
+    "unit-py311-bundle-v2.xml": "bbbb643e3e5b51353005997c1cdec7495c35988cc3aeeef9dbe2855f5b1d3014",
+    "unit-py313-bundle-v2.xml": "50f90129b01b377909f0f51f94533f5804accf23f47eac87d6d70dee2ab7b61a",
+    "integration-py311.xml": "2f525e2603ea43137a2ac64dd407d5875b73f84df5ec225e14503e28a3627fbb",
+    "integration-py311-tempfix.xml": "2d1ed65051b321869e785fdc783200ce87dafed1965e997c607a5e2daa21fcd4",
+    "integration-py313-final.xml": "503306d8c364503b33c6d8c0952babec06d26bb42c49d1885d05d80492da9958",
+    "test-scope-final.json": "e4eeaa8d7a7590a0514e1c2e2b46811bc9541416aa965d2363fde8db9f00a559",
+    "candidate-v1/manifest.json": "8a63dc9de040d3d9635705a611b6f7531bb85d7196b9c5939ef1913991337dab",
+    "candidate-v2/manifest.json": "4248e917dcc5a6c86ec31a173d6f91af0092590112b38aeec7424eed45740da3",
+    "053-final-verification.json": "6ae812e49520aeb59c91c33bdc26dc467dde0a34603d0b8eb37d23723129111c",
+    "final-candidate-verification.json": "3d44503691e0175a5822bff36f1c07c57651e5967d2193d773391ed4700b4de5"
+  }
+}

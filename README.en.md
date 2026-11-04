@@ -1,5 +1,7 @@
 # DataPilot Pro — English Overview
 
+For the November 4 candidate integration, repaired v3 scoring and new 60-case business holdout preparation, see [current status](docs/current-status.md). The demo, CI and earlier holdout figures below remain tied to their original commits and campaigns.
+
 > An evidence-driven AI agent for SaaS business analytics. The model may plan and choose tools, but it cannot grant data access, approve a business contract, or prove a conclusion by itself.
 
 The Chinese [README](README.md) is the primary document; this page is a concise English overview for GitHub reviewers.
@@ -87,6 +89,15 @@ Open <http://127.0.0.1:8501/> (API on `127.0.0.1:8000`). Load the synthetic SaaS
 - [Chat-first UI](docs/chat-first-ui.md) · [ADR-015](docs/adr/0015-chat-first-conversation.md) · [ADR-018](docs/adr/0018-trusted-goal-scope.md) · [ADR-019](docs/adr/0019-web-goal-confirmation.md)
 - [P7 release index](docs/releases/p7-engineering-candidate-v1/README.md) · [Demo acceptance](docs/releases/p7-engineering-candidate-v1/frozen/p7-demo-acceptance.md) · [Evaluation status](docs/evaluation.md)
 - [Career showcase](docs/showcase.md) · [Engineering history](docs/engineering-history.md) · [API contract](docs/api-v1.md)
+- [Project constraints and Chinese agent guidelines](AGENTS.md) · [English agent guidelines](AGENTS.en.md)
+
+## Development guidelines
+
+Collaboration follows direct communication, continued execution of authorized work, the smallest correct change and factual delivery. Lead with the conclusion, keep investigating, implementing and verifying until the task is complete, focus code changes on the actual problem, and report what changed and what was checked.
+
+Let errors surface where they should. Required configuration and internal contract errors must not be hidden behind defaults, empty results or layers of fallbacks. Keep the project's required input validation, authorization checks, timeouts, recovery protocols and handling of demonstrated failures.
+
+The full guidelines are in [AGENTS.md](AGENTS.md) (project-specific constraints and Chinese general guidelines) and [AGENTS.en.md](AGENTS.en.md) (English general guidelines). Adapt the general sections to the project's needs, keep the relevant Chinese and English guidance aligned, and preserve the project-specific constraints and stage records.
 
 ## Boundaries
 

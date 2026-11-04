@@ -1,0 +1,155 @@
+{
+  "schema": "combined-independent-live-results/v1",
+  "campaign_id": "combined-independent-ci2628b61-v1",
+  "case_id": "combined-ci2628b61-independent-01",
+  "run_id": "c1946d22-1b70-4ae3-8d16-bb72a710490e",
+  "status": "PASS",
+  "execution_status": "succeeded",
+  "business_completion": {
+    "schema_version": "business-completion-1",
+    "status": "completed",
+    "required_goals": [
+      "metric_1",
+      "documents"
+    ],
+    "verified_goals": [
+      "metric_1",
+      "documents"
+    ],
+    "missing_evidence": {},
+    "unconfirmed_claims": [],
+    "limited_results_visible": true
+  },
+  "contract": {
+    "independent_facts": true,
+    "document_question": "请依据授权文档核验以下事实：企业版退款申请的审核时限",
+    "overall_question": "计算 2026 年 9 月已支付账单收入（CNY），并依据授权退款政策原文说明企业版退款审核时限；不要把文档当作收入或因果证明。",
+    "metric_goals": [
+      "metric_1"
+    ],
+    "required_fact": {
+      "fact_id": "fact_1",
+      "description": "企业版退款申请的审核时限",
+      "quotation": "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。"
+    },
+    "confirmation_ref": "host-generated confirmation recorded in contract-confirmed.json"
+  },
+  "approval": {
+    "agent_operated": true,
+    "conversation_id": "d4b59eed-002a-42ae-974d-1fd1dc48a221",
+    "run_id": "c1946d22-1b70-4ae3-8d16-bb72a710490e",
+    "checkbox_checked": true,
+    "button_enabled": true,
+    "status_before_click": "awaiting_review"
+  },
+  "sql": {
+    "value": "803.3500000000000000",
+    "unit": "CNY",
+    "evidence_id": "a914d0c1-595f-496d-aa2c-38e7e4f406ae",
+    "verification_id": "f8e764b0-5fd7-4e8c-bf0d-a5b2219a5b00"
+  },
+  "rag": {
+    "outcome": "complete",
+    "verdict": "semantic_retrieval",
+    "relevant_chunk_ids": [
+      "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31"
+    ],
+    "citation": {
+      "chunk_id": "55469a84ebaa10725d40054188191836b62cc878f974f530fab24bac7f541b31",
+      "start": 0,
+      "end": 137,
+      "line_start": 1,
+      "line_end": 7,
+      "sha256": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+      "corpus_id": "3fd3e8c1-1105-4c43-bc59-2913786a4f53",
+      "index_version": "223be2d08a0fd76803c4aabf61ad7a4548db411b466d4a7bb2b017f76459de88",
+      "source_id": "2c794fb60592a71e5e6d7335e01327e77de933f2297e00750c189eaa227ef51c",
+      "document_id": "5d60eb04b8bf637c7b9a60b21533b8c90e9ded5bca92451ceaff10c972af4a33",
+      "version": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+      "source_sha256": "b9fa3ebfef587454c116913e2956289caa86be3101aff5069e590140121858f0",
+      "model_revision": "46fbe35fd4374a00fee7de77dfddaeb6dd6a2c59",
+      "chunker_sha256": "a204198639466f7c5db545be55129b32c8f1e0b53abb1490385465523d822326",
+      "retriever": "pg-cosine-exact-1",
+      "score": 0.6978118835575511,
+      "goal_sha256": "3fbe12236556d81103d57731dcaf974585282d8bac80980d18263d34f23549b3",
+      "goal_score": 0.6978118419647217,
+      "page": null
+    },
+    "quote": "企业版退款申请须在 7 个工作日内完成审核，退款金额按原支付币种原路退回。"
+  },
+  "usage": {
+    "calls": 3,
+    "input_tokens": 4033,
+    "output_tokens": 319,
+    "cache_read_tokens": 2048,
+    "total_tokens": 4352,
+    "estimated_peak_usd": "0.000990588",
+    "usage_complete": true,
+    "bill_status": "not_reconciled",
+    "concurrency": 1,
+    "automatic_retries": 0,
+    "state_usage": {
+      "calls": 3,
+      "total_tokens": 4352,
+      "reported_tokens": 4352,
+      "usage_complete": true
+    }
+  },
+  "permit": {
+    "digest": "41a395148fdea2c951713a6b9a0c9d8c9ebafb98e3cc2515e9aea4afcbc7312b",
+    "expires_at": "2026-11-04T10:56:03.940976+00:00",
+    "max_runs": 1,
+    "campaign_calls": 8,
+    "campaign_token_units": 18000,
+    "freeze_sha256": "f09f62363f9e2456c7bc79a5a8111826bb8898a0087d5b5db4dba9d914f47bc7",
+    "source_user_authorization_ref": "owner-message-2026-11-03T20:51:00+08:00:combined-independent-ci2628b61-v1"
+  },
+  "admission": {
+    "owner": "local-user",
+    "case_id": "combined-ci2628b61-independent-01",
+    "run_id": "c1946d22-1b70-4ae3-8d16-bb72a710490e",
+    "message_id": "2c6b9fce-869c-41ad-aeba-98c4643ed400",
+    "permit_sha256": "41a395148fdea2c951713a6b9a0c9d8c9ebafb98e3cc2515e9aea4afcbc7312b",
+    "freeze_sha256": "f09f62363f9e2456c7bc79a5a8111826bb8898a0087d5b5db4dba9d914f47bc7",
+    "admitted_at": "2026-11-03 13:01:16.180383+00:00",
+    "expires_at": "2026-11-04 10:56:03.940976+00:00"
+  },
+  "source": {
+    "freeze_id": "p7-combined-independent-candidate-2628b612a897",
+    "freeze_sha256": "f09f62363f9e2456c7bc79a5a8111826bb8898a0087d5b5db4dba9d914f47bc7",
+    "git_commit": "2628b612a8977a0d21695e18b14f06ad4c82e0c5",
+    "source_status": "COMMITTED_CANDIDATE_FULL_CI_PASS",
+    "raw_workdir_match": "29/29 after writing git blob LF bytes to worktree",
+    "ci": "PASS"
+  },
+  "ci": {
+    "full_ci_run_id": 41629097042,
+    "url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41629097042",
+    "status": "PASS",
+    "python": [
+      "3.11",
+      "3.13"
+    ],
+    "head_sha": "2628b612a8977a0d21695e18b14f06ad4c82e0c5"
+  },
+  "stop": {
+    "host_stopped": true,
+    "stop_file": "D:\\桌面\\llm-learning\\datapilot-pro\\artifacts\\p7\\combined-independent-ci2628b61-v1\\private\\live\\STOP",
+    "stop_time": "2026-11-03T13:07:50.781664+00:00",
+    "retry": false,
+    "second_run": false,
+    "host_stop_recorded_at": "2026-11-03T13:08:56.665321+00:00"
+  },
+  "scope": {
+    "old_campaign_unchanged": true,
+    "no_3of3_merge": true,
+    "formal_50_not_in_scope": true,
+    "gate3_not_authorized": true,
+    "case_id_note": "combined-ci2628b61-independent-01 because combined-repair-independent-01 already consumed on this owner DB",
+    "human_confirmed_smoke_not_independent_business_quality": true
+  },
+  "business_status": "PASS",
+  "governance_status": "PASS_CI_AND_RAW_FREEZE",
+  "compliant_pass": true,
+  "summary": "Business PASS with independent_facts=true; Freeze raw bytes matched commit 2628b61 after LF worktree alignment; full CI #41629097042 PASS."
+}

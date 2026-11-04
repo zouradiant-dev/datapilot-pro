@@ -45,7 +45,7 @@ packages = ["src/datapilot"]
 dev-mode-exact = true
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "evaluation/p7_v3_current"]
 addopts = "-ra"
 markers = [
   "live: opt-in external model integration, consumes API credits",

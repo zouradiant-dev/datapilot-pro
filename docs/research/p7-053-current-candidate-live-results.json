@@ -1,0 +1,104 @@
+{
+  "date": "2026-11-04",
+  "timezone": "Asia/Singapore",
+  "campaign": "p7-053-current-candidate-20261104-v1",
+  "model_provider": "deepseek",
+  "model": "deepseek-flash",
+  "endpoint": "https://api.deepseek.com",
+  "thinking": "disabled",
+  "authorized_limits": {
+    "runs": 1,
+    "provider_attempts": 8,
+    "token_units": 18000,
+    "concurrency": 1,
+    "sdk_retries": 0,
+    "outer_retries": 0,
+    "maximum_wall_seconds": 180
+  },
+  "result": {
+    "summary": {
+      "status": "COLLECTED",
+      "run_id": "58a8b282-97dd-4b04-ab84-616f0354f033",
+      "strict_correct": true,
+      "scorer_version": "p7-current-partial-evidence-v3",
+      "business_completion": "partial",
+      "calls": 4,
+      "tokens": 7139,
+      "unknown": false
+    },
+    "signed_collection_hmac": "PASS",
+    "start_model_calls": 0,
+    "journal_call_states": {
+      "complete": 4
+    },
+    "partial_evidence_scoring": {
+      "policy": "partial-facts-v1",
+      "literal_evidence_valid": true,
+      "original_retrieval_expected": "complete",
+      "actual_retrieval_outcome": "insufficient",
+      "insufficient_compatible_with_partial": true,
+      "rag_worker_completed": false
+    },
+    "fact_coverage": {
+      "fact_1": true,
+      "fact_2": false
+    },
+    "dimensions": {
+      "business": true,
+      "p3_numeric": true,
+      "evidence": true,
+      "p3_semantics": true,
+      "citations": true,
+      "fact_coverage": true,
+      "authorization": true,
+      "protocol": true,
+      "completion": true,
+      "budget": true,
+      "durable": true,
+      "business_refusal": true,
+      "causal": true,
+      "chart_units": true,
+      "retrieval_contract": true,
+      "goal_scope_attested": true
+    },
+    "business_completion": {
+      "schema_version": "business-completion-1",
+      "status": "partial",
+      "required_goals": [
+        "metric_1",
+        "documents"
+      ],
+      "verified_goals": [
+        "metric_1"
+      ],
+      "missing_evidence": {
+        "documents": [
+          "document_fact_unverified:fact_2",
+          "rag_task_insufficient"
+        ]
+      },
+      "unconfirmed_claims": [],
+      "limited_results_visible": true
+    },
+    "candidate_drift": false,
+    "protected_files_checked": 132,
+    "protected_files_changed": [],
+    "invoice_status": "not_reconciled",
+    "stopped": true
+  },
+  "candidate_manifest_sha256": "ce54a620851085cb721edc24e7e16c29346069cbfabd7ab2a5fb1160296ab24c",
+  "execution_binding_sha256": "d047783c9647303a822c0ec95f18af8406fd4d716572a2ca08cda09a2af85944",
+  "historical_ten_case_score": "9/10 unchanged",
+  "new_holdout_live": "DEFERRED_BY_OWNER",
+  "ablation_preparation": "DEFERRED_BY_OWNER",
+  "full_remote_ci": "NOT_RUN",
+  "evidence_sha256": {
+    "artifacts/p7/current-candidate-integration-20261104/053-live/summary.json": "909e1158cc4827b1d8cb7ce207cd97672fff34d366b3f50fe50db1bcf9a53b68",
+    "artifacts/p7/current-candidate-integration-20261104/053-live/score.json": "57c1733a19b18414e3df37e3fc5b4482e7dc373117b3e43fa20ee0611e276cc9",
+    "artifacts/p7/current-candidate-integration-20261104/053-live/signed-collection.json": "ec0b28ea4e14b9cab83a5c96cddcb49fcd415d9d7549af437eac5c9464292f38",
+    "artifacts/p7/current-candidate-integration-20261104/053-live/STOP": "909e1158cc4827b1d8cb7ce207cd97672fff34d366b3f50fe50db1bcf9a53b68",
+    "artifacts/p7/current-candidate-integration-20261104/053-final-verification.json": "6ae812e49520aeb59c91c33bdc26dc467dde0a34603d0b8eb37d23723129111c",
+    "artifacts/p7/current-candidate-integration-20261104/053-owner-permit.json": "a79e388b2d84350387ccafb117075264868d296fb953471a08ea3b4a9a3f2b46",
+    "artifacts/p7/current-candidate-integration-20261104/053-execution-binding-v2.json": "3282d403f0eddd13a5c25a2703ad480e10621fa618ae4e728315247b101ef11b"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "combined-independent-candidate-draft/v1",
+  "git_commit": "2628b612a8977a0d21695e18b14f06ad4c82e0c5",
+  "freeze_id": "p7-combined-independent-candidate-2628b612a897",
+  "freeze_sha256": "f09f62363f9e2456c7bc79a5a8111826bb8898a0087d5b5db4dba9d914f47bc7",
+  "authorized": true,
+  "consumed": true,
+  "live_run_id": "c1946d22-1b70-4ae3-8d16-bb72a710490e",
+  "live_case_id": "combined-ci2628b61-independent-01",
+  "live_results": "docs/research/p7-combined-independent-ci2628b61-live-results.json",
+  "full_ci": {
+    "status": "PASS",
+    "run_id": 41629097042,
+    "url": "https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41629097042",
+    "python": [
+      "3.11",
+      "3.13"
+    ],
+    "head_sha": "2628b612a8977a0d21695e18b14f06ad4c82e0c5"
+  },
+  "campaign_id": "combined-independent-ci2628b61-v1",
+  "case_id_draft": "combined-repair-independent-01",
+  "case_id_live": "combined-ci2628b61-independent-01",
+  "case_id_note": "Draft case_id already consumed on owner DB; live used combined-ci2628b61-independent-01 with identical contract binding.",
+  "budget": {
+    "max_runs": 1,
+    "calls_per_run": 8,
+    "tokens_per_run": 18000,
+    "campaign_calls": 8,
+    "campaign_token_units": 18000,
+    "concurrency": 1,
+    "automatic_retries": 0
+  },
+  "private_drafts": {
+    "freeze": "artifacts/p7/combined-independent-ci2628b61-v1/private/freeze.json",
+    "permit": "artifacts/p7/combined-independent-ci2628b61-v1/private/live/permit.json",
+    "stop": "artifacts/p7/combined-independent-ci2628b61-v1/private/live/STOP"
+  },
+  "supersedes_draft_commit": "2121e02d8acdeadc443fdfd0a343f3a8fded22a5"
+}
