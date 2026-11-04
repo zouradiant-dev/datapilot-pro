@@ -7,6 +7,7 @@
 ## 2026-11-04 当前推进补充
 
 - 前轮工程与 053 已收口后，负责人以“进行”同意继续提交/推送当前候选、新 60 题正式适配与 Gold 审阅材料，以及独立消融协议/新 Dev 草稿准备；允许与远端 CI 并行。`4460009` 已提交/推送。该授权不包含新 60 题或消融的付费调用、自动批准新 Gold/有限目标合同。最新记录见 `docs/research/p7-new-holdout-formal-preparation.md`。
+- 随后负责人明确“接受这 11 题的修订及 Gold 提案”，只接受 revision-01 的 11 题变更。追加审批回执，保留原始 PENDING、原题/原 Gold；文档合同、P3 定义变更及付费 Live 未随之批准。见 `docs/research/p7-new-holdout-revised-gold-approval.json`。
 - 当前状态入口为 `docs/current-status.md`。负责人明确授权收拢当前候选、补齐公开评测测试和 CI 范围、进行隔离工程回归；不要求所有独立准备都等待完整 CI PASS。
 - 单独授权的 053 新 Run 已完成：v3 严格通过、partial，4 次真实调用／7,139 Token、unknown=false，STOP 已写入且 1/1 Run 许可已消费。原十题 v2 的 9/10 不改写；详见 `docs/research/p7-053-current-candidate-live-results.md`。不得沿用本次余量重跑。
 - 新 60 题应使用工程修复后的候选与修复后的评分；当前已做独立候选绑定及只读来源预检。负责人随后明确：新 60 题正式 Live、独立消融实验准备留到本轮收口之后再讨论，不在本轮继续启动。

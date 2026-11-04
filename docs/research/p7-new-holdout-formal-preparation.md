@@ -20,13 +20,19 @@
 目录：`artifacts/p7/holdout60-formal-preparation-20261104/review-v2/`，整个目录被 Git 忽略。
 
 - `private/OWNER-REVIEW.md`：11 题原题→修订题、指标请求、三方数值、原 Gold、保留的拒绝要求及文档事实。
-- `private/revised-gold-review.json`：完整原题/新题、原始回执与复核记录，语义批准仍为 PENDING。
+- `private/revised-gold-review.json`：完整原题/新题、原始回执与复核记录；原件的 PENDING 保留，后续接受决定单独追加。
 - `private/contract-review.json`：60 题完整问题语义审阅、40 题文档目标/部分证据政策、原事实绑定、缺失或拒绝要求。
 - `private/fact-review.json`：55 条文本检查，含多次出现提示；不把文本提示升级为事实证明。
 - `draft-inputs.jsonl`：60 个严格 Case 草稿，不含 Gold；**未批准，不可派发**。
 - `manifest.json`：公开源码候选、v3 评分依赖、新适配器、私密绑定及上述文件身份。
 
 这些是审阅草稿，不是正式 Seal。原始 revision-01、旧 Freeze/Gold/Seal/STOP 均保留。
+
+负责人随后明确接受这 11 题的修订及 Gold 提案。新增审批回执精确绑定上述审阅文档、Manifest、11 条修订输入/Oracle/MetricRequest 哈希，见 [公开审批元数据](p7-new-holdout-revised-gold-approval.json)。该接受不等于文档合同、P3 定义变更或付费 Live 授权。
+
+40 题文档合同另已整理为本地 `document-review-v1/private/OWNER-DOCUMENT-REVIEW.md`，包含完整问题、原始/拟定目的、ReportScope/RagScope、逐事实来源/引述候选、原拒绝边界及待审项。53 个引述候选经机械定位可供语义审阅；另 2 项缺失事实保留独立审阅，不用负面提示代替目标事实证明。该包有独立 Manifest，未改变前述不可覆盖的 review-v2。
+
+准备源码已提交/推送为 `dc9e638`，[完整双版本 CI #41818754250](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41818754250) 已触发；没有把原生入口准入写成完成。
 
 ## 尚需完成的准入
 

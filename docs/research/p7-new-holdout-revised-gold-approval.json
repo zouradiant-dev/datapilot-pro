@@ -1,0 +1,82 @@
+{
+  "schema": "p7-new-holdout-revised-gold-owner-approval-1",
+  "recorded_at": "2026-11-04T11:11:34.537478+00:00",
+  "decision": "ACCEPTED_REVISED_QUESTIONS_AND_GOLD",
+  "review_manifest_raw_sha256": "1d67ea4ac1a7d42cd22273631f156cb17ddc5215d9959ab7afc39bc8ef1b709a",
+  "review_document_raw_sha256": "21d25ad8990350cec4accaa39eb5a519e738d9ed7c2432d40833c373b2606be4",
+  "revision_manifest_raw_sha256": "5106bdeea77b89ed416227c8729b4fe5c3f2fe6810a623d5a2343d24d74f88d1",
+  "cases": [
+    {
+      "case_id": "g2-bh-sql-008",
+      "revised_draft_sha256": "d3d3e93913cde4364f3ddf2a5b8a6bb1f17224ad89e326d5cc17bdfabd4a6fbe",
+      "approved_oracle_sha256": "15ffc421f33621ec9ac1343084802182cb3aec788ddb079a55fd56169c3e3b39",
+      "metric_request_sha256": "ed808fb90b7da216086c5fd10297056a1ce471aa74ca555eb40a3fa06fb1aa86"
+    },
+    {
+      "case_id": "g2-bh-sql-009",
+      "revised_draft_sha256": "6e423bc2f6fd04a3e88bc0129c0e62a9e8489afbb25f3b2fb39bebe6a17db160",
+      "approved_oracle_sha256": "dcec8238f29324fe6e173048b10c760de50478ac58764e039e716468c894d1db",
+      "metric_request_sha256": "fa72c564978edff9475ea11a9ac33cb96adc3cb7cb08f02b8295d223a53a81da"
+    },
+    {
+      "case_id": "g2-bh-sql-012",
+      "revised_draft_sha256": "79102158aa46d5c61e6fdaccb15ae5154fe5e02e91d06f5ce84c000a1a0c8d23",
+      "approved_oracle_sha256": "91d24f842125419c18410b0e762592cca6864188ea6e8a1012f523a7f5ec2437",
+      "metric_request_sha256": "fd69906c54dc20c3d02424c8375fc618b938e2b8900033640f49fc70c16095c4"
+    },
+    {
+      "case_id": "g2-bh-sql-013",
+      "revised_draft_sha256": "0cef51a2ffe7417c69aec0fa08a857dcf912c6931265f188f5c79e687ca5849c",
+      "approved_oracle_sha256": "78cd4c676b1299fed19728d97b9b12352c88a1f2a41eca553910a8683b995df1",
+      "metric_request_sha256": "7dd9d5df9dcd225389ee3aa22b36bd52f50b79cdc40746f303616b0fd8580e54"
+    },
+    {
+      "case_id": "g2-bh-sql-014",
+      "revised_draft_sha256": "a5c79444668a2c471c522a5ebe152ff665c4557b531e99ef1cc85f771a09b8bf",
+      "approved_oracle_sha256": "f26d341f5bbae30737f7fc872a47ed14fb3b742eb68b40055b7204d4af5778ae",
+      "metric_request_sha256": "d22492cf1362b487cb154a4083fb848c5dd9ef0eca4a7871ceca0c17a57fc5ab"
+    },
+    {
+      "case_id": "g2-bh-xsrc-007",
+      "revised_draft_sha256": "f9494f69e9e91a8c453ccf44a671136d1c0db63c7494ac7942dfd4df1159349d",
+      "approved_oracle_sha256": "dcec8238f29324fe6e173048b10c760de50478ac58764e039e716468c894d1db",
+      "metric_request_sha256": "f7b7906250d69d53aaf57a05e71e244cf89562d4bde275300a7d6878c8e604de"
+    },
+    {
+      "case_id": "g2-bh-xsrc-008",
+      "revised_draft_sha256": "0a4c782f16fbc2778a7d72d9f6a943cec41c788728273cd0035364b02ba0ab47",
+      "approved_oracle_sha256": "7f66da3d97b3c0e8553d6dc4615b932d7ca69626dbce2c097373d9111de1fe33",
+      "metric_request_sha256": "3e2e56fba7efefe61585c98dd67d6a0946f2c83410e8a9680efce6b45c9c13cd"
+    },
+    {
+      "case_id": "g2-bh-xsrc-011",
+      "revised_draft_sha256": "a5ca8b1aea9d7182c236e26d0eb38f91c524fa9dfa42e5b82325fc27befa7b4e",
+      "approved_oracle_sha256": "c5696946d92f33b7606250e88f49bcbbcc41b29cbe917464b633935bb52c297c",
+      "metric_request_sha256": "14c03f090bdbe054829deb06b3a19dd5354f11815679d5f8f3d5342cef1c47c6"
+    },
+    {
+      "case_id": "g2-bh-xsrc-013",
+      "revised_draft_sha256": "504d8a187b8de1a71d5447df8b0478b9d194ff9c7595b92512789edb24be0bcd",
+      "approved_oracle_sha256": "0d13778ad891747c3ce5e756bd4b740a9f39e6670f7c73fbac83d6ee0106978c",
+      "metric_request_sha256": "f5cb149bf49d9c87e3ddb8617e746a39031caf85df175eee9df6eeb6271b3d68"
+    },
+    {
+      "case_id": "g2-bh-xsrc-014",
+      "revised_draft_sha256": "1cc2e08149b8865a66f02f03841a7ea801c14f57ae5d35e5d1e35c4d9126f064",
+      "approved_oracle_sha256": "cfa98f18e832b349f6558e34f704463a6ef0f5bb5210b27dd686ffe9c1c1d3fb",
+      "metric_request_sha256": "5e2e88a170d9ebb7c6db5a70cc5626776e51c76eac32515311231100b4dff390"
+    },
+    {
+      "case_id": "g2-bh-xsrc-015",
+      "revised_draft_sha256": "8f1edbfcb52971c3880ba30066ec07fb8b9bf8ec7d5de0e5519ffdd22615e6ee",
+      "approved_oracle_sha256": "c6789f51c347a8ff0c88c5420276faab7be5247bf54e7514cd00e7a97de14dc7",
+      "metric_request_sha256": "92ad84b98b74e7c147f94e743c7e0e5501e71e3299305ce308ef46ed0876ded0"
+    }
+  ],
+  "document_contracts_approved": false,
+  "metric_definition_changes_approved": false,
+  "live_allowed": false,
+  "paid_calls": 0,
+  "approval_ref": "project-owner-accepted-11-revisions-in-current-chat-20261104",
+  "private_approval_receipt_raw_sha256": "5dcfc8b11f5c450a59fb86d9bf0f2508cf0b5e1870a170f5c1e5472b08bd5ec6"
+}

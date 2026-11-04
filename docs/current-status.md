@@ -16,7 +16,7 @@
 |---|---|---|
 | 旧 Gate 2B 60 | 原首次 Live 31 observed、29 not_run；原 v1 25/31、离线 v2 26/31 | 保留历史，不续跑旧 Campaign |
 | Final 50 的十题修复回归 | 原十题 Live 严格 9/10；053 随后在当前候选及 v3 下新单题严格通过，partial，4 calls／7139 Token | 本次单题已 STOP；原 9/10 保留 |
-| 新业务 Holdout 60 | SQL/RAG/组合各 20；严格类型及宿主评分适配已实现，11 个修订 Gold 数值三方一致，语义批准 PENDING | 60 题完整问题/40 题文档合同审阅、正式 Gold/Seal、原生 Dev 控制及独立 Live 准入 |
+| 新业务 Holdout 60 | SQL/RAG/组合各 20；严格类型及宿主评分适配已实现，11 个修订 Gold 数值三方一致且已获负责人接受 | 60 题完整问题/40 题文档合同审阅、正式 Gold/Seal、原生 Dev 控制及独立 Live 准入 |
 | 消融 | 独立新 Dev 草稿 10 题已准备，与 257 条旧输入原文/数字归一化重合为 0；六组适配未验收 | 审阅新题/来源/Gold，验证可比 arm；当前可执行单元 0，付费预算 0 |
 
 新 60 题的既有材料保存在忽略的 `artifacts/p7/g2-business-60-private/`，没有把问题或 Gold 加入公共代码或候选运行输入。本轮在当前源码下只读复验已有专用库：54 条 pins verified pending launch binding、6 条 negative control passed。来源实际已存在于 55450 专用实例，旧封面“未物化”不能代替当前观察；本轮没有写入这些来源，也没有将来源预检写成 60 条业务通过。
@@ -49,6 +49,8 @@ Final 50 另有七题缺执行证据（071、072、073、074、076、078、079�
 前轮完整远端 CI 原为 NOT_RUN；当前 `4460009` 已推送并启动远端双版本 CI。新 60 题准备新增公开合成评分/合同控制，旧 v3 评分器及产品源码保持原件。新增 60 题准备详见 [正式准备记录](research/p7-new-holdout-formal-preparation.md)，消融见 [独立消融准备](research/p7-independent-ablation-preparation.md)。前轮唯一新增付费执行仍为已结束的 053：4 次调用／7139 Token，unknown=false；本轮准备新增付费调用 0。
 
 新准备工具已通过 Python 3.11 / 3.13 各 1433 项非集成测试（含新增 13 项），Ruff / format 通过。60 题及修订 Gold 的可审阅材料已保存；完整语义、正式 Seal 及原生入口验收仍待完成，当前不能启动正式 Live。
+
+准备源码已提交/推送为 `dc9e638`，[该提交双版本 CI #41818754250](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41818754250) 已触发。负责人随后接受 11 题修订及 Gold，独立追加 [审批记录](research/p7-new-holdout-revised-gold-approval.json)；40 题文档合同另有本地可读审阅提案，含 53 个待语义核验的引述候选和 2 项独立缺失事实审阅，均未批准或派发。
 
 旧冻结 Manifest、Gold、Seal、STOP 和历史分数保持原件。候选准备不等于生效 Permit；业务补验与新 Holdout Live 按各自精确合同和预算独立准入。
 
