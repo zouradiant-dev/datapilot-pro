@@ -6,6 +6,7 @@
 
 ## 2026-11-04 当前推进补充
 
+- 负责人随后授权执行“文档合同的完整语义审阅”，本轮 40/40 已完成：24 份可确认提案、2 份精确单文件来源准入待补、4 份仅宿主拒绝、10 份语义/完成状态缺口。不得将审阅数当业务通过数，或为匹配 Gold 添造未完成目标。原题、已接受的 11 题修订/Gold、历史冻结与 430 文件候选保留；合同确认、索引写入、正式 Seal/原生准入及付费 Live 不由本次语义审阅自动批准。详见 `docs/research/p7-document-contract-semantic-review.md`。
 - 前轮工程与 053 已收口后，负责人以“进行”同意继续提交/推送当前候选、新 60 题正式适配与 Gold 审阅材料，以及独立消融协议/新 Dev 草稿准备；允许与远端 CI 并行。`4460009` 已提交/推送。该授权不包含新 60 题或消融的付费调用、自动批准新 Gold/有限目标合同。最新记录见 `docs/research/p7-new-holdout-formal-preparation.md`。
 - 随后负责人明确“接受这 11 题的修订及 Gold 提案”，只接受 revision-01 的 11 题变更。追加审批回执，保留原始 PENDING、原题/原 Gold；文档合同、P3 定义变更及付费 Live 未随之批准。见 `docs/research/p7-new-holdout-revised-gold-approval.json`。
 - 当前状态入口为 `docs/current-status.md`。负责人明确授权收拢当前候选、补齐公开评测测试和 CI 范围、进行隔离工程回归；不要求所有独立准备都等待完整 CI PASS。

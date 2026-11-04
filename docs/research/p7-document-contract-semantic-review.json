@@ -1,0 +1,33 @@
+{
+  "schema": "p7-new-holdout-document-semantic-review-1",
+  "reviewed_at": "2026-11-04T11:29:27.202047+00:00",
+  "reviewed_document_cases": 40,
+  "categories": {
+    "PROPOSAL_READY": 24,
+    "SOURCE_ADMISSION_PENDING": 2,
+    "SEMANTIC_GAP": 10,
+    "HOST_REJECTION_ONLY": 4
+  },
+  "original_candidate_sha256": "da632e6d625f9bb2e56bd4bea0b18c916926f6f23d436f78c0c8d494864090c4",
+  "source_review_sha256": "b1324bea9decf54e12521e129aa0c560aa97907c3d5cf9114c7ee2be6ad08d1e",
+  "script_raw_sha256": "85739487402872d2e4c0df9d4c32f96052c5277686c59fcb4ec9749028601ba8",
+  "verified_literal_proof_proposals": 50,
+  "verified_original_document_files": 14,
+  "verified_corpus_manifests": 9,
+  "historical_files_unchanged": 132,
+  "gold_edited": false,
+  "paid_calls": 0,
+  "live_allowed": false,
+  "gap_type_counts": {
+    "completion_semantics_not_represented": 6,
+    "additional_metric_goal_not_bound": 2,
+    "required_citation_suppressed_on_metric_failure": 2
+  },
+  "proposal_fact_proofs": 37,
+  "partial_policy_proposal_count": 3,
+  "exact_index_previews": 2,
+  "owner_approved_document_contracts": 0,
+  "public_regression_passed": 149,
+  "review_manifest_raw_sha256": "9d73652aa8eb546177b6d83848844256b0da951c696e745a84f721e6868aaf62",
+  "closure_manifest_raw_sha256": "4a439efa7fcd4f82975493f796fed5d4010d1e0903da179cd82e421f879f3913"
+}
