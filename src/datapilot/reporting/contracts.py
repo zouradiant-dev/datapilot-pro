@@ -52,6 +52,7 @@ class DocumentGoal(Contract):
     required_facts: list[DocumentFact] = Field(default_factory=list, max_length=8)
     independent_facts: bool = False
     evidence_only: bool = False
+    retain_source_context: bool = False
 
     @model_validator(mode="after")
     def explicit_business_requirements(self):
@@ -63,6 +64,8 @@ class DocumentGoal(Contract):
             raise ValueError("Independent facts require a facts purpose and facts")
         if self.evidence_only and not self.independent_facts:
             raise ValueError("Evidence-only context requires independent reviewed literal facts")
+        if self.retain_source_context and self.purpose != "facts":
+            raise ValueError("Retained source context requires explicit fact requirements")
         if len({f.fact_id for f in self.required_facts}) != len(self.required_facts):
             raise ValueError("Required fact identities must be unique")
         return self
@@ -78,6 +81,8 @@ class DocumentGoal(Contract):
             value.pop("independent_facts", None)
         if not self.evidence_only:
             value.pop("evidence_only", None)
+        if not self.retain_source_context:
+            value.pop("retain_source_context", None)
         return value
 
 
@@ -191,6 +196,12 @@ class ReportScope(Contract):
                 raise ValueError("Document-only scope must preserve the original question")
             if doc.evidence_only and not goals:
                 raise ValueError("Evidence-only context requires a primary metric goal")
+            if doc.retain_source_context and (
+                self.partial_evidence_policy != "partial-facts-v1" or self.citation_policy
+            ):
+                raise ValueError(
+                    "Source context requires explicit partial policy without fact-only citations"
+                )
         required = goals + ([self.document_goal.goal_id] if self.document_goal else [])
         required += [goal.goal_id for goal in self.unbound_metric_goals]
         if len(required) > 8 or len(set(required)) != len(required) or "report" in required:

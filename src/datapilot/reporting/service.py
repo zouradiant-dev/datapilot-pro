@@ -668,7 +668,29 @@ class ReportService:
                         for id_, proof in coverage.items()
                         if proof is None
                     )
-                if supplementary:
+                if (
+                    goal.retain_source_context
+                    and partial_source
+                    and docs
+                    and metric_dependencies_ready
+                    and metric_topics_match
+                ):
+                    missing[goal.goal_id].extend(
+                        "document_fact_unverified:" + id_
+                        for id_, proof in coverage.items()
+                        if proof is None
+                    )
+                    missing[goal.goal_id].append("rag_task_insufficient")
+                    claims.append(
+                        ReportClaim(
+                            goal_id=goal.goal_id,
+                            kind="context",
+                            documents=docs,
+                            related_metric_goals=goal.metric_goals,
+                            fact_coverage=coverage,
+                        )
+                    )
+                elif supplementary:
                     # Optional facts remain visible without satisfying any required goal.
                     claims.append(
                         ReportClaim(

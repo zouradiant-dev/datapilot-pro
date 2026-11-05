@@ -37,7 +37,7 @@ pytestmark = [
 ]
 
 
-@pytest.mark.parametrize("kind", ["unbound", "evidence_only"])
+@pytest.mark.parametrize("kind", ["unbound", "evidence_only", "source_context"])
 def test_native_goal_gaps_keep_p3_journal_and_signed_scoring(
     pg_settings, report_data, metric_data, kind
 ):
@@ -113,13 +113,34 @@ def test_native_goal_gaps_keep_p3_journal_and_signed_scoring(
             ],
         ),
     )
+    if kind == "source_context":
+        question = query = (
+            "引用账单规程，说明文档是否给出退款到账时限；未提供时保留来源引文并明确无法核验。"
+        )
+        scope = ReportScope(
+            question=question,
+            datasets=rag.datasets,
+            metrics=[],
+            partial_evidence_policy="partial-facts-v1",
+            document_goal=DocumentGoal(
+                goal_id="documents",
+                question=question,
+                metric_goals=[],
+                purpose="facts",
+                required_facts=[
+                    DocumentFact(fact_id="refund_deadline", description="退款到账时限")
+                ],
+                retain_source_context=True,
+            ),
+        )
     scope = confirm_finite_scope(scope, rag, confirmation_ref="public-native-finite-goal-review")
-    cid, run_id = "g2-bh-xsrc-020", str(uuid4())
+    cid = "g2-bh-rag-020" if kind == "source_context" else "g2-bh-xsrc-020"
+    run_id = str(uuid4())
     case = HoldoutCase.model_validate_json(
         json.dumps(
             {
                 "case_id": cid,
-                "lane": "sql_rag",
+                "lane": "rag_only" if kind == "source_context" else "sql_rag",
                 "objective": "Public native contract control",
                 **scope.model_dump(
                     mode="json",
@@ -146,6 +167,14 @@ def test_native_goal_gaps_keep_p3_journal_and_signed_scoring(
         "rag_scope": rag.model_dump(mode="json"),
     }
 
+    class Insufficient(ReportDecisions):
+        async def respond(self, messages, tools):
+            reply = await super().respond(messages, tools)
+            for call in reply.tool_calls:
+                if call["name"] == "submit_rag_result":
+                    call["args"]["outcome"] = "insufficient"
+            return reply
+
     async def execute():
         result = await run_durable(
             pg_settings,
@@ -153,17 +182,25 @@ def test_native_goal_gaps_keep_p3_journal_and_signed_scoring(
             question,
             report_scope=scope,
             rag_scope=rag,
-            transport=ReportDecisions(query),
+            transport=Insufficient(query) if kind == "source_context" else ReportDecisions(query),
         )
         return result, await collect(config, pg_settings, scope, rag)
 
     result, payload = run_async(execute())
     report = result["cross_source_report"]
     assert report is not None and not payload["snapshot"]["unknown"]
-    expected = "unavailable" if kind == "evidence_only" else "partial"
+    expected = "partial" if kind == "unbound" else "unavailable"
     assert report.business_completion.status == expected
     assert next(c for c in report.claims if c.kind == "context").documents
-    if kind == "evidence_only":
+    if kind == "source_context":
+        assert report.business_completion.verified_goals == []
+        assert report.business_completion.satisfied_evidence_goals == []
+        assert next(c for c in report.claims if c.kind == "context").fact_coverage == {
+            "refund_deadline": None
+        }
+        expected_codes = {}
+        metric_gold = None
+    elif kind == "evidence_only":
         assert report.business_completion.verified_goals == []
         assert report.business_completion.satisfied_evidence_goals == ["documents"]
         metric_gold = {
@@ -190,13 +227,16 @@ def test_native_goal_gaps_keep_p3_journal_and_signed_scoring(
                 "case_id": cid,
                 "business_completion": expected,
                 "host_decision": "review_then_run",
-                "metrics": [metric_gold],
+                "metrics": [metric_gold] if metric_gold else [],
                 "refusal_conditions": [],
                 "causal_claim_must_remain_unverified": False,
                 "minimum_cited_sources": 1,
                 "expected_codes": expected_codes,
-                "expected_verdicts": {req.goal_id: metric_gold["disposition"]},
-                "retrieval_expected": "complete",
+                "expected_verdicts": {req.goal_id: metric_gold["disposition"]}
+                if metric_gold
+                else {},
+                "retrieval_expected": "insufficient" if kind == "source_context" else "complete",
+                "missing_fact_ids": ["refund_deadline"] if kind == "source_context" else [],
                 "retrieval": {"relevant_document_ids": [source.document_id]},
             }
         )

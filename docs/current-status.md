@@ -1,6 +1,8 @@
 # P7 当前候选与验收进度
 
-日期：2026-11-05，Asia/Singapore。分支 `p7-engineering-candidate-v1`。当前最新工作为十题合同缺口修复及独立新候选，见 [修复记录](research/p7-ten-contract-gap-repair.md)。此前 `4460009` 的 CI 和后续准备提交均只覆盖各自源码，不自动扩展为本次新改动的远端证据。
+日期：2026-11-05，Asia/Singapore。分支 `p7-engineering-candidate-v1`。当前已完成 [新 60 题正式准入准备](research/p7-new-holdout-formal-admission.md)：20 道 SQL 全语义审阅、60 题统一合同采用、两份精确索引追加、60/60 只读准入、新 Freeze/Seal、独立 Dev 原生入口及故障控制。缺失的合成实例已按负责人单独授权用固定原件恢复，全部静态 pin 一致。候选为 433 文件，宿主评分适配器 v3；正式业务 Live 未启动、付费调用 0。按负责人要求仅保留本地，不推送或触发远端 CI。
+
+最终候选双版本非集成各 1458 passed、定向原生签名评分各 3 passed；故障恢复 35、运行适配器控制 22、实际隔离容器 SQL/RAG/组合三条独立公开 Dev 均通过。54 个新 Runtime Run 的有界 Live 预算及未授权 Permit 模板已准备，需单独付费授权。旧快照、Gold、Seal、STOP 和历史成绩保留；下面的旧阶段记录按当时范围理解。
 
 ## 本轮推进约定
 

@@ -20,7 +20,7 @@ from datapilot.reporting.contracts import CrossSourceReport, ReportScope, finite
 
 from .holdout_contracts import PROJECTION, HoldoutAnswer, HoldoutCase  # noqa: E402
 
-SCORER_VERSION = "p7-new-holdout-host-v2"
+SCORER_VERSION = "p7-new-holdout-host-v3"
 
 
 def score(task, gold, record, key, pins):
@@ -47,7 +47,10 @@ def score(task, gold, record, key, pins):
             raise ValueError("New Holdout document goal has no matching host review")
 
     def exact_scope(**projection):
-        reconstructed = ReportScope(**projection)
+        # Preserve host-only policy while validating the legacy scorer's projection.
+        reconstructed = ReportScope.model_validate(
+            {**scope.model_dump(), **projection, "goal_scope_attestation": None}
+        )
         if reconstructed.model_dump(mode="json", include=PROJECTION) != scope.model_dump(
             mode="json", include=PROJECTION
         ):

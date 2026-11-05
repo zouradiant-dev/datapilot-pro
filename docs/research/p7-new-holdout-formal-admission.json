@@ -1,0 +1,67 @@
+{
+  "status": "ORDERED_STEPS_1_TO_4_PREPARATION_COMPLETE",
+  "sql_full_semantics_reviewed": 20,
+  "owner_adopted_cases": 60,
+  "runtime": 54,
+  "genuine_host_rejections": 6,
+  "source_recovery": {
+    "datasets": 8,
+    "semantics": 7,
+    "metrics": 63,
+    "original_indexes": 9,
+    "additional_exact_indexes": 2,
+    "all_pins_exact": true,
+    "historical_journal_restored": false
+  },
+  "candidate_manifest_sha256": "ef6c8afd433e72b8543a97b6be749cc51dca54f19278631de1a3ee63272afada",
+  "candidate_files": 433,
+  "scorer_version": "p7-new-holdout-host-v3",
+  "checks": {
+    "unit311-v3": {
+      "tests": 1458,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "unit313-v3": {
+      "tests": 1458,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "native311-v3": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "native313-v3": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "controls311": {
+      "tests": 35,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "operator-seal": {
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "container_public_dev_lanes": 3,
+  "execution_binding_sha256": "f5ed26fda5080aabbbc60391b1c30a247a80c606f01df6c7bb10e655148f77f0",
+  "new_seal_raw_sha256": "a2dc1b95fd7ebc335fbcd377369aca872909488647494242e2a9f3f02b5679a1",
+  "old_scorers_unchanged": true,
+  "historical_files_unchanged": 132,
+  "paid_calls": 0,
+  "formal_holdout_runtime_runs": 0,
+  "live_authorized": false,
+  "push_authorized": false,
+  "local_only": true
+}
