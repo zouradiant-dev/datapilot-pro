@@ -51,6 +51,7 @@ class DocumentGoal(Contract):
     purpose: Literal["locate", "summary", "facts", "conclusion"] | None = None
     required_facts: list[DocumentFact] = Field(default_factory=list, max_length=8)
     independent_facts: bool = False
+    evidence_only: bool = False
 
     @model_validator(mode="after")
     def explicit_business_requirements(self):
@@ -60,6 +61,8 @@ class DocumentGoal(Contract):
             raise ValueError("Facts cannot be silently added to an unconfirmed/summary goal")
         if self.independent_facts and (self.purpose != "facts" or not self.required_facts):
             raise ValueError("Independent facts require a facts purpose and facts")
+        if self.evidence_only and not self.independent_facts:
+            raise ValueError("Evidence-only context requires independent reviewed literal facts")
         if len({f.fact_id for f in self.required_facts}) != len(self.required_facts):
             raise ValueError("Required fact identities must be unique")
         return self
@@ -73,6 +76,8 @@ class DocumentGoal(Contract):
             value.pop("required_facts", None)
         if not self.independent_facts:
             value.pop("independent_facts", None)
+        if not self.evidence_only:
+            value.pop("evidence_only", None)
         return value
 
 
@@ -122,6 +127,14 @@ class GoalScopeAttestation(Contract):
     rag_scope_sha256: Digest
 
 
+class UnboundMetricGoal(Contract):
+    """A real host-reviewed request with no executable definition or P3 evidence path."""
+
+    goal_id: str = Field(pattern=r"^[a-z][a-z0-9_]{0,47}$")
+    description: str = Field(min_length=1, max_length=256)
+    reason: Literal["definition_missing", "p3_evidence_required"]
+
+
 class ReportScope(Contract):
     schema_version: Literal["p6b-scope-1"] = "p6b-scope-1"
     owner: str = Field(default="local-user", min_length=1, max_length=64)
@@ -135,6 +148,7 @@ class ReportScope(Contract):
     citation_policy: CitationPolicy | None = None
     rag_query_policy: Literal["legacy", "original-first-v1"] = "legacy"
     goal_scope_attestation: GoalScopeAttestation | None = None
+    unbound_metric_goals: list[UnboundMetricGoal] = Field(default_factory=list, max_length=6)
 
     @model_serializer(mode="wrap")
     def preserve_legacy_policy(self, handler):
@@ -147,6 +161,8 @@ class ReportScope(Contract):
             value.pop("rag_query_policy", None)
         if self.goal_scope_attestation is None:
             value.pop("goal_scope_attestation", None)
+        if not self.unbound_metric_goals:
+            value.pop("unbound_metric_goals", None)
         return value
 
     @model_validator(mode="after")
@@ -173,6 +189,12 @@ class ReportScope(Contract):
                 raise ValueError("Combined reports require metric associations")
             if not goals and doc.question != self.question:
                 raise ValueError("Document-only scope must preserve the original question")
+            if doc.evidence_only and not goals:
+                raise ValueError("Evidence-only context requires a primary metric goal")
+        required = goals + ([self.document_goal.goal_id] if self.document_goal else [])
+        required += [goal.goal_id for goal in self.unbound_metric_goals]
+        if len(required) > 8 or len(set(required)) != len(required) or "report" in required:
+            raise ValueError("Report goals must be distinct and fit the eight-goal limit")
         if policy := self.citation_policy:
             if (
                 self.document_goal is None
@@ -282,6 +304,14 @@ class BusinessCompletion(Contract):
     missing_evidence: dict[str, list[str]] = Field(default_factory=dict, max_length=8)
     unconfirmed_claims: list[str] = Field(default_factory=list, max_length=8)
     limited_results_visible: bool = False
+    satisfied_evidence_goals: list[str] = Field(default_factory=list, max_length=8)
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_projection(self, handler):
+        value = handler(self)
+        if not self.satisfied_evidence_goals:
+            value.pop("satisfied_evidence_goals", None)
+        return value
 
     @model_validator(mode="after")
     def coverage_is_explicit(self):
@@ -291,12 +321,21 @@ class BusinessCompletion(Contract):
             raise ValueError("Repeated business goal")
         if not set(self.verified_goals) <= set(self.required_goals):
             raise ValueError("Unknown verified goal")
+        evidence = set(self.satisfied_evidence_goals)
+        if (
+            len(evidence) != len(self.satisfied_evidence_goals)
+            or not evidence <= set(self.required_goals)
+            or evidence & set(self.verified_goals)
+        ):
+            raise ValueError(
+                "Evidence goals must be distinct required goals, separate from results"
+            )
         if not set(self.missing_evidence) <= set(self.required_goals) or set(
             self.missing_evidence
-        ) & set(self.verified_goals):
+        ) & (set(self.verified_goals) | evidence):
             raise ValueError("Missing evidence must name uncovered required goals")
         if self.status == "completed" and (
-            set(self.required_goals) != set(self.verified_goals)
+            set(self.required_goals) != set(self.verified_goals) | evidence
             or self.missing_evidence
             or self.unconfirmed_claims
         ):
@@ -403,4 +442,46 @@ class CrossSourceReport(Contract):
             c.kind == "context" and not c.related_metric_goals for c in self.claims
         ):
             raise ValueError("Combined context must name its related metric goals")
+        scope, completion = self.authorization_scope, self.business_completion
+        doc = scope.document_goal
+        evidence_goal = {doc.goal_id} if doc and doc.evidence_only else set()
+        if not set(completion.satisfied_evidence_goals) <= evidence_goal:
+            raise ValueError("Only host-declared evidence goals may satisfy citation obligations")
+        if evidence_goal & set(completion.verified_goals):
+            raise ValueError("Evidence-only context cannot become a verified business result")
+        if completion.satisfied_evidence_goals:
+            context = next((c for c in self.claims if c.goal_id == doc.goal_id), None)
+            if (
+                context is None
+                or context.kind != "context"
+                or any(context.fact_coverage.get(f.fact_id) is None for f in doc.required_facts)
+            ):
+                raise ValueError("Satisfied evidence goals need their required literal facts")
+            for fact in doc.required_facts:
+                support = context.fact_coverage[fact.fact_id]
+                observations = {"score", "goal_sha256", "goal_score"}
+                if (
+                    fact.citation is None
+                    or support.citation.model_dump(exclude=observations)
+                    != fact.citation.model_dump(exclude=observations)
+                    or support.excerpt != fact.quotation
+                ):
+                    raise ValueError("Evidence satisfaction differs from the host literal proof")
+        if scope.unbound_metric_goals or evidence_goal:
+            required = {r.goal_id for r in scope.metrics} | ({doc.goal_id} if doc else set())
+            required |= {g.goal_id for g in scope.unbound_metric_goals}
+            if set(completion.required_goals) != required:
+                raise ValueError("Report completion omitted a host-required goal")
+            claims = {c.goal_id: c for c in self.claims}
+            for goal in scope.unbound_metric_goals:
+                claim = claims.get(goal.goal_id)
+                if (
+                    goal.goal_id in completion.verified_goals
+                    or goal.goal_id in completion.satisfied_evidence_goals
+                    or goal.reason not in completion.missing_evidence.get(goal.goal_id, [])
+                    or claim is None
+                    or claim.kind != "unavailable"
+                    or goal.reason not in claim.codes
+                ):
+                    raise ValueError("Unbound metric goals must remain explicitly unavailable")
         return self

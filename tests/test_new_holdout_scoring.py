@@ -1,14 +1,19 @@
 """Signed public controls for the independent new Holdout namespace and host scope."""
 
 import copy
+import hashlib
 import json
+from types import SimpleNamespace
 
 import pytest
 from test_p7_current_citation_scoring import example as example
+from test_p7_current_citation_scoring import recommit
 from test_p7_partial_evidence_scoring import partial as partial
 from test_p7_scorer_versions import case as case
 
 from datapilot.ingestion.common import digest
+from datapilot.orchestration.rag_completion import goal_hash, retrieval_goal
+from datapilot.reporting.contracts import CitationSource, ReportScope, confirm_finite_scope
 from evaluation.p7_v3_current.holdout_contracts import HoldoutAnswer, HoldoutCase
 from evaluation.p7_v3_current.holdout_scoring import score
 
@@ -105,3 +110,84 @@ def test_contract_rejects_wrong_namespace_or_scope(new_partial, change):
         data["report_scope"]["owner"] = "another-owner"
     with pytest.raises(ValueError):
         HoldoutCase.model_validate_json(json.dumps(data))
+
+
+def bind_extended(data, scope):
+    scope = confirm_finite_scope(
+        scope, data.task.rag_scope, confirmation_ref="public-extended-goal-review"
+    )
+    value = data.task.model_dump(mode="json")
+    value.update(scope.model_dump(mode="json", include={"datasets", "metrics", "document_goal"}))
+    value["report_scope"] = scope.model_dump(mode="json")
+    data.task = HoldoutCase.model_validate_json(json.dumps(value))
+    data.payload["manifest"]["cross_source_report"]["scope"] = scope.model_dump(mode="json")
+    data.payload["manifest"]["rag_scope"] = data.task.rag_scope.model_dump(mode="json")
+    report = data.payload["snapshot"]["report"]
+    report["authorization_scope"] = scope.model_dump(mode="json")
+    report["authorization_sha256"] = digest(scope)
+    goal = retrieval_goal(
+        scope.document_goal.question, SimpleNamespace(scope=data.task.rag_scope), scope
+    )
+    data.payload["manifest"]["rag_completion_goal"] = goal
+    data.payload["snapshot"]["state"]["results"]["1:documents"]["rag_completion"]["goal_sha256"] = (
+        goal_hash(goal)
+    )
+    recommit(data)
+
+
+def test_signed_unbound_goal_stays_missing_with_verified_literal_context(new_partial):
+    data = new_partial
+    value = data.task.report_scope.model_dump(mode="json", exclude={"goal_scope_attestation"})
+    value["unbound_metric_goals"] = [
+        {
+            "goal_id": "requested_total",
+            "description": "Actual unbound request",
+            "reason": "p3_evidence_required",
+        }
+    ]
+    report = data.payload["snapshot"]["report"]
+    report["business_completion"]["required_goals"].append("requested_total")
+    report["business_completion"]["missing_evidence"]["requested_total"] = ["p3_evidence_required"]
+    report["claims"].append(
+        {
+            "goal_id": "requested_total",
+            "kind": "unavailable",
+            "codes": ["p3_evidence_required"],
+            "documents": [],
+        }
+    )
+    data.gold.expected_codes["requested_total"] = ["p3_evidence_required"]
+    bind_extended(data, ReportScope.model_validate_json(json.dumps(value)))
+    assert evaluate(data)["strict_correct"] is True
+    report["business_completion"]["missing_evidence"].pop("requested_total")
+    report["business_completion"]["verified_goals"].append("requested_total")
+    with pytest.raises(ValueError, match="Unbound"):
+        evaluate(data)
+
+
+def test_reviewed_subquote_does_not_require_partial_publication_policy(new_partial):
+    data = new_partial
+    value = data.task.report_scope.model_dump(mode="json", exclude={"goal_scope_attestation"})
+    value["partial_evidence_policy"] = "legacy"
+    citation = data.task.document_goal.required_facts[0].citation
+    value["citation_policy"] = {
+        "goal_sha256": hashlib.sha256(data.task.question.encode()).hexdigest(),
+        "required_sources": [{k: getattr(citation, k) for k in CitationSource.model_fields}],
+    }
+    result = data.payload["snapshot"]["state"]["results"]["1:documents"]
+    result.update(status="succeeded", error=None)
+    result["rag_completion"].update(
+        verdict="semantic_retrieval", relevant_chunk_ids=[citation.chunk_id]
+    )
+    result["rag_completion"]["submission"]["outcome"] = "complete"
+    data.payload["snapshot"]["state"]["verifications"]["1:documents"].update(
+        status="passed", error=None
+    )
+    report = data.payload["snapshot"]["report"]
+    report["execution_status"] = "succeeded"
+    report["business_completion"]["missing_evidence"]["documents"].remove("rag_task_insufficient")
+    bind_extended(data, ReportScope.model_validate_json(json.dumps(value)))
+    outcome = evaluate(data)
+    assert outcome["strict_correct"] is True
+    assert outcome["dimensions"]["evidence"] is True
+    assert data.task.report_scope.partial_evidence_policy == "legacy"

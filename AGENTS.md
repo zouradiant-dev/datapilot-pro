@@ -4,6 +4,13 @@
 
 本文件包含 DataPilot Pro 专属开发约束与文末的通用协作约定。通用约定补充执行方式，项目明确的数据权限、边界校验、恢复协议、Live 授权、冻结与验收要求仍须遵守；历史阶段记录应结合记录时间及用户在当前会话明确给出的范围和授权理解。英文文件提供通用约定的英文说明，项目专属约束与阶段边界见本文件。
 
+## 2026-11-05 十题合同修复
+
+- 负责人授权处理十题合同缺口，并明确接受五项新的完成状态修订；新 revision-02 只改变五条 expected_status，其余题目/数字 Oracle/来源/禁止行为约束保持。原 revision-01、此前十一题接受记录及旧 Gold/Freeze/Seal/STOP 不覆盖。
+- 五题保留 Gold 补齐合同，另五题以独立审批接受状态修订；合并前轮后为 34 份可确认合同提案、2 份精确单文件来源待准入、4 份仅宿主拒绝。合同采用、索引物化、正式 Seal/原生准入和付费 Live 仍分别处理。
+- 报告新增显式 UnboundMetricGoal 与 evidence_only 必需引用，不创建虚假指标定义/Worker，不将引用算作 verified 业务结果。默认旧序列化及原 v2/v3 评分文件不改；新 Holdout 宿主适配为 p7-new-holdout-host-v2。
+- 新候选为 432 文件，Manifest SHA256 bf250c0febe542018ead419e422ddff5325b02e89f6f0bdd847c1cfa5c538a90。直接从快照运行双版本非集成各 1449 passed、原生 PG/MCP/Journal/Collector/签名评分各 2 passed；公开脚本模型，真实付费调用 0。测试仅使用新 55453 实例，未连接旧 Holdout 业务库。详情见 `docs/research/p7-ten-contract-gap-repair.md`。
+
 ## 2026-11-04 当前推进补充
 
 - 负责人随后授权执行“文档合同的完整语义审阅”，本轮 40/40 已完成：24 份可确认提案、2 份精确单文件来源准入待补、4 份仅宿主拒绝、10 份语义/完成状态缺口。不得将审阅数当业务通过数，或为匹配 Gold 添造未完成目标。原题、已接受的 11 题修订/Gold、历史冻结与 430 文件候选保留；合同确认、索引写入、正式 Seal/原生准入及付费 Live 不由本次语义审阅自动批准。详见 `docs/research/p7-document-contract-semantic-review.md`。

@@ -116,6 +116,8 @@ def render(report):
             )
     if report.business_completion.unconfirmed_claims:
         lines.append("未确认结论：" + ", ".join(report.business_completion.unconfirmed_claims))
+    if report.business_completion.satisfied_evidence_goals:
+        lines.append("必需背景引用已核对；它不表示主指标已验证。")
     for goal, codes in report.business_completion.missing_evidence.items():
         lines.append("缺少必需证据 " + escaped(goal) + "：" + ", ".join(map(escaped, codes)))
     return "\n".join(lines)
@@ -377,6 +379,7 @@ class ReportService:
             ) from None
         self.validate_citation_policy(retrieval)
         claims, charts, covered, missing = [], [], [], {}
+        satisfied_evidence = []
         partial_facts = False
         authorization = digest(
             {
@@ -437,6 +440,24 @@ class ReportService:
                         ],
                     )
                 )
+        for goal in self.scope.unbound_metric_goals:
+            missing[goal.goal_id] = [goal.reason]
+            claims.append(
+                ReportClaim(
+                    goal_id=goal.goal_id,
+                    kind="unavailable",
+                    codes=[goal.reason],
+                    missing_requirements=[
+                        MissingRequirement(
+                            code=goal.reason,
+                            message="待确认的指标目标：" + goal.description,
+                            fields=["metric_definition"]
+                            if goal.reason == "definition_missing"
+                            else ["p3_verified_evidence"],
+                        )
+                    ],
+                )
+            )
         if goal := self.scope.document_goal:
             if not self.scope.metrics and (
                 retrieval is None
@@ -571,16 +592,17 @@ class ReportService:
             )
             # Only exact host-reviewed facts may survive an incomplete retrieval.
             # Related background, similarity and an accepted receipt are not fact proof.
+            metric_dependencies_ready = goal.evidence_only or all(
+                g in covered for g in goal.metric_goals
+            )
             partial_display = (
                 self.scope.partial_evidence_policy == "partial-facts-v1"
                 and (source_ready or partial_source)
                 and any(coverage.values())
-                and all(g in covered for g in goal.metric_goals)
+                and metric_dependencies_ready
                 and metric_topics_match
             )
-            if (source_ready and topics_match and all(g in covered for g in goal.metric_goals)) or (
-                partial_display
-            ):
+            if (source_ready and topics_match and metric_dependencies_ready) or (partial_display):
                 codes = [
                     "document_fact_unverified:" + id_
                     for id_, proof in coverage.items()
@@ -600,9 +622,13 @@ class ReportService:
                     codes.append("required_document_source_missing")
                 if codes:
                     missing[goal.goal_id] = codes
+                elif goal.evidence_only:
+                    satisfied_evidence.append(goal.goal_id)
                 else:
                     covered.append(goal.goal_id)
-                partial_facts = any(coverage.values()) or goal.purpose == "conclusion"
+                partial_facts = not goal.evidence_only and (
+                    any(coverage.values()) or goal.purpose == "conclusion"
+                )
                 claims.append(
                     ReportClaim(
                         goal_id=goal.goal_id,
@@ -678,6 +704,7 @@ class ReportService:
         required = list(self.requests) + (
             [self.scope.document_goal.goal_id] if self.scope.document_goal else []
         )
+        required += [goal.goal_id for goal in self.scope.unbound_metric_goals]
         unconfirmed = ["causal_conclusion_not_verified"] if self.scope.causal_requested else []
         status = (
             "partial"
@@ -698,6 +725,7 @@ class ReportService:
             status=status,
             required_goals=required,
             verified_goals=covered,
+            satisfied_evidence_goals=satisfied_evidence,
             missing_evidence=missing,
             unconfirmed_claims=unconfirmed,
             limited_results_visible=bool(covered) or any(c.kind == "context" for c in claims),

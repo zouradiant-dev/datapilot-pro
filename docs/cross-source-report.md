@@ -1,5 +1,13 @@
 # P6B：跨来源可验证的 SaaS 报告
 
+## 2026-11-05 显式缺失目标与必需引用
+
+可信宿主可用 `ReportScope.unbound_metric_goals` 记录原问题中确实索取、但缺少定义或 P3 证据路径的目标。它只进入必需目标与缺失项，不能生成 MetricRequest、Worker、定义或数值。计划仍只调度宿主已确认的可执行任务，报告不可漏掉这些真实请求。
+
+`DocumentGoal.evidence_only=true` 仅用于具有独立字面事实要求的必需背景引用。它允许主指标不可用时保留经原 scope/pin/工件/字面证明复核的引用；完成引用另记为 `satisfied_evidence_goals`，不计入 verified 业务结果。主指标全部不可验证时整体仍为 unavailable；已验证主指标缺少必需引用时仍不能 completed。默认字段省略，原合同及旧序列化保持。
+
+新 Holdout 宿主评分适配 v2 复用原 v3，独立复核这些已审阅字面引述的实际工件与来源身份，不借此放宽 RAG insufficient、P3、权限、预算或 unknown 边界。原 v2/v3 文件和历史分数保留。实现及双版本原生控制见 [十题合同修复](research/p7-ten-contract-gap-repair.md)。以下为原 P6B 阶段记录。
+
 本轮基线 fb44a77。P6A 真实检索与 P5B 持久恢复已验收；只推进 P6B，不做 UI/Langfuse、P11 降级或缓存，也不自动提交。原有 docs/codex-prompts-v2.4.md 用户修改保留。
 
 ## 两条实际链路与缺口

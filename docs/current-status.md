@@ -1,6 +1,6 @@
 # P7 当前候选与验收进度
 
-日期：2026-11-04，Asia/Singapore。分支 `p7-engineering-candidate-v1`。工程候选已提交/推送为 `4460009`，[完整双版本 CI #41816538430](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41816538430) 已启动；后续新增的新 60 题适配与审阅工具单独验证，不把该 CI 自动扩展为未提交修改的证据。
+日期：2026-11-05，Asia/Singapore。分支 `p7-engineering-candidate-v1`。当前最新工作为十题合同缺口修复及独立新候选，见 [修复记录](research/p7-ten-contract-gap-repair.md)。此前 `4460009` 的 CI 和后续准备提交均只覆盖各自源码，不自动扩展为本次新改动的远端证据。
 
 ## 本轮推进约定
 
@@ -16,7 +16,7 @@
 |---|---|---|
 | 旧 Gate 2B 60 | 原首次 Live 31 observed、29 not_run；原 v1 25/31、离线 v2 26/31 | 保留历史，不续跑旧 Campaign |
 | Final 50 的十题修复回归 | 原十题 Live 严格 9/10；053 随后在当前候选及 v3 下新单题严格通过，partial，4 calls／7139 Token | 本次单题已 STOP；原 9/10 保留 |
-| 新业务 Holdout 60 | SQL/RAG/组合各 20；11 个修订 Gold 已获接受；40 题文档语义审阅完成：24 合同提案、2 精确来源待补、4 宿主拒绝、10 语义缺口 | 处理缺口并确认合同、正式 Gold/Seal、原生 Dev 控制及独立 Live 准入 |
+| 新业务 Holdout 60 | SQL/RAG/组合各 20；十一题原修订及后续五项状态修订分别获接受；十题缺口已形成修复，现为 34 合同提案、2 精确来源待补、4 宿主拒绝 | 确认完整合同及两份来源准入、正式 Gold/Seal、原生 Dev 控制及独立 Live 准入 |
 | 消融 | 独立新 Dev 草稿 10 题已准备，与 257 条旧输入原文/数字归一化重合为 0；六组适配未验收 | 审阅新题/来源/Gold，验证可比 arm；当前可执行单元 0，付费预算 0 |
 
 新 60 题的既有材料保存在忽略的 `artifacts/p7/g2-business-60-private/`，没有把问题或 Gold 加入公共代码或候选运行输入。本轮在当前源码下只读复验已有专用库：54 条 pins verified pending launch binding、6 条 negative control passed。来源实际已存在于 55450 专用实例，旧封面“未物化”不能代替当前观察；本轮没有写入这些来源，也没有将来源预检写成 60 条业务通过。
@@ -53,6 +53,8 @@ Final 50 另有七题缺执行证据（071、072、073、074、076、078、079�
 准备源码已提交/推送为 `dc9e638`，[该提交双版本 CI #41818754250](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41818754250) 已触发。负责人随后接受 11 题修订及 Gold，独立追加 [审批记录](research/p7-new-holdout-revised-gold-approval.json)；40 题文档合同另有本地可读审阅提案，含 53 个待语义核验的引述候选和 2 项独立缺失事实审阅，均未批准或派发。
 
 负责人现已授权完成 [40 题文档合同完整语义审阅](research/p7-document-contract-semantic-review.md)。24 份可确认提案含 37 个引述证明提案；另有 2 份精确单文件索引预览、4 个必须保留的宿主拒绝用例，以及 10 个语义/完成状态差异。全部 40 题审阅结束，合同采纳与正式准入尚未通过；不把先前待审引述数量或本次审阅数量当作 Holdout 业务成绩。相关公开回归 149 passed，无模型调用或数据库写入，已接受 Gold 和原候选保持原件。
+
+**2026-11-05 后续修复：**负责人授权处理上述十题，并接受五项具体完成状态修订。五题保留 Gold 补齐合同，另外五题追加状态修订与独立审批；新 60 条 revision-02 只改五个预期状态，其他作者字段不变。新增未绑定指标目标和必需证据引用的显式契约，新宿主评分适配为 v2；默认旧合同序列化及历史评分保持。新 432 文件快照双版本非集成各 1449 passed、定向原生 PG/MCP/Collector/签名评分各 2 passed；未声称全量集成或业务 Live 通过。完整记录见 [十题合同修复](research/p7-ten-contract-gap-repair.md)。
 
 旧冻结 Manifest、Gold、Seal、STOP 和历史分数保持原件。候选准备不等于生效 Permit；业务补验与新 Holdout Live 按各自精确合同和预算独立准入。
 

@@ -23,6 +23,7 @@ def finalize(engine, state, execution_status):
     required = list(engine.reporting.requests)
     if engine.reporting.scope.document_goal:
         required.append(engine.reporting.scope.document_goal.goal_id)
+    required.extend(goal.goal_id for goal in engine.reporting.scope.unbound_metric_goals)
     business = (
         report.business_completion
         if report
@@ -58,7 +59,9 @@ def finalize(engine, state, execution_status):
             reason_codes=[]
             if business.status == "completed"
             else ["BUSINESS_" + business.status.upper()],
-            business_metrics_required=bool(engine.reporting.requests),
+            business_metrics_required=bool(
+                engine.reporting.requests or engine.reporting.scope.unbound_metric_goals
+            ),
             business_evidence_verified=bool(engine.reporting.requests)
             and business.status == "completed",
         )

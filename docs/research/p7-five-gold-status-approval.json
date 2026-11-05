@@ -1,0 +1,42 @@
+{
+  "schema": "p7-five-gold-status-owner-approval-1",
+  "recorded_at": "2026-11-05T04:07:37.266619+00:00",
+  "decision": "ACCEPTED_FIVE_COMPLETION_STATUS_REVISIONS",
+  "approval_ref": "owner-accepted-five-gold-status-revisions-20261105",
+  "proposal_manifest_raw_sha256": "0ec8d99be3a9e5b6f035b61eef98cf275f9428bae4893d50526cd4a43b0245f3",
+  "owner_review_document_raw_sha256": "bcd94f36d722cb1f5ea5dd975304325eef7ee54ece8e3175db4c126e04fb4576",
+  "private_approval_raw_sha256": "9863093e9e5e05200d48fa9015ac6dec9de98b0dcfe6fa3c43dcaaac39d69160",
+  "cases": [
+    {
+      "case_id": "g2-bh-rag-014",
+      "original_row_sha256": "c1d45bd58bd1b6a3f698fdf44fe91949bfa938be44bfeff1f46389e53f4d7e83",
+      "accepted_row_sha256": "8b44f2ffcdca249a18219620d43e846cba21dce803512eb22678ec16381b634a"
+    },
+    {
+      "case_id": "g2-bh-rag-015",
+      "original_row_sha256": "3f01401351e0ac60a348fded43da9bde2fcfede213a786d46d527c4e3bd6bb0d",
+      "accepted_row_sha256": "f67632831894911fcf77ca1c07fa044e5fc3d5fec79d19f51c83cfa2282b380e"
+    },
+    {
+      "case_id": "g2-bh-xsrc-011",
+      "original_row_sha256": "a5ca8b1aea9d7182c236e26d0eb38f91c524fa9dfa42e5b82325fc27befa7b4e",
+      "accepted_row_sha256": "839e825f1b03e5948f3ee23567a54eb9b9e8e519a45c3d5079c460c860025511"
+    },
+    {
+      "case_id": "g2-bh-xsrc-013",
+      "original_row_sha256": "504d8a187b8de1a71d5447df8b0478b9d194ff9c7595b92512789edb24be0bcd",
+      "accepted_row_sha256": "04124e7f9568357d257615d055a38a368583cf489c9476985d3e6142ece14486"
+    },
+    {
+      "case_id": "g2-bh-xsrc-015",
+      "original_row_sha256": "8f1edbfcb52971c3880ba30066ec07fb8b9bf8ec7d5de0e5519ffdd22615e6ee",
+      "accepted_row_sha256": "d82e88f69386bcc3bd1de8278547d22a16543a5ef0491370513965879311b6f8"
+    }
+  ],
+  "questions_changed": false,
+  "numeric_oracles_changed": false,
+  "p3_definitions_changed": false,
+  "safety_constraints_changed": false,
+  "document_contracts_automatically_approved": false,
+  "live_allowed": false
+}

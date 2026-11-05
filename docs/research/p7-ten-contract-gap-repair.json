@@ -1,0 +1,63 @@
+{
+  "schema": "p7-ten-gap-repair-closure-1",
+  "status": "TEN_GAPS_REPAIRED_CONTRACT_ADOPTION_PENDING",
+  "repaired_cases": 10,
+  "gold_preserving_repairs": 5,
+  "owner_accepted_status_revisions": 5,
+  "contract_proposals_total": 34,
+  "remaining_document_source_admission": 2,
+  "document_host_rejection_cases": 4,
+  "document_contracts_approved": 0,
+  "candidate_manifest_sha256": "bf250c0febe542018ead419e422ddff5325b02e89f6f0bdd847c1cfa5c538a90",
+  "candidate_files": 432,
+  "host_scorer": {
+    "version": "p7-new-holdout-host-v2",
+    "sha256": "7d9878ba4e026c87f7b23862c13d04ad38e3ed3434fc3571bd20400d265ea746"
+  },
+  "unchanged_historical_files": 132,
+  "original_430_file_snapshot_preserved": true,
+  "old_scorers_unchanged": true,
+  "new_source_files": [
+    "tests/test_report_goal_gaps_postgres.py",
+    "tests/test_report_unbound_goals.py"
+  ],
+  "changed_source_files": [
+    "evaluation/p7_v3_current/holdout_scoring.py",
+    "src/datapilot/reporting/adapter.py",
+    "src/datapilot/reporting/contracts.py",
+    "src/datapilot/reporting/service.py",
+    "tests/test_new_holdout_scoring.py"
+  ],
+  "checks": {
+    "unit311-final": {
+      "tests": 1449,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "unit313-final": {
+      "tests": 1449,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "native311-final": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "native313-final": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "accepted_revision_manifest_raw_sha256": "02de416700b558a4495f4633cbbcf4e173baa31eb48823d74ee9cb67ec4905b3",
+  "owner_approval_raw_sha256": "9863093e9e5e05200d48fa9015ac6dec9de98b0dcfe6fa3c43dcaaac39d69160",
+  "live_allowed": false,
+  "real_provider_calls": 0,
+  "isolated_test_database": "127.0.0.1:55453/datapilot_test_gap_20261105",
+  "holdout_database_writes": 0
+}
