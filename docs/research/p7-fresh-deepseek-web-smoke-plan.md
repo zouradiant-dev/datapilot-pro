@@ -1,5 +1,7 @@
 # P7 Fresh DeepSeek Web Smoke 准备计划
 
+本页记录 2026-11-02 的 Web Smoke 提案。正式 60 题验收使用另行封存的批次。[P7 正式验收](p7-formal60-48k-acceptance.md)
+
 2026-11-02，分支 `p7-engineering-candidate-v1`，源码 Commit **`2f71dcb346cc527d0dd39bb5293029c2fe16ae92`**。本轮只做冻结、三案例设计、非付费预检和授权模板；**未调用任何付费模型，未创建 Live Run**。
 
 机器计划：[p7-fresh-deepseek-web-smoke-plan.json](p7-fresh-deepseek-web-smoke-plan.json)  

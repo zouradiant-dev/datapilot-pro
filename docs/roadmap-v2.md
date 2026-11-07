@@ -8,7 +8,7 @@
 
 ## 1. 当前起点与优先级
 
-**当前增量 P6C**：保留 P6B 的 P3 持久 Evidence/六层 Verification 与 P4 DAG/Artifact 桥接，增加可信单用户 FastAPI、HTTP-only Streamlit、默认原 P5B Durable、宿主会话/Scope/幂等、受控运行保留及可关闭本地 OTel 投影。实际链路见 [P6B](cross-source-report.md)、[P6C 交付](product-demo.md)、[API](api-v1.md)、[保留策略](data-retention.md)。范围止于 P6C；P7/P10/P11 未实施，不自动提交或进入下一阶段。以下旧停止点保留为历史，不能作为当前实现缺口。
+**本地产品基线 P6C**。在 P6B 的 P3 持久 Evidence、六层 Verification 与 P4 DAG/Artifact 桥接之上，增加可信单用户 FastAPI、HTTP-only Streamlit、原 P5B Durable、宿主会话与受控保留。P7 在这条产品链基础上完成独立合成业务评测及交付，后续 P10/P11 仍属于规划。下方停止点按各阶段理解。[P6B](cross-source-report.md) · [P6C 交付](product-demo.md) · [API](api-v1.md) · [保留策略](data-retention.md)
 
 验收分层：P6A 最初两次真实 DeepSeek smoke 失败历史不变；定向补强后获授权的一次检索 smoke 成功，见 [历史与 Post-push 核验](rag-completion-repair.md)。P6B 的真实 PG/本地神经 Embedding/MCP/恢复测试使用明确的脚本模型决策，未新增付费模型实验。检索 smoke 与五个合成业务案例均不等于真实模型稳定成功率或完整经营分析基准。
 

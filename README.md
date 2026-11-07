@@ -7,7 +7,7 @@
 | 验收维度 | 当前状态 |
 |---|---|
 | Engineering Demo Candidate | **ACCEPTED**（本地单用户、合成数据、脚本 Worker） |
-| Python 3.11 / 3.13 完整 CI | **PASS**（[Actions #28](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41299832252)，提交 `b06cc52`） |
+| 候选发布 CI（Python 3.11 / 3.13） | **PASS**（提交 `23c44c7)，[GitHub Actions](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/42354878566)） |
 | Independent Business Quality | **PASS**（正式 60 题，455 文件 v4 候选） |
 | DeepSeek Live Gate | **PASS**（48k，严格 60/60，业务 60/60） |
 | 独立人工合同语义审查 | **NOT_VERIFIED** |
@@ -89,16 +89,13 @@ flowchart LR
 | 正式 60 条独立合成业务题 | ✅ 已完成 | 54 个 Runtime、6 项宿主拒绝，未运行 0 |
 | 多租户 / RLS / 生产认证 / 远程 Langfuse / HNSW | ❌ 未实现 | 明确不在这版范围 |
 
-## 可信工程验收（截至 `b06cc52`）
+## 验收与工程证据
 
-### 完整 CI（Actions #28，双版本）
+### 候选发布 CI（`23c44c7`）
 
-| Python | 非集成 | PG/MCP 集成 | 合法 skip | failed / errors |
-|---|---:|---:|---:|---:|
-| 3.11 | **1336 passed** | **325 passed** | 63 | **0** |
-| 3.13 | **1336 passed** | **325 passed** | 63 | **0** |
+Python 3.11 和 3.13 的单元与协议回归、真实 PostgreSQL／MCP 与 HTTP Mock 集成、Ruff 和格式检查均通过。此工作流使用 Fake／Mock 模型决策，正式 DeepSeek 结果单列。[发布 CI 范围](docs/research/p7-formal60-48k-acceptance.md#远端-ci)
 
-计划范围 1724 项 = 非集成 1336 + 集成 388；集成 388 = 通过 325 + 合法 skip 63（Qwen/CUDA 62 项 + Live 1 项，逐条来自 JUnit）。上述数字由两版本下载的 JUnit 工件直接解析：unit 1336 / 0 failed / 0 errors / 0 skipped，integration 388 = 325 passed + 63 skipped；Run 与两个 Job 结论均为 `success`（attempt 1，HEAD `b06cc52`）。脱敏摘要见 [p7-actions-28-junit-summary.json](docs/research/p7-actions-28-junit-summary.json)；原始 Run API 快照、job 日志与 JUnit 工件仍为 local-only（`artifacts/p7/full-ci-actions-v1/`），不随仓库上传。workflow 与范围声明见 [`.github/workflows/test.yml`](.github/workflows/test.yml)，恢复记录见 [full CI recovery](docs/research/p7-full-ci-recovery.md)。
+早期 `b06cc52` 的 Actions #28 每个版本通过 1,336 项非集成与 325 项集成，另有 63 项跳过。[历史 JUnit 摘要](docs/research/p7-actions-28-junit-summary.json)
 
 ### 工程 Demo（五个真实 Run，2026-10-31）
 
@@ -120,7 +117,7 @@ flowchart LR
 - 业务：60 条计划中观测 31 条、严格通过 25、未通过 6、`not_run` 29；因 `bh2-031` 预算预留失败安全停止，61 次真实调用全部结算、无 unknown。这是**固定顺序的前缀样本**，不能当无偏成功率。见 [Gate 2B Live](docs/p7-gate2b-live.md)。
 - 50 条开发目标在脚本决策 + 真实 PG/MCP 下为 48/50，不是真实模型成绩。
 
-本节记录各自候选上的工程链、权限、证据和恢复结果。当前正式业务质量见 [48k 验收](docs/research/p7-formal60-48k-acceptance.md)。
+当前正式 48k 批次覆盖 54 个 Runtime Run 与 6 项零调用宿主拒绝，严格分和业务分均为 60/60，边界均为 42/42。[48k 验收](docs/research/p7-formal60-48k-acceptance.md)
 
 ## 本地运行（安全合成数据）
 

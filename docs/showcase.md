@@ -1,8 +1,8 @@
 # 求职展示：DataPilot Pro 与 AI Agent 开发岗位
 
-本页把仓库中**已经发生并有记录**的工程事实，整理成面试可直接使用的材料：亮点、技术难点、一条可信证据链、SQL+RAG Demo 讲解脚本、限制与后续计划。
+这份讲解围绕一个可复现的 SQL + RAG 工程 Demo，并单列正式业务验收和远端 CI。
 
-> 使用前请读一遍末尾的[事实边界](#事实边界)。本项目当前是 **Engineering Demo Candidate: ACCEPTED**，但 **Independent Business Quality: PENDING**、**DeepSeek Live Gate: PENDING**；Demo 的模型决策由 Fake/脚本提供，真实执行的是 PostgreSQL、MCP、BGE、P3 与 Durable。不要把 Demo 说成"DeepSeek 自主完成了经营分析"。
+工程 Demo 已验收，模型决策使用 Fake／脚本，PostgreSQL、MCP、BGE、P3 和 Durable 实际执行。另一次封存的 DeepSeek Flash 48k 正式评测覆盖 60 道合成 SaaS 题，**严格分 60/60、业务分 60/60，边界各 42/42**。[工程 Demo](releases/p7-engineering-candidate-v1/frozen/p7-demo-acceptance.md) · [正式业务验收](research/p7-formal60-48k-acceptance.md)
 
 ## 1. 一句话介绍
 
@@ -16,8 +16,8 @@ DataPilot Pro 是一个面向 SaaS 经营分析的 **Evidence-driven AI Agent**�
 | 工具使用与协议 | 真实 MCP SDK stdio、ToolRegistry、每条 tool_call 一一配对反馈、能力最小化 |
 | 可信与安全 | 宿主绑定 scope、SQLGlot AST + 只读角色、模型无 DDL/文件/Shell、凭据按用途隔离 |
 | 可观测与可恢复 | Journal/Ledger/Artifact、unknown-outcome 阻断重发、跨进程重启一致性 |
-| 评测与诚实披露 | 意图 Holdout、业务 Holdout 前缀、失败/STOP/not_run 全部保留 |
-| 工程交付 | Python 3.11/3.13 双版本 CI：各 1336 非集成 + 325 PG/MCP 集成用例 |
+| 评测 | 正式 DeepSeek Flash 48k 批次分别报告严格分、业务分及边界结果，历次 STOP 和未运行项独立留档 |
+| 工程交付 | 发布提交 `23c44c7` 的 Python 3.11／3.13 CI 均通过，包括真实 PostgreSQL／MCP 回归。[CI 运行](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/42354878566) |
 
 ## 2. 项目亮点（可直接写进简历/自我介绍）
 
@@ -26,7 +26,7 @@ DataPilot Pro 是一个面向 SaaS 经营分析的 **Evidence-driven AI Agent**�
 3. **Goal v4 可信有限范围**：把"用户到底要什么"变成宿主签发的合同 + 显式确认事件；确认、执行审批、完成判定三件事在代码与 UI 上都分开。
 4. **可恢复且不重复扣费**：官方 PG Checkpoint + Journal + 原子预算账本；已提交响应复用，未知结果保守计账并阻断自动重发。
 5. **真实数据边界**：SQL MCP 只有 `datapilot_reader` / `datapilot_upload_reader`，RAG MCP 只有 `rag_reader`；模型侧不存在管理员、Owner、Seed、Registry 凭据。
-6. **诚实的评测记录**：Intent Holdout 59 条真实调用；业务 Holdout 在预算失败时安全停止并保留 29 条 `not_run`，没有调参重跑或把前缀样本包装成完整成功率。
+6. **可追溯的评测**。正式 60 题使用预注册评分，涵盖 54 个模型执行 Run 和 6 项零模型调用的宿主拒绝。旧 Gate 2B 在预算预留失败处停止，29 条 `not_run` 保留在旧批次。[评测索引](evaluation.md)
 7. **可复现的工程证据**：五个 Demo Run、重启前后签名快照、撤回后 `403 GOAL_REVOKED`、unknown 不重发，均有本地工件与公开脱敏副本（见 [交付索引](releases/p7-engineering-candidate-v1/README.md)）。
 
 ## 3. 三个技术难点与解决方案
@@ -55,7 +55,7 @@ DataPilot Pro 是一个面向 SaaS 经营分析的 **Evidence-driven AI Agent**�
 - 金额以整数分存储、Decimal 文本发布；浮点只用于图表坐标。分母为零、缺定义、覆盖范围不足都返回 `unavailable`，不发布数字。
 - 报告中的每个数字绑定 Evidence/Verification ID、版本、时间窗口、单位与过滤条件。
 
-**可讲的证据**：Demo 中两条 paid/CNY 账单 `100025 + 43200` 分，独立 CSV/Decimal 与受限 MCP SQL 都得 **1432.25 CNY**，P3 六层全 passed；三个干扰行（unpaid、7 月、USD）均未进入指标。Live Holdout 已观测的 12 个发布数值 claim 与独立 Gold 12/12 一致。
+Demo 中两条 paid/CNY 账单合计 **1432.25 CNY**，受限 MCP SQL 与独立 CSV／Decimal 复算一致，P3 六层通过。另一次正式 DeepSeek 评测的 **36/36** 个必需数值和 **36/36** 个必需引文均通过核验。[工程 Demo](releases/p7-engineering-candidate-v1/frozen/p7-demo-acceptance.md) · [正式业务验收](research/p7-formal60-48k-acceptance.md)
 
 ### 难点三：长流程失败后，既不丢状态也不重复花钱
 
@@ -68,13 +68,13 @@ DataPilot Pro 是一个面向 SaaS 经营分析的 **Evidence-driven AI Agent**�
 - 恢复由宿主重新提供身份与 scope，重查 Dataset/version、Semantic/Metric、source hash 与原 P3 verdict；摘要、Memory、Checkpoint 都不能补授权。
 - Web 层只增加有界本地进程派发与 PG Outbox，不新增 Scheduler/Checkpoint；终态不能被恢复退回 `running`。
 
-**可讲的证据**：Demo 中真正杀掉并重启 API/UI，五个 Run 的 message、payload、Manifest、Journal、Ledger、Artifact 与报告投影逐项一致；合成 unknown 调用后恢复接口返回 `403 WEB_RESUME`，调用与 Ledger hash 不变。Live Campaign 中 61 次真实调用全部 complete、无 unknown，预算失败时原 Runner 停止而不是继续派发。
+工程 Demo 重启 API 和 UI 后，五个 Run 的签名与证据一致。合成 unknown 调用使恢复接口返回 `403 WEB_RESUME`，调用与 Ledger 哈希保持一致。旧 Gate 2B 则在预算预留失败时安全停止，当时 61 次真实调用均已结算。[工程 Demo](releases/p7-engineering-candidate-v1/frozen/p7-demo-acceptance.md) · [历史 Gate 2B](p7-gate2b-live.md)
 
 **补充难点（可简略）**：工具协议配对——每条 assistant tool_call（含拒绝、异常、取消）必须有唯一反馈，JSON 解析失败不允许退化为空参数；否则模型会在"工具没执行"的幻觉上继续规划。
 
 ## 4. 一次可信证据链的典型执行流程
 
-以已验收 Demo 的 **SQL+RAG 组合 Run**（`37768ae4-04e7-430a-a48e-f2ef2261c8aa`）为主线：
+以下用已验收的 **SQL+RAG 组合 Run**（`37768ae4-04e7-430a-a48e-f2ef2261c8aa`）说明典型链路。该次验收通过 HTTP 预先提交候选消息，浏览器用于确认、审批、查看报告和撤回。[原 Demo 记录](releases/p7-engineering-candidate-v1/frozen/p7-demo-acceptance.md)
 
 1. **准备可信输入**：通过真实 HTTP 上传合成 CSV，审阅 Schema 并显式确认；受限入库生成 Dataset v1；人工确认 Semantic/Metric v1；上传 `billing-guide.md` 并用固定 BGE 建立 Corpus/IndexVersion。
 2. **形成候选**：用户在对话里提出组合问题；有限意图规则生成候选，不调用模型；候选卡片展示 Dataset、指标、右开时间窗口、文档目标、预算与"不保证事项"。
@@ -90,7 +90,7 @@ DataPilot Pro 是一个面向 SaaS 经营分析的 **Evidence-driven AI Agent**�
 
 ## 5. SQL + RAG Demo 讲解脚本（约 8 分钟）
 
-> 演示前：使用仓库合成 fixture 与本地 Fake 模式；不要现场调用付费模型，也不要展示真实浏览器截图作为证据（本仓库未提交截图）。下面的台词只描述**可复现的真实行为**。
+演示使用本地 Fake 模式和工程 Demo 的 2026 年 6 月账单与计费说明。根 README 快速开始的 300 CNY 属于另一套合成样例。[账单 CSV](../tests/fixtures/demo/engineering-v1/invoices.csv) · [计费说明](../tests/fixtures/demo/engineering-v1/billing-guide.md)
 
 **0:00–0:40 开场**
 
@@ -98,7 +98,7 @@ DataPilot Pro 是一个面向 SaaS 经营分析的 **Evidence-driven AI Agent**�
 
 **0:40–1:40 上传与确认**
 
-（加载合成 SaaS 样例）"上传后系统只返回有界画像，不给浏览器原始行。我确认 Schema，再在管理页确认字段映射和指标口径——注意，确认映射和确认指标是两个动作，都有版本。"
+（上传工程 Demo 的账单 CSV 与计费说明）“上传后页面展示有限的数据画像。我先确认 Schema，再确认字段映射和 `paid_invoice_revenue` 指标口径。映射和指标各有版本。”
 
 **1:40–2:40 提问与合同**
 
@@ -122,27 +122,14 @@ DataPilot Pro 是一个面向 SaaS 经营分析的 **Evidence-driven AI Agent**�
 
 **7:30–8:00 收尾**
 
-"所以这个项目的核心不是'让模型多做事'，而是'让模型的每一步都可授权、可验证、可恢复'。当前它通过的是工程 Demo 验收，真实模型业务质量还在 PENDING，这正是下一步要做的独立评测。"
+“刚才用脚本决策演示了真实的权限、证据和恢复链。另有一轮正式 DeepSeek Flash 48k 评测，54 个 Run 加 6 项零模型调用的宿主拒绝，严格分和业务分各 60/60，边界各 42/42。这个结果适用于封存的合成 SaaS 题和宿主审阅范围。”
 
-## 6. 系统限制与后续真实模型验证计划
+## 6. 验收范围与待验证项
 
-### 当前限制（必须主动说明）
-
-- **模型决策是脚本/Fake**：Demo 证明的是权限、证据、恢复与产品链路，不是 DeepSeek 的自主规划质量。
-- **Independent Business Quality: PENDING**；独立人工语义审查为 `NOT_VERIFIED`。
-- **Live Business Holdout 未完成**：60 条计划中观测 31 条（25 严格通过、6 未通过），29 条 `not_run`；这是固定顺序的**前缀样本**，不能当无偏成功率。Live Gate 仍为 PENDING。
-- **Qwen3 是可选 Profile**：默认 BGE 512/ONNX；Qwen 的 CUDA/生产切换与最新 Web 确认链资源补验未完成。
-- **非生产系统**：本地单用户、回环监听；没有多租户 RLS、生产认证、SLA、远程 Langfuse、HNSW/ANN。
-- 50 条开发集上的 48/50 是**脚本决策 + 真实 PG/MCP** 的工程正确率，不是真实模型成绩。
-
-### 后续验证计划（有先后依赖）
-
-1. **封存独立业务 Gold**：新问题、来源版本、canary 与评分器分离；已完成封存流程，但不能用已看过的样本调优。
-2. **补齐 P3 定义与 Registry 登记**：只登记经负责人精确批准的定义；`live_allowed` 由独立授权控制。
-3. **单独授权的真实模型 Live**：固定候选/Prompt/配方/预算，串行执行，逐条经 scoped MCP 采集 Evidence/Verification，离线评分；失败与 `not_run` 原样保留。
-4. **完整 60 条而不是前缀**：只有全部计划案例有终态，才讨论业务成功率与置信区间。
-5. **Qwen 可选路径**：先完成 CUDA/资源准入与跨平台验证，再讨论生产切换；默认 BGE 不变。
-6. **产品化边界**：认证、租户隔离、审计与保留策略另行设计，不能用 `dataset_id` 冒充租户隔离。
+- **正式业务验收已通过**。题本由开发者合成，合同由宿主审阅，独立第三方人工语义盲审仍为 `NOT_VERIFIED)。[正式业务验收](research/p7-formal60-48k-acceptance.md)
+- **演示与部署范围**为可信本地单用户、回环监听。生产认证、租户隔离和 SLA 需要独立验收。
+- **可选 Qwen3** 的 CUDA、生产切换及最新 Web 确认链资源验证仍单列，默认使用 BGE 512／ONNX。
+- **独立消融已暂停**，零付费对照已留档。[消融状态](research/p7-independent-ablation-preparation.md)
 
 ## 7. 可能的面试追问与回答要点
 
@@ -150,10 +137,9 @@ DataPilot Pro 是一个面向 SaaS 经营分析的 **Evidence-driven AI Agent**�
 - **"Fake 模式是不是造假？"** 不。Fake 只替代模型决策，SQL、MCP、PG、Embedding、P3 验证、Checkpoint 都真实执行；文档中所有 Fake 结论都标注了边界，且另有真实模型 Smoke/Live 记录（含失败）。
 - **"怎么防止 Prompt Injection？"** 文档只作为数据，不执行其中指令；工具权限由宿主绑定，文档不能扩大权限。报告另有指令式片段过滤，但这只是附加防线，不是完整检测器。
 - **"为什么不用向量数据库？"** 单实例 pgvector 已能满足 512 维精确 cosine 与授权过滤；引入独立服务会增加一致性与运维面，当前没有性能证据支持。
-- **"最大的未完成项？"** 真实模型在完整 60 条独立业务 Holdout 上的质量与拒答率；这是 PENDING，不用开发集分数代替。
+- **“60/60 能说明什么？”** 说明固定候选在这 60 道合成 SaaS 题及已审阅范围内满足预注册门槛。要评价真实客户场景，仍需要独立抽样与外部语义审查。
 
 ## 事实边界
 
-- 本页所有数字来自仓库文档与冻结记录：[Demo 验收](releases/p7-engineering-candidate-v1/frozen/p7-demo-acceptance.md)、[Gate 2B Live](p7-gate2b-live.md)、[评测索引](evaluation.md)、[CI 恢复记录](research/p7-full-ci-recovery.md)。
-- 没有提交浏览器截图、真实模型调用截图或"业务成功率"；Demo 中的 10 次 Fake 调用与 1 次合成 unknown 调用不是 Provider 实际 Token。
-- 引用历史失败、STOP、`NOT_VERIFIED` 与 `not_run` 时保持原值，不做美化。
+- 工程 Demo 的 10 次 Fake 调用及 1 次合成 unknown 调用按模拟账本列报。正式 48k 批次单列实际 Provider 用量与账单。[工程 Demo](releases/p7-engineering-candidate-v1/frozen/p7-demo-acceptance.md) · [正式业务验收](research/p7-formal60-48k-acceptance.md)
+- 远端 CI 对应发布提交 `23c44c7`。旧 Gate 2B 的 STOP 和 `not_run` 按原批次保留。[CI 运行](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/42354878566) · [评测索引](evaluation.md)

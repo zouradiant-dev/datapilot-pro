@@ -2,7 +2,11 @@
 
 **2026-11-07 当前状态。** 正式 60 题 48k 批次通过业务质量 Gate，严格分 **60/60**、业务分 **60/60**，边界两种口径均为 **42/42**。54 个正式 Run 和 6 项宿主拒绝全部有鉴签结果。下方 Gate 2B、Final 50、历史 Holdout 及消融均按各自的题本、候选与预算单列。[正式验收与交付记录](research/p7-formal60-48k-acceptance.md) · [当前候选与验收进度](current-status.md)
 
-后续仅做 [Scorer v2 离线审计](scorer-audit.md)：修正当前 Plan 版本任务键，原 31 条响应从 v1 的 25/6 修订为 v2 的 26/5，仅 bh2-030 严格判定变化；原 v1 原样保留，29 条仍 not_run，没有新的模型调用。RAG 检索完成 8/11 与业务正确 8/11 的 Case 集合不同，不能混为一项成功率。下段为首次 Live 原冻结 v1 的记录；完整 Gate 2B 仍未验收，预算/其他产品问题只审计未修复。
+GitHub 发布提交 `23c44c7` 的 Python 3.11 和 3.13 CI 均通过，正式 Live 与 CI 使用各自的证据。[远端 CI](research/p7-formal60-48k-acceptance.md#远端-ci)
+
+## 早期批次与历史验证
+
+首次 Gate 2B 结束后的 Scorer v2 离线审计修正了当前 Plan 版本任务键。原 31 条响应从 v1 的 25/6 变为 v2 的 26/5，仅 bh2-030 严格判定变化，29 条仍为 `not_run`。RAG 检索完成 8/11 与业务正确 8/11 涉及不同题目集合。[Scorer v2 离线审计](scorer-audit.md)
 
 历史首次 [Gate 2B 正式业务 Live](p7-gate2b-live.md) 在 bh2-031 原预算预留失败后停止。60 条中观测 31 条，冻结评分严格通过 25 条，未通过 6 条，29 条 not_run。61 次真实调用 / 77,897 Token，费用估算 USD 0.009241476，未取得账单。当时完整 Gate 2B、Gate 2 整体及 P7 均未验收。RAG 结果键评分汇总缺陷与后续离线审计单列。
 
@@ -12,7 +16,7 @@
 | Rule-only 原基线 | 59 条 dev 实跑 46/59，未改规则 |
 | LLM-only / Hybrid | 同一获授权 12 条 dev 实跑 10/12、12/12；13 次真实调用/11783 Token |
 | 意图 Holdout | 原 59 条首次正式评测：Rule-only 46/59、LLM-only 58/59、Hybrid 57/59；实际 67 次真实调用/59,640 Token，负结果保留 |
-| 正式业务/RAG Holdout | 三路径各 20；SQL 18/20、RAG 7/11 已观测（余 9 条未跑）、SQL+RAG 20 条未跑。计划分母 60 不变；原冻结分数/失败保留，[完整账本与限制](p7-gate2b-live.md) |
+| 旧 Gate 2B 业务/RAG Holdout | 三路径各 20；SQL 18/20、RAG 7/11 已观测（余 9 条未跑）、SQL+RAG 20 条未跑。计划分母 60 不变。[原批次账本](p7-gate2b-live.md) |
 | NUMERIC 修复前后定向检查 | 32 个定义精确登记，旧零值 rejected 留存；016/052/047 三次新定向 P3 verified。此行是 Live 前工程快照，不代替正式评测结果 |
 | Gate 2B v2 本地回归 | 3.11/3.13 各原有 741 passed、17 skipped，另最终新增 37 passed；非付费工程验证，不是业务 Holdout 成绩，也不是新 CI |
 | 50 条业务目标 | 在收紧前已启动并完成；真实 PG/MCP/P3/Durable/Report + 显式 Fake 决策，48/50 符合独立 Gold，不能当真实模型成功率 |
@@ -44,6 +48,6 @@
 - 八条评分器标记的 `rag_retrieval_failure` 经只读拆分：检索均命中，真实缺口为 Formal runner 未调用 `confirm_finite_scope`（`goal_scope_not_attested`）；原分数保留，不改 Gold/Scorer 重测。
 - 064/077 口径错配已裁定；017 版本身份 blocked 保留；不静默重映射。
 - Combined 独立文档事实：历史 Live `17f5dc8a…` 业务 completed 但 Freeze raw 治理 FAIL / 完整 CI 当时 NOT_RUN；随后 CI PASS 提交 `2628b61`（Actions #41629097042）上另一次有界 Live `c1946d22…` 业务 completed，Freeze raw 对齐与完整 CI 均 PASS，见 [ci2628b61 Live 结果](research/p7-combined-independent-ci2628b61-live-results.md)。不并入旧 3/3，不进入 Gate 3。
-- 畸形 usage 的 Journal `RECOVERY_CORRUPT` 类型化已在统一回归中落地；隔离故障矩阵整表对当前工作区仍为 NOT_RUN。
+- 当时畸形 usage 的 Journal `RECOVERY_CORRUPT` 类型化已落地，隔离故障矩阵尚未全跑。后续故障控制见[正式验收与交付记录](research/p7-formal60-48k-acceptance.md#工程证据与交付边界)。
 
 旧计划中的 `FREEZE_INVALIDATED: runtime/build closure differs` 描述的是再绑定前的 v3 product snapshot 状态；current Formal 入口与源码快照已另建，**不能**把该句当作“19 条尚未建立”的当前事实。分组预算与授权边界仍见 [最终评测计划](research/p7-final-evaluation-plan.md)；任何续跑须新 Permit。

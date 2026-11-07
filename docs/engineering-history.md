@@ -148,7 +148,7 @@ uv run --locked datapilot semantics run "$demoDir/requests.json"
 
 [Gate 1 交付](p7-gate1.md)：Rule-only 原始 59 条开发任务为 46/59；同一获授权 12 条开发子集上 Rule-only/LLM-only/Hybrid 为 6/12、10/12、12/12。实际 13 次 DeepSeek 调用、11783 Token。仅是受限开发实验，默认网站仍为原 Rule-only，未新增生产付费意图入口；不能据此宣称稳定业务成功率。
 
-此段为 Gate 1 当时的历史快照：59 条 Holdout 保持封存，Gate 2 未开始，按当时指令停止。随后 Gate 2 意图评测已另行授权完成；当前 Gate 2B 状态见根 README 及 [评测索引](evaluation.md)。完整 P7 尚未验收。
+此段记录 Gate 1 当时的停止点。59 条 Holdout 保持封存，Gate 2 尚未开始。后续独立评测与 P7 正式验收按各自批次记录。[评测索引](evaluation.md) · [P7 正式验收](research/p7-formal60-48k-acceptance.md)
 
 ## 本地运行与验证（原 README 详版）
 

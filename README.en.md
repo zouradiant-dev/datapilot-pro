@@ -11,7 +11,7 @@ The Chinese [README](README.md) is the primary document; this page is a concise 
 | Dimension | State |
 |---|---|
 | Engineering Demo Candidate | **ACCEPTED** (local single-user, synthetic data, scripted worker) |
-| Python 3.11 / 3.13 full CI | **PASS** ([Actions #28](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41299832252), commit `b06cc52`) |
+| Candidate release CI (Python 3.11 / 3.13) | **PASS** (commit `23c44c7`, [GitHub Actions](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/42354878566)) |
 | Independent Business Quality | **PASS** (formal 60-case set, 455-file v4 candidate) |
 | DeepSeek Live Gate | **PASS** (48k, strict 60/60, business 60/60) |
 | Independent human semantic review | **NOT_VERIFIED** |
@@ -49,7 +49,7 @@ flowchart LR
 
 Full diagrams (layers, dual loop, end-to-end sequence, trust boundaries, recovery) are in [docs/architecture-overview.md](docs/architecture-overview.md); the long-form design is [docs/architecture.md](docs/architecture.md).
 
-## Implemented vs pending
+## Implemented features and limits
 
 Implemented: chat-first UI and versioned `/api/v1` host; CSV/XLSX preview, confirmation and restricted ingestion; versioned dataset/semantic/metric registry; SQL MCP with SQLGlot AST whitelist, read-only roles and quotas; P3 six-layer metric verification with independent recomputation; scoped TXT/Markdown ingestion with fixed BGE embeddings and pgvector search; cross-source reports with claims, chart specs and four business-completion states; Goal v4 finite-scope confirmation and separate execution approval; durable LangGraph execution with official PostgreSQL checkpoints, journal, atomic budget ledger, artifacts and conservative unknown-outcome handling; maintenance/retention CLI.
 
@@ -57,11 +57,13 @@ The formal DeepSeek business gate passed across 54 Runtime runs and six host ref
 
 ## Verification evidence
 
-CI (Actions #28, per Python version): **1336** non-integration tests passed, **325** PostgreSQL/MCP integration tests passed, **63** legitimate skips (Qwen/CUDA and live-model opt-in), **0** failed/errors. Planned scope is 1724 = 1336 + 388; 388 integration = 325 passed + 63 skipped. Both JUnit artifacts were parsed directly; the run and both jobs concluded `success` on attempt 1 for commit `b06cc52`. The sanitized summary is [p7-actions-28-junit-summary.json](docs/research/p7-actions-28-junit-summary.json).
+Release CI passed on both Python 3.11 and 3.13 for commit `23c44c7`, including unit and protocol regressions, real PostgreSQL/MCP integration with HTTP mocks, Ruff and formatting. The earlier Actions #28 run on `b06cc52` reported 1,336 non-integration passes, 325 integration passes and 63 skips per Python version. [Release CI scope](docs/research/p7-formal60-48k-acceptance.md#远端-ci) · [Historical JUnit summary](docs/research/p7-actions-28-junit-summary.json)
 
 Engineering demo (five real runs, real PostgreSQL 17/pgvector, MCP, BGE, P3 and durable execution; scripted/Fake model decisions): three `completed`, one `unavailable` (missing document fact, no fabrication), one `blocked` with `RECOVERY_UNCERTAIN` (no automatic re-send). The SQL and SQL+RAG runs publish **1432.25 CNY** bound to P3 Evidence/Verification; the combined report cites an authorized document chunk without claiming causation. API/UI restarts reproduce identical run signatures; revoking the RAG contract makes the report return `403 GOAL_REVOKED`. The **1432.25 CNY** figure belongs to the P7 demo's own synthetic dataset (2026-06 window); the **300 CNY** figure in the local quickstart is a different first-deployment sample (2025-10). They must not be compared or reused across datasets.
 
-Real-model status: intent holdout 59 cases (Rule-only 46/59, LLM-only 58/59, Hybrid 57/59); business holdout stopped safely at case `bh2-031` after a budget-reservation failure — 31 observed, 25 strictly correct, 6 incorrect, 29 `not_run`; 61 real calls fully settled with no unknown outcome. This is a fixed-order prefix sample, not an unbiased success rate.
+The formal DeepSeek Flash 48k evaluation covered 54 Runtime runs and six host refusals. The refusals incurred zero model calls. Strict and business scores were both 60/60, with boundary scores of 42/42 under both measures. [Formal acceptance report](docs/research/p7-formal60-48k-acceptance.md)
+
+The historical 59-case intent holdout scored 46/59 for Rule-only, 58/59 for LLM-only and 57/59 for Hybrid. The earlier Gate 2B business batch stopped at `bh2-031` after a budget reservation failure, with 25 strict passes across 31 observed cases and 29 `not_run`. [Evaluation history](docs/evaluation.md)
 
 ## Run the demo locally (synthetic data)
 

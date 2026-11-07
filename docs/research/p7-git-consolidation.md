@@ -1,5 +1,7 @@
 # P7 Git 仓库整理与 Push 前交付
 
+本页记录 2026-10-31 的推送前状态。后续发布与双版本 CI 见正式交付记录。[远端 CI](p7-formal60-48k-acceptance.md#远端-ci)
+
 2026-10-31开始的仓库整理。**Git Consolidation: PASS**；**Local Commits: CREATED**；**GitHub Push: AWAITING_APPROVAL**。只创建本地候选，不自动 Push、PR、合并 main 或触发远端 CI。
 
 ## 起始状态与远端

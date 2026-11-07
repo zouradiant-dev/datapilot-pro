@@ -7,11 +7,12 @@
 | Engineering Demo Candidate | **ACCEPTED**，限定本地单用户、公开合成数据、脚本 Worker |
 | Independent Business Quality | **PASS**，2026-11-07 的 455 文件 v4 候选 |
 | DeepSeek Live Gate | **PASS**，正式 48k 批次严格 60/60、业务 60/60，边界均 42/42 |
-| P7 本地交付 | **已收尾**。工程修复候选另有 94 项定向集成证据，完整矩阵和远端 CI 待验证 |
+| P7 本地交付 | **已收尾**。工程修复候选另有 94 项本地定向集成证据 |
+| GitHub 发布 CI | **PASS**，提交 `23c44c7` 的 Python 3.11 和 3.13 均通过。[Actions 运行](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/42354878566) |
 | 独立消融 | **已暂停**。零付费控制留档 |
 | 独立人工合同语义审查 | **NOT_VERIFIED** |
 
-2026-11-07 的 455 文件 v4 正式业务验收与下文早期冻结工程 Demo 分别列报，候选、CI 和证据身份见 [正式验收与交付记录](../../research/p7-formal60-48k-acceptance.md)。
+2026-11-07 的 455 文件 v4 正式业务验收、后续 Git 发布 CI 与下文早期冻结工程 Demo 分别列报。冻结副本中的 PENDING 属于当时状态。[正式验收与交付记录](../../research/p7-formal60-48k-acceptance.md)
 
 ## 工程与 Demo
 
@@ -42,4 +43,4 @@ Goal v4 的范围确认与业务事实验证、执行审批分离。旧 v3/未�
 
 本地配置与常规启动见[根 README](../../../README.md)、[RAG 部署](../../rag-pipeline.md)、[恢复协议](../../recovery.md)、[Goal v4 ADR](../../adr/0018-trusted-goal-scope.md)、[Web 确认 ADR](../../adr/0019-web-goal-confirmation.md)。新机器需要锁定环境、固定 BGE 模型缓存和隔离数据库角色；历史 Demo 的私密环境不能直接复制，过期确认不能延长复用。不要重跑原 unknown 或任何 STOP 实验。
 
-本轮整理只进行必要的双版本契约、Ruff/格式、JSON/链接、源码 Hash 和历史 Seal 核验；没有重新运行五个 Demo 或付费实验。GitHub CI 在推送获确认前为 **NOT_RUN**；推送将按现有工作流触发 CPU/BGE 检查，不等于 CUDA 或真实模型验证。
+GitHub 发布 CI 覆盖 CPU／固定 BGE、真实 PostgreSQL／MCP 与 Fake／HTTP Mock。真实模型和 CUDA 的验证范围单列。[远端 CI 证据](../../research/p7-formal60-48k-acceptance.md#远端-ci)

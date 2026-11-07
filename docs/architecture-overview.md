@@ -2,6 +2,8 @@
 
 本页是面向 GitHub 读者与面试官的**当前实现**架构速览；详细设计、阶段边界与历史演进仍以 [architecture.md](architecture.md) 为准。两者冲突时，以源码、冻结验收记录和最新已验收证据为准。
 
+正式 DeepSeek Flash 48k 业务评测已通过，严格分和业务分各 60/60，边界各 42/42。评测范围为合成 SaaS 题和宿主审阅范围，本地工程 Demo 使用脚本决策。[正式验收](research/p7-formal60-48k-acceptance.md)
+
 阅读顺序建议：本页图 1 → 图 3 → [README 快速开始](../README.md#本地运行安全合成数据) → [一次可信证据链](showcase.md)。
 
 > 图例：`实线` = 数据/调用流；`虚线` = 控制/审批/状态流；`子图分界` = 信任边界（身份与授权在边界处校验）。图中所有组件均在 `src/datapilot/` 中存在对应实现；未实现能力集中列在本页末节，不画进已实现链路。
@@ -216,6 +218,5 @@ flowchart TB
 - 远程 Langfuse 集成（仅有默认关闭的本地 OTel 投影，且不含 Prompt/SQL/业务行）。
 - HNSW/ANN 近似检索、独立向量服务（FAISS/Qdrant）；当前是同实例 pgvector 精确 cosine。
 - 生产多租户、RLS、KMS、跨主机认证或生产级 SLA。
-- DeepSeek 自主完成业务质量验收；Live Business Gate 仍为 PENDING。
 - 主动 Agent、通用 Scheduler 或第二套恢复引擎、P11 缓存/降级引擎。
 - Qwen3 Embedding 的 CUDA/生产切换验收；默认仍是 BGE 512/ONNX。

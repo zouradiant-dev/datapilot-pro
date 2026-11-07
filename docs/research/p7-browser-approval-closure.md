@@ -1,5 +1,7 @@
 # P7 纯浏览器 SQL+RAG 审批闭环
 
+本页记录 2026-11-02 的浏览器工程验收。表内 PENDING 对应该次工程验证，后续正式业务结果另列。[P7 正式验收](p7-formal60-48k-acceptance.md)
+
 2026-11-02，分支 `p7-engineering-candidate-v1`，源码 Commit **`2f71dcb346cc527d0dd39bb5293029c2fe16ae92`**。本轮只定位并验收“SQL+RAG 执行审批曾需 API 兜底”的问题；**未修改产品源码**，未调用付费模型，未进入 Holdout/Gate 3。
 
 机器证据：`artifacts/showcase-browser/20261101-demo/evidence/browser-approval-closure.json`（local-only）。
