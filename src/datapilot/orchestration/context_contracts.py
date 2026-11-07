@@ -168,6 +168,7 @@ class ContextSummary(Contract):
 
 class CompressionStats(Contract):
     levels: list[Literal["L1", "L2", "L3", "L4"]] = Field(default_factory=list)
+    components: dict[str, int] = Field(default_factory=dict)
     before_estimated_tokens: int = Field(ge=0)
     after_estimated_tokens: int = Field(ge=0)
     compression_count: int = Field(ge=0)

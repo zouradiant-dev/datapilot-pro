@@ -9,7 +9,13 @@ from pydantic import Field, model_serializer, model_validator
 from datapilot.contracts import Contract
 from datapilot.datasets.contracts import DatasetId, DatasetScope
 from datapilot.ingestion.contracts import Digest
-from datapilot.rag.contracts import ChunkCitation, RagScope
+from datapilot.rag.contracts import (
+    ChunkCitation,
+    RagScope,
+    SourceGoal,
+    check_source_goals,
+    source_goal_key,
+)
 from datapilot.semantics.contracts import (
     MetricContext,
     MetricRequest,
@@ -53,6 +59,7 @@ class DocumentGoal(Contract):
     independent_facts: bool = False
     evidence_only: bool = False
     retain_source_context: bool = False
+    source_goals: list[SourceGoal] = Field(default_factory=list, max_length=2)
 
     @model_validator(mode="after")
     def explicit_business_requirements(self):
@@ -83,6 +90,8 @@ class DocumentGoal(Contract):
             value.pop("evidence_only", None)
         if not self.retain_source_context:
             value.pop("retain_source_context", None)
+        if not self.source_goals:
+            value.pop("source_goals", None)
         return value
 
 
@@ -151,7 +160,8 @@ class ReportScope(Contract):
     # Trusted host only; included in manifest/report hashes when explicitly enabled.
     partial_evidence_policy: Literal["legacy", "partial-facts-v1"] = "legacy"
     citation_policy: CitationPolicy | None = None
-    rag_query_policy: Literal["legacy", "original-first-v1"] = "legacy"
+    rag_query_policy: Literal["legacy", "original-first-v1", "source-goals-v1"] = "legacy"
+    document_explanation_policy: Literal["legacy", "evidence-reasons-v1"] = "legacy"
     goal_scope_attestation: GoalScopeAttestation | None = None
     unbound_metric_goals: list[UnboundMetricGoal] = Field(default_factory=list, max_length=6)
 
@@ -164,6 +174,8 @@ class ReportScope(Contract):
             value.pop("citation_policy", None)
         if self.rag_query_policy == "legacy":
             value.pop("rag_query_policy", None)
+        if self.document_explanation_policy == "legacy":
+            value.pop("document_explanation_policy", None)
         if self.goal_scope_attestation is None:
             value.pop("goal_scope_attestation", None)
         if not self.unbound_metric_goals:
@@ -222,10 +234,37 @@ class ReportScope(Contract):
                 f.fact_id for f in policy.supplementary_claims
             }:
                 raise ValueError("Required and supplementary claim IDs must not overlap")
+        if self.document_goal and self.document_goal.source_goals:
+            targets = self.document_goal.source_goals
+            required = (
+                {
+                    (s.corpus_id, s.index_version, s.document_id)
+                    for s in self.citation_policy.required_sources
+                }
+                if self.citation_policy
+                else set()
+            )
+            if (
+                self.document_goal.purpose not in {"facts", "conclusion"}
+                or len({source_goal_key(g) for g in targets}) != len(targets)
+                or {source_goal_key(g) for g in targets} != required
+            ):
+                raise ValueError("Reviewed source goals must match every required citation source")
         if self.rag_query_policy == "original-first-v1" and (
             self.document_goal is None or not self.document_goal.question.strip()
         ):
             raise ValueError("Original-first policy requires a nonblank host document goal")
+        if self.rag_query_policy == "source-goals-v1" and (
+            self.document_goal is None
+            or not 1 <= len(self.document_goal.source_goals) <= 2
+            or len({g.question for g in self.document_goal.source_goals})
+            != len(self.document_goal.source_goals)
+        ):
+            raise ValueError(
+                "Component queries need one or two distinct host-reviewed source goals"
+            )
+        if self.document_explanation_policy != "legacy" and self.document_goal is None:
+            raise ValueError("Document explanations require an explicit document goal")
         return self
 
 
@@ -253,6 +292,7 @@ def confirm_finite_scope(scope: ReportScope, rag_scope: RagScope, *, confirmatio
         or not rag_scope.corpora
     ):
         raise ValueError("A reviewed finite document contract needs its exact authorized scope")
+    check_source_goals(rag_scope, scope.document_goal.question, scope.document_goal.source_goals)
     scope.goal_scope_attestation = GoalScopeAttestation(
         confirmation_ref=confirmation_ref,
         contract_sha256=finite_contract_hash(scope),
@@ -364,6 +404,7 @@ class ReportClaim(Contract):
     related_metric_goals: list[str] = Field(default_factory=list, max_length=6)
     codes: list[str] = Field(default_factory=list, max_length=32)
     missing_requirements: list[MissingRequirement] = Field(default_factory=list, max_length=32)
+    evidence_explanations: list[MissingRequirement] = Field(default_factory=list, max_length=16)
     fact_coverage: dict[str, DocumentReference | None] = Field(default_factory=dict, max_length=8)
     supplementary_coverage: dict[str, DocumentReference] = Field(default_factory=dict, max_length=4)
 
@@ -374,10 +415,14 @@ class ReportClaim(Contract):
             value.pop("fact_coverage", None)
         if not self.supplementary_coverage:
             value.pop("supplementary_coverage", None)
+        if not self.evidence_explanations:
+            value.pop("evidence_explanations", None)
         return value
 
     @model_validator(mode="after")
     def kind_matches_payload(self):
+        if self.evidence_explanations and self.kind != "context":
+            raise ValueError("Evidence explanations belong to quoted document context")
         if self.kind != "context" and (self.fact_coverage or self.supplementary_coverage):
             raise ValueError("Document facts cannot become P3 metric/unavailable claims")
         if self.kind == "metric" and (
@@ -455,6 +500,26 @@ class CrossSourceReport(Contract):
             raise ValueError("Combined context must name its related metric goals")
         scope, completion = self.authorization_scope, self.business_completion
         doc = scope.document_goal
+        for claim in self.claims:
+            if claim.evidence_explanations and (
+                scope.document_explanation_policy != "evidence-reasons-v1"
+                or doc is None
+                or claim.goal_id != doc.goal_id
+                or any(
+                    m.code not in completion.missing_evidence.get(doc.goal_id, [])
+                    and not (
+                        m.code == "document_fact_unverified"
+                        and any(
+                            c.startswith("document_fact_unverified:")
+                            for c in completion.missing_evidence.get(doc.goal_id, [])
+                        )
+                    )
+                    for m in claim.evidence_explanations
+                )
+            ):
+                raise ValueError(
+                    "Document explanations must preserve the actual missing obligations"
+                )
         evidence_goal = {doc.goal_id} if doc and doc.evidence_only else set()
         if not set(completion.satisfied_evidence_goals) <= evidence_goal:
             raise ValueError("Only host-declared evidence goals may satisfy citation obligations")
@@ -470,7 +535,7 @@ class CrossSourceReport(Contract):
                 raise ValueError("Satisfied evidence goals need their required literal facts")
             for fact in doc.required_facts:
                 support = context.fact_coverage[fact.fact_id]
-                observations = {"score", "goal_sha256", "goal_score"}
+                observations = {"score", "goal_sha256", "goal_score", "source_goal_sha256"}
                 if (
                     fact.citation is None
                     or support.citation.model_dump(exclude=observations)

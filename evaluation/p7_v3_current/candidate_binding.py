@@ -31,6 +31,7 @@ SUFFIXES = {
 SCORERS = {
     "legacy": "evaluation/p7_v3_current/scorer.py",
     "partial-facts-v1": "evaluation/p7_v3_current/partial_evidence_scorer.py",
+    "host-source-goals-v1": "evaluation/p7_v3_current/source_goal_scoring.py",
 }
 
 

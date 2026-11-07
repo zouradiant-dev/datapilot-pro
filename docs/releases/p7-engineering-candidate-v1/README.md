@@ -5,9 +5,13 @@
 | 维度 | 状态 |
 |---|---|
 | Engineering Demo Candidate | **ACCEPTED**，限定本地单用户、公开合成数据、脚本 Worker |
-| Independent Business Quality | **PENDING** |
-| DeepSeek Live Gate | **PENDING** |
+| Independent Business Quality | **PASS**，2026-11-07 的 455 文件 v4 候选 |
+| DeepSeek Live Gate | **PASS**，正式 48k 批次严格 60/60、业务 60/60，边界均 42/42 |
+| P7 本地交付 | **已收尾**。工程修复候选另有 94 项定向集成证据，完整矩阵和远端 CI 待验证 |
+| 独立消融 | **已暂停**。零付费控制留档 |
 | 独立人工合同语义审查 | **NOT_VERIFIED** |
+
+2026-11-07 的 455 文件 v4 正式业务验收与下文早期冻结工程 Demo 分别列报，候选、CI 和证据身份见 [正式验收与交付记录](../../research/p7-formal60-48k-acceptance.md)。
 
 ## 工程与 Demo
 

@@ -259,11 +259,20 @@ class Coordinator:
                 and task.worker == "rag"
                 else None
             ),
+            source_queries=(
+                [g.question for g in self.reporting.scope.document_goal.source_goals]
+                if self.reporting
+                and self.reporting.scope.document_goal
+                and self.reporting.scope.rag_query_policy == "source-goals-v1"
+                and task.worker == "rag"
+                else None
+            ),
         )
         status, error, refs = "succeeded", None, []
         self.trace.emit("worker", "started", version=envelope.plan_version, task_id=task.task_id)
         try:
             self.cancel.check()
+            self.cancel.check_authority()
             if self.reporting and task.task_id in self.reporting.requests:
                 refs = [await self.execute_metric(envelope)]
                 bridge = self.store.get(refs[0]).metric
@@ -841,6 +850,7 @@ class Coordinator:
 
         async def verifier(state):
             try:
+                self.cancel.check_authority()
                 if self.reporting:
                     await self.reporting.refresh(self.store.export().values())
                 steps = step(state)
@@ -954,6 +964,11 @@ class Coordinator:
             status = state.get("status", "failed")
             error = state.get("error")
             terminal_missing = {}
+            if status in {"running", "unsupported"}:
+                try:
+                    self.cancel.check_authority()
+                except AgentFailure as exc:
+                    status, error = "failed", exc.error
             if self.cancel.event.is_set():
                 status = "cancelled"
                 error = AgentError(code="CANCELLED", message="Parent run was cancelled")

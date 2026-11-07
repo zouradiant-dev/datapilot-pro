@@ -11,6 +11,7 @@ PROTOCOL = "rag-submit-v1"
 CORRECTION = "rag_completion_correction"
 RELEVANCE_POLICY = "bge-host-goal-cosine-v1"
 RELEVANCE_THRESHOLD = 0.55
+SOURCE_RELEVANCE_POLICY = "bge-host-source-goal-cosine-v1"
 REQUIREMENT_POLICY = "host-goal-requirements-v4"
 
 
@@ -25,8 +26,10 @@ def requirement_class(question):
         r"evidence|corpus|corpora|collection|knowledge\s+base)\b"
     )
     quantifier = (
-        r"(?:所有(?!权|者)|全部|整个|完整(?!性)的?|每[一个份篇]?|"
-        r"\b(?:all|every|each|whole|entire|complete)\b\s*)"
+        r"(?:所有(?!权|者)|全部|整个|完整(?!性)的?|"
+        r"每(?!周|月|日|天|年|小时|分钟|秒|季度)[一个份篇]?|"
+        r"\b(?:all|every|each|whole|entire|complete)\b"
+        r"(?!\s+(?:days?|weeks?|months?|years?|hours?|minutes?|seconds?)\b)\s*)"
         r"(?!(?:已经|已)(?:确认|证实|验证|知)的?"
         r"(?:(?!文档|文件|来源|资料|语料)[^，。]){0,24}(?:事实|规则|条件|要求)|"
         r"\s*(?:confirmed|verified|known)\s+"
@@ -164,6 +167,23 @@ def retrieval_goal(question, retrieval=None, report_scope=None):
         ):
             raise AgentFailure("REPORT_SCOPE_INVALID", "Finite goal scope confirmation changed")
         attestation = proof.model_dump(mode="json")
+        if checked.document_goal.source_goals:
+            targets = [g.model_dump(mode="json") for g in checked.document_goal.source_goals]
+            if hasattr(retrieval, "source_goals") and targets != [
+                g.model_dump(mode="json") for g in retrieval.source_goals
+            ]:
+                raise AgentFailure(
+                    "REPORT_SCOPE_INVALID", "MCP source goals differ from the reviewed contract"
+                )
+            goal["source_goals"] = targets
+            goal["relevance_policy"] = SOURCE_RELEVANCE_POLICY
+        if checked.citation_policy:
+            # These are retrieval obligations as well as report classifications.
+            # Extra relevant sources cannot replace an explicitly required source.
+            goal["required_sources"] = [
+                source.model_dump(mode="json")
+                for source in checked.citation_policy.required_sources
+            ]
     elif match and (report_scope is None or report_scope.question == question):
         attestation = {
             "basis": "literal-locator-grammar-v1",
@@ -229,7 +249,20 @@ def validate_submission(envelope, store, granted, submission, retrieval, goal):
     else:
         relevant = retrieval.qualifying_documents(documents, goal)
     source_ids = {d.citation.source_id if d.citation else d.source for d in relevant}
-    if not relevant or len(source_ids) < (goal["minimum_sources"] if goal else 1):
+    required_sources_met = True
+    if goal and goal.get("required_sources"):
+        from datapilot.reporting.contracts import CitationSource, source_identity
+
+        observed = {source_identity(d.citation) for d in relevant if d.citation}
+        required_sources_met = all(
+            source_identity(CitationSource.model_validate(source)) in observed
+            for source in goal["required_sources"]
+        )
+    if (
+        not relevant
+        or len(source_ids) < (goal["minimum_sources"] if goal else 1)
+        or not required_sources_met
+    ):
         raise AgentFailure(
             "EVIDENCE_INSUFFICIENT",
             "Host versions do not attest the requested latest/global snapshot; "

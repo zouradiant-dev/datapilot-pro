@@ -2,7 +2,7 @@
 
 from typing import Annotated, Literal
 
-from pydantic import Field, model_serializer, model_validator
+from pydantic import Field, field_validator, model_serializer, model_validator
 
 from datapilot.contracts import Contract, QueryResult
 from datapilot.rag.contracts import ChunkCitation, EmbeddingUsage
@@ -70,6 +70,20 @@ class Plan(Contract):
         for key in tasks:
             visit(key)
         return self
+
+
+class ReportPlan(Plan):
+    """A report executes already-approved goals, including partial/unavailable outcomes."""
+
+    tasks: list[TaskSpec] = Field(min_length=1, max_length=12)
+    unsupported: Literal[False] = False
+
+    @field_validator("unsupported", mode="before")
+    @classmethod
+    def strict_supported_flag(cls, value):
+        if type(value) is not bool:
+            raise ValueError("Report unsupported must be a boolean false")
+        return value
 
 
 class BudgetLimits(Contract):

@@ -144,6 +144,92 @@ def test_api_preview_confirm_metric_durable_report(api):
     assert c.get(f"/api/v1/tasks/{id_}/evidence/{uuid4()}").status_code == 403
 
 
+@pytest.mark.parametrize("cut", ["model_committed", "report_metric_committed"])
+def test_inflight_dataset_revocation_stops_new_calls_and_publication(api, cut):
+    import sqlalchemy as sa
+
+    from datapilot.db.management import management_url
+
+    client, app, settings = api
+    store = app.state.store
+    request = import_sample(client)
+    dataset_id = request["metrics"][0]["dataset_id"]
+    client.headers["Idempotency-Key"] = uuid4().hex
+    run_id = post(client, "/api/v1/tasks", request)["run_id"]
+    assert run_async(execute_one(settings, store, run_id))
+    client.headers["Idempotency-Key"] = uuid4().hex
+    post(client, f"/api/v1/tasks/{run_id}/approve", {"confirmed": True})
+    owner = sa.create_engine(management_url("owner"), hide_parameters=True)
+    revoked = []
+
+    def snapshot(conn):
+        calls = conn.execute(
+            sa.text("SELECT * FROM execution.calls WHERE run_id=:r ORDER BY call_key"),
+            {"r": run_id},
+        ).all()
+        artifacts = conn.execute(
+            sa.text(
+                "SELECT artifact_id,kind FROM execution.artifacts "
+                "WHERE run_id=:r ORDER BY artifact_id"
+            ),
+            {"r": run_id},
+        ).all()
+        ledger = conn.execute(
+            sa.text("SELECT payload FROM execution.ledger WHERE run_id=:r"), {"r": run_id}
+        ).scalar_one()
+        state = ledger["state"]
+        return (
+            calls,
+            artifacts,
+            state["accounts"]["root"]["usage"],
+            state["pending"],
+            state["receipts"],
+        )
+
+    def set_grant(conn, enabled):
+        changed = conn.execute(
+            sa.text(
+                "UPDATE execution.web_datasets SET enabled=:e WHERE owner=:o AND dataset_id=:d"
+            ),
+            {"e": enabled, "o": store.policy.owner, "d": dataset_id},
+        )
+        assert changed.rowcount == 1
+
+    def inject(point):
+        if point == cut and not revoked:
+            with owner.begin() as conn:
+                set_grant(conn, False)
+                revoked.append(snapshot(conn))
+
+    try:
+        assert run_async(execute_one(settings, store, run_id, fault=inject))
+        assert len(revoked) == 1
+        calls, artifacts, usage, pending, receipts = revoked[0]
+        assert calls and all(row.status == "complete" for row in calls)
+        assert (usage["calls"], len(artifacts)) == (1, 0 if cut == "model_committed" else 1)
+        assert not pending and len(receipts) == usage["calls"]
+        with owner.connect() as conn:
+            assert snapshot(conn) == revoked[0]
+        row = store.run(run_id)
+        assert row["status_hint"] == "blocked"
+        assert row["last_error"]["code"] == "WEB_DISPATCH_DENIED"
+        assert row["command_seq"] == row["processed_seq"]
+        assert not run_async(execute_one(settings, store, run_id))
+        assert client.get(f"/api/v1/tasks/{run_id}/report").status_code == 403
+
+        with owner.begin() as conn:
+            set_grant(conn, True)
+        view = client.get(f"/api/v1/tasks/{run_id}").json()
+        assert view["status"] == "blocked" and not view["report_available"]
+        client.headers["Idempotency-Key"] = uuid4().hex
+        assert (
+            client.post(f"/api/v1/tasks/{run_id}/resume", json={"confirmed": True}).status_code
+            == 403
+        )
+    finally:
+        owner.dispose()
+
+
 def test_status_read_during_worker_commit_does_not_compare_new_state_to_old_artifacts(
     api, monkeypatch
 ):

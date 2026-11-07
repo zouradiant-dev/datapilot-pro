@@ -31,8 +31,8 @@ class DatabaseDouble:
 class ModelDouble:
     async def respond(self, messages, tools):
         if messages[0].content.startswith("CONTEXT_SUMMARY_JSON"):
-            content = json.loads(messages[-1].content)["expected"]
-            content["decisions"] = []
+            assert set(json.loads(messages[-1].content)) == {"decision_ids"}
+            content = {"decisions": []}
         else:
             ref = json.loads(messages[-1].content)["artifact_refs"][0]["artifact_id"]
             content = {"artifact_ids": [ref]}

@@ -106,6 +106,7 @@ def render(report):
                     f"document {c.document_id}; index {c.index_version}; version {c.version}; "
                     f"span {c.start}:{c.end}; hash {c.sha256}]"
                 )
+            lines.extend("  " + escaped(m.message) for m in claim.evidence_explanations)
         else:
             lines.append("- " + escaped(claim.goal_id) + "：无法确认，" + ", ".join(claim.codes))
             lines.extend(
@@ -129,7 +130,7 @@ def fact_coverage(goal, documents, *, facts=None):
     Query scores/goal vectors are observations, not immutable source identity. Authority
     still comes only from the actual retrieval's original scope and source verification.
     """
-    observations = {"score", "goal_sha256", "goal_score"}
+    observations = {"score", "goal_sha256", "goal_score", "source_goal_sha256"}
     coverage = {}
     for fact in goal.required_facts if facts is None else facts:
         support = None
@@ -169,6 +170,11 @@ class ReportService:
 
     def validate_citation_policy(self, retrieval):
         """Classifications only narrow the original MCP scope; they never grant a source."""
+        if self.scope.document_goal and self.scope.document_goal.source_goals:
+            expected = [g.model_dump(mode="json") for g in self.scope.document_goal.source_goals]
+            actual = [g.model_dump(mode="json") for g in getattr(retrieval, "source_goals", [])]
+            if actual != expected:
+                reject("Report source goals differ from the host-bound retrieval session")
         policy = self.scope.citation_policy
         if policy is None:
             return
@@ -227,13 +233,17 @@ class ReportService:
 
         from langchain_core.messages import HumanMessage, SystemMessage
 
-        from datapilot.orchestration.contracts import Plan
+        from datapilot.orchestration.contracts import ReportPlan
 
         menu = self.plan_menu()
         prompt = (
             "REPORT_PLAN_JSON: Return only a Plan JSON matching "
-            + json.dumps(Plan.model_json_schema())
-            + "\nUse every host goal exactly once, same task_id and worker, no dependencies "
+            + json.dumps(ReportPlan.model_json_schema())
+            + "\nThese finite goals are already approved by the host. Set unsupported=false "
+            "and return a nonempty task list. Partial evidence, unavailable metrics, or "
+            "unverified causality are report outcomes, not an unsupported task graph. "
+            "Keep every host goal even when the question asks for an unsupported conclusion. "
+            "Use every host goal exactly once, same task_id and worker, no dependencies "
             "on source tasks. Add one report task named report depending on every goal. "
             "Do not confirm definitions, invent goals, SQL, scripts or permissions. "
             "HOST_APPROVED_GOALS: " + json.dumps(menu, ensure_ascii=False)
@@ -243,7 +253,7 @@ class ReportService:
         )
         if reply.tool_calls or reply.invalid_tool_calls:
             raise AgentFailure("PLAN_INVALID", "Planner cannot call tools")
-        return self.validate_plan(Plan.model_validate_json(reply.content))
+        return self.validate_plan(ReportPlan.model_validate_json(reply.content))
 
     async def compute(self, goal_id):
         request = self.requests[goal_id]
@@ -723,6 +733,49 @@ class ReportService:
                             ],
                         )
                     )
+        if (
+            self.scope.document_goal
+            and self.scope.document_explanation_policy == "evidence-reasons-v1"
+        ):
+            goal_id = self.scope.document_goal.goal_id
+            claim = next(c for c in claims if c.goal_id == goal_id)
+            messages = {
+                "matching_document_or_metric_evidence_missing": (
+                    "尚未取得满足此文档目标的已核验证据，无法确定所请求的结论。"
+                ),
+                "required_document_source_missing": (
+                    "仍缺少必需的授权来源，已有引文未补足该项要求。"
+                ),
+                "rag_task_insufficient": (
+                    "当前文档任务尚未满足完整检索要求，仅保留已核验的部分引文。"
+                ),
+                "document_conclusion_unverified": (
+                    "现有引文只支持文档中的陈述，尚不足以确定所请求的最终结论。"
+                ),
+                "snapshot_not_attested": "尚无宿主确认的最新或跨来源一致快照，无法据此确定结论。",
+                "goal_scope_not_attested": "原始文档目标尚未完成有限范围确认。",
+            }
+            explanations = []
+            for code in dict.fromkeys(missing.get(goal_id, [])):
+                message = (
+                    "仍有必需事实缺少可核验的原文证明，不能将其作为已确认结论。"
+                    if code.startswith("document_fact_unverified:")
+                    else messages.get(code)
+                )
+                if message and message not in {m.message for m in explanations}:
+                    explanations.append(
+                        MissingRequirement(
+                            code="document_fact_unverified"
+                            if code.startswith("document_fact_unverified:")
+                            else code,
+                            message=message,
+                        )
+                    )
+            if explanations:
+                if claim.kind == "context":
+                    claim.evidence_explanations = explanations
+                else:
+                    claim.missing_requirements = explanations
         required = list(self.requests) + (
             [self.scope.document_goal.goal_id] if self.scope.document_goal else []
         )

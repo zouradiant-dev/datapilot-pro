@@ -9,6 +9,8 @@ import subprocess
 import sys
 from contextlib import suppress
 
+from sqlalchemy.exc import SQLAlchemyError
+
 from datapilot.config import Settings
 from datapilot.contracts import AgentFailure
 from datapilot.db.management import management_url
@@ -37,6 +39,8 @@ def safe_error(exc):
             "RECOVERY_IDENTITY",
             "RECOVERY_POLICY_UNBOUND",
             "RECOVERY_VERSION",
+            "WEB_DISPATCH_DENIED",
+            "WEB_DISPATCH_UNAVAILABLE",
         },
     }
 
@@ -92,6 +96,19 @@ async def execute_one(settings, store, run_id, *, transport=None, fault=None, in
                     backend.close()
                 if not row["cancel_requested"]:
                     await service.authorize_run(run_id)
+
+                def authorize_dispatch():
+                    try:
+                        service.check_dispatch_authority(run_id, p)
+                    except AgentFailure as exc:
+                        raise AgentFailure(
+                            "WEB_DISPATCH_DENIED", "Current host authority denied further work"
+                        ) from exc
+                    except SQLAlchemyError as exc:
+                        raise AgentFailure(
+                            "WEB_DISPATCH_UNAVAILABLE", "Host authority could not be checked"
+                        ) from exc
+
                 options = dict(
                     owner=store.policy.owner,
                     require_review=p["require_review"],
@@ -102,6 +119,7 @@ async def execute_one(settings, store, run_id, *, transport=None, fault=None, in
                     else None,
                     transport=transport,
                     fault=fault,
+                    authorize_dispatch=authorize_dispatch,
                 )
                 if not exists:
                     # Original Saver/interrupt initializes with zero model/metric work.

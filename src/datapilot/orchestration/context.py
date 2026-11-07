@@ -62,6 +62,15 @@ def tool_view(artifact, ref, max_chars):
                     "sha256": d.sha256,
                     "text": d.text[:256],
                     "text_omitted_chars": max(0, len(d.text) - 256),
+                    **(
+                        {
+                            "source_ref": d.citation.model_dump(
+                                include={"corpus_id", "index_version", "source_id", "document_id"}
+                            )
+                        }
+                        if d.citation
+                        else {}
+                    ),
                 }
                 for d in result.documents
             ],
@@ -278,6 +287,154 @@ class ContextManager:
             seen.update(texts)
         return output, changed
 
+    def _first_batch_view(self, messages: list, *, share_documents=True) -> tuple[list, int]:
+        """Losslessly share verified RAG previews within one closed tool batch.
+
+        References only point backwards to a full preview kept in this same view.
+        All per-query differences remain complete field overrides. Neither source
+        artifacts nor the canonical AI/Tool transcript are changed.
+        """
+        output = list(messages)
+        seen = {}
+        references = 0
+        full_previews = {}
+        identity_fields = {
+            "corpus_id",
+            "index_version",
+            "source_id",
+            "document_id",
+            "version",
+            "source_sha256",
+            "chunk_id",
+            "start",
+            "end",
+            "line_start",
+            "line_end",
+            "sha256",
+            "model_revision",
+            "chunker_sha256",
+            "retriever",
+        }
+        for index, message in enumerate(messages):
+            if message.type != "tool" or message.name != "search_documents":
+                continue
+            parsed = self._payload_refs(message.content)
+            if parsed is None:
+                continue
+            payload, refs = parsed
+
+            def unique_fields(pairs):
+                result = {}
+                for key, value in pairs:
+                    if key in result:
+                        raise ValueError("Repeated JSON field")
+                    result[key] = value
+                return result
+
+            try:
+                payload = json.loads(message.content, object_pairs_hook=unique_fields)
+                # Reject non-finite values rather than changing their JSON meaning.
+                json.dumps(payload, allow_nan=False)
+            except (ValueError, TypeError) as exc:
+                raise AgentFailure("EVIDENCE_INVALID", "Ambiguous document preview JSON") from exc
+            if len(refs) != 1 or refs[0].kind != "documents":
+                continue
+            artifact = self.registry.store.get(refs[0])
+            if (
+                artifact.run_id != self.authority.run_id
+                or artifact.task_id != self.authority.task_id
+                or artifact.plan_version != self.authority.plan_version
+                or artifact.documents is None
+            ):
+                continue
+            documents = payload.get("documents")
+            if not isinstance(documents, list):
+                continue
+            result = artifact.documents
+            preview = tool_view(artifact, refs[0], self.registry.max_view_chars).get("documents")
+            full = [d.model_dump(mode="json") for d in result.documents]
+            if (
+                type(payload.get("document_count")) is not int
+                or payload["document_count"] != len(result.documents)
+                or payload.get("fixture") is not result.fixture
+                or (
+                    digest(documents) != digest(preview)
+                    and not (result.fixture and digest(documents) == digest(full))
+                )
+            ):
+                raise AgentFailure("EVIDENCE_INVALID", "Document preview differs from its artifact")
+            small = []
+            for number, (document, original) in enumerate(
+                zip(documents, result.documents, strict=True)
+            ):
+                citation = original.citation
+                identity = digest(
+                    {
+                        "document_id": original.document_id,
+                        "source": original.source,
+                        "version": original.version,
+                        "sha256": original.sha256,
+                        "text": original.text,
+                        "citation": citation.model_dump(mode="json", include=identity_fields)
+                        if citation
+                        else None,
+                    }
+                )
+                previous = seen.get(identity) if citation and share_documents else None
+                if previous is not None and previous[0] != message.tool_call_id:
+                    call_id, position, base = previous
+                    # A shallow, complete field replacement preserves query-specific
+                    # citation scores and any other current observation metadata.
+                    overrides = {
+                        key: value
+                        for key, value in document.items()
+                        if key not in base or digest(base[key]) != digest(value)
+                    }
+                    if base.keys() == document.keys() and digest(base | overrides) == digest(
+                        document
+                    ):
+                        shared = {
+                            "document_id": document["document_id"],
+                            "document_ref": {
+                                "tool_call_id": call_id,
+                                "document_index": position,
+                                "view_sha256": digest(base),
+                            },
+                        }
+                        if overrides:
+                            shared["overrides"] = overrides
+                        if len(json.dumps(shared, ensure_ascii=False)) < len(
+                            json.dumps(document, ensure_ascii=False)
+                        ):
+                            small.append(shared)
+                            references += 1
+                            continue
+                small.append(document)
+                # Never target a compressed entry: no chains, cycles or forward refs.
+                seen.setdefault(identity, (message.tool_call_id, number, document))
+                full_previews[(message.tool_call_id, number)] = document
+            compact = json.dumps(
+                payload | {"documents": small},
+                ensure_ascii=False,
+                separators=(",", ":"),
+                allow_nan=False,
+            )
+            # Verify the entire expanded payload, including all unknown top-level
+            # fields. An indirect view must reproduce every original observation.
+            expanded = json.loads(compact)
+            for number, document in enumerate(expanded["documents"]):
+                pointer = document.get("document_ref")
+                if pointer is not None:
+                    target = full_previews.get((pointer["tool_call_id"], pointer["document_index"]))
+                    if target is None or digest(target) != pointer["view_sha256"]:
+                        raise AgentFailure("EVIDENCE_INVALID", "Document view target changed")
+                    expanded["documents"][number] = target | document.get("overrides", {})
+            if digest(expanded) != digest(payload):
+                raise AgentFailure("EVIDENCE_INVALID", "Document view changed observation fields")
+            if len(compact.encode("utf-8")) < len(message.content.encode("utf-8")):
+                output[index] = message.model_copy(update={"content": compact})
+        return output, references
+
     def _archive(self, messages: list) -> EvidenceRef:
         authority = self.authority
         ref = self.registry.store.put(
@@ -333,7 +490,10 @@ class ContextManager:
 
     def _with_anchor(self, view: list, *, compact: bool = False) -> list:
         n = len(self.prefix)
-        return [*view[:n], self._anchor(compact=compact), *view[n:]]
+        body = [
+            message for message in view[n:] if getattr(message, "name", None) != "context_authority"
+        ]
+        return [*view[:n], self._anchor(compact=compact), *body]
 
     def _fold(self, view: list, archive: EvidenceRef, keep: int) -> list:
         batches = closed_batches(view)
@@ -357,6 +517,30 @@ class ContextManager:
             for i, m in enumerate(view)
             if i not in remove or i == first
         ]
+
+    def _compact_old_tool_results(self, view: list, *, keep: int = 1) -> list:
+        """Replace old closed tool bodies with their existing artifact refs."""
+        indices = [i for i, message in enumerate(view) if message.type == "tool"]
+        for index in indices[:-keep]:
+            parsed = self._payload_refs(view[index].content)
+            if parsed is None:
+                continue
+            payload, refs = parsed
+            small = {
+                key: payload[key]
+                for key in ("row_count", "truncated", "document_count", "fixture")
+                if key in payload
+            }
+            small.update(
+                artifact_refs=[
+                    ref.model_dump() for ref in refs if ref.kind not in {"schema", "context"}
+                ],
+                omitted_view="budget-old-tool-result",
+            )
+            text = json.dumps(small, ensure_ascii=False)
+            if len(text) < len(view[index].content):
+                view[index] = view[index].model_copy(update={"content": text})
+        return view
 
     def _summary_expected(self, archive: EvidenceRef) -> ContextSummary:
         a = self.authority
@@ -404,6 +588,45 @@ class ContextManager:
         if not self.limits.enabled or not available_calls or (not under_pressure and not cold):
             return PreparedContext(base)
         if len(batches) < 2:
+            if len(batches) == 1 and under_pressure:
+                candidate, references = self._first_batch_view(base, share_documents=False)
+                if not self.fits(candidate, tools) or not fits_budget(candidate):
+                    candidate, references = self._first_batch_view(base)
+                after = measure_context(candidate, tools, self.limits.output_tokens)[1]
+                initial = measure_context(base, tools, self.limits.output_tokens)[1]
+                if (
+                    after.estimated_input_tokens < initial.estimated_input_tokens
+                    and self.fits(candidate, tools)
+                    and fits_budget(candidate)
+                ):
+                    # Store full originals before using an indirect model view.
+                    # No authority anchor is added: the immutable prefix and every
+                    # AI/Tool feedback pair already remain present in full.
+                    archive = self._archive(messages)
+                    self.compressions += 1
+                    report = CompressionStats(
+                        levels=["L2"],
+                        components={
+                            "first_closed_batch": 1,
+                            "document_view_references": references,
+                            "input_bytes_saved": initial.input_bytes - after.input_bytes,
+                        },
+                        before_estimated_tokens=initial.estimated_input_tokens,
+                        after_estimated_tokens=after.estimated_input_tokens,
+                        compression_count=self.compressions,
+                        model_view_lossy=False,
+                        archive_id=archive.artifact_id,
+                    )
+                    self.stats.append(report)
+                    if gateway.trace:
+                        gateway.trace.emit(
+                            "context_compression",
+                            "prepared",
+                            version=self.authority.plan_version,
+                            task_id=self.authority.task_id,
+                            compression=report.model_dump(),
+                        )
+                    return PreparedContext(candidate)
             return PreparedContext(base)
         archive = self._archive(messages)  # Must succeed BEFORE anything is omitted from a view.
         levels, ticket, summary_calls, summary_tokens, summary_complete = [], None, 0, 0, True
@@ -419,9 +642,37 @@ class ContextManager:
                 summary_tokens = settled.reported_tokens - usage_before.reported_tokens
                 summary_complete = settled.usage_complete
             after = measure_context(candidate, tools, self.limits.output_tokens)[1]
+
+            def tokens(messages, schemas):
+                return measure_context(messages, schemas, 0)[1].estimated_input_tokens
+
+            tools_only = tokens([], tools)
+            message_only = tokens(candidate, [])
+            tool_messages = [m for m in candidate if m.type == "tool"]
+            anchor_messages = [
+                m for m in candidate if getattr(m, "name", None) == "context_authority"
+            ]
+            components = {
+                "total": after.estimated_input_tokens,
+                "prefix": tokens(candidate[: len(self.prefix)], []),
+                "anchor": tokens(anchor_messages, []),
+                "anchor_count": len(anchor_messages),
+                "anchor_full": tokens([self._anchor(compact=False)], []),
+                "anchor_compact": tokens([self._anchor(compact=True)], []),
+                "tool_schemas": tools_only,
+                "messages_without_schemas": message_only,
+                "tool_results": sum(tokens([m], []) for m in tool_messages),
+                "latest_tool_result": tokens(tool_messages[-1:], []),
+                "non_tool_messages": tokens([m for m in candidate if m.type != "tool"], []),
+                "summary_message_tokens": tokens(
+                    [m for m in candidate if getattr(m, "name", None) == "context_summary"],
+                    [],
+                ),
+            }
             self.compressions += bool(levels)
             report = CompressionStats(
                 levels=levels,
+                components=components,
                 before_estimated_tokens=before,
                 after_estimated_tokens=after.estimated_input_tokens,
                 compression_count=self.compressions,
@@ -522,24 +773,54 @@ class ContextManager:
                 record(candidate)
                 return PreparedContext(candidate)
             if self.fits(candidate, tools):
-                # Budget-only pressure gets one deterministic L1-L3 pass. Do not add a
-                # paid summary merely to spend a scarce last call; the existing L4 path
-                # below remains available for genuine window pressure with paired reserve.
-                raise AgentFailure(
-                    "BUDGET_EXCEEDED", "Pinned context cannot fit the remaining parent/child budget"
-                )
-            if not self.limits.allow_summary:
+                # Budget-only pressure: try folding one additional closed batch before
+                # declaring the pinned context unaffordable. The latest completed turn
+                # remains in the view; older turns stay available through the archive ref.
+                if self.limits.keep_batches > 1:
+                    tighter = self._fold(view, archive, self.limits.keep_batches - 1)
+                    tighter = self._with_anchor(tighter, compact=True)
+                    if tighter != view and self.fits(tighter, tools) and fits_budget(tighter):
+                        if "L3" not in levels:
+                            levels.append("L3")
+                        record(tighter)
+                        return PreparedContext(tighter)
+                # If deterministic folding is insufficient, allow the existing L4
+                # summary path only when its paired reservation fits the remaining
+                # parent/child budget. summarize_context remains the budget gate.
+                if not self.limits.allow_summary:
+                    raise AgentFailure(
+                        "BUDGET_EXCEEDED",
+                        "Pinned context cannot fit the remaining parent/child budget",
+                    )
+            elif not self.limits.allow_summary:
                 raise AgentFailure("CONTEXT_LIMIT", "Deterministic compaction cannot fit context")
             expected = self._summary_expected(archive)
             decisions = [f"turn_{i}" for i in range(len(batches))]
             final = self._fold(view, archive, 1)
+            failed_candidate = self._compact_old_tool_results(
+                self._with_anchor(final, compact=True)
+            )
             n = len(self.prefix)
 
             def summary_view(summary):
+                if any(getattr(message, "name", None) == "context_authority" for message in final):
+                    body = [
+                        message
+                        for message in final
+                        if getattr(message, "name", None) != "context_authority"
+                    ]
+                    body = self._compact_old_tool_results(body)
+                    compact = [*body[:n], self._anchor(compact=True), *body[n:]]
+                else:
+                    compact = final
+                summary_json = json.dumps(
+                    summary.model_dump(mode="json", exclude={"goals", "constraints"}),
+                    ensure_ascii=False,
+                )
                 return [
-                    *final[:n],
-                    HumanMessage(name="context_summary", content=summary.model_dump_json()),
-                    *final[n:],
+                    *compact[:n],
+                    HumanMessage(name="context_summary", content=summary_json),
+                    *compact[n:],
                 ]
 
             # Every variable field is bounded extractive IDs. Reserve the largest valid
@@ -552,27 +833,24 @@ class ContextManager:
                 raise AgentFailure(
                     "CONTEXT_LIMIT", "Pinned state cannot fit a bounded summary view"
                 )
+            if not fits_budget(upper_view):
+                record(failed_candidate)
+                raise AgentFailure(
+                    "BUDGET_EXCEEDED",
+                    "Summary and its worst-case follow-up do not fit the remaining budget",
+                )
             followup_tokens = measure_context(upper_view, tools, self.limits.output_tokens)[
                 1
             ].estimated_input_tokens
             prompt = [
                 SystemMessage(
                     content=(
-                        "CONTEXT_SUMMARY_JSON: Return the given structured summary JSON. "
-                        "Only decisions may select up to 8 offered turn IDs; "
-                        "every other field must remain exact. "
-                        "No tools, free text, new permissions, values or verified claims."
+                        'CONTEXT_SUMMARY_JSON: Return only {"decisions": [...]} selecting '
+                        "up to 8 of the offered turn IDs. No other fields, free text, tools, "
+                        "permissions, values or verified claims."
                     )
                 ),
-                HumanMessage(
-                    content=json.dumps(
-                        {
-                            "expected": expected.model_dump(mode="json"),
-                            "decision_ids": decisions,
-                        },
-                        ensure_ascii=False,
-                    )
-                ),
+                HumanMessage(content=json.dumps({"decision_ids": decisions}, ensure_ascii=False)),
             ]
             usage_before = gateway.ledger.snapshot(account)
             response, ticket = await gateway.summarize_context(prompt, account, followup_tokens)
@@ -582,15 +860,24 @@ class ContextManager:
             summary_complete = usage_after.usage_complete
             if response.tool_calls:
                 raise ValueError("Summarizer cannot call tools")
-            summary = ContextSummary.model_validate_json(response.content)
+            try:
+                payload = json.loads(response.content)
+            except (TypeError, ValueError) as exc:
+                raise ValueError("Summary response is not a single JSON object") from exc
             if (
-                summary.model_dump(exclude={"decisions"})
-                != expected.model_dump(exclude={"decisions"})
-                or len(set(summary.decisions)) != len(summary.decisions)
-                or not set(summary.decisions) <= set(decisions)
+                not isinstance(payload, dict)
+                or set(payload) != {"decisions"}
+                or not isinstance(payload["decisions"], list)
+                or any(not isinstance(item, str) for item in payload["decisions"])
+                or len(set(payload["decisions"])) != len(payload["decisions"])
+                or not set(payload["decisions"]) <= set(decisions)
             ):
                 raise ValueError("Summary changed critical state or invented a decision")
-            candidate = summary_view(summary)
+            summary = ContextSummary.model_validate(
+                expected.model_dump() | {"decisions": payload["decisions"]}
+            )
+            summary_candidate = summary_view(summary)
+            candidate = summary_candidate
             if not self.fits(candidate, tools):
                 raise ValueError("Validated summary still exceeds context limits")
             closed_batches(candidate)
@@ -600,7 +887,13 @@ class ContextManager:
         except BaseException as exc:
             if ticket is not None and ticket in gateway.ledger.pending:
                 gateway.ledger.release_unissued(ticket)
-            record(candidate if "candidate" in locals() else view)
+            record(
+                summary_candidate
+                if "summary_candidate" in locals() and summary_candidate is not None
+                else failed_candidate
+                if "failed_candidate" in locals()
+                else view
+            )
             if isinstance(exc, ValueError) or (
                 isinstance(exc, AgentFailure) and exc.error.code.startswith("MODEL")
             ):

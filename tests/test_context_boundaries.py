@@ -30,8 +30,8 @@ async def test_native_async_http_summary_tool_pairing_and_usage(settings):
         raw = json.loads(request.content)
         requests.append(raw)
         if raw["messages"][0]["content"].startswith("CONTEXT_SUMMARY_JSON"):
-            content = json.loads(raw["messages"][-1]["content"])["expected"]
-            content["decisions"] = ["turn_0"]
+            assert set(json.loads(raw["messages"][-1]["content"])) == {"decision_ids"}
+            content = {"decisions": ["turn_0"]}
         else:
             # Latest provider batch remains a complete assistant/tool pair after L4.
             assert raw["messages"][-1]["role"] == "tool"

@@ -59,7 +59,9 @@ async def collect(value, settings, scope, rag):
                 manifest = backend.authorize(conn)
                 calls = (
                     execute(
-                        conn, "SELECT * FROM execution.calls WHERE run_id=:r", r=value["run_id"]
+                        conn,
+                        "SELECT * FROM execution.calls WHERE run_id=:r ORDER BY call_key",
+                        r=value["run_id"],
                     )
                     .mappings()
                     .all()
@@ -106,7 +108,9 @@ async def collect(value, settings, scope, rag):
                 "collector": "original_inspect_run_under_original_run_lease",
                 "model_mode": settings.llm_mode,
                 "actual_provider_cost": None,
-                "actual_provider_cost_status": "not_applicable_fake",
+                "actual_provider_cost_status": (
+                    "not_reconciled" if settings.llm_mode == "live" else "not_applicable_fake"
+                ),
             }
             return payload
     finally:

@@ -118,7 +118,9 @@ def test_qwen_policy_is_not_a_bge_alias_and_host_cannot_lower_calibrated_floor()
     assert tools.relevance_policy != retrieval_goal(question)["relevance_policy"]
     assert search_threshold(scope) == policy(scope.embedding_profile)["search_threshold"]
     assert search_threshold(scope.model_copy(update={"min_score": 0.9})) == 0.9
-    citation = SimpleNamespace(goal_sha256=tools.goal_sha256, goal_score=0.99)
+    citation = SimpleNamespace(
+        goal_sha256=tools.goal_sha256, goal_score=0.99, source_goal_sha256=None
+    )
     docs = [SimpleNamespace(citation=citation)]
     assert tools.qualifying_documents(docs, retrieval_goal(question, tools)) == docs
     assert not tools.qualifying_documents(docs, retrieval_goal(question))

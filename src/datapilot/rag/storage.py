@@ -20,6 +20,8 @@ from datapilot.rag.contracts import (
     Limits,
     RagScope,
     Target,
+    check_source_goals,
+    source_goal_key,
 )
 from datapilot.rag.models import validate_vectors
 from datapilot.rag.parsing import decode, parse_sources
@@ -254,12 +256,14 @@ class IngestionService(Connection):
 
 
 class Repository(Connection):
-    def __init__(self, url, scope: RagScope, *, timeout=2, goal=None):
+    def __init__(self, url, scope: RagScope, *, timeout=2, goal=None, source_goals=None):
+        self.source_goals = check_source_goals(scope, goal, source_goals)
         super().__init__(url, "datapilot_rag_reader", timeout=timeout)
         self.scope = RagScope.model_validate_json(scope.model_dump_json())
         self.goal = goal
         self.goal_vector = None
         self.goal_loaded = False
+        self.source_vectors = {}
 
     def manifests(self):
         values = {}
@@ -340,10 +344,16 @@ class Repository(Connection):
             self.goal_loaded = True
             if len(self.goal) <= 512:
                 try:
-                    goal_vectors, goal_usage = embedding.encode([self.goal], query=True)
-                    self.goal_vector = validate_vectors(goal_vectors, 1, embedding.spec.dimensions)[
-                        0
-                    ]
+                    goals = [self.goal, *[g.question for g in self.source_goals]]
+                    goal_vectors, goal_usage = embedding.encode(goals, query=True)
+                    goal_vectors = validate_vectors(
+                        goal_vectors, len(goals), embedding.spec.dimensions
+                    )
+                    self.goal_vector = goal_vectors[0]
+                    self.source_vectors = {
+                        source_goal_key(g): vector
+                        for g, vector in zip(self.source_goals, goal_vectors[1:], strict=True)
+                    }
                     usage = EmbeddingUsage(
                         mode=usage.mode,
                         tokens=usage.tokens + goal_usage.tokens,
@@ -351,7 +361,7 @@ class Repository(Connection):
                         calls=usage.calls + goal_usage.calls,
                     )
                 except AgentFailure as exc:
-                    if exc.error.code != "EMBEDDING_LIMIT":
+                    if exc.error.code != "EMBEDDING_LIMIT" or self.source_goals:
                         raise
         vector = validate_vectors(vectors, 1, embedding.spec.dimensions)[0].tolist()
         documents = []
@@ -404,6 +414,11 @@ class Repository(Connection):
                     score = max(-1.0, min(1.0, float(row["score"])))
                     if score < search_threshold(self.scope):
                         continue
+                    key = (pin.corpus_id, pin.index_version, source.document_id)
+                    component = next(
+                        (g for g in self.source_goals if source_goal_key(g) == key), None
+                    )
+                    goal_vector = self.source_vectors.get(key, self.goal_vector)
                     citation = ChunkCitation(
                         **span.model_dump(),
                         corpus_id=pin.corpus_id,
@@ -419,10 +434,13 @@ class Repository(Connection):
                         if self.goal
                         else None,
                         goal_score=(
-                            max(-1.0, min(1.0, float(stored_vector @ self.goal_vector)))
-                            if self.goal_vector is not None
+                            max(-1.0, min(1.0, float(stored_vector @ goal_vector)))
+                            if goal_vector is not None
                             else None
                         ),
+                        source_goal_sha256=hashlib.sha256(component.question.encode()).hexdigest()
+                        if component
+                        else None,
                     )
                     documents.append(
                         Document(

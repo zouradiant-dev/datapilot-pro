@@ -19,9 +19,7 @@ class LongDecisions:
     async def respond(self, messages, tools):
         usage = {"input_tokens": 10, "output_tokens": 5, "total_tokens": 15}
         if messages[0].content.startswith("CONTEXT_SUMMARY_JSON"):
-            content = json.loads(messages[-1].content)["expected"]
-            content["decisions"] = []
-            return AIMessage(content=json.dumps(content), usage_metadata=usage)
+            return AIMessage(content=json.dumps({"decisions": []}), usage_metadata=usage)
         ids = [
             int(c["id"].split("_")[-1])
             for m in messages

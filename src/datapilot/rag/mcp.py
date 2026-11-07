@@ -14,8 +14,12 @@ from mcp.server.fastmcp import FastMCP
 from datapilot.contracts import AgentFailure
 from datapilot.ingestion.common import digest
 from datapilot.orchestration.contracts import SearchResult
-from datapilot.orchestration.rag_completion import RELEVANCE_POLICY, RELEVANCE_THRESHOLD
-from datapilot.rag.contracts import IndexManifest, RagScope
+from datapilot.orchestration.rag_completion import (
+    RELEVANCE_POLICY,
+    RELEVANCE_THRESHOLD,
+    SOURCE_RELEVANCE_POLICY,
+)
+from datapilot.rag.contracts import IndexManifest, RagScope, check_source_goals, source_goal_key
 from datapilot.rag.models import create_embedding
 from datapilot.rag.storage import Repository, validate_manifest_profile, verify_result
 from datapilot.runtime.mcp_client import MCPDatabaseTools, _connection, server_environment
@@ -23,7 +27,7 @@ from datapilot.runtime.mcp_client import MCPDatabaseTools, _connection, server_e
 QWEN_SESSION_SLOTS = threading.BoundedSemaphore(2)
 
 
-def create_rag_server(settings, scope: RagScope, *, goal=None):
+def create_rag_server(settings, scope: RagScope, *, goal=None, source_goals=None):
     if goal is not None and (not isinstance(goal, str) or not 1 <= len(goal) <= 8000):
         raise ValueError("Use a bounded host retrieval goal")
     repository = Repository(
@@ -31,6 +35,7 @@ def create_rag_server(settings, scope: RagScope, *, goal=None):
         scope,
         timeout=settings.query_timeout_seconds,
         goal=goal,
+        source_goals=source_goals,
     )
     cache = None
     if scope.embedding_profile:
@@ -74,6 +79,10 @@ def create_rag_server(settings, scope: RagScope, *, goal=None):
                 },
                 "error": None,
             }
+            if repository.source_goals:
+                value["source_goals_sha256"] = digest(
+                    [g.model_dump(mode="json") for g in repository.source_goals]
+                )
             if cache is not None:
                 value["runtime"] = cache.binding
                 value["pid"] = os.getpid()
@@ -120,13 +129,18 @@ class MCPRetrievalTools(MCPDatabaseTools):
     max_search_attempts = 2
     allowed = frozenset({"health", "get_rag_manifest", "search_documents"})
 
-    def __init__(self, session, timeout, *, scope, goal=None, session_token=None):
+    def __init__(
+        self, session, timeout, *, scope, goal=None, session_token=None, source_goals=None
+    ):
         super().__init__(session, timeout)
+        self.source_goals = check_source_goals(scope, goal, source_goals)
         self.scope = RagScope.model_validate_json(scope.model_dump_json())
         self.manifests = {}
         self.goal_sha256 = hashlib.sha256(goal.encode()).hexdigest() if goal else None
         self.session_token, self.startup_trace = session_token, None
         self.relevance_policy, self.goal_threshold = RELEVANCE_POLICY, RELEVANCE_THRESHOLD
+        if self.source_goals:
+            self.relevance_policy = SOURCE_RELEVANCE_POLICY
         if scope.embedding_profile:
             self.allowed = self.allowed | {"prepare_embedding"}
             from datapilot.rag.qwen import policy
@@ -154,6 +168,10 @@ class MCPRetrievalTools(MCPDatabaseTools):
                     raise ValueError("Index/source/model/scope differs")
                 validate_manifest_profile(m, self.scope)
             self.manifests = manifests
+            if self.source_goals and payload.get("source_goals_sha256") != digest(
+                [g.model_dump(mode="json") for g in self.source_goals]
+            ):
+                raise ValueError("Host source goals differ from the MCP binding")
             if self.scope.embedding_profile:
                 from datapilot.rag.qwen_runtime import expected, source_hash
                 from datapilot.runtime.owned_process import OwnedProcess
@@ -244,12 +262,25 @@ class MCPRetrievalTools(MCPDatabaseTools):
         verify_result(result, self.scope, self.manifests)
         if any(d.citation.goal_sha256 != self.goal_sha256 for d in result.documents):
             raise AgentFailure("DOCUMENT_CORRUPT", "Retrieval goal binding changed")
+        for doc in result.documents:
+            c = doc.citation
+            target = next(
+                (g for g in self.source_goals if source_goal_key(g) == source_goal_key(c)), None
+            )
+            expected = hashlib.sha256(target.question.encode()).hexdigest() if target else None
+            if c.source_goal_sha256 != expected:
+                raise AgentFailure("DOCUMENT_CORRUPT", "Retrieved source goal binding changed")
 
     def qualifying_documents(self, documents, goal):
         if (
             goal["question_sha256"] != self.goal_sha256
             or goal["relevance_policy"] != self.relevance_policy
             or goal["minimum_goal_score"] != self.goal_threshold
+            or (
+                self.source_goals
+                and goal.get("source_goals")
+                != [g.model_dump(mode="json") for g in self.source_goals]
+            )
         ):
             return []
         return [
@@ -259,6 +290,15 @@ class MCPRetrievalTools(MCPDatabaseTools):
             and d.citation.goal_sha256 == self.goal_sha256
             and d.citation.goal_score is not None
             and d.citation.goal_score >= max(self.goal_threshold, self.scope.min_score)
+            and d.citation.source_goal_sha256
+            == next(
+                (
+                    hashlib.sha256(g.question.encode()).hexdigest()
+                    for g in self.source_goals
+                    if source_goal_key(g) == source_goal_key(d.citation)
+                ),
+                None,
+            )
         ]
 
     async def search(self, query, top_k):
@@ -280,13 +320,18 @@ class MCPRetrievalTools(MCPDatabaseTools):
 
 
 @asynccontextmanager
-async def rag_session(settings, scope: RagScope | None, *, goal=None):
+async def rag_session(settings, scope: RagScope | None, *, goal=None, source_goals=None):
     if scope is None:
+        if source_goals:
+            raise AgentFailure(
+                "REPORT_SCOPE_INVALID", "Source goals require an authorized RAG scope"
+            )
         yield None
         return
     if not settings.rag_reader_database_url:
         raise AgentFailure("DATABASE_NOT_CONFIGURED", "Configure the isolated RAG reader")
     scope = RagScope.model_validate_json(scope.model_dump_json())
+    source_goals = check_source_goals(scope, goal, source_goals)
     from datapilot.orchestration.context_contracts import ContextScope, SourcePin
 
     sources = []
@@ -308,6 +353,10 @@ async def rag_session(settings, scope: RagScope | None, *, goal=None):
     env["DATAPILOT_RAG_SCOPE"] = scope.model_dump_json()
     if goal:
         env["DATAPILOT_RAG_GOAL"] = goal
+    if source_goals:
+        env["DATAPILOT_RAG_SOURCE_GOALS"] = json.dumps(
+            [g.model_dump(mode="json") for g in source_goals]
+        )
     from functools import partial
 
     executable = None
@@ -331,7 +380,13 @@ async def rag_session(settings, scope: RagScope | None, *, goal=None):
         async with _connection(
             settings,
             env,
-            partial(MCPRetrievalTools, scope=scope, goal=goal, session_token=session_token),
+            partial(
+                MCPRetrievalTools,
+                scope=scope,
+                goal=goal,
+                session_token=session_token,
+                source_goals=source_goals,
+            ),
             **connection_options,
         ) as tools:
             await tools.preflight()

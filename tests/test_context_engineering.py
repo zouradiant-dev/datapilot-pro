@@ -48,11 +48,13 @@ class ModelDouble:
     async def respond(self, messages, tools):
         self.requests.append(list(messages))
         if messages[0].content.startswith("CONTEXT_SUMMARY_JSON"):
-            content = json.loads(messages[-1].content)["expected"]
-            content["decisions"] = ["turn_0"]
-            if self.mutate:
-                self.mutate(content)
-            reply = json.dumps(content)
+            content = {"decisions": ["turn_0"]}
+            try:
+                if self.mutate:
+                    self.mutate(content)
+                reply = json.dumps(content)
+            except (KeyError, IndexError, AttributeError):
+                reply = '{"decisions": ["turn_999"]}'
         else:
             reply = '{"artifact_ids": []}'
         usage = (
@@ -386,6 +388,28 @@ async def test_l4_is_validated_extractively_and_charged_on_same_parent_child_led
     assert not gateway.ledger.pending
     summary = next(m for m in gateway.transport.requests[-1] if m.name == "context_summary")
     assert json.loads(summary.content)["authority_sha256"] == manager.authority_hash
+
+
+@pytest.mark.parametrize("count", [8, 9])
+async def test_l4_enforces_decision_count_before_followup(settings, count):
+    transport = ModelDouble(
+        mutate=lambda value: value.update(decisions=[f"turn_{i}" for i in range(count)])
+    )
+    _, manager, gateway, registry, prefix = make_context(settings, max_chars=7100, model=transport)
+    messages = history(manager, prefix, count=12, ai_body=1800, body=900)
+    if count == 9:
+        with pytest.raises(AgentFailure) as caught:
+            await gateway.invoke(messages, registry.schemas(), "1:r")
+        assert caught.value.error.code == "CONTEXT_LIMIT"
+        assert len(transport.requests) == 1 and gateway.ledger.snapshot().calls == 1
+    else:
+        await gateway.invoke(messages, registry.schemas(), "1:r")
+        summary = next(
+            message for message in transport.requests[-1] if message.name == "context_summary"
+        )
+        assert len(json.loads(summary.content)["decisions"]) == 8
+        assert len(transport.requests) == 2 and gateway.ledger.snapshot().calls == 2
+    assert not gateway.ledger.pending
 
 
 @pytest.mark.parametrize(

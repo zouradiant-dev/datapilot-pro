@@ -136,6 +136,7 @@ class ToolRegistry:
         durability=None,
         rag_goal=None,
         original_query=None,
+        source_queries=None,
     ):
         self.envelope, self.store = envelope, store
         self.database = database if envelope.task.worker == "sql" else None
@@ -155,6 +156,16 @@ class ToolRegistry:
         self.rag_control = envelope.task.worker == "rag" and enabled(retrieval)
         self.rag_goal = json.loads(json.dumps(rag_goal)) if rag_goal is not None else None
         self.original_query = original_query
+        self.source_queries = list(source_queries) if source_queries is not None else None
+        if self.source_queries is not None and (
+            not self.rag_control
+            or self.original_query is not None
+            or not self.rag_goal
+            or self.source_queries != [g["question"] for g in self.rag_goal.get("source_goals", [])]
+            or not 1 <= len(self.source_queries) <= 2
+            or len(set(self.source_queries)) != len(self.source_queries)
+        ):
+            raise AgentFailure("RAG_QUERY_POLICY", "Component queries differ from the host goal")
         if original_query is not None:
             if not self.rag_control:
                 raise AgentFailure("TOOL_FORBIDDEN", "Original query needs host-bound RAG tools")
@@ -204,6 +215,15 @@ class ToolRegistry:
                         "translation or truncation. Later searches may choose a query within "
                         "the same goal and existing quota. HOST_FIRST_QUERY_JSON: "
                         + json.dumps(self.original_query, ensure_ascii=False)
+                    )
+        if self.source_queries is not None:
+            for schema in schemas:
+                if schema["function"]["name"] == "search_documents":
+                    query = schema["function"]["parameters"]["properties"]["query"]
+                    query["enum"] = list(self.source_queries)
+                    query["description"] = (
+                        "Choose an exact host-reviewed question component "
+                        "within the existing two-search quota."
                     )
         return schemas
 
@@ -272,6 +292,7 @@ class ToolRegistry:
             ):
                 raise AgentFailure("TOOL_FORBIDDEN", "No host-bound tool session was delegated")
             self.cancel.check()
+            self.cancel.check_authority()
             if self.durability:
                 call_key, cached = self.durability.begin_tool(
                     self.envelope, name, arguments, call_id
@@ -297,6 +318,10 @@ class ToolRegistry:
             ):
                 raise AgentFailure("RAG_ATTEMPTS_EXHAUSTED", "At most two searches per worker task")
             if name == "search_documents":
+                if self.source_queries is not None and args.query not in self.source_queries:
+                    raise AgentFailure(
+                        "RAG_QUERY_POLICY", "Choose an exact host-reviewed source question"
+                    )
                 if (
                     self.original_query is not None
                     and self.search_attempts == 0

@@ -18,7 +18,14 @@ def execution_error(error: AgentFailure) -> ExecutionError:
         else "cancelled"
         if code == "CANCELLED"
         else "permission"
-        if code in {"TOOL_FORBIDDEN", "SQL_UNSAFE", "DATASET_NOT_AUTHORIZED", "ROLE_UNSAFE"}
+        if code
+        in {
+            "TOOL_FORBIDDEN",
+            "SQL_UNSAFE",
+            "DATASET_NOT_AUTHORIZED",
+            "ROLE_UNSAFE",
+            "WEB_DISPATCH_DENIED",
+        }
         else "plan"
         if code.startswith("PLAN") or code == "CAPABILITY_UNAVAILABLE"
         else "model"
@@ -46,8 +53,10 @@ def execution_error(error: AgentFailure) -> ExecutionError:
 
 
 class Cancellation:
-    def __init__(self):
+    def __init__(self, *, authorize_dispatch=None):
         self.event = asyncio.Event()
+        self._authorize_dispatch = authorize_dispatch
+        self._authority_failure = None
 
     def cancel(self):
         self.event.set()
@@ -55,6 +64,18 @@ class Cancellation:
     def check(self):
         if self.event.is_set():
             raise AgentFailure("CANCELLED", "Parent run was cancelled")
+
+    def check_authority(self):
+        # Latch a denial across sibling workers and later graph nodes. Let already
+        # issued calls settle through wait_for and the original journal.
+        if self._authority_failure is not None:
+            raise AgentFailure(**self._authority_failure.model_dump())
+        if self._authorize_dispatch is not None:
+            try:
+                self._authorize_dispatch()
+            except AgentFailure as exc:
+                self._authority_failure = exc.error
+                raise
 
     async def wait_for(self, operation: Awaitable, timeout: float, *, timeout_code="TOOL_TIMEOUT"):
         job = asyncio.ensure_future(operation)

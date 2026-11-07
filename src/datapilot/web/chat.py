@@ -241,8 +241,8 @@ class ChatService:
         ):
             deny("GOAL_STALE", "请重新读取当前完整合同；旧确认不能复用")
 
-    async def authorized_goal_payload(self, payload, run_id):
-        from datapilot.web.goal_confirmation import base_payload, bind_payload
+    def confirmed_run_goal(self, payload, run_id):
+        from datapilot.web.goal_confirmation import bind_payload
 
         ref = payload["goal_confirmation"]
         with self.store.transaction() as conn:
@@ -253,13 +253,18 @@ class ChatService:
         if state != "confirmed" or not event or event["event_id"] != ref["event_id"]:
             deny("GOAL_REVOKED", "确认已撤回、替换或过期")
         snapshot = self._payload(row)["goal_contract"]
+        if bind_payload(snapshot, event) != payload:
+            deny("RECOVERY_IDENTITY", "确认记录与运行载荷不一致")
+        return snapshot
+
+    async def authorized_goal_payload(self, payload, run_id):
+        from datapilot.web.goal_confirmation import base_payload
+
+        snapshot = self.confirmed_run_goal(payload, run_id)
         request = CreateTask.model_validate_json(json_value(snapshot["review"]["request"]))
         if await self.product.task_payload(request) != base_payload(snapshot):
             deny("RECOVERY_VERSION", "确认的数据、权限或定义已变化")
-        fresh = bind_payload(snapshot, event)
-        if fresh != payload:
-            deny("RECOVERY_IDENTITY", "确认记录与运行载荷不一致")
-        return fresh
+        return payload
 
     def create(self, key, body):
         self._key(key)

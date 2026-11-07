@@ -1,5 +1,15 @@
 # P5A：ContextManager、L0–L4 与记忆契约
 
+## 2026-11-06 首个闭合批次的无损预览投影
+
+新 60 题 Live 暴露了一个多轮 L4 控制未覆盖的边界：同一条 AI 回复同时发出两次检索，虽然已有父预算压力，但只形成一个闭合工具批次，原入口直接返回后被累计预算预留拒绝。修复及工程证据见[首批预算修复](research/p7-first-batch-budget-repair.md)。下方原阶段记录按历史时间保留。
+
+当前仅在首个批次存在尺寸或预算压力时，先压紧绑定原 Artifact 的 RAG JSON；仍不足时，将重复文档预览表示为 `document_ref`，指向当前同一模型视图中更早且仍完整保留的 `tool_call_id`、`document_index` 与预览 `view_sha256`。当前顶层 `document_id` 保留，`overrides` 以完整顶层字段替换方式保留查询各自的元数据，citation 有变化时保留完整当前 citation。引用不会形成链、环、前向或跨任务指针。
+
+完整来源身份来自原 Artifact 的 corpus/index/source/document/version/跨度/hash，真实反馈必须与原 L0 投影精确匹配。每份反馈展开后须按规范 JSON 哈希与原 payload 完全一致，布尔值、整数与浮点数不互换；重复 JSON 字段与非有限数值拒绝。这里的“无损”相对于原 L0 预览，完整源工件继续由原 ArtifactStore 保存。
+
+只有确实缩小且满足原上下文、父子预算时才先归档并返回新视图，记录 L2、`model_view_lossy=false`；canonical 消息、每个 AI/Tool 身份、可信前缀与权限都不变，不额外插入权威 anchor 或调用 L4。无法满足时保持原拒绝，最终仍由原 `reserve_batch` 原子门禁决定是否派发。该首批路径与下方多轮 L1–L4 隔离，未降低估算或改变 8 次/18000 Token、Worker 4 次的限制。
+
 日期：2026-10-21。基线 `fb4c73461c4900f9128d011fd6dcf194f5926beb`，开始时工作区干净。范围只含 P5A，停止在持久化/重启恢复、真实 RAG、UI 之前。P4.1 历史证据为 325 passed/1 skipped，本阶段另行真实回归；未自动提交或推送。
 
 ## 核查与修改位置

@@ -379,13 +379,15 @@ def test_prompt_injection_text_cannot_delegate_sql(pg_settings, embedding):
 
         class Attacker:
             async def respond(self, messages, tools):
+                usage = {"input_tokens": 10, "output_tokens": 5, "total_tokens": 15}
                 if messages[0].content.startswith("PLAN_JSON"):
                     return AIMessage(
                         content=Plan(
                             tasks=[
                                 TaskSpec(task_id="rag", worker="rag", instruction="检索安全文档")
                             ]
-                        ).model_dump_json()
+                        ).model_dump_json(),
+                        usage_metadata=usage,
                     )
                 if messages[-1].type == "tool":
                     return AIMessage(
@@ -397,6 +399,7 @@ def test_prompt_injection_text_cannot_delegate_sql(pg_settings, embedding):
                                 "args": {"sql": "DELETE FROM customers"},
                             }
                         ],
+                        usage_metadata=usage,
                     )
                 return AIMessage(
                     content="",
@@ -407,6 +410,7 @@ def test_prompt_injection_text_cannot_delegate_sql(pg_settings, embedding):
                             "args": {"query": "安全指令", "top_k": 1},
                         }
                     ],
+                    usage_metadata=usage,
                 )
 
         async def check():

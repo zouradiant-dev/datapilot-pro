@@ -111,10 +111,7 @@ class Gateway:
             account,
             [
                 (usage.estimated_input_tokens, self.settings.max_output_tokens),
-                (
-                    followup_input_tokens,
-                    self.settings.max_output_tokens,
-                ),
+                (followup_input_tokens, self.settings.max_output_tokens),
             ],
         )
         try:
@@ -147,6 +144,7 @@ class Gateway:
         if exceeded:
             raise AgentFailure("CONTEXT_LIMIT", "Isolated worker context exceeds its limit")
         cached, call_key = None, None
+        self.cancel.check_authority()
         if self.durability:
             call_key, ticket, cached = self.durability.begin_model(
                 account,
@@ -295,6 +293,8 @@ class FakeTransport:
             if function.get("name") != "search_documents":
                 continue
             query_schema = function.get("parameters", {}).get("properties", {}).get("query", {})
+            if query_schema.get("enum"):
+                return query_schema["enum"][0]
             description = query_schema.get("description") or ""
             if marker in description:
                 try:

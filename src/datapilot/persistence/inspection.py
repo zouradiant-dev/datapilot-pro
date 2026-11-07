@@ -104,7 +104,16 @@ async def inspect_run(settings, run_id, owner, question, *, report_scope=None, r
             database_session(settings) as tools,
             report_session(settings, report_scope, question, owner) as reporting,
             rag_session(
-                settings, rag_scope, goal=reporting.rag_question if reporting else question
+                settings,
+                rag_scope,
+                goal=reporting.rag_question if reporting else question,
+                **(
+                    {"source_goals": reporting.scope.document_goal.source_goals}
+                    if reporting
+                    and reporting.scope.document_goal
+                    and reporting.scope.document_goal.source_goals
+                    else {}
+                ),
             ) as retrieval,
         ):
             fresh = fingerprint(

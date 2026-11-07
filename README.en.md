@@ -1,6 +1,6 @@
 # DataPilot Pro — English Overview
 
-For the November 4 candidate integration, repaired v3 scoring and new 60-case business holdout preparation, see [current status](docs/current-status.md). The demo, CI and earlier holdout figures below remain tied to their original commits and campaigns.
+On November 7, 2026, P7 passed formal business quality acceptance. The sealed 455-file v4 candidate and DeepSeek Flash 48k configuration scored **60/60** on both the strict and business measures, with **42/42** boundary cases under both measures. Acceptance covers synthetic SaaS tasks within host-reviewed scopes. See the [acceptance report](docs/research/p7-formal60-48k-acceptance.md) and [current status](docs/current-status.md).
 
 > An evidence-driven AI agent for SaaS business analytics. The model may plan and choose tools, but it cannot grant data access, approve a business contract, or prove a conclusion by itself.
 
@@ -12,8 +12,8 @@ The Chinese [README](README.md) is the primary document; this page is a concise 
 |---|---|
 | Engineering Demo Candidate | **ACCEPTED** (local single-user, synthetic data, scripted worker) |
 | Python 3.11 / 3.13 full CI | **PASS** ([Actions #28](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41299832252), commit `b06cc52`) |
-| Independent Business Quality | **PENDING** |
-| DeepSeek Live Gate | **PENDING** |
+| Independent Business Quality | **PASS** (formal 60-case set, 455-file v4 candidate) |
+| DeepSeek Live Gate | **PASS** (48k, strict 60/60, business 60/60) |
 | Independent human semantic review | **NOT_VERIFIED** |
 
 Branch: `p7-engineering-candidate-v1`.
@@ -53,7 +53,7 @@ Full diagrams (layers, dual loop, end-to-end sequence, trust boundaries, recover
 
 Implemented: chat-first UI and versioned `/api/v1` host; CSV/XLSX preview, confirmation and restricted ingestion; versioned dataset/semantic/metric registry; SQL MCP with SQLGlot AST whitelist, read-only roles and quotas; P3 six-layer metric verification with independent recomputation; scoped TXT/Markdown ingestion with fixed BGE embeddings and pgvector search; cross-source reports with claims, chart specs and four business-completion states; Goal v4 finite-scope confirmation and separate execution approval; durable LangGraph execution with official PostgreSQL checkpoints, journal, atomic budget ledger, artifacts and conservative unknown-outcome handling; maintenance/retention CLI.
 
-Pending or explicitly out of scope: DeepSeek autonomous business quality (Live Gate **PENDING**); the full 60-case independent business holdout (31 observed, 29 `not_run`); Qwen3 embedding profile validation (optional opt-in, default remains BGE 512/ONNX); multi-tenancy, RLS, production auth, remote Langfuse, HNSW/ANN, P11 cache/degrade engine.
+The formal DeepSeek business gate passed across 54 Runtime runs and six host refusals. The optional Qwen3 profile still has separate validation requirements, and BGE 512/ONNX remains the default. Multi-tenancy, RLS, production authentication, remote Langfuse, HNSW/ANN, and the P11 cache and degradation engine remain outside this delivery.
 
 ## Verification evidence
 

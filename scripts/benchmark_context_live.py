@@ -43,10 +43,9 @@ class Calibration:
 
     async def respond(self, messages, tools):
         assert messages[0].content.startswith("CONTEXT_SUMMARY_JSON") and not tools
-        expected = json.loads(messages[-1].content)["expected"]
-        expected["decisions"] = []
+        assert set(json.loads(messages[-1].content)) == {"decision_ids"}
         return AIMessage(
-            content=json.dumps(expected),
+            content=json.dumps({"decisions": []}),
             usage_metadata={"input_tokens": 0, "output_tokens": 0, "total_tokens": 0},
         )
 
@@ -93,7 +92,7 @@ class Metered:
             call["elapsed_ms"] = round((time.monotonic() - started) * 1000, 2)
 
 
-async def snapshot(database, run_id, name, rounds, note_chars):
+async def snapshot(database, run_id, name, rounds, note_chars, *, budget=None):
     task = TaskSpec(
         task_id=name.lower(),
         worker="sql",
@@ -109,7 +108,7 @@ async def snapshot(database, run_id, name, rounds, note_chars):
         task=task,
         plan_version=1,
         allowed_tools=sorted(CAPABILITIES["sql"]),
-        budget=BudgetLimits(calls=4, tokens=100000),
+        budget=budget if budget is not None else BudgetLimits(calls=4, tokens=100000),
     )
     registry = ToolRegistry(envelope, ArtifactStore(run_id), database=database)
     schema = (await registry.invoke("database_schema", {}))["schema"]

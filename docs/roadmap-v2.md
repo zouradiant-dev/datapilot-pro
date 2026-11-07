@@ -2,6 +2,8 @@
 
 版本：v2.1 规划基线，2026-10-21。本文件取代现行架构中的旧七天开发计划。输入为用户提供的《DataPilot Pro v2.1 Roadmap and Codex Prompts》及本轮实际代码审计。
 
+**2026-11-07 P7 本地交付收尾。** 455 文件 v4 候选通过 DeepSeek Flash 48k 正式业务质量验收，严格分和业务分均为 60/60，边界均为 42/42。独立消融暂停，Claude Code 产品对照已移出交付范围。下方各阶段停止点按历史时间理解。[正式验收与交付记录](research/p7-formal60-48k-acceptance.md)
+
 **不按日期排期。** 沿用约 20 个工作日的工作量参考，将其转为可独立验收的工作单元；编号不是截止时间或交付承诺。先通过 Gate 再推进，不能为对齐编号省略测试。前 17 个单元覆盖产品主线，18–20 是可选 Runtime 研究；不需要 Fork 时用于回归、失败案例和发布完善，不阻塞核心交付。
 
 ## 1. 当前起点与优先级
@@ -39,7 +41,7 @@ P5A 后单独授权的 DeepSeek Flash 兼容增量仅调整共享模型构造 pr
 | A / 1–5 | 审计、CSV/XLSX Parser、Profile/确认、受限导入、Registry、动态 MCP | 文件→预览确认→ready Dataset/version→真实 PG→真实 MCP；多表 JOIN、回滚、跨 scope 拒绝、原 saas 回归 | 解包资源、类型失真、名称注入；新增迁移/ingest/upload_reader；健康检查不能写死 0001 |
 | B / 6–8 | SaaS 语义/指标版本、受控计算、Evidence、六层 Verifier | paid 收入/订阅与客户/使用量独立核对；JOIN 双计、单位/日期、缺字段/伪证据拒绝 | 指标不明确先确认；不把形状正确当业务正确 |
 | C / 9–13 | Worker Loop、任务 DAG/Send、最小上下文/Memory、预算、PG Checkpoint/恢复、真实跨来源 | 合法依赖/有界并发；SQL/RAG 证据汇合；缺证据定点补查；重启恢复/取消/预算一致 | 同步客户端、重试叠加、reducer 冲突、Saver 迁移所有权、Embedding 选择与真实凭据 |
-| D / 14–17 | P6C FastAPI/Streamlit、本地 OTel（远程 Langfuse 可选）；P7 ≥50 独立任务、消融/产品对比 | 新用户按 README 完成两表上传到引用报告；真实状态/错误可见；可复现 E2E、Bad Case 与限制；P6C 与 P7 分开验收 | API Key/供应商效果、日志隐私；对照环境和人工介入差异必须披露 |
+| D / 14–17 | P6C FastAPI/Streamlit、本地 OTel（远程 Langfuse 可选）。P7 独立业务任务与交付证据，消融待决定 | 新用户按 README 完成两表上传到引用报告。真实状态、错误、可复现 E2E、失败案例与限制可见。P6C 与 P7 分别验收 | API Key、供应商效果、日志隐私 |
 | E / 18–20，可选 | 原版问题复现、最小 Fork、回归与同条件 A/B，或发布完善 | 指定文件/函数、公开机制为何不足、正确性不变量、客观收益或明确负结果 | 当前无必须 Fork 的证据；先用公开扩展；保留原版开关/许可证/回退 |
 | F / 后续可选 | Domain Pack、合法文件 Connector、干洗店映射/指标/试用 | 不复制 Runtime/Harness/Worker；授权报表与人工记录核对；saas 不回归 | POS 品牌/API/字段未知，真实数据授权/脱敏；缺文件只做 synthetic fixture |
 
@@ -111,7 +113,7 @@ P5A 后单独授权的 DeepSeek Flash 兼容增量仅调整共享模型构造 pr
 | P6A | 授权 TXT/Markdown、固定 BGE CPU、真实 pgvector/MCP 与引用验证已实现；定向补强完成控制和恢复 | 历史停止点；检索成功与最终业务验证分开 |
 | P6B | 可信 ReportScope、P3/P4 桥接、验证引用/claim/Markdown/图表、受限结果与恢复 | 已交付；真 PG 与脚本模型决策见 cross-source-report；无新增真实模型授权 |
 | P6C | 版本化 API、HTTP-only UI、默认 Durable、隐私边界、独立维护、本地 OTel | 当前停止边界；命令、浏览器/恢复/隔离清理与回归见 product-demo；远程 Langfuse 未接 |
-| P7 | 独立 E2E、消融、Claude Code 产品对比 | Gate D 完整验收资料；不可污染保留集 |
+| P7 | 独立 E2E 验收通过，本地交付收尾，独立消融已暂停 | 保留集独立，Claude Code 产品对照已移出交付范围 |
 | P8 | 可选官方 Runtime 不足与 Fork A/B | 有最小复现和公开方案不足的证据 |
 | P9 | 可选干洗店领域包/真实试点 | Gate D、数据授权/导出能力明确；不依赖 Fork |
 
@@ -121,7 +123,7 @@ SaaS ≥50 个独立业务任务，开发集/保留集分离，固定 seed/数�
 
 分别报告：执行成功、数据/业务正确、证据覆盖、可恢复错误的恢复率及分母、p50/p95、Token/费用估算、样本数/置信区间、人工介入。目标阈值在实验前登记，未达到如实记录；原文 90%/95%/80% 等是候选目标，不是已测结果。
 
-消融按原版 SQL→Worker Loop→语义/Verifier/Recovery→Context/Memory→Multi-Agent 比较，同模型/数据/预算。Claude Code 是端到端产品对照，披露模型、允许工具、导入准备与人工操作差异，不能直接归因 Harness。Fork 对照固定同一 Harness，负收益默认回退官方版。干洗店试点单列 5–10 个经营者问题和人工复核，不与 SaaS 测试集合并。
+独立消融若立项，先验证可比的配对任务与唯一变化项，固定模型、数据与预算。Fork 对照固定同一 Harness，负收益默认回退官方版。干洗店试点单列 5–10 个经营者问题与人工复核，和 SaaS 测试集分别统计。
 
 ## 6. 当前阻塞与下一步准备
 

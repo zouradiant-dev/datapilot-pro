@@ -150,7 +150,7 @@ class AdmissionGate:
         docs = report.get("document_goal")
         metrics = report.get("metrics") or []
         corpora = rag.get("corpora") or []
-        return {
+        binding = {
             "question_sha256": digest(payload["question"]),
             "metrics": [
                 {
@@ -195,6 +195,14 @@ class AdmissionGate:
                 "embedding_profile": rag.get("embedding_profile"),
             },
         }
+        if (docs and docs.get("source_goals")) or report.get(
+            "document_explanation_policy", "legacy"
+        ) != "legacy":
+            from datapilot.reporting.contracts import ReportScope, finite_contract_hash
+
+            checked = ReportScope.model_validate_json(json.dumps(report))
+            binding["document_contract_sha256"] = finite_contract_hash(checked)
+        return binding
 
     def _matches(self, case, binding):
         expected = case
@@ -222,8 +230,9 @@ class AdmissionGate:
             "citation_policy",
             "rag_query_policy",
             "rag_policy",
+            "document_contract_sha256",
         ):
-            if expected.get(key) != binding[key]:
+            if expected.get(key) != binding.get(key):
                 return False
         return True
 

@@ -420,6 +420,40 @@ class ProductService:
             ),
         }
 
+    def check_dispatch_authority(self, id_, payload):
+        """Recheck revocable host metadata without opening a new business session."""
+        self.store.check_host_settings(self.settings)
+        if self.store.run(id_)["payload"] != payload:
+            deny("RECOVERY_IDENTITY", "Run payload changed during execution")
+        if payload.get("goal_confirmation"):
+            from datapilot.web.chat import ChatService
+
+            ChatService(self).confirmed_run_goal(payload, id_)
+        scope = payload["report_scope"]
+        bindings = {(b["dataset_id"], b["version"]) for b in scope["datasets"]["bindings"]}
+        for dataset_id, version in bindings:
+            current = self.store.dataset(dataset_id, version)
+            if current["schema"]["source_sha256"] != payload["sources"][dataset_id]:
+                deny("WEB_SOURCE_CHANGED", "Authorized Dataset snapshot changed")
+            for metric in scope["metrics"]:
+                if (metric["dataset_id"], metric["dataset_version"]) == (
+                    dataset_id,
+                    version,
+                ) and not any(
+                    all(
+                        m[k] == metric[k]
+                        for k in ("metric_id", "metric_version", "semantic_version")
+                    )
+                    for m in current["metrics"]
+                ):
+                    deny("METRIC_CONFIRMATION_REQUIRED", "Host review of metric policy is required")
+        for pin in (payload.get("rag_scope") or {}).get("corpora", []):
+            if not any(
+                row["payload"] == pin and (row["dataset_id"], row["dataset_version"]) in bindings
+                for row in self.store.corpora(corpus_id=pin["corpus_id"])
+            ):
+                deny("WEB_SCOPE", "Host-authorized document index changed")
+
     async def authorize_run(self, id_):
         self.store.check_host_settings(self.settings)
         row = self.store.run(id_)

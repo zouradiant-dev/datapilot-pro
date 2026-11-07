@@ -273,3 +273,129 @@ async def test_sdk_chat_input_excludes_host_metadata_but_estimator_remains_conse
     _, measured = measure_context(messages, [], 1200)
     assert measured.estimated_input_tokens > len(json.dumps(wire, ensure_ascii=False).encode())
     assert response.usage_metadata["total_tokens"] == 30
+
+
+async def test_budget_only_pressure_folds_one_more_batch_before_failure(settings):
+    config, manager, gateway, registry, prefix = make_context(
+        settings, max_chars=64000, max_tokens=100000, keep=2
+    )
+    messages = history(manager, prefix, count=5, body=1200)
+    schema = registry.schemas()
+    child = BudgetLimits(calls=8, tokens=8000)
+    ledger = BudgetLedger(BudgetLimits(calls=8, tokens=18000))
+    ledger.fork("1:r", child)
+    gateway.ledger = ledger
+    registry.envelope.budget = child
+
+    await gateway.invoke(messages, schema, "1:r")
+
+    assert manager.stats[-1].levels
+    assert "L3" in manager.stats[-1].levels
+    assert manager.stats[-1].after_estimated_tokens + manager.limits.output_tokens <= 8000
+    assert len(gateway.transport.requests) == 1
+
+
+async def test_long_full_anchor_budget_admission_stops_before_summary(settings):
+    class Bad(ModelDouble):
+        async def respond(self, messages, tools):
+            self.requests.append(list(messages))
+            if messages[0].content.startswith("CONTEXT_SUMMARY_JSON"):
+                return AIMessage(
+                    content="not json",
+                    usage_metadata={"input_tokens": 20, "output_tokens": 10, "total_tokens": 30},
+                )
+            return AIMessage(
+                content='{"artifact_ids": []}',
+                usage_metadata={"input_tokens": 20, "output_tokens": 10, "total_tokens": 30},
+            )
+
+    config, manager, gateway, registry, prefix = make_context(
+        settings, max_chars=64000, max_tokens=20000, keep=2, model=Bad()
+    )
+    messages = [
+        *prefix,
+        manager._anchor(compact=False),
+        *history(manager, prefix, count=6, body=1200)[len(prefix) :],
+    ]
+    schema = registry.schemas()
+    child = BudgetLimits(calls=8, tokens=6000)
+    ledger = BudgetLedger(BudgetLimits(calls=8, tokens=18000))
+    ledger.fork("1:r", child)
+    gateway.ledger = ledger
+    registry.envelope.budget = child
+
+    with pytest.raises(AgentFailure) as caught:
+        await gateway.invoke(messages, schema, "1:r")
+
+    assert caught.value.error.code == "BUDGET_EXCEEDED"
+    stat = manager.stats[-1]
+    assert stat.before_estimated_tokens >= 13000
+    assert stat.after_estimated_tokens < stat.before_estimated_tokens
+    assert stat.components["anchor"] == stat.components["anchor_compact"]
+    assert stat.components["anchor_count"] == 1
+    assert stat.summary_calls == 0
+    # Budget admission must stop before any summary model call is issued.
+    assert gateway.ledger.snapshot().calls == 0
+
+
+async def test_l4_budget_pressure_reserves_summary_and_followup_before_dispatch(settings):
+    selected = sorted([f"turn_{i}" for i in range(12)], key=len, reverse=True)[:8]
+
+    async def invoke_with_budget(tokens):
+        transport = ModelDouble(mutate=lambda value: value.update(decisions=selected))
+        _, manager, gateway, registry, prefix = make_context(
+            settings, max_chars=7100, max_tokens=100000, model=transport
+        )
+        limits = BudgetLimits(calls=20, tokens=tokens)
+        gateway.ledger = BudgetLedger(limits)
+        gateway.ledger.fork("1:r", limits)
+        registry.envelope.budget = limits
+        messages = history(manager, prefix, count=12, ai_body=1800, body=900)
+        before = gateway.ledger.dump_state()
+        try:
+            await gateway.invoke(messages, registry.schemas(), "1:r")
+        except AgentFailure as exc:
+            assert exc.error.code == "BUDGET_EXCEEDED"
+            assert not transport.requests
+            assert gateway.ledger.dump_state() == before
+            assert manager.stats[-1].summary_calls == 0
+            return None
+        usage = measure_context(transport.requests[-1], registry.schemas(), 1200)[1]
+        assert len(transport.requests) == 2 and not gateway.ledger.pending
+        return usage.estimated_input_tokens + usage.output_reserved_tokens
+
+    followup_only = await invoke_with_budget(100000)
+    assert followup_only is not None
+    # The follow-up alone fits exactly. Its summary must be admitted in the same batch.
+    assert await invoke_with_budget(followup_only) is None
+
+
+async def test_l4_budget_pressure_holds_followup_against_competing_worker(settings):
+    class CompetingWorker(ModelDouble):
+        denied = False
+
+        async def respond(self, messages, tools):
+            if messages[0].content.startswith("CONTEXT_SUMMARY_JSON"):
+                with pytest.raises(AgentFailure) as caught:
+                    ledger.reserve_batch("peer", [(100, 100)])
+                assert caught.value.error.code == "BUDGET_EXCEEDED"
+                self.denied = True
+            return await super().respond(messages, tools)
+
+    transport = CompetingWorker()
+    _, _, gateway, registry, prefix = make_context(
+        settings, max_chars=7100, max_tokens=100000, model=transport
+    )
+    limits = BudgetLimits(calls=2, tokens=18000)
+    ledger = BudgetLedger(limits)
+    ledger.fork("1:r", limits)
+    ledger.fork("peer", BudgetLimits(calls=1, tokens=1000))
+    gateway.ledger = ledger
+    registry.envelope.budget = limits
+    manager = gateway.contexts["1:r"]
+    await gateway.invoke(
+        history(manager, prefix, count=12, ai_body=1800, body=900), registry.schemas(), "1:r"
+    )
+    assert transport.denied and len(transport.requests) == 2
+    assert ledger.snapshot().calls == 2 and ledger.snapshot().reported_tokens == 60
+    assert not ledger.pending and ledger.snapshot("peer").calls == 0

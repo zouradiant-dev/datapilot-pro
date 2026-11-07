@@ -66,6 +66,33 @@ class CorpusPin(Contract):
         return self
 
 
+class SourceGoal(Contract):
+    """Host-reviewed question component bound to one already authorized source."""
+
+    corpus_id: DatasetId
+    index_version: Digest
+    document_id: Digest
+    question: str = Field(min_length=1, max_length=256, pattern=r"\S")
+
+
+def source_goal_key(value):
+    return value.corpus_id, value.index_version, value.document_id
+
+
+def check_source_goals(scope, goal, source_goals):
+    values = [SourceGoal.model_validate_json(g.model_dump_json()) for g in source_goals or []]
+    allowed = {(p.corpus_id, p.index_version, d) for p in scope.corpora for d in p.document_ids}
+    if values and (
+        not goal
+        or len(values) > 2
+        or scope.embedding_profile
+        or len({source_goal_key(g) for g in values}) != len(values)
+        or any(source_goal_key(g) not in allowed for g in values)
+    ):
+        raise ValueError("Source goals need distinct authorized BGE sources and the original goal")
+    return values
+
+
 class RagScope(Contract):
     owner: str = Field(default="local-user", min_length=1, max_length=64)
     corpora: list[CorpusPin] = Field(default_factory=list, max_length=8)
@@ -166,7 +193,15 @@ class ChunkCitation(ChunkSpan):
     score: float = Field(ge=-1, le=1, allow_inf_nan=False)
     goal_sha256: Digest | None = None
     goal_score: float | None = Field(default=None, ge=-1, le=1, allow_inf_nan=False)
+    source_goal_sha256: Digest | None = None
     page: None = None  # TXT/Markdown only; never fabricate PDF page numbers.
+
+    @model_serializer(mode="wrap")
+    def preserve_original_citation(self, handler):
+        value = handler(self)
+        if self.source_goal_sha256 is None:
+            value.pop("source_goal_sha256", None)
+        return value
 
 
 class EmbeddingUsage(Contract):

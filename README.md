@@ -1,6 +1,6 @@
 # DataPilot Pro
 
-当前推进状态见 [current-status.md](docs/current-status.md)（2026-11-04）：整合工程修复与 v3 评分器、补齐默认评测测试，并为新 60 条业务 Holdout 另建绑定。下方 Demo、CI 和旧 Holdout 数字保留各自提交与批次属性。
+2026-11-07，P7 正式业务质量验收通过。455 文件 v4 候选在封存的 DeepSeek Flash 48k 正式 60 题上，严格分和业务分均为 **60/60**，边界均为 **42/42**。适用范围为本地可信 SaaS 合成业务与宿主审阅范围。详见 [正式验收与交付记录](docs/research/p7-formal60-48k-acceptance.md)和 [当前状态](docs/current-status.md)。
 
 > 面向 SaaS 经营分析场景的 **Evidence-driven AI Agent**：模型可以参与规划与工具决策，但不能自行授予数据访问权限、批准业务合同或证明业务结论。
 
@@ -8,8 +8,8 @@
 |---|---|
 | Engineering Demo Candidate | **ACCEPTED**（本地单用户、合成数据、脚本 Worker） |
 | Python 3.11 / 3.13 完整 CI | **PASS**（[Actions #28](https://github.com/zouradiant-dev/datapilot-pro/actions/runs/41299832252)，提交 `b06cc52`） |
-| Independent Business Quality | **PENDING** |
-| DeepSeek Live Gate | **PENDING** |
+| Independent Business Quality | **PASS**（正式 60 题，455 文件 v4 候选） |
+| DeepSeek Live Gate | **PASS**（48k，严格 60/60，业务 60/60） |
 | 独立人工合同语义审查 | **NOT_VERIFIED** |
 
 分支：`p7-engineering-candidate-v1`。公开交付索引见 [P7 工程候选](docs/releases/p7-engineering-candidate-v1/README.md)；架构速览见 [architecture-overview.md](docs/architecture-overview.md)；面试材料见 [showcase.md](docs/showcase.md)；英文概览见 [README.en.md](README.en.md)。
@@ -85,8 +85,8 @@ flowchart LR
 | Durable / Checkpoint / Journal / Ledger / 恢复 | ✅ 已实现 | unknown-outcome 阻断重发 |
 | 维护与保留 CLI | ✅ 已实现 | 默认 dry-run、整 Run 原子清理 |
 | Qwen3 Embedding | 🟡 可选 opt-in | 默认仍是 BGE 512/ONNX；CUDA/生产切换未验收 |
-| 真实 DeepSeek 自主业务质量 | ⏳ PENDING | Live Gate 未完成，不能宣传为已验收 |
-| 完整 60 条独立业务 Holdout | ⏳ 未完成 | 已观测 31 条，29 条 `not_run` |
+| 真实 DeepSeek 业务质量 | ✅ 正式 Gate 通过 | Flash 48k，宿主审阅的有限范围 |
+| 正式 60 条独立合成业务题 | ✅ 已完成 | 54 个 Runtime、6 项宿主拒绝，未运行 0 |
 | 多租户 / RLS / 生产认证 / 远程 Langfuse / HNSW | ❌ 未实现 | 明确不在这版范围 |
 
 ## 可信工程验收（截至 `b06cc52`）
@@ -114,14 +114,13 @@ flowchart LR
 
 **数字归属（勿混用）**：**1432.25 CNY** 属于 P7 工程 Demo 的独立合成数据集（新建隔离数据库、窗口 `[2026-06-01, 2026-07-01)`，两条 paid/CNY 账单）；**300 CNY** 属于首次部署“加载合成 SaaS 样例”的另一套数据（2025-10 窗口）。两组数字来自不同 Dataset，不可互相引用、对比或当作同一份数据的结果。
 
-### 真实模型与业务评测（未完成，保持原值）
+### 历史真实模型与业务评测
 
 - 意图：59 条 Holdout 上 Rule-only 46/59、LLM-only 58/59、Hybrid 57/59（67 次真实调用 / 59,640 Token）。
 - 业务：60 条计划中观测 31 条、严格通过 25、未通过 6、`not_run` 29；因 `bh2-031` 预算预留失败安全停止，61 次真实调用全部结算、无 unknown。这是**固定顺序的前缀样本**，不能当无偏成功率。见 [Gate 2B Live](docs/p7-gate2b-live.md)。
 - 50 条开发目标在脚本决策 + 真实 PG/MCP 下为 48/50，不是真实模型成绩。
 
-**这些数字证明什么**：工程链路、权限边界、证据链与恢复机制可运行且可复核。
-**不证明什么**：DeepSeek 自主完成经营分析的业务质量、自然语言成功率、生产 SLA 或多租户安全。
+本节记录各自候选上的工程链、权限、证据和恢复结果。当前正式业务质量见 [48k 验收](docs/research/p7-formal60-48k-acceptance.md)。
 
 ## 本地运行（安全合成数据）
 

@@ -121,8 +121,8 @@ async def check_versions(settings, metadata, owner="local-user"):
 
 
 class PersistentCancellation(Cancellation):
-    def __init__(self, backend):
-        super().__init__()
+    def __init__(self, backend, *, authorize_dispatch=None):
+        super().__init__(authorize_dispatch=authorize_dispatch)
         self.backend = backend
 
     def cancel(self):
@@ -201,6 +201,7 @@ async def run_durable(
     ttl_seconds=86400,
     rag_scope=None,
     report_scope=None,
+    authorize_dispatch=None,
 ):
     if approve is not None and type(approve) is not bool:
         raise ValueError("Approval must be a trusted host boolean")
@@ -213,6 +214,8 @@ async def run_durable(
     monitor = None
     try:
         with backend.lease():
+            cancel = PersistentCancellation(backend, authorize_dispatch=authorize_dispatch)
+            cancel.check_authority()
             if resume:
                 with backend.transaction() as conn:
                     stored = backend.authorize(conn)["manifest"]
@@ -232,7 +235,16 @@ async def run_durable(
                 report_session(settings, report_scope, question, owner) as reporting,
                 database_session(settings) as tools,
                 rag_session(
-                    settings, rag_scope, goal=reporting.rag_question if reporting else question
+                    settings,
+                    rag_scope,
+                    goal=reporting.rag_question if reporting else question,
+                    **(
+                        {"source_goals": reporting.scope.document_goal.source_goals}
+                        if reporting
+                        and reporting.scope.document_goal
+                        and reporting.scope.document_goal.source_goals
+                        else {}
+                    ),
                 ) as retrieval,
             ):
                 if reporting and reporting.scope.document_goal and retrieval is None:
@@ -269,7 +281,6 @@ async def run_durable(
                 journal.require_review = require_review
                 if resume:
                     journal.recover()
-                cancel = PersistentCancellation(backend)
                 if backend.cancelled():
                     raise AgentFailure("CANCELLED", "Cancelled runs cannot resume execution")
                 monitor = asyncio.create_task(cancel.watch())
@@ -391,6 +402,7 @@ async def run_durable(
                         result = await engine.graph.ainvoke(
                             value if resume else initial, config=config, durability="sync"
                         )
+                    cancel.check_authority()
                     current = await engine.graph.aget_state(config)
                     if current.next:
                         result = {
